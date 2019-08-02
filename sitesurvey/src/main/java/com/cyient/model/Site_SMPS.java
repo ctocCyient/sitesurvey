@@ -112,13 +112,7 @@ public class Site_SMPS implements Serializable {
 		this.siteid = siteid;
 	}
 
-	public String getDgManufacturer() {
-		return dgManufacturer;
-	}
 
-	public void setDgManufacturer(String dgManufacturer) {
-		this.dgManufacturer = dgManufacturer;
-	}
 
 	public String getCapacity() {
 		return capacity;
