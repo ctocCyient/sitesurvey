@@ -16,8 +16,8 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "Site_SMPS")
-public class Site_SMPS implements Serializable {
+@Table(name = "Site_Battery_Bank")
+public class Site_Battery_Bank implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
 
@@ -33,15 +33,15 @@ public class Site_SMPS implements Serializable {
 	@Column(name="Manufacturer")
 	private String Manufacturer;
 	
-	@Column(name="Model")
-	private String model;
+	@Column(name="Type")
+	private String type;
 	
 	@Column(name="Manufacture _Date")
 	@Temporal(TemporalType.DATE)
 	private Date manufacturedate;
 	
-	@Column(name="Module_rating")
-	private Integer module_rating;
+	@Column(name="Number_of_batteries")
+	private Integer number_of_batteries;
 	
 	@Column(name="Number_of_working_Module_rating")
 	private Integer number_of_working_Module_rating;
@@ -52,28 +52,23 @@ public class Site_SMPS implements Serializable {
 	@Column(name="Comments")
 	private String comments;
 	
+	@Column(name="Tag_photo", unique = false, nullable = false, length = 16777215)
+	private byte[] tag_photo;
 	
+	@Column(name="Tag_photo_Latitude")
+	private String tag_photo_latitude;
+	
+	@Column(name="Tag_photo_Longitude")
+	private String tag_photo_longitude;
 
-		
-
+	@Column(name="Tag_photo_1", unique = false, nullable = false, length = 16777215)
+	private byte[] tag_photo_1;
 	
-	@Column(name="Observation_1", unique = false, nullable = false, length = 16777215)
-	private byte[] observation_1;
+	@Column(name="Tag_photo_Latitude_1")
+	private String tag_photo_latitude_1;
 	
-	@Column(name="Observation_1_Latitude")
-	private String observation_1_latitude;
-	
-	@Column(name="Observation_1_Longitude")
-	private String observation_1_longitude;
-	
-	@Column(name="Observation_2", unique = false, nullable = false, length = 16777215)
-	private byte[] observation_2;
-	
-	@Column(name="Observation_2_Latitude")
-	private String observation_2_latitude;
-	
-	@Column(name="Observation_2_Longitude")
-	private String observation_2_longitude;
+	@Column(name="Tag_photo_Longitude_1")
+	private String tag_photo_longitude_1;
 
 	public int getId() {
 		return id;
@@ -99,12 +94,12 @@ public class Site_SMPS implements Serializable {
 		Manufacturer = manufacturer;
 	}
 
-	public String getModel() {
-		return model;
+	public String getType() {
+		return type;
 	}
 
-	public void setModel(String model) {
-		this.model = model;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Date getManufacturedate() {
@@ -115,12 +110,12 @@ public class Site_SMPS implements Serializable {
 		this.manufacturedate = manufacturedate;
 	}
 
-	public Integer getModule_rating() {
-		return module_rating;
+	public Integer getNumber_of_batteries() {
+		return number_of_batteries;
 	}
 
-	public void setModule_rating(Integer module_rating) {
-		this.module_rating = module_rating;
+	public void setNumber_of_batteries(Integer number_of_batteries) {
+		this.number_of_batteries = number_of_batteries;
 	}
 
 	public Integer getNumber_of_working_Module_rating() {
@@ -147,59 +142,59 @@ public class Site_SMPS implements Serializable {
 		this.comments = comments;
 	}
 
-	public byte[] getObservation_1() {
-		return observation_1;
+	public byte[] getTag_photo() {
+		return tag_photo;
 	}
 
-	public void setObservation_1(byte[] observation_1) {
-		this.observation_1 = observation_1;
+	public void setTag_photo(byte[] tag_photo) {
+		this.tag_photo = tag_photo;
 	}
 
-	public String getObservation_1_latitude() {
-		return observation_1_latitude;
+	public String getTag_photo_latitude() {
+		return tag_photo_latitude;
 	}
 
-	public void setObservation_1_latitude(String observation_1_latitude) {
-		this.observation_1_latitude = observation_1_latitude;
+	public void setTag_photo_latitude(String tag_photo_latitude) {
+		this.tag_photo_latitude = tag_photo_latitude;
 	}
 
-	public String getObservation_1_longitude() {
-		return observation_1_longitude;
+	public String getTag_photo_longitude() {
+		return tag_photo_longitude;
 	}
 
-	public void setObservation_1_longitude(String observation_1_longitude) {
-		this.observation_1_longitude = observation_1_longitude;
+	public void setTag_photo_longitude(String tag_photo_longitude) {
+		this.tag_photo_longitude = tag_photo_longitude;
 	}
 
-	public byte[] getObservation_2() {
-		return observation_2;
+	public byte[] getTag_photo_1() {
+		return tag_photo_1;
 	}
 
-	public void setObservation_2(byte[] observation_2) {
-		this.observation_2 = observation_2;
+	public void setTag_photo_1(byte[] tag_photo_1) {
+		this.tag_photo_1 = tag_photo_1;
 	}
 
-	public String getObservation_2_latitude() {
-		return observation_2_latitude;
+	public String getTag_photo_latitude_1() {
+		return tag_photo_latitude_1;
 	}
 
-	public void setObservation_2_latitude(String observation_2_latitude) {
-		this.observation_2_latitude = observation_2_latitude;
+	public void setTag_photo_latitude_1(String tag_photo_latitude_1) {
+		this.tag_photo_latitude_1 = tag_photo_latitude_1;
 	}
 
-	public String getObservation_2_longitude() {
-		return observation_2_longitude;
+	public String getTag_photo_longitude_1() {
+		return tag_photo_longitude_1;
 	}
 
-	public void setObservation_2_longitude(String observation_2_longitude) {
-		this.observation_2_longitude = observation_2_longitude;
+	public void setTag_photo_longitude_1(String tag_photo_longitude_1) {
+		this.tag_photo_longitude_1 = tag_photo_longitude_1;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
+	}	
 
-
+	
 
 
 
