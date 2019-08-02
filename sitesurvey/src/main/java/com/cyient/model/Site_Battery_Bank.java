@@ -190,9 +190,6 @@ public class Site_Battery_Bank implements Serializable {
 		this.tag_photo_longitude_1 = tag_photo_longitude_1;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}	
 
 	
 
