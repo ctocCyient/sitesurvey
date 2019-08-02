@@ -189,14 +189,4 @@ public class Site_Battery_Bank implements Serializable {
 	public void setTag_photo_longitude_1(String tag_photo_longitude_1) {
 		this.tag_photo_longitude_1 = tag_photo_longitude_1;
 	}
-
-
-	
-
-
-
-
-
-
-
 }
