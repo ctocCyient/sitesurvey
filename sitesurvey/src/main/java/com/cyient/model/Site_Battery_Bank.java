@@ -211,8 +211,5 @@ public class Site_Battery_Bank implements Serializable {
 
 	@Column(name="Tag_photo_Longitude_1")
 	private String tag_photo_longitude_1;
-
-
-	
 	
 }
