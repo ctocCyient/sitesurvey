@@ -73,6 +73,142 @@ public class Site_Battery_Bank implements Serializable {
 	@Column(name="Tag_photo_Latitude_1")
 	private String tag_photo_latitude_1;
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getSiteid() {
+		return siteid;
+	}
+
+	public void setSiteid(String siteid) {
+		this.siteid = siteid;
+	}
+
+	public String getManufacturer() {
+		return Manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		Manufacturer = manufacturer;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Date getManufacturedate() {
+		return manufacturedate;
+	}
+
+	public void setManufacturedate(Date manufacturedate) {
+		this.manufacturedate = manufacturedate;
+	}
+
+	public Integer getNumber_of_batteries() {
+		return number_of_batteries;
+	}
+
+	public void setNumber_of_batteries(Integer number_of_batteries) {
+		this.number_of_batteries = number_of_batteries;
+	}
+
+	public Integer getNumber_of_working_Module_rating() {
+		return number_of_working_Module_rating;
+	}
+
+	public void setNumber_of_working_Module_rating(Integer number_of_working_Module_rating) {
+		this.number_of_working_Module_rating = number_of_working_Module_rating;
+	}
+
+	public String getCondition() {
+		return condition;
+	}
+
+	public void setCondition(String condition) {
+		this.condition = condition;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public String getTag_observed() {
+		return tag_observed;
+	}
+
+	public void setTag_observed(String tag_observed) {
+		this.tag_observed = tag_observed;
+	}
+
+	public byte[] getTag() {
+		return tag;
+	}
+
+	public void setTag(byte[] tag) {
+		this.tag = tag;
+	}
+
+	public byte[] getTag_photo() {
+		return tag_photo;
+	}
+
+	public void setTag_photo(byte[] tag_photo) {
+		this.tag_photo = tag_photo;
+	}
+
+	public String getTag_photo_latitude() {
+		return tag_photo_latitude;
+	}
+
+	public void setTag_photo_latitude(String tag_photo_latitude) {
+		this.tag_photo_latitude = tag_photo_latitude;
+	}
+
+	public String getTag_photo_longitude() {
+		return tag_photo_longitude;
+	}
+
+	public void setTag_photo_longitude(String tag_photo_longitude) {
+		this.tag_photo_longitude = tag_photo_longitude;
+	}
+
+	public byte[] getTag_photo_1() {
+		return tag_photo_1;
+	}
+
+	public void setTag_photo_1(byte[] tag_photo_1) {
+		this.tag_photo_1 = tag_photo_1;
+	}
+
+	public String getTag_photo_latitude_1() {
+		return tag_photo_latitude_1;
+	}
+
+	public void setTag_photo_latitude_1(String tag_photo_latitude_1) {
+		this.tag_photo_latitude_1 = tag_photo_latitude_1;
+	}
+
+	public String getTag_photo_longitude_1() {
+		return tag_photo_longitude_1;
+	}
+
+	public void setTag_photo_longitude_1(String tag_photo_longitude_1) {
+		this.tag_photo_longitude_1 = tag_photo_longitude_1;
+	}
+
 	@Column(name="Tag_photo_Longitude_1")
 	private String tag_photo_longitude_1;
 
