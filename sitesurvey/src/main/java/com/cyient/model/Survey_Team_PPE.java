@@ -28,7 +28,7 @@ public class Survey_Team_PPE implements Serializable {
 	
 	@OneToMany
 	@JoinColumn(name="siteID")
-	private String siteid;
+	private Site siteid;
 		
 	@Column(name="PPE")
 	private String ppe;
@@ -53,6 +53,86 @@ public class Survey_Team_PPE implements Serializable {
 	
 	@Column(name="Photo_Rigger_Team", unique = false, nullable = false, length = 16777215)
 	private byte[] photoRiggerTeam;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Site getSiteid() {
+		return siteid;
+	}
+
+	public void setSiteid(Site siteid) {
+		this.siteid = siteid;
+	}
+
+	public String getPpe() {
+		return ppe;
+	}
+
+	public void setPpe(String ppe) {
+		this.ppe = ppe;
+	}
+
+	public byte[] getPhotoSurveyTeam() {
+		return photoSurveyTeam;
+	}
+
+	public void setPhotoSurveyTeam(byte[] photoSurveyTeam) {
+		this.photoSurveyTeam = photoSurveyTeam;
+	}
+
+	public String getTechnicianName() {
+		return technicianName;
+	}
+
+	public void setTechnicianName(String technicianName) {
+		this.technicianName = technicianName;
+	}
+
+	public String getTechnicianWearing() {
+		return technicianWearing;
+	}
+
+	public void setTechnicianWearing(String technicianWearing) {
+		this.technicianWearing = technicianWearing;
+	}
+
+	public byte[] getPhotoTechnicianTeam() {
+		return photoTechnicianTeam;
+	}
+
+	public void setPhotoTechnicianTeam(byte[] photoTechnicianTeam) {
+		this.photoTechnicianTeam = photoTechnicianTeam;
+	}
+
+	public String getRigger_Name() {
+		return rigger_Name;
+	}
+
+	public void setRigger_Name(String rigger_Name) {
+		this.rigger_Name = rigger_Name;
+	}
+
+	public String getRigger_Wearing() {
+		return rigger_Wearing;
+	}
+
+	public void setRigger_Wearing(String rigger_Wearing) {
+		this.rigger_Wearing = rigger_Wearing;
+	}
+
+	public byte[] getPhotoRiggerTeam() {
+		return photoRiggerTeam;
+	}
+
+	public void setPhotoRiggerTeam(byte[] photoRiggerTeam) {
+		this.photoRiggerTeam = photoRiggerTeam;
+	}
 
 
 }

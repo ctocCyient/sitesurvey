@@ -28,7 +28,7 @@ public class Site_Cabinet implements Serializable {
 	
 	@OneToMany
 	@JoinColumn(name="siteID")
-	private String siteid;
+	private Site siteid;
 	
 	@Column(name="CabinetManufacturer")
 	private String cabinetManufacturer;
