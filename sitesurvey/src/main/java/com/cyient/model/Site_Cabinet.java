@@ -30,71 +30,143 @@ public class Site_Cabinet implements Serializable {
 	@JoinColumn(name="siteID")
 	private Site siteid;
 	
-	@Column(name="CabinetManufacturer")
-	private String cabinetManufacturer;
-	
-	@Column(name="Capacity")
-	private String capacity;
-	
-	@Column(name="DGrunhours")
-	private int DGrunhours ;
-	
-	@Column(name="DG_photo", unique = false, nullable = false, length = 16777215)
-	private byte[] gdphoto;
-	
-	@Column(name="DG_photo_Latitude")
-	private String dg_photo_latitude;
-	
-	@Column(name="DG_photo_Longitude")
-	private String dg_photo_longitude;
-	
-	@Column(name="Fuellevel")
-	private String fuellevel;
-	
-	@Column(name="Fuellevel_photo", unique = false, nullable = false, length = 16777215)
-	private byte[] fuellevel_photo;
-	
-	@Column(name="Fuellevel_Latitude")
-	private String fuellevel_latitude;
-	
-	@Column(name="Fuellevel_Longitude")
-	private String fuellevel_longitude;
-		
 	@Column(name="Condition")
 	private String condition;
 	
+	@Column(name="CabinetManufacturer")
+	private String cabinetManufacturer;
+	
+	@Column(name="Type")
+	private String type ;
+	
+	@Column(name="Dimensions")
+	private String dimensions;
+		
 	@Column(name="Comments")
 	private String comments;
 	
-	@Column(name="DG_inproper_1", unique = false, nullable = false, length = 16777215)
-	private byte[] dg_inproper_1;
+	@Column(name="Photo_1", unique = false, nullable = false, length = 16777215)
+	private byte[] photo_1;
 	
-	@Column(name="DG_inproper_1_Latitude")
-	private String dg_inproper_1_latitude;
+	@Column(name="Photo_1_Latitude")
+	private String Photo_1_latitude;
 	
-	@Column(name="DG_inproper_1_Longitude")
-	private String dg_inproper_1_longitude;
+	@Column(name="Photo_1_Longitude")
+	private String Photo_1_longitude;
 	
-	@Column(name="DG_inproper_2", unique = false, nullable = false, length = 16777215)
-	private byte[] dg_inproper_2;
+	@Column(name="Photo_2", unique = false, nullable = false, length = 16777215)
+	private byte[] photo_2;
 	
-	@Column(name="DG_inproper_2_Latitude")
-	private String dg_inproper_2_latitude;
+	@Column(name="Photo_2_Latitude")
+	private String Photo_2_latitude;
 	
-	@Column(name="DG_inproper_2_Longitude")
-	private String dg_inproper_2_longitude;
+	@Column(name="Photo_2_Longitude")
+	private String Photo_2_longitude;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Site getSiteid() {
+		return siteid;
+	}
+
+	public void setSiteid(Site siteid) {
+		this.siteid = siteid;
+	}
+
+	public String getCondition() {
+		return condition;
+	}
+
+	public void setCondition(String condition) {
+		this.condition = condition;
+	}
+
+	public String getCabinetManufacturer() {
+		return cabinetManufacturer;
+	}
+
+	public void setCabinetManufacturer(String cabinetManufacturer) {
+		this.cabinetManufacturer = cabinetManufacturer;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getDimensions() {
+		return dimensions;
+	}
+
+	public void setDimensions(String dimensions) {
+		this.dimensions = dimensions;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public byte[] getPhoto_1() {
+		return photo_1;
+	}
+
+	public void setPhoto_1(byte[] photo_1) {
+		this.photo_1 = photo_1;
+	}
+
+	public String getPhoto_1_latitude() {
+		return Photo_1_latitude;
+	}
+
+	public void setPhoto_1_latitude(String photo_1_latitude) {
+		Photo_1_latitude = photo_1_latitude;
+	}
+
+	public String getPhoto_1_longitude() {
+		return Photo_1_longitude;
+	}
+
+	public void setPhoto_1_longitude(String photo_1_longitude) {
+		Photo_1_longitude = photo_1_longitude;
+	}
+
+	public byte[] getPhoto_2() {
+		return photo_2;
+	}
+
+	public void setPhoto_2(byte[] photo_2) {
+		this.photo_2 = photo_2;
+	}
+
+	public String getPhoto_2_latitude() {
+		return Photo_2_latitude;
+	}
+
+	public void setPhoto_2_latitude(String photo_2_latitude) {
+		Photo_2_latitude = photo_2_latitude;
+	}
+
+	public String getPhoto_2_longitude() {
+		return Photo_2_longitude;
+	}
+
+	public void setPhoto_2_longitude(String photo_2_longitude) {
+		Photo_2_longitude = photo_2_longitude;
+	}
 	
-	@Column(name="Assettagnumber")
-	private String assettagnumber;
-	
-	@Column(name="Tag_photo", unique = false, nullable = false, length = 16777215)
-	private byte[] tag_photo;
-	
-	@Column(name="Tag_photo_Latitude")
-	private String tag_photo_latitude;
-	
-	@Column(name="Tag_photo_Longitude")
-	private String tag_photo_longitude;
 
 
 	
