@@ -28,7 +28,7 @@ public class Site_access implements Serializable {
 	
 	@OneToMany
 	@JoinColumn(name="siteID")
-	private String siteid;
+	private Site siteid;
 		
 	@Column(name="Access_Type")
 	private String accessType;
@@ -60,11 +60,11 @@ public class Site_access implements Serializable {
 			this.id = id;
 		}
 
-		public String getSiteid() {
+		public Site getSiteid() {
 			return siteid;
 		}
 
-		public void setSiteid(String siteid) {
+		public void setSiteid(Site siteid) {
 			this.siteid = siteid;
 		}
 
