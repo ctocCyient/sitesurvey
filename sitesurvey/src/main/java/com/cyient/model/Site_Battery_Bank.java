@@ -213,4 +213,6 @@ public class Site_Battery_Bank implements Serializable {
 	private String tag_photo_longitude_1;
 
 
+	
+	
 }
