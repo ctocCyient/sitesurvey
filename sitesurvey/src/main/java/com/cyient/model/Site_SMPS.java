@@ -28,7 +28,7 @@ public class Site_SMPS implements Serializable {
 	
 	@OneToMany
 	@JoinColumn(name="siteID")
-	private String siteid;
+	private Site siteid;
 	
 	@Column(name="Manufacturer")
 	private String Manufacturer;
@@ -79,11 +79,11 @@ public class Site_SMPS implements Serializable {
 		this.id = id;
 	}
 
-	public String getSiteid() {
+	public Site getSiteid() {
 		return siteid;
 	}
 
-	public void setSiteid(String siteid) {
+	public void setSiteid(Site siteid) {
 		this.siteid = siteid;
 	}
 
