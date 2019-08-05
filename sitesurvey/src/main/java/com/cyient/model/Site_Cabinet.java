@@ -166,16 +166,5 @@ public class Site_Cabinet implements Serializable {
 	public void setPhoto_2_longitude(String photo_2_longitude) {
 		Photo_2_longitude = photo_2_longitude;
 	}
-	
-
-
-	
-	
-
-
-
-
-
-
 
 }
