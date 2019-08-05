@@ -22,7 +22,6 @@ public class Site_Access implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
 
-
 	@Id
 	@Column(name="Id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
