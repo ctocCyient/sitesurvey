@@ -33,68 +33,43 @@ public class Site_SMPS implements Serializable {
 	@Column(name="Manufacturer")
 	private String Manufacturer;
 	
-	@Column(name="Capacity")
-	private String capacity;
+	@Column(name="Model")
+	private String model;
 	
-	@Column(name="DGrunhours")
-	private int DGrunhours ;
+	@Column(name="Manufacture _Date")
+	@Temporal(TemporalType.DATE)
+	private Date manufacturedate;
 	
-	@Column(name="DG_photo", unique = false, nullable = false, length = 16777215)
-	private byte[] gdphoto;
+	@Column(name="Module_rating")
+	private Integer module_rating;
 	
-	@Column(name="DG_photo_Latitude")
-	private String dg_photo_latitude;
+	@Column(name="Number_of_working_Module_rating")
+	private Integer number_of_working_Module_rating;
 	
-	@Column(name="DG_photo_Longitude")
-	private String dg_photo_longitude;
-	
-	@Column(name="Fuellevel")
-	private String fuellevel;
-	
-	@Column(name="Fuellevel_photo", unique = false, nullable = false, length = 16777215)
-	private byte[] fuellevel_photo;
-	
-	@Column(name="Fuellevel_Latitude")
-	private String fuellevel_latitude;
-	
-	@Column(name="Fuellevel_Longitude")
-	private String fuellevel_longitude;
-		
 	@Column(name="Condition")
 	private String condition;
 	
 	@Column(name="Comments")
 	private String comments;
 	
-	@Column(name="DG_inproper_1", unique = false, nullable = false, length = 16777215)
-	private byte[] dg_inproper_1;
+
+	@Column(name="Observation_1", unique = false, nullable = false, length = 16777215)
+	private byte[] observation_1;
 	
-	@Column(name="DG_inproper_1_Latitude")
-	private String dg_inproper_1_latitude;
+	@Column(name="Observation_1_Latitude")
+	private String observation_1_latitude;
 	
-	@Column(name="DG_inproper_1_Longitude")
-	private String dg_inproper_1_longitude;
+	@Column(name="Observation_1_Longitude")
+	private String observation_1_longitude;
 	
-	@Column(name="DG_inproper_2", unique = false, nullable = false, length = 16777215)
-	private byte[] dg_inproper_2;
+	@Column(name="Observation_2", unique = false, nullable = false, length = 16777215)
+	private byte[] observation_2;
 	
-	@Column(name="DG_inproper_2_Latitude")
-	private String dg_inproper_2_latitude;
+	@Column(name="Observation_2_Latitude")
+	private String observation_2_latitude;
 	
-	@Column(name="DG_inproper_2_Longitude")
-	private String dg_inproper_2_longitude;
-	
-	@Column(name="Assettagnumber")
-	private String assettagnumber;
-	
-	@Column(name="Tag_photo", unique = false, nullable = false, length = 16777215)
-	private byte[] tag_photo;
-	
-	@Column(name="Tag_photo_Latitude")
-	private String tag_photo_latitude;
-	
-	@Column(name="Tag_photo_Longitude")
-	private String tag_photo_longitude;
+	@Column(name="Observation_2_Longitude")
+	private String observation_2_longitude;
 
 	public int getId() {
 		return id;
@@ -114,76 +89,36 @@ public class Site_SMPS implements Serializable {
 
 
 
-	public String getCapacity() {
-		return capacity;
+	public String getModel() {
+		return model;
 	}
 
-	public void setCapacity(String capacity) {
-		this.capacity = capacity;
+	public void setModel(String model) {
+		this.model = model;
 	}
 
-	public int getDGrunhours() {
-		return DGrunhours;
+	public Date getManufacturedate() {
+		return manufacturedate;
 	}
 
-	public void setDGrunhours(int dGrunhours) {
-		DGrunhours = dGrunhours;
+	public void setManufacturedate(Date manufacturedate) {
+		this.manufacturedate = manufacturedate;
 	}
 
-	public byte[] getGdphoto() {
-		return gdphoto;
+	public Integer getModule_rating() {
+		return module_rating;
 	}
 
-	public void setGdphoto(byte[] gdphoto) {
-		this.gdphoto = gdphoto;
+	public void setModule_rating(Integer module_rating) {
+		this.module_rating = module_rating;
 	}
 
-	public String getDg_photo_latitude() {
-		return dg_photo_latitude;
+	public Integer getNumber_of_working_Module_rating() {
+		return number_of_working_Module_rating;
 	}
 
-	public void setDg_photo_latitude(String dg_photo_latitude) {
-		this.dg_photo_latitude = dg_photo_latitude;
-	}
-
-	public String getDg_photo_longitude() {
-		return dg_photo_longitude;
-	}
-
-	public void setDg_photo_longitude(String dg_photo_longitude) {
-		this.dg_photo_longitude = dg_photo_longitude;
-	}
-
-	public String getFuellevel() {
-		return fuellevel;
-	}
-
-	public void setFuellevel(String fuellevel) {
-		this.fuellevel = fuellevel;
-	}
-
-	public byte[] getFuellevel_photo() {
-		return fuellevel_photo;
-	}
-
-	public void setFuellevel_photo(byte[] fuellevel_photo) {
-		this.fuellevel_photo = fuellevel_photo;
-	}
-
-	public String getFuellevel_latitude() {
-		return fuellevel_latitude;
-	}
-
-	public void setFuellevel_latitude(String fuellevel_latitude) {
-		this.fuellevel_latitude = fuellevel_latitude;
-	}
-
-	public String getFuellevel_longitude() {
-		return fuellevel_longitude;
-	}
-
-	public void setFuellevel_longitude(String fuellevel_longitude) {
-		this.fuellevel_longitude = fuellevel_longitude;
+	public void setNumber_of_working_Module_rating(Integer number_of_working_Module_rating) {
+		this.number_of_working_Module_rating = number_of_working_Module_rating;
 	}
 
 	public String getCondition() {
@@ -202,94 +137,59 @@ public class Site_SMPS implements Serializable {
 		this.comments = comments;
 	}
 
-	public byte[] getDg_inproper_1() {
-		return dg_inproper_1;
+	public byte[] getObservation_1() {
+		return observation_1;
 	}
 
-	public void setDg_inproper_1(byte[] dg_inproper_1) {
-		this.dg_inproper_1 = dg_inproper_1;
+	public void setObservation_1(byte[] observation_1) {
+		this.observation_1 = observation_1;
 	}
 
-	public String getDg_inproper_1_latitude() {
-		return dg_inproper_1_latitude;
+	public String getObservation_1_latitude() {
+		return observation_1_latitude;
 	}
 
-	public void setDg_inproper_1_latitude(String dg_inproper_1_latitude) {
-		this.dg_inproper_1_latitude = dg_inproper_1_latitude;
+	public void setObservation_1_latitude(String observation_1_latitude) {
+		this.observation_1_latitude = observation_1_latitude;
 	}
 
-	public String getDg_inproper_1_longitude() {
-		return dg_inproper_1_longitude;
+	public String getObservation_1_longitude() {
+		return observation_1_longitude;
 	}
 
-	public void setDg_inproper_1_longitude(String dg_inproper_1_longitude) {
-		this.dg_inproper_1_longitude = dg_inproper_1_longitude;
+	public void setObservation_1_longitude(String observation_1_longitude) {
+		this.observation_1_longitude = observation_1_longitude;
 	}
 
-	public byte[] getDg_inproper_2() {
-		return dg_inproper_2;
+	public byte[] getObservation_2() {
+		return observation_2;
 	}
 
-	public void setDg_inproper_2(byte[] dg_inproper_2) {
-		this.dg_inproper_2 = dg_inproper_2;
+	public void setObservation_2(byte[] observation_2) {
+		this.observation_2 = observation_2;
 	}
 
-	public String getDg_inproper_2_latitude() {
-		return dg_inproper_2_latitude;
+	public String getObservation_2_latitude() {
+		return observation_2_latitude;
 	}
 
-	public void setDg_inproper_2_latitude(String dg_inproper_2_latitude) {
-		this.dg_inproper_2_latitude = dg_inproper_2_latitude;
+	public void setObservation_2_latitude(String observation_2_latitude) {
+		this.observation_2_latitude = observation_2_latitude;
 	}
 
-	public String getDg_inproper_2_longitude() {
-		return dg_inproper_2_longitude;
+	public String getObservation_2_longitude() {
+		return observation_2_longitude;
 	}
 
-	public void setDg_inproper_2_longitude(String dg_inproper_2_longitude) {
-		this.dg_inproper_2_longitude = dg_inproper_2_longitude;
-	}
-
-	public String getAssettagnumber() {
-		return assettagnumber;
-	}
-
-	public void setAssettagnumber(String assettagnumber) {
-		this.assettagnumber = assettagnumber;
-	}
-
-	public byte[] getTag_photo() {
-		return tag_photo;
-	}
-
-	public void setTag_photo(byte[] tag_photo) {
-		this.tag_photo = tag_photo;
-	}
-
-	public String getTag_photo_latitude() {
-		return tag_photo_latitude;
-	}
-
-	public void setTag_photo_latitude(String tag_photo_latitude) {
-		this.tag_photo_latitude = tag_photo_latitude;
-	}
-
-	public String getTag_photo_longitude() {
-		return tag_photo_longitude;
-	}
-
-	public void setTag_photo_longitude(String tag_photo_longitude) {
-		this.tag_photo_longitude = tag_photo_longitude;
+	public void setObservation_2_longitude(String observation_2_longitude) {
+		this.observation_2_longitude = observation_2_longitude;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}	
+	}
 
 
-
-	
-	
 
 
 

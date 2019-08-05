@@ -28,7 +28,7 @@ public class Site_Wiring implements Serializable {
 	
 	@OneToMany
 	@JoinColumn(name="siteID")
-	private String siteid;
+	private Site siteid;
 		
 	@Column(name="Condition")
 	private String condition;
@@ -58,11 +58,11 @@ public class Site_Wiring implements Serializable {
 		this.id = id;
 	}
 
-	public String getSiteid() {
+	public Site getSiteid() {
 		return siteid;
 	}
 
-	public void setSiteid(String siteid) {
+	public void setSiteid(Site siteid) {
 		this.siteid = siteid;
 	}
 
