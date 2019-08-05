@@ -29,6 +29,7 @@ public class Site implements Serializable {
 		this.siteid = siteid;
 	}
 
+	
 	public String getRegion() {
 		return Region;
 	}
