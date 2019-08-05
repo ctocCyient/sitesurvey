@@ -52,11 +52,7 @@ public class Site_SMPS implements Serializable {
 	@Column(name="Comments")
 	private String comments;
 	
-	
 
-		
-
-	
 	@Column(name="Observation_1", unique = false, nullable = false, length = 16777215)
 	private byte[] observation_1;
 	
@@ -91,13 +87,7 @@ public class Site_SMPS implements Serializable {
 		this.siteid = siteid;
 	}
 
-	public String getManufacturer() {
-		return Manufacturer;
-	}
 
-	public void setManufacturer(String manufacturer) {
-		Manufacturer = manufacturer;
-	}
 
 	public String getModel() {
 		return model;
