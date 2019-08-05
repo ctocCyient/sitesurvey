@@ -99,7 +99,6 @@ public class Tower_Installation implements Serializable {
 	@Column(name="Tower_Photo4_Name")
 	private String tower_photo4_name;
 	
-
 	@Column(name="Tower_Photo4_Latitude")
 	private String tower_photo4_latitude;
 
