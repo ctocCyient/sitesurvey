@@ -22,9 +22,7 @@ public class Executive implements Serializable {
 	@Id
 	@Column(name="Executive_Id")
 	private String executiveId;
-	
 
-	
 	@Column(name="Email_Id")
 	private String emailId;
 	
