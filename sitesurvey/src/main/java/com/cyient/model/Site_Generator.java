@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,7 +27,7 @@ public class Site_Generator implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@OneToMany
+	@ManyToOne
 	@JoinColumn(name="siteID")
 	private Site siteid;
 	
@@ -60,8 +61,8 @@ public class Site_Generator implements Serializable {
 	@Column(name="Fuellevel_Longitude")
 	private String fuellevel_longitude;
 		
-	@Column(name="Condition")
-	private String condition;
+	@Column(name="Generator_Condition")
+	private String generatorCondition;
 	
 	@Column(name="Comments")
 	private String comments;
@@ -192,12 +193,13 @@ public class Site_Generator implements Serializable {
 		this.fuellevel_longitude = fuellevel_longitude;
 	}
 
-	public String getCondition() {
-		return condition;
+	
+	public String getGeneratorCondition() {
+		return generatorCondition;
 	}
 
-	public void setCondition(String condition) {
-		this.condition = condition;
+	public void setGeneratorCondition(String generatorCondition) {
+		this.generatorCondition = generatorCondition;
 	}
 
 	public String getComments() {

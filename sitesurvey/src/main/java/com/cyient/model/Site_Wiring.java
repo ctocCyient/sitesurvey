@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,20 +27,12 @@ public class Site_Wiring implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@OneToMany
+	@ManyToOne
 	@JoinColumn(name="siteID")
 	private Site siteid;
 		
-	@Column(name="Condition")
-	private String condition;
-			
-	public String getCondition() {
-		return condition;
-	}
-
-	public void setCondition(String condition) {
-		this.condition = condition;
-	}
+	@Column(name="Wiring_Condition")
+	private String wiringCondition;
 
 	@Column(name="Comments")
 	private String comments;
@@ -66,6 +59,14 @@ public class Site_Wiring implements Serializable {
 		this.siteid = siteid;
 	}
 
+
+	public String getWiringCondition() {
+		return wiringCondition;
+	}
+
+	public void setWiringCondition(String wiringCondition) {
+		this.wiringCondition = wiringCondition;
+	}
 
 	public String getComments() {
 		return comments;
@@ -98,11 +99,7 @@ public class Site_Wiring implements Serializable {
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
+	
 		@Column(name="Longitude")
 		private String longitude;
 

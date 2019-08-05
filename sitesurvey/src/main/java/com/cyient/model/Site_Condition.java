@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -16,30 +17,21 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "Site_condition")
-public class Site_condition implements Serializable {
+@Table(name = "Site_Condition")
+public class Site_Condition implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@OneToMany
+	@ManyToOne
 	@JoinColumn(name="siteID")
 	private Site siteid;
 		
-	@Column(name="Condition")
-	private String condition;
-			
-	public String getCondition() {
-		return condition;
-	}
-
-	public void setCondition(String condition) {
-		this.condition = condition;
-	}
+	@Column(name="siteCondition")
+	private String siteCondition;
 
 	@Column(name="Comments")
 	private String comments;
@@ -47,8 +39,6 @@ public class Site_condition implements Serializable {
 	@Column(name="Site_photo", unique = false, nullable = false, length = 16777215)
 	private byte[] site_photo;
 	
-	
-
 	@Column(name="Latitude")
 	private String latitude;
 
@@ -69,6 +59,14 @@ public class Site_condition implements Serializable {
 	}
 
 
+
+	public String getSiteCondition() {
+		return siteCondition;
+	}
+
+	public void setSiteCondition(String siteCondition) {
+		this.siteCondition = siteCondition;
+	}
 
 	public String getComments() {
 		return comments;
@@ -102,9 +100,6 @@ public class Site_condition implements Serializable {
 		this.longitude = longitude;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
 		@Column(name="Longitude")
 		private String longitude;

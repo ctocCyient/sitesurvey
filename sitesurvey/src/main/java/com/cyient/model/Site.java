@@ -12,7 +12,7 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "site")
+@Table(name = "Site")
 public class Site implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
@@ -29,6 +29,7 @@ public class Site implements Serializable {
 		this.siteid = siteid;
 	}
 
+	
 	public String getRegion() {
 		return Region;
 	}

@@ -1,8 +1,5 @@
 package com.cyient.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import com.cyient.model.Site;

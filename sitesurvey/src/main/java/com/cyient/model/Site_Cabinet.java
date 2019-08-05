@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,15 +24,16 @@ public class Site_Cabinet implements Serializable {
 
 
 	@Id
+	@Column(name="Id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@OneToMany
+	@ManyToOne
 	@JoinColumn(name="siteID")
 	private Site siteid;
 	
-	@Column(name="Condition")
-	private String condition;
+	@Column(name="CabinetCondition")
+	private String cabinetCondition;
 	
 	@Column(name="CabinetManufacturer")
 	private String cabinetManufacturer;
@@ -79,12 +81,14 @@ public class Site_Cabinet implements Serializable {
 		this.siteid = siteid;
 	}
 
-	public String getCondition() {
-		return condition;
+
+
+	public String getCabinetCondition() {
+		return cabinetCondition;
 	}
 
-	public void setCondition(String condition) {
-		this.condition = condition;
+	public void setCabinetCondition(String cabinetCondition) {
+		this.cabinetCondition = cabinetCondition;
 	}
 
 	public String getCabinetManufacturer() {

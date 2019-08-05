@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -23,10 +24,11 @@ public class Site_Battery_Bank implements Serializable {
 
 
 	@Id
+	@Column(name="Id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@OneToMany
+	@ManyToOne
 	@JoinColumn(name="siteID")
 	private Site siteid;
 	
@@ -36,9 +38,9 @@ public class Site_Battery_Bank implements Serializable {
 	@Column(name="Type")
 	private String type;
 	
-	@Column(name="Manufacture _Date")
+	@Column(name="Manufacture_Date")
 	@Temporal(TemporalType.DATE)
-	private Date manufacturedate;
+	private Date manufacturedDate;
 	
 	@Column(name="Number_of_batteries")
 	private Integer number_of_batteries;
@@ -46,8 +48,8 @@ public class Site_Battery_Bank implements Serializable {
 	@Column(name="Number_of_working_Module_rating")
 	private Integer number_of_working_Module_rating;
 	
-	@Column(name="Condition")
-	private String condition;
+	@Column(name="Overall_Condition")
+	private String overallCondition;
 	
 	@Column(name="Comments")
 	private String comments;
@@ -105,12 +107,12 @@ public class Site_Battery_Bank implements Serializable {
 		this.type = type;
 	}
 
-	public Date getManufacturedate() {
-		return manufacturedate;
+	public Date getManufacturedDate() {
+		return manufacturedDate;
 	}
 
-	public void setManufacturedate(Date manufacturedate) {
-		this.manufacturedate = manufacturedate;
+	public void setManufacturedDate(Date manufacturedDate) {
+		this.manufacturedDate = manufacturedDate;
 	}
 
 	public Integer getNumber_of_batteries() {
@@ -129,12 +131,13 @@ public class Site_Battery_Bank implements Serializable {
 		this.number_of_working_Module_rating = number_of_working_Module_rating;
 	}
 
-	public String getCondition() {
-		return condition;
+
+	public String getOverallCondition() {
+		return overallCondition;
 	}
 
-	public void setCondition(String condition) {
-		this.condition = condition;
+	public void setOverallCondition(String overallCondition) {
+		this.overallCondition = overallCondition;
 	}
 
 	public String getComments() {
