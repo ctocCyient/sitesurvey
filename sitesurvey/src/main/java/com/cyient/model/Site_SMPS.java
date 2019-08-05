@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,7 +27,7 @@ public class Site_SMPS implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@OneToMany
+	@ManyToOne
 	@JoinColumn(name="siteID")
 	private Site siteid;
 	
@@ -36,9 +37,9 @@ public class Site_SMPS implements Serializable {
 	@Column(name="Model")
 	private String model;
 	
-	@Column(name="Manufacture _Date")
+	@Column(name="Manufactured_Date")
 	@Temporal(TemporalType.DATE)
-	private Date manufacturedate;
+	private Date manufacturedDate;
 	
 	@Column(name="Module_rating")
 	private Integer module_rating;
@@ -46,8 +47,8 @@ public class Site_SMPS implements Serializable {
 	@Column(name="Number_of_working_Module_rating")
 	private Integer number_of_working_Module_rating;
 	
-	@Column(name="Condition")
-	private String condition;
+	@Column(name="SMPS_Condition")
+	private String smpsCondition;
 	
 	@Column(name="Comments")
 	private String comments;
@@ -95,12 +96,12 @@ public class Site_SMPS implements Serializable {
 		this.model = model;
 	}
 
-	public Date getManufacturedate() {
-		return manufacturedate;
+	public Date getManufacturedDate() {
+		return manufacturedDate;
 	}
 
-	public void setManufacturedate(Date manufacturedate) {
-		this.manufacturedate = manufacturedate;
+	public void setManufacturedDate(Date manufacturedDate) {
+		this.manufacturedDate = manufacturedDate;
 	}
 
 	public Integer getModule_rating() {
@@ -119,12 +120,21 @@ public class Site_SMPS implements Serializable {
 		this.number_of_working_Module_rating = number_of_working_Module_rating;
 	}
 
-	public String getCondition() {
-		return condition;
+	
+	public String getManufacturer() {
+		return Manufacturer;
 	}
 
-	public void setCondition(String condition) {
-		this.condition = condition;
+	public void setManufacturer(String manufacturer) {
+		Manufacturer = manufacturer;
+	}
+
+	public String getSmpsCondition() {
+		return smpsCondition;
+	}
+
+	public void setSmpsCondition(String smpsCondition) {
+		this.smpsCondition = smpsCondition;
 	}
 
 	public String getComments() {

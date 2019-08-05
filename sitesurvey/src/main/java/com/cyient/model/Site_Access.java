@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -16,25 +17,26 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "Site_access")
-public class Site_access implements Serializable {
+@Table(name = "Site_Access")
+public class Site_Access implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
 
 
 	@Id
+	@Column(name="Id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	@OneToMany
+	@ManyToOne
 	@JoinColumn(name="siteID")
-	private String siteid;
+	private Site siteid;
 		
 	@Column(name="Access_Type")
 	private String accessType;
 	
-	@Column(name="Condition")
-	private String condition;
+	@Column(name="Road_Condition")
+	private String roadCondition;
 	
 	@Column(name="Comments")
 	private String comments;
@@ -60,11 +62,12 @@ public class Site_access implements Serializable {
 			this.id = id;
 		}
 
-		public String getSiteid() {
+
+		public Site getSiteid() {
 			return siteid;
 		}
 
-		public void setSiteid(String siteid) {
+		public void setSiteid(Site siteid) {
 			this.siteid = siteid;
 		}
 
@@ -76,12 +79,13 @@ public class Site_access implements Serializable {
 			this.accessType = accessType;
 		}
 
-		public String getCondition() {
-			return condition;
+
+		public String getRoadCondition() {
+			return roadCondition;
 		}
 
-		public void setCondition(String condition) {
-			this.condition = condition;
+		public void setRoadCondition(String roadCondition) {
+			this.roadCondition = roadCondition;
 		}
 
 		public String getComments() {
