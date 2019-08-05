@@ -87,8 +87,6 @@ public class Site_SMPS implements Serializable {
 		this.siteid = siteid;
 	}
 
-
-
 	public String getModel() {
 		return model;
 	}
