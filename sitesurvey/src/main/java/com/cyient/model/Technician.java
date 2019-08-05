@@ -14,20 +14,20 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "Executive")
-public class Executive implements Serializable {
+@Table(name = "Technician")
+public class Technician implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
 
 	@Id
-	@Column(name="Executive_Id")
-	private String executiveId;
+	@Column(name="Technician_Id")
+	private String technicianId;
 
 	@Column(name="Email_Id")
 	private String emailId;
 	
-	@Column(name="Executive_Name")
-	private String executiveName;
+	@Column(name="Technician_Name")
+	private String technicianName;
 	
 	@Column(name="Password")
 	private String password;
@@ -57,14 +57,6 @@ public class Executive implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date createdDate;
 	
-	public String getExecutiveId() {
-		return executiveId;
-	}
-
-	public void setExecutiveId(String executiveId) {
-		this.executiveId = executiveId;
-	}
-
 
 
 	public String getEmailId() {
@@ -75,12 +67,20 @@ public class Executive implements Serializable {
 		this.emailId = emailId;
 	}
 
-	public String getExecutiveName() {
-		return executiveName;
+	public String getTechnicianId() {
+		return technicianId;
 	}
 
-	public void setExecutiveName(String executiveName) {
-		this.executiveName = executiveName;
+	public void setTechnicianId(String technicianId) {
+		this.technicianId = technicianId;
+	}
+
+	public String getTechnicianName() {
+		return technicianName;
+	}
+
+	public void setTechnicianName(String technicianName) {
+		this.technicianName = technicianName;
 	}
 
 	public String getMobile() {
