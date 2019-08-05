@@ -21,7 +21,6 @@ public class Tower_Installation implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;

@@ -20,9 +20,7 @@ public class Site implements Serializable {
 	@Id
 	@Column(name="siteID")
 	private String siteid;
-	
-	
-	
+
 	public String getSiteid() {
 		return siteid;
 	}
