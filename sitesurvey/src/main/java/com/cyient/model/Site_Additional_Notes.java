@@ -146,6 +146,4 @@ public class Site_Additional_Notes implements Serializable {
 		this.site_photo2_longitude = site_photo2_longitude;
 	}
 	
-
-
 }
