@@ -226,4 +226,3 @@ public class Site_Battery_Bank implements Serializable {
 		this.tag_photo_longitude_2 = tag_photo_longitude_2;
 	}
 }
-
