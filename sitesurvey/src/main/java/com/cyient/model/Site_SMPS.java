@@ -42,10 +42,10 @@ public class Site_SMPS implements Serializable {
 	private Date manufacturedDate;
 	
 	@Column(name="Module_rating")
-	private Integer module_rating;
+	private int module_rating;
 	
 	@Column(name="Number_of_working_Module_rating")
-	private Integer number_of_working_Module_rating;
+	private int number_of_working_Module_rating;
 	
 	@Column(name="SMPS_Condition")
 	private String smpsCondition;
@@ -53,9 +53,11 @@ public class Site_SMPS implements Serializable {
 	@Column(name="Comments")
 	private String comments;
 	
-
 	@Column(name="Observation_1", unique = false, nullable = false, length = 16777215)
 	private byte[] observation_1;
+	
+	@Column(name="Observation_1_Name")
+	private String Observation_1_Name;
 	
 	@Column(name="Observation_1_Latitude")
 	private String observation_1_latitude;
@@ -65,6 +67,9 @@ public class Site_SMPS implements Serializable {
 	
 	@Column(name="Observation_2", unique = false, nullable = false, length = 16777215)
 	private byte[] observation_2;
+	
+	@Column(name="Observation_2_Name")
+	private String observation_2_Name;
 	
 	@Column(name="Observation_2_Latitude")
 	private String observation_2_latitude;
@@ -193,16 +198,28 @@ public class Site_SMPS implements Serializable {
 		this.observation_2_longitude = observation_2_longitude;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public String getObservation_1_Name() {
+		return Observation_1_Name;
 	}
 
+	public void setObservation_1_Name(String observation_1_Name) {
+		Observation_1_Name = observation_1_Name;
+	}
 
+	public String getObservation_2_Name() {
+		return observation_2_Name;
+	}
 
+	public void setObservation_2_Name(String observation_2_Name) {
+		this.observation_2_Name = observation_2_Name;
+	}
 
+	public void setModule_rating(int module_rating) {
+		this.module_rating = module_rating;
+	}
 
-
-
-
+	public void setNumber_of_working_Module_rating(int number_of_working_Module_rating) {
+		this.number_of_working_Module_rating = number_of_working_Module_rating;
+	}
 
 }

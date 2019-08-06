@@ -33,8 +33,8 @@ public class User implements Serializable {
 	@Column(name="Password")
 	private String password;
 		
-	@Column(name="Type")
-	private String type;
+	@Column(name="Role")
+	private String role;
 	
 	@Column(name="Region")
 	private String region;
@@ -103,12 +103,12 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public String getType() {
-		return type;
+	public String getRole() {
+		return role;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public String getRegion() {

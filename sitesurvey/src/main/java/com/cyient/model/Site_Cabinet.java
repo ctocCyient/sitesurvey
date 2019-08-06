@@ -50,6 +50,9 @@ public class Site_Cabinet implements Serializable {
 	@Column(name="Photo_1", unique = false, nullable = false, length = 16777215)
 	private byte[] photo_1;
 	
+	@Column(name="Photo_1_Name")
+	private String Photo_1_Name;
+	
 	@Column(name="Photo_1_Latitude")
 	private String Photo_1_latitude;
 	
@@ -58,6 +61,9 @@ public class Site_Cabinet implements Serializable {
 	
 	@Column(name="Photo_2", unique = false, nullable = false, length = 16777215)
 	private byte[] photo_2;
+	
+	@Column(name="Photo_2_Name")
+	private String Photo_2_Name;
 	
 	@Column(name="Photo_2_Latitude")
 	private String Photo_2_latitude;
@@ -80,8 +86,6 @@ public class Site_Cabinet implements Serializable {
 	public void setSiteid(Site siteid) {
 		this.siteid = siteid;
 	}
-
-
 
 	public String getCabinetCondition() {
 		return cabinetCondition;
@@ -169,6 +173,22 @@ public class Site_Cabinet implements Serializable {
 
 	public void setPhoto_2_longitude(String photo_2_longitude) {
 		Photo_2_longitude = photo_2_longitude;
+	}
+
+	public String getPhoto_1_Name() {
+		return Photo_1_Name;
+	}
+
+	public void setPhoto_1_Name(String photo_1_Name) {
+		Photo_1_Name = photo_1_Name;
+	}
+
+	public String getPhoto_2_Name() {
+		return Photo_2_Name;
+	}
+
+	public void setPhoto_2_Name(String photo_2_Name) {
+		Photo_2_Name = photo_2_Name;
 	}
 
 }

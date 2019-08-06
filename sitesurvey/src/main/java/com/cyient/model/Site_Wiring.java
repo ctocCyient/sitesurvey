@@ -37,13 +37,32 @@ public class Site_Wiring implements Serializable {
 	@Column(name="Comments")
 	private String comments;
 	
-	@Column(name="Site_photo", unique = false, nullable = false, length = 16777215)
-	private byte[] site_photo;
+	@Column(name="Site_photo1", unique = false, nullable = false, length = 16777215)
+	private byte[] site_photo1;
 	
-	@Column(name="Latitude")
-	private String latitude;
+	@Column(name="Site_Photo_name1")
+	private String sitePhotoName1;	
+	
+	@Column(name="Site_Latitude1")
+	private String siteLatitude1;
+	
+	@Column(name="Site_Longitude1")
+	private String SiteLongitude1;
+	
+	@Column(name="Site_photo2", unique = false, nullable = false, length = 16777215)
+	private byte[] site_photo2;
+	
+	@Column(name="Site_Photo_name2")
+	private String sitePhotoName2;	
+	
+	@Column(name="Site_Latitude2")
+	private String siteLatitude2;
+	
+	@Column(name="Site_Longitude2")
+	private String SiteLongitude2;
 
-		public int getId() {
+
+	public int getId() {
 		return id;
 	}
 
@@ -76,34 +95,67 @@ public class Site_Wiring implements Serializable {
 		this.comments = comments;
 	}
 
-	public byte[] getSite_photo() {
-		return site_photo;
+	public byte[] getSite_photo1() {
+		return site_photo1;
 	}
 
-	public void setSite_photo(byte[] site_photo) {
-		this.site_photo = site_photo;
+	public void setSite_photo1(byte[] site_photo1) {
+		this.site_photo1 = site_photo1;
 	}
 
-	public String getLatitude() {
-		return latitude;
+	public String getSitePhotoName1() {
+		return sitePhotoName1;
 	}
 
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
+	public void setSitePhotoName1(String sitePhotoName1) {
+		this.sitePhotoName1 = sitePhotoName1;
 	}
 
-	public String getLongitude() {
-		return longitude;
+	public String getSiteLatitude1() {
+		return siteLatitude1;
 	}
 
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
+	public void setSiteLatitude1(String siteLatitude1) {
+		this.siteLatitude1 = siteLatitude1;
 	}
-	
-		@Column(name="Longitude")
-		private String longitude;
 
+	public String getSiteLongitude1() {
+		return SiteLongitude1;
+	}
 
+	public void setSiteLongitude1(String siteLongitude1) {
+		SiteLongitude1 = siteLongitude1;
+	}
 
+	public byte[] getSite_photo2() {
+		return site_photo2;
+	}
 
+	public void setSite_photo2(byte[] site_photo2) {
+		this.site_photo2 = site_photo2;
+	}
+
+	public String getSitePhotoName2() {
+		return sitePhotoName2;
+	}
+
+	public void setSitePhotoName2(String sitePhotoName2) {
+		this.sitePhotoName2 = sitePhotoName2;
+	}
+
+	public String getSiteLatitude2() {
+		return siteLatitude2;
+	}
+
+	public void setSiteLatitude2(String siteLatitude2) {
+		this.siteLatitude2 = siteLatitude2;
+	}
+
+	public String getSiteLongitude2() {
+		return SiteLongitude2;
+	}
+
+	public void setSiteLongitude2(String siteLongitude2) {
+		SiteLongitude2 = siteLongitude2;
+	}
 }

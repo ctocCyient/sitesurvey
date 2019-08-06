@@ -24,8 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cyient.dao.SurveyDAO;
-import com.cyient.model.Executive;
 import com.cyient.model.Site;
+import com.cyient.model.Technician;
 import com.cyient.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -63,7 +63,7 @@ public class RFIDAssetController {
 
 	@RequestMapping(value = "/newExecutive", method = RequestMethod.GET)
 	public ModelAndView newExecutive(ModelAndView model) {
-		Executive executive = new Executive();
+		Technician executive = new Technician();
 		model.addObject("Executive", executive);
 		model.setViewName("executiveReg");
 		return model;
@@ -111,7 +111,7 @@ public class RFIDAssetController {
 	
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
     public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) {
-           User resp = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getType());        
+           User resp = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());        
            if(resp==null)
            {
                   return new ModelAndView("redirect:/");
@@ -122,7 +122,7 @@ public class RFIDAssetController {
         	  session.setAttribute("userName",user.getUsername());
         	  session.setAttribute("personName",user.getName());
 			  session.setAttribute("password",user.getPassword());
-        	  session.setAttribute("userRole",user.getType());
+        	  session.setAttribute("userRole",user.getRole());
         	  System.out.println(user.getUsername());
         	  System.out.println(user.getName());
         	         	   
