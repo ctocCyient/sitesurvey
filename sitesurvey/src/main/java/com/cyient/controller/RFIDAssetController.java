@@ -111,7 +111,7 @@ public class RFIDAssetController {
 	
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
     public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) {
-           User resp = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getType());        
+           User resp = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());        
            if(resp==null)
            {
                   return new ModelAndView("redirect:/");
@@ -122,7 +122,7 @@ public class RFIDAssetController {
         	  session.setAttribute("userName",user.getUsername());
         	  session.setAttribute("personName",user.getName());
 			  session.setAttribute("password",user.getPassword());
-        	  session.setAttribute("userRole",user.getType());
+        	  session.setAttribute("userRole",user.getRole());
         	  System.out.println(user.getUsername());
         	  System.out.println(user.getName());
         	         	   

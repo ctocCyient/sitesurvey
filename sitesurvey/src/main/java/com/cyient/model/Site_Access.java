@@ -44,94 +44,132 @@ public class Site_Access implements Serializable {
 	private byte[] photo_way;
 	
 	@Column(name="Photo_way_name")
-	private String photo_way_name;
-	
+	private String photo_way_name;	
 
 	@Column(name="Latitude")
 	private String latitude;
 
-		@Column(name="Longitude")
-		private String longitude;
+	@Column(name="Longitude")
+	private String longitude;
+	
+	@Column(name="Photo_way2", unique = false, nullable = false, length = 16777215)
+	private byte[] photo_way2;
+	
+	@Column(name="Photo_way_name2")
+	private String photo_way_name2;	
 
-		public int getId() {
-			return id;
-		}
+	@Column(name="Latitude2")
+	private String latitude2;
 
-		public void setId(int id) {
-			this.id = id;
-		}
+	@Column(name="Longitude2")
+	private String longitude2;
 
+	public int getId() {
+		return id;
+	}
 
-		public Site getSiteid() {
-			return siteid;
-		}
-
-		public void setSiteid(Site siteid) {
-			this.siteid = siteid;
-		}
-
-		public String getAccessType() {
-			return accessType;
-		}
-
-		public void setAccessType(String accessType) {
-			this.accessType = accessType;
-		}
+	public void setId(int id) {
+		this.id = id;
+	}
 
 
-		public String getRoadCondition() {
-			return roadCondition;
-		}
+	public Site getSiteid() {
+		return siteid;
+	}
 
-		public void setRoadCondition(String roadCondition) {
-			this.roadCondition = roadCondition;
-		}
+	public void setSiteid(Site siteid) {
+		this.siteid = siteid;
+	}
 
-		public String getComments() {
-			return comments;
-		}
+	public String getAccessType() {
+		return accessType;
+	}
 
-		public void setComments(String comments) {
-			this.comments = comments;
-		}
-
-		public byte[] getPhoto_way() {
-			return photo_way;
-		}
-
-		public void setPhoto_way(byte[] photo_way) {
-			this.photo_way = photo_way;
-		}
-
-		public String getPhoto_way_name() {
-			return photo_way_name;
-		}
-
-		public void setPhoto_way_name(String photo_way_name) {
-			this.photo_way_name = photo_way_name;
-		}
-
-		public String getLatitude() {
-			return latitude;
-		}
-
-		public void setLatitude(String latitude) {
-			this.latitude = latitude;
-		}
-
-		public String getLongitude() {
-			return longitude;
-		}
-
-		public void setLongitude(String longitude) {
-			this.longitude = longitude;
-		}
-
-		public static long getSerialversionuid() {
-			return serialVersionUID;
-		}
-	 
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
 
 
+	public String getRoadCondition() {
+		return roadCondition;
+	}
+
+	public void setRoadCondition(String roadCondition) {
+		this.roadCondition = roadCondition;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public byte[] getPhoto_way() {
+		return photo_way;
+	}
+
+	public void setPhoto_way(byte[] photo_way) {
+		this.photo_way = photo_way;
+	}
+
+	public String getPhoto_way_name() {
+		return photo_way_name;
+	}
+
+	public void setPhoto_way_name(String photo_way_name) {
+		this.photo_way_name = photo_way_name;
+	}
+
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
+	public byte[] getPhoto_way2() {
+		return photo_way2;
+	}
+
+	public void setPhoto_way2(byte[] photo_way2) {
+		this.photo_way2 = photo_way2;
+	}
+
+	public String getPhoto_way_name2() {
+		return photo_way_name2;
+	}
+
+	public void setPhoto_way_name2(String photo_way_name2) {
+		this.photo_way_name2 = photo_way_name2;
+	}
+
+	public String getLatitude2() {
+		return latitude2;
+	}
+
+	public void setLatitude2(String latitude2) {
+		this.latitude2 = latitude2;
+	}
+
+	public String getLongitude2() {
+		return longitude2;
+	}
+
+	public void setLongitude2(String longitude2) {
+		this.longitude2 = longitude2;
+	}
+	
+	
 
 }

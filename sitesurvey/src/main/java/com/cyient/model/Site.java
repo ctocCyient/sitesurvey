@@ -19,8 +19,18 @@ public class Site implements Serializable {
 
 	@Id
 	@Column(name="siteID")
-	private String siteid;
+	private String siteid;	
 
+	@Column(name="Region")
+	private String Region;	
+
+	@Column(name="latitude")
+	private String latitude;
+	
+	@Column(name="longitude")
+	private String longitude;
+	
+	
 	public String getSiteid() {
 		return siteid;
 	}
@@ -53,16 +63,4 @@ public class Site implements Serializable {
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
-
-	@Column(name="Region")
-	private String Region;
-	
-
-	
-
-	@Column(name="latitude")
-	private String latitude;
-	
-	@Column(name="longitude")
-	private String longitude;
 }
