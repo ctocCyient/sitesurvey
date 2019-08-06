@@ -138,38 +138,4 @@ public class Site_Access implements Serializable {
 		this.longitude = longitude;
 	}
 
-	public byte[] getPhoto_way2() {
-		return photo_way2;
-	}
-
-	public void setPhoto_way2(byte[] photo_way2) {
-		this.photo_way2 = photo_way2;
-	}
-
-	public String getPhoto_way_name2() {
-		return photo_way_name2;
-	}
-
-	public void setPhoto_way_name2(String photo_way_name2) {
-		this.photo_way_name2 = photo_way_name2;
-	}
-
-	public String getLatitude2() {
-		return latitude2;
-	}
-
-	public void setLatitude2(String latitude2) {
-		this.latitude2 = latitude2;
-	}
-
-	public String getLongitude2() {
-		return longitude2;
-	}
-
-	public void setLongitude2(String longitude2) {
-		this.longitude2 = longitude2;
-	}
-	
-	
-
 }

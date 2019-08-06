@@ -34,6 +34,10 @@ public class Site_Generator implements Serializable {
 	@Column(name="DGManufacturer")
 	private String dgManufacturer;
 	
+	@Column(name="Manufacture_Date")
+	@Temporal(TemporalType.DATE)
+	private Date manufacturedDate;
+	
 	@Column(name="Capacity")
 	private String capacity;
 	
@@ -42,6 +46,9 @@ public class Site_Generator implements Serializable {
 	
 	@Column(name="DG_photo", unique = false, nullable = false, length = 16777215)
 	private byte[] gdphoto;
+	
+	@Column(name="DG_photo_Name")
+	private String dg_photo_name;
 	
 	@Column(name="DG_photo_Latitude")
 	private String dg_photo_latitude;
@@ -54,6 +61,9 @@ public class Site_Generator implements Serializable {
 	
 	@Column(name="Fuellevel_photo", unique = false, nullable = false, length = 16777215)
 	private byte[] fuellevel_photo;
+	
+	@Column(name="Fuellevel_Name")
+	private String fuel_level_name;
 	
 	@Column(name="Fuellevel_Latitude")
 	private String fuellevel_latitude;
@@ -70,6 +80,9 @@ public class Site_Generator implements Serializable {
 	@Column(name="DG_inproper_1", unique = false, nullable = false, length = 16777215)
 	private byte[] dg_inproper_1;
 	
+	@Column(name="dg_inproper_1_Name")
+	private String dg_inproper_1_name;
+	
 	@Column(name="DG_inproper_1_Latitude")
 	private String dg_inproper_1_latitude;
 	
@@ -78,6 +91,9 @@ public class Site_Generator implements Serializable {
 	
 	@Column(name="DG_inproper_2", unique = false, nullable = false, length = 16777215)
 	private byte[] dg_inproper_2;
+	
+	@Column(name="dg_inproper_2_Name")
+	private String dg_inproper_2_name;
 	
 	@Column(name="DG_inproper_2_Latitude")
 	private String dg_inproper_2_latitude;
@@ -90,6 +106,9 @@ public class Site_Generator implements Serializable {
 	
 	@Column(name="Tag_photo", unique = false, nullable = false, length = 16777215)
 	private byte[] tag_photo;
+	
+	@Column(name="Tag_photo_Name")
+	private String tag_photo_name;
 	
 	@Column(name="Tag_photo_Latitude")
 	private String tag_photo_latitude;
@@ -290,19 +309,52 @@ public class Site_Generator implements Serializable {
 		this.tag_photo_longitude = tag_photo_longitude;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}	
+	public Date getManufacturedDate() {
+		return manufacturedDate;
+	}
 
+	public void setManufacturedDate(Date manufacturedDate) {
+		this.manufacturedDate = manufacturedDate;
+	}
 
+	public String getDg_photo_name() {
+		return dg_photo_name;
+	}
 
-	
-	
+	public void setDg_photo_name(String dg_photo_name) {
+		this.dg_photo_name = dg_photo_name;
+	}
 
+	public String getFuel_level_name() {
+		return fuel_level_name;
+	}
 
+	public void setFuel_level_name(String fuel_level_name) {
+		this.fuel_level_name = fuel_level_name;
+	}
 
+	public String getDg_inproper_1_name() {
+		return dg_inproper_1_name;
+	}
 
+	public void setDg_inproper_1_name(String dg_inproper_1_name) {
+		this.dg_inproper_1_name = dg_inproper_1_name;
+	}
 
+	public String getDg_inproper_2_name() {
+		return dg_inproper_2_name;
+	}
 
+	public void setDg_inproper_2_name(String dg_inproper_2_name) {
+		this.dg_inproper_2_name = dg_inproper_2_name;
+	}
+
+	public String getTag_photo_name() {
+		return tag_photo_name;
+	}
+
+	public void setTag_photo_name(String tag_photo_name) {
+		this.tag_photo_name = tag_photo_name;
+	}
 
 }

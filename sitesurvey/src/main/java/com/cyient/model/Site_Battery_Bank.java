@@ -56,24 +56,30 @@ public class Site_Battery_Bank implements Serializable {
 	
 	@Column(name="Tag_observed")
 	private String tag_observed;
-	
-	@Column(name="Tag", unique = false, nullable = false, length = 16777215)
-	private byte[] tag;
-		
-	@Column(name="Tag_photo", unique = false, nullable = false, length = 16777215)
-	private byte[] tag_photo;
-	
-	@Column(name="Tag_photo_Latitude")
-	private String tag_photo_latitude;
-	
-	@Column(name="Tag_photo_Longitude")
-	private String tag_photo_longitude;
 
-	@Column(name="Tag_photo_1", unique = false, nullable = false, length = 16777215)
-	private byte[] tag_photo_1;
+	@Column(name="Tag_photo1", unique = false, nullable = false, length = 16777215)
+	private byte[] tag_photo1;
 	
-	@Column(name="Tag_photo_Latitude_1")
-	private String tag_photo_latitude_1;
+	@Column(name="Tag_photo1_Name")
+	private String tag_photo1_Name;
+	
+	@Column(name="Tag_photo1_Latitude")
+	private String tag_photo1_latitude;
+	
+	@Column(name="Tag_photo1_Longitude")
+	private String tag_photo1_longitude;
+
+	@Column(name="Tag_photo_2", unique = false, nullable = false, length = 16777215)
+	private byte[] tag_photo_2;
+	
+	@Column(name="Tag_photo2_Name")
+	private String tag_photo2_Name;
+	
+	@Column(name="Tag_photo_Latitude_2")
+	private String tag_photo_latitude_2;
+	
+	@Column(name="Tag_photo_Longitude_2")
+	private String tag_photo_longitude_2;
 	
 	public int getId() {
 		return id;
@@ -156,64 +162,67 @@ public class Site_Battery_Bank implements Serializable {
 		this.tag_observed = tag_observed;
 	}
 
-	public byte[] getTag() {
-		return tag;
+	public byte[] getTag_photo1() {
+		return tag_photo1;
 	}
 
-	public void setTag(byte[] tag) {
-		this.tag = tag;
+	public void setTag_photo1(byte[] tag_photo1) {
+		this.tag_photo1 = tag_photo1;
 	}
 
-	public byte[] getTag_photo() {
-		return tag_photo;
+	public String getTag_photo1_Name() {
+		return tag_photo1_Name;
 	}
 
-	public void setTag_photo(byte[] tag_photo) {
-		this.tag_photo = tag_photo;
+	public void setTag_photo1_Name(String tag_photo1_Name) {
+		this.tag_photo1_Name = tag_photo1_Name;
 	}
 
-	public String getTag_photo_latitude() {
-		return tag_photo_latitude;
+	public String getTag_photo1_latitude() {
+		return tag_photo1_latitude;
 	}
 
-	public void setTag_photo_latitude(String tag_photo_latitude) {
-		this.tag_photo_latitude = tag_photo_latitude;
+	public void setTag_photo1_latitude(String tag_photo1_latitude) {
+		this.tag_photo1_latitude = tag_photo1_latitude;
 	}
 
-	public String getTag_photo_longitude() {
-		return tag_photo_longitude;
+	public String getTag_photo1_longitude() {
+		return tag_photo1_longitude;
 	}
 
-	public void setTag_photo_longitude(String tag_photo_longitude) {
-		this.tag_photo_longitude = tag_photo_longitude;
+	public void setTag_photo1_longitude(String tag_photo1_longitude) {
+		this.tag_photo1_longitude = tag_photo1_longitude;
 	}
 
-	public byte[] getTag_photo_1() {
-		return tag_photo_1;
+	public byte[] getTag_photo_2() {
+		return tag_photo_2;
 	}
 
-	public void setTag_photo_1(byte[] tag_photo_1) {
-		this.tag_photo_1 = tag_photo_1;
+	public void setTag_photo_2(byte[] tag_photo_2) {
+		this.tag_photo_2 = tag_photo_2;
 	}
 
-	public String getTag_photo_latitude_1() {
-		return tag_photo_latitude_1;
+	public String getTag_photo2_Name() {
+		return tag_photo2_Name;
 	}
 
-	public void setTag_photo_latitude_1(String tag_photo_latitude_1) {
-		this.tag_photo_latitude_1 = tag_photo_latitude_1;
+	public void setTag_photo2_Name(String tag_photo2_Name) {
+		this.tag_photo2_Name = tag_photo2_Name;
 	}
 
-	public String getTag_photo_longitude_1() {
-		return tag_photo_longitude_1;
+	public String getTag_photo_latitude_2() {
+		return tag_photo_latitude_2;
 	}
 
-	public void setTag_photo_longitude_1(String tag_photo_longitude_1) {
-		this.tag_photo_longitude_1 = tag_photo_longitude_1;
+	public void setTag_photo_latitude_2(String tag_photo_latitude_2) {
+		this.tag_photo_latitude_2 = tag_photo_latitude_2;
 	}
 
-	@Column(name="Tag_photo_Longitude_1")
-	private String tag_photo_longitude_1;
+	public String getTag_photo_longitude_2() {
+		return tag_photo_longitude_2;
+	}
 
-
+	public void setTag_photo_longitude_2(String tag_photo_longitude_2) {
+		this.tag_photo_longitude_2 = tag_photo_longitude_2;
+	}
 }

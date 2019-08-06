@@ -192,7 +192,7 @@ position: fixed;
 				<div class=" form-group form-floating-label input-group-prepend">
 				
 						<span class="input-group-text" id="basic-addon1"><i style='font-size:15px;width:12px' class='fas'>&#xf4fe;</i>	</span>
-                <form:select style='font-size:12.5px;' id="type" path="type" name="type" class="form-control input-full "  >
+                <form:select style='font-size:12.5px;' id="type" path="role" name="type" class="form-control input-full "  >
                 <form:option  value="Select">Select Role</form:option>
                 	<form:option value="SuperAdmin">SuperAdmin</form:option>
                 	<form:option value="Admin">Admin</form:option>
