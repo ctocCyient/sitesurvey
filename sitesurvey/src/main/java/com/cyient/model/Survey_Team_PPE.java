@@ -141,5 +141,4 @@ public class Survey_Team_PPE implements Serializable {
 		this.photoRiggerTeam = photoRiggerTeam;
 	}
 
-
 }

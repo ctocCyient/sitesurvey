@@ -41,8 +41,7 @@ public class Site implements Serializable {
 	
 	@Column(name="Site_Type")
 	private String site_type;
-	
-	
+		
 	public String getState() {
 		return state;
 	}
