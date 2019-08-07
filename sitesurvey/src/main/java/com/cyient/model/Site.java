@@ -30,7 +30,6 @@ public class Site implements Serializable {
 	@Column(name="longitude")
 	private String longitude;
 	
-	
 	@Column(name="State")
 	private String state;
 	
