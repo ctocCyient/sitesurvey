@@ -31,6 +31,51 @@ public class Site implements Serializable {
 	private String longitude;
 	
 	
+	@Column(name="State")
+	private String state;
+	
+	@Column(name="City")
+	private String city;
+	
+	@Column(name="District")
+	private String district;
+	
+	@Column(name="Site_type")
+	private String site_type;
+	
+	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getSite_type() {
+		return site_type;
+	}
+
+	public void setSite_type(String site_type) {
+		this.site_type = site_type;
+	}
+
 	public String getSiteid() {
 		return siteid;
 	}
