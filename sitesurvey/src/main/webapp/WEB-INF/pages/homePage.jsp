@@ -10,8 +10,14 @@
 	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
+	<script src="<c:url value='resources/js/jquery.min.js' />"></script>
+	
+	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
+	<script src="<c:url value='resources/js/validations.js' />"></script>
+	
+	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">	
+	
 	<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 <script type="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script type="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -34,102 +40,14 @@
 	var name,role;
 	$(function(){
 		  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-		  $("#adminSidebar").load('<c:url value="/resources/common/sidebar.jsp" />'); 
-		  $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
-		  $("#sysAdminSidebar").load('<c:url value="/resources/common/systemAdminSidebar.jsp" />'); 
-
+		  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+		  
 		   name='<%=session.getAttribute("userName").toString()%>';
 		   role='<%=session.getAttribute("userRole").toString()%>';
-	  
-		  if(role=="SuperAdmin"){
-		  	getAdminCount();
-			//document.getElementById("open_div").click();	
-		  }
-		  else if(role=="Admin"){
-			  getCount();
-				//document.getElementById("open_div_admin").click();	
-	      }
-		  else if(role=="Manager"){
-			  	getManagerCount();
-				document.getElementById("manager_total_div").click();	
-			}
-			else if(role=="FeildExecutive"){
-				  getExecutiveTicketsCount();
-					document.getElementById("executive_assign_div").click();	
-		    }
+	  });
 
-		});
-	function getAdminCount(){
-				
-				$.ajax({
-	                type:"get",
-	                url:"adminTicketsCount",
-	                contentType: 'application/json',
-	                datatype : "json",
-	                success:function(result) {
-	                	var jsonArr = $.parseJSON(result);
-	                	$('#openTicketCount')[0].innerHTML=jsonArr[0][0];
-	                 // $('#closedTicketCount')[0].innerHTML=jsonArr[1];
-	                 // $('#historyTicketCount')[0].innerHTML=jsonArr[2];
-	                 $('#assignedTicketCount')[0].innerHTML=jsonArr[1][0];
-	                 $('#unassignedTicketCount')[0].innerHTML=jsonArr[2][0];
-	                    
-	                }
-				});
-			} 
-			
-	function getExecutiveTicketsCount(){
-				
-		
-				$.ajax({
-	                type:"get",
-	                url:"getExecTicketsCount",
-	                contentType: 'application/json',
-	                datatype : "json",
-	                data:{"username":name},
-	                success:function(result) {
-	                	var jsonArr = $.parseJSON(result);
-	                  $('#assignedExecTickets')[0].innerHTML=jsonArr[0];
-	                  $('#closedExecTickets')[0].innerHTML=jsonArr[1];
-	                  
-	                    
-	                }
-				});
-			
-			} 
-		
-		function getManagerCount(){
-			
-			$.ajax({
-                type:"get",
-                url:"managerTicketsCount",
-                contentType: 'application/json',
-                datatype : "json",
-                success:function(result) {
-                	var jsonArr = $.parseJSON(result);
-                	$('#managerTotalTickets')[0].innerHTML=jsonArr[0];                
-                    
-                }
-			});
-		}
-			
-	function getCount(){
-		
-		$.ajax({
-	        type:"get",
-	        url:"ticketsCount",
-	        contentType: 'application/json',
-	        datatype : "json",
-	        success:function(result) {
-	        	var jsonArr = $.parseJSON(result);
-	        	 $('#openTicketCount')[0].innerHTML=jsonArr[0];
-                 //$('#closedTicketCount')[0].innerHTML=jsonArr[1];
-                 $('#historyTicketCount')[0].innerHTML=jsonArr[1];
-                 $('#totalTicketCount')[0].innerHTML=jsonArr[2];
-	            
-	        }
-		});
-	}
+
+	
 	
 	</script>
 <style>
@@ -144,8 +62,6 @@ color: #fff!important;
 }
 </style>
 	<!-- CSS Files -->
-
-	
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 
@@ -196,7 +112,7 @@ color: #fff!important;
     <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %> 
     
     <!-- Sidebar -->
-		<div id="adminSidebar">
+		<div id="superAdminSidebar">
 		</div>
 		<!-- End Sidebar -->
     
@@ -246,25 +162,6 @@ color: #fff!important;
 								</div>
 							</div>
 						</div>
-<!-- 						<div class="col-sm-6 col-md-3"> -->
-<!-- 							<div class="card card-stats card-round"> -->
-<!-- 								<div class="card-body" onclick="location.href='/RFIDAssetTracking/unAssignedTickets'" > -->
-<!-- 									<div class="row align-items-center"> -->
-<!-- 										<div class="col-icon"> -->
-<!-- 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px"> -->
-<%-- 											<img src="<c:url value='resources/assets/img/history.svg' />" > --%>
-<!-- 											</div> -->
-<!-- 										</div> -->
-<!-- 										<div class="col col-stats ml-3 ml-sm-0"> -->
-<!-- 											<div class="numbers"> -->
-<!-- 												<p class="card-category" >UnAssigned</p> -->
-<!-- 												<h4 class="card-title"  id="unassignedTicketCount"></h4> -->
-<!-- 											</div> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
 								<div class="card-body" onclick="location.href='/RFIDAssetTracking/historyTickets'">
@@ -296,213 +193,7 @@ color: #fff!important;
 		<%} %>
 		
 		
-		<% if (role.equalsIgnoreCase(("Admin"))) { %> 
-    
-    <!-- Sidebar -->
-		<div id="sysAdminSidebar">
-		</div>
-		<!-- End Sidebar -->
-    
-
-		<div class="main-panel">
-			<div class="content">
-				<div class="page-inner">
-					<div class="page-header">
-						<h4 class="page-title">Dashboard</h4>						
-					</div>
-					<div class="row">
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body " onclick="location.href='/RFIDAssetTracking/openTickets'" id="open_div_admin" >
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/open.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category" >Open</p>
-												<h4 class="card-title" id="openTicketCount"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- <div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/RFIDAssetTracking/assignedTickets'">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/closed.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category">Closed</p>
-												<h4 class="card-title" id="closedTicketCount"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div> -->
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/RFIDAssetTracking/historyTickets'">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/history.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category">History</p>
-												<h4 class="card-title" id="historyTicketCount"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/RFIDAssetTracking/totalTickets'">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/closed.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category">Total</p>
-												<h4 class="card-title" id="totalTicketCount"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div> 
-						
-					</div>
-
-				</div>
-			</div>
-			
-		</div>
 		
-		<%} %>
-		
-		<!-- Manager -->
-		<% if (!(role.equalsIgnoreCase(("Admin")))&&!(role.equalsIgnoreCase(("SuperAdmin")))&&!(role.equalsIgnoreCase(("FeildExecutive")))) { %> 
-		    
-		<div id="managerSidebar">
-		</div>
-		
-		<div class="main-panel">
-			<div class="content">
-				<div class="page-inner">
-					<div class="page-header">
-						<h4 class="page-title">Dashboard</h4>						
-					</div>
-					
-					<div class="row">
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body " onclick="location.href='/RFIDAssetTracking/managerTotalTickets'" id="manager_total_div">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center icon-primary bubble-shadow-small">
-											<img src="<c:url value='resources/assets/img/open.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category">Total</p>
-												<h4 class="card-title" id="managerTotalTickets"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						
-					</div>
-		</div>
-		
-	   </div>
-	</div>
-	
-<%} %>
-		
-		<!-- Executive -->
-<% if (!(role.equalsIgnoreCase(("Admin")))&&!(role.equalsIgnoreCase(("SuperAdmin")))&&!(role.equalsIgnoreCase(("Manager")))) { %> 
-		    <!-- Sidebar -->
-		<div id="execSidebar">
-		</div>
-		<!-- End Sidebar -->
-		
-		<div class="main-panel">
-			<div class="content">
-				<div class="page-inner">
-					<div class="page-header">
-						<h4 class="page-title">Dashboard</h4>		
-						<div align="center"><span class="isa_success" id="isa_success">${succMsg}</span></div>				
-					</div>
-					
-					<div class="row">
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body " onclick="location.href='/RFIDAssetTracking/executiveAssignedTickets'" id="executive_assign_div">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small"  style="background:#F98B88;border-radius: 5px;">
-											<img src="<c:url value='resources/assets/img/open.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category">Assigned</p>
-												<h4 class="card-title" id="assignedExecTickets"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/RFIDAssetTracking/executiveClosedTickets'">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/closed.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category">Closed</p>
-												<h4 class="card-title" id="closedExecTickets"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-					</div>
-		</div>
-		
-	   </div>
-	</div>
-	
-<%} %>
 	</div>
 
 <!--   Core JS Files   -->

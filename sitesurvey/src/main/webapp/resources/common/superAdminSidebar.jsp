@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -10,11 +9,11 @@
 </head>
 <body>
 
-<div class="sidebar">
+<div class="sidebar"  >
 			
 			<div class="sidebar-background"></div>
-			<div class="sidebar-wrapper scrollbar-inner">
-				<div class="sidebar-content">
+			<div class="sidebar-wrapper scrollbar-inner" >
+				<div class="sidebar-content" ">
 					<div class="user">
 						<div class="avatar-sm float-left mr-2">
 							<img src="<c:url value='resources/assets/img/profile.jpg' />" alt="..." class="avatar-img rounded-circle">
@@ -25,7 +24,7 @@
 								<span>
 									${sessionScope.userName}
 									<span class="user-level">Logged in as</span>
-									<span class="user-level">Administrator</span>									
+									<span class="user-level">Super Admin</span>									
 								</span>
 							</a>
 							
@@ -38,21 +37,31 @@
 								<p> Dashboard </p>								
 							</a>
 						</li>
+						<li class="nav-section">
+							<span class="sidebar-mini-icon">
+								<i class="fa fa-ellipsis-h"></i>
+							</span>
+							<h4 class="text-section">Modules</h4>
+						</li>
+						
 						
 						<li class="nav-item">
-								<a  href="newTicket">&nbsp;&nbsp;
-								<span class="fas fa-plus-square" style="font-size:14px" >&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Create Ticket</span></a>
+								<a  href="newUser">&nbsp;&nbsp;
+								<span class="fas fa-users" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Add User</span></a>
 						</li>
-<!-- 						<li class="nav-section"> -->
-<!-- 							<span class="sidebar-mini-icon"> -->
-<!-- 								<i class="fa fa-ellipsis-h"></i> -->
-<!-- 							</span> -->
-<!-- 							<h4 class="text-section">Components</h4> -->
-<!-- 						</li> -->
-											
+						<li class="nav-item">
+								<a  href="newTechnician">&nbsp;&nbsp;
+								<span class="fas fa-user" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Technician</span></a>
+						</li>
+								<li class="nav-item">
+								<a  href="newSite">&nbsp;&nbsp;
+								<span class="fas fa-user" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Site</span></a>
+						</li>
+						
+						
 <!-- 						<li class="nav-item"> -->
-<!-- 								<a >&nbsp;&nbsp; -->
-<!-- 								<p onclick="location.href='/RFIDAssetTracking/historyTickets'" class="fas fa-pen-square" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Total Tickets</p></a> -->
+<!-- 								<a href="superAdminTotalTickets">&nbsp;&nbsp; -->
+<!-- 								<span  class="fas fa-ticket-alt" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Total Tickets</span></a> -->
 <!-- 						</li> -->
 					</ul>
 				</div>

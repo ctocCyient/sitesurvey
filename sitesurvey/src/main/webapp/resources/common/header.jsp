@@ -14,7 +14,7 @@ $(document).ready(function() {
 	password = '<%=session.getAttribute("password")%>';
 	type = '<%=session.getAttribute("userRole")%>';
 	
-	getRoles();
+	//getRoles();
 });
 
 function getRoles()
@@ -120,9 +120,9 @@ function loadDashboard(value){
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
 						
 						<li class="nav-item dropdown hidden-caret">
-						<span>
-								<select style='font-size:12.5px;' id="role"  name="role" class="sample form-control input-border" onchange="loadDashboard(this.value);" ></select>
-								</span>
+<!-- 						<span> -->
+<!-- 								<select style='font-size:12.5px;' id="role"  name="role" class="sample form-control input-border" onchange="loadDashboard(this.value);" ></select> -->
+<!-- 								</span> -->
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 								<div class="avatar-sm1">								
 									<img src="<c:url value='resources/assets/img/profile.jpg' />"  alt="..." class="avatar-img rounded-circle">

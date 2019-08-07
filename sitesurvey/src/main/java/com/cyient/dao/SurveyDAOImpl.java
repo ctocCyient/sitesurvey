@@ -24,17 +24,13 @@ public class SurveyDAOImpl implements SurveyDAO {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
         c.add(Restrictions.eq("username",username));
         c.add(Restrictions.eq("password",password));
-		c.add(Restrictions.eq("type",type));
+		c.add(Restrictions.eq("role",type));
 		System.out.println(c.list());
         return (User)c.uniqueResult();
 	}
 
 	public void addSite(Site site) {
-		// TODO Auto-generated method stub
-		System.out.println(site);
 		sessionFactory.getCurrentSession().saveOrUpdate(site);
-
-		
 	} 
 	
 }

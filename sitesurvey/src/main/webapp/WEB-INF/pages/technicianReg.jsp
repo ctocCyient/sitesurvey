@@ -15,34 +15,26 @@
 <title>RFID</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
-	<link href="${mainCss}" rel="stylesheet" />
 
-
-<spring:url value="resources/css/jquery-ui.css" var="jqueryCss" />
-<spring:url value="/resources/js/jquery.min.js" var="jqueryJs" />
-	<spring:url value="/resources/js/jquery-ui.min.js" var="jqueryuiJs" />
-		<spring:url value="/resources/js/validations.js" var="validationsJs" />
-		
-		<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
-
-
+<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
-	<link href="${jqueryCss}" rel="stylesheet" />
-	<script src="${jqueryJs}"></script>
-    <script src="${jqueryuiJs}"></script>
-      <script src="${validationsJs}"></script>
-     
+	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
+	<script src="<c:url value='resources/js/validations.js' />"></script>
+	
+	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">	
+
+
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 	<script>
 		$(document).ready(function() {			
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-			  $("#sidebar").load('<c:url value="/resources/common/sidebar.jsp" />');
-			  dateFun();
-			  //getExecutiveId();
-			   getRegion();
-			  $("#executiveName,#emailID,#mobile,#password,#cpwd,#region,#manager,#city").attr('required', ''); 
+			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />');
+			 // dateFun();
+			  getTechnicianId();
+			  // getRegion();
+			  $("#technicianName,#emailID,#mobile,#password,#cpwd,#region,#manager,#city").attr('required', ''); 
 			 // $("#region,#manager,#city").attr('required','');
 			  $(".isa_success").fadeOut(10000);
 		});
@@ -83,12 +75,12 @@
          		$("select option[value='Select']").attr('disabled','disabled');
 		}
 		
-		function getRegion()
+		function getRegions()
 		 { 
 			 	
 			 	$.ajax({
 			         type:"get",
-			         url:"getRegion",
+			         url:"getRegions",
 			         contentType: 'application/json',
 			         datatype : "json",
 			         success:function(data1) {
@@ -104,8 +96,8 @@
 		
 		function getManager()
 		{
-			var execName=$("#executiveName").val();
-			$("#executiveID").val(execName);
+			var execName=$("#technicianName").val();
+			$("#technicianId").val(execName);
 			var selectedRegion=$("#region").val();
 			$.ajax({
 		         type:"get",
@@ -158,12 +150,12 @@
 			}
 		 
 		
-	 	function getExecutiveId()
+	 	function getTechnicianId()
 		{
 			var jsonArr1;
 				$.ajax({
 			        type:"get",
-			        url:"getLastExecutiveId",
+			        url:"getLastTechnicianId",
 			        contentType: 'application/json',
 			        datatype : "json",
 			        success:function(data) {
@@ -185,7 +177,7 @@
 				        	else if(dataSplitInt>99)
 				        		jsonArr1="TECH"+dataSplitInt;        	
 		        		}	        	
-			        	$('#executiveID').val(jsonArr1);	        	
+			        	$('#technicianId').val(jsonArr1);	        	
 			        },
 			        error:function()
 			        {
@@ -214,7 +206,7 @@
 	 	        	else
 	 	        	{
 	 	        		$("#execNameMsg").css("display","none");
-	 	        		$("#executiveID").val(username);
+	 	        		$("#technicianId").val(username);
 	 	        		$("#submit").attr('disabled',false);
 	 	        	}
 	 	        },
@@ -271,7 +263,7 @@ label {
 		</div>
 
 		<!-- Sidebar -->
-<div id="sidebar">
+<div id="superAdminSidebar">
 </div>
 		<!-- End Sidebar -->
 		
@@ -282,14 +274,14 @@ label {
 		 	
 			<h3 class="text-center">Add Field Technician</h3>	
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
-        <form:form action="saveExecutive" method="post" modelAttribute="Executive">
+        <form:form action="saveTechnician" method="post" modelAttribute="Technician">
        
                <div class="login-form">
 				
-                <form:hidden id="executiveID" path="executiveId" name="executiveID" class="form-control input-full filled" readonly="true" />
+                <form:hidden id="technicianId" path="technicianId" name="technicianId" class="form-control input-full filled" readonly="true" />
             	
             	<label for="executiveName" class="placeholder">Technician Name</label>
-            	<form:input id="executiveName" path="executiveName" name="executiveName" class="form-control input-full filled" onkeypress="return isCharacters(event);"  onblur="getUserName();"/>
+            	<form:input id="technicianName" path="technicianName" name="technicianName" class="form-control input-full filled" onkeypress="return isCharacters(event);"  onblur="getUserName();"/>
             	<span id="execNameMsg" style="color:red;display:none;font-size:15px">Name already Exists</span>
             	<br>
             	<label for="emailID" class="placeholder">Email ID</label>

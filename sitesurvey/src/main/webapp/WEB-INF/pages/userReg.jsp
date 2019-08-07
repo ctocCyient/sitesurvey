@@ -12,23 +12,22 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
 
-<title>RFID</title>
+<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
-	<link href="${mainCss}" rel="stylesheet" />
 
 
-<spring:url value="resources/css/jquery-ui.css" var="jqueryCss" />
-<spring:url value="/resources/js/jquery.min.js" var="jqueryJs" />
-	<spring:url value="/resources/js/jquery-ui.min.js" var="jqueryuiJs" />
-		<spring:url value="/resources/js/validations.js" var="validationsJs" />
-		
-	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
 
-	<link href="${jqueryCss}" rel="stylesheet" />
-	<script src="${jqueryJs}"></script>
-    <script src="${jqueryuiJs}"></script>
-    <script src="${validationsJs}"></script>
+
+<script src="<c:url value='resources/js/jquery.min.js' />"></script>
+	
+	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
+	<script src="<c:url value='resources/js/validations.js' />"></script>
+	
+	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">	
+	
+
+
      
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
@@ -64,10 +63,10 @@ function validatePassword()
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#sidebar").load('<c:url value="/resources/common/sidebar.jsp" />'); 
-	  getRegion();
+	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	  getRegions();
 		dateFun();
-		$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
+		$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
 });
 
@@ -88,11 +87,11 @@ function populateDropdown(data,id)
 		document.getElementById('createdDate').value=today;
 	}
 
-	function getRegion()
+	function getRegions()
 	{	
 		$.ajax({
 		         type:"get",
-		         url:"getRegion",
+		         url:"getRegions",
 		         contentType: 'application/json',
 		         datatype : "json",
 		         success:function(data1) {
@@ -181,7 +180,7 @@ label {
 		</div>
 
 		<!-- Sidebar -->
-<div id="sidebar">
+<div id="superAdminSidebar">
 </div>
 		<!-- End Sidebar -->
 		
@@ -195,7 +194,7 @@ label {
 			<div class="login-form">
 			
 				<label for="Type" class="Type">Role</label>
-                <form:select id="type" path="type" name="type" class="form-control">
+                <form:select id="type" path="role" name="type" class="form-control">
                 <form:option value="">Select</form:option>
                 	<form:option value="Admin">Admin</form:option>
                 	<form:option value="Manager">Manager</form:option>
@@ -224,7 +223,7 @@ label {
 				
 				<label for="mobile" class="placeholder">Mobile</label>
 				<form:input id="mobileNum" path="mobileNumber" onkeypress="return isNumber(event);" onchange="ValidateNumber(this.id,'mobileIdMsg')" class="form-control input-full filled"  />
-				<span id="mobileIdMsg" style="color:red;display:none;font-size:15px">Please enter valid Mobile No</span>
+				<span id="mobileIdMsg" style="color:red;display:none;font-size:15px">Please enter valid Mobile Number</span>
 				<br>
 				
                 <div  id="regionDiv" >

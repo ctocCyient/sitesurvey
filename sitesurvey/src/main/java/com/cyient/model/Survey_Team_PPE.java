@@ -37,6 +37,9 @@ public class Survey_Team_PPE implements Serializable {
 	@Column(name="Photo_survey_team", unique = false, nullable = false, length = 16777215)
 	private byte[] photoSurveyTeam;
 	
+	@Column(name="Photo_Survey_Team_Name")
+	private String photoSurveyTeamName;
+	
 	@Column(name="Technician_Name")
 	private String technicianName;
 	
@@ -55,6 +58,9 @@ public class Survey_Team_PPE implements Serializable {
 	@Column(name="Photo_Rigger_Team", unique = false, nullable = false, length = 16777215)
 	private byte[] photoRiggerTeam;
 
+	@Column(name="Photo_Rigger_Team_Name")
+	private String photoRiggerTeamName;
+	
 	public int getId() {
 		return id;
 	}

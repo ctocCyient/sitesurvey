@@ -21,15 +21,14 @@ public class Site implements Serializable {
 	@Column(name="siteID")
 	private String siteid;	
 
-	@Column(name="Region")
-	private String Region;	
-
-	@Column(name="latitude")
+	@Column(name="Latitude")
 	private String latitude;
 	
-	@Column(name="longitude")
+	@Column(name="Longitude")
 	private String longitude;
 	
+	@Column(name="Region")
+	private String region;	
 	
 	@Column(name="State")
 	private String state;
@@ -40,7 +39,7 @@ public class Site implements Serializable {
 	@Column(name="District")
 	private String district;
 	
-	@Column(name="Site_type")
+	@Column(name="Site_Type")
 	private String site_type;
 	
 	
@@ -84,13 +83,12 @@ public class Site implements Serializable {
 		this.siteid = siteid;
 	}
 
-	
 	public String getRegion() {
-		return Region;
+		return region;
 	}
 
 	public void setRegion(String region) {
-		Region = region;
+		this.region = region;
 	}
 
 	public String getLatitude() {

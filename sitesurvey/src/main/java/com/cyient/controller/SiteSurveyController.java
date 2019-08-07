@@ -1,13 +1,8 @@
 package com.cyient.controller;
 
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,16 +21,14 @@ import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.User;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @Controller
-public class RFIDAssetController {
+public class SiteSurveyController {
 	private static final Logger logger = Logger
-			.getLogger(RFIDAssetController.class);
+			.getLogger(SiteSurveyController.class);
 
-	public RFIDAssetController() {
-		System.out.println("RFIDAssetController()");
+	public SiteSurveyController() {
+		System.out.println("SiteSurveyController()");
 		 
 	}
 
@@ -44,7 +36,7 @@ public class RFIDAssetController {
 	private SurveyDAO surveyDAO;
 	
 	@RequestMapping(value = "/")
-	public ModelAndView listEmployee(ModelAndView model) throws IOException {
+	public ModelAndView viewIndex(ModelAndView model) throws IOException {
 		User user = new User();
 		model.addObject("User", user);
 		model.setViewName("index");
@@ -52,33 +44,31 @@ public class RFIDAssetController {
 	}
 	
 	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
-	public ModelAndView newContact(ModelAndView model) {
+	public ModelAndView newUser(ModelAndView model) {
 		User user = new User();
 		model.addObject("User", user);
 		model.setViewName("userReg");
 		return model;
 	}
 	
-
-
-	@RequestMapping(value = "/newExecutive", method = RequestMethod.GET)
-	public ModelAndView newExecutive(ModelAndView model) {
-		Technician executive = new Technician();
-		model.addObject("Executive", executive);
-		model.setViewName("executiveReg");
+	@RequestMapping(value = "/newTechnician", method = RequestMethod.GET)
+	public ModelAndView newTechnician(ModelAndView model) {
+		Technician technician = new Technician();
+		model.addObject("Technician", technician);
+		model.setViewName("technicianReg");
 		return model;
 	}
 	
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public ModelAndView newRedirectHome(ModelAndView model) {
+	public ModelAndView redirectHome(ModelAndView model) {
 		model.setViewName("homePage");
 		return model;
 	}
 	
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public ModelAndView saveUser(@ModelAttribute User user,RedirectAttributes redirectAttributes) {
-		String status="User Added Sucessfully";
+		String status="User Added Successfully";
 		if (user.getUsername() !=null) { 
 			surveyDAO.addUser(user);
 		} 
@@ -91,13 +81,13 @@ public class RFIDAssetController {
 	public ModelAndView newSite(ModelAndView model) {
 		Site site = new Site();
 		model.addObject("Site", site);
-		model.setViewName("userSite");
+		model.setViewName("addSite");
 		return model;
 	}
 	
 	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
 	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
-		String status="User Added Sucessfully";
+		String status="Site Added Successfully";
 		if (site.getSiteid() !=null) { 
 			surveyDAO.addSite(site);
 		} 
@@ -105,12 +95,9 @@ public class RFIDAssetController {
 		return new ModelAndView("redirect:/newSite");
 	}
 	
-	
-	
-	
-	
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
     public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) {
+		System.out.println("Usernaem"+user.getUsername()+"Password"+user.getPassword()+"Role:"+user.getRole());
            User resp = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());        
            if(resp==null)
            {
