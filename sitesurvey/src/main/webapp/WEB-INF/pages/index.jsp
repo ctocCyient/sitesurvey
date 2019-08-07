@@ -23,7 +23,7 @@
 	<script>
 		WebFont.load({
 			google: {"families":["Open+Sans:300,400,600,700"]},
-			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands"], urls: ['../assets/css/fonts.css']},
+			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands"], urls: ['../resources/assets/css/fonts.css']},
 			active: function() {
 				sessionStorage.fonts = true;
 			}
@@ -33,15 +33,9 @@
 	<script>
  	$(document).ready(function(){	
 		 $("select option[value='Select']").attr('disabled','disabled');
- 		// 		dateFun();
-// // 		$("#userName,#emailId,#mobileNum,#pwd,#cpwd").attr('required', '');  
  	});
 
-// 	function dateFun()
-// 	{
-// 	var today = new Date();
-// 		document.getElementById('createdDate').value=today;
-// 	}
+
 
 
 	
@@ -173,31 +167,28 @@ position: fixed;
 						<span class="input-group-text" id="basic-addon1"><i style='font-size:15px;width:12px' class='far'>&#xf007;</i>	</span>							
 				<form:input  path="username" id="username" name="username" placeholder="Username" class="form-control input-full" />
 				
-				<!-- 	<input id="username" name="username" type="text" class="form-control input-border-bottom" required> -->
+			
 				
 				</div>
 				<div class="form-group form-floating-label input-group-prepend">
 				
 						<span class="input-group-text" id="basic-addon1"><i style='font-size:15px;width:12px' class='fa'>&#xf023;</i>	</span>
 				<form:password  path="password" id="password" name="password" placeholder="Password" class="form-control  input-full" />
-					<!--  <input id="password" name="password" type="password" class="form-control input-border-bottom" required>-->
-				
-					<div class="show-password">
-						<i class="flaticon-interface"></i>
-					</div>					
 					
+				
+				
 					</div>
 				
 				
 				<div class=" form-group form-floating-label input-group-prepend">
 				
 						<span class="input-group-text" id="basic-addon1"><i style='font-size:15px;width:12px' class='fas'>&#xf4fe;</i>	</span>
-                <form:select style='font-size:12.5px;' id="type" path="role" name="type" class="form-control input-full "  >
+                <form:select style='font-size:12.5px;' id="role" path="role" name="role" class="form-control input-full "  >
                 <form:option  value="Select">Select Role</form:option>
                 	<form:option value="SuperAdmin">SuperAdmin</form:option>
                 	<form:option value="Admin">Admin</form:option>
                 	<form:option  value="Manager">Manager</form:option>
-                	<form:option  value="FeildExecutive">Field Technician</form:option>                	
+                	<form:option  value="FeildTechnician">Field Technician</form:option>                	
                 </form:select>
                
                 </div>
@@ -220,7 +211,7 @@ position: fixed;
 		
 		</div>
 		<div class=" loginNmsDet" >
-			<b>Cyient ROFC-RFID application</b> is with open APIs that facilitates the telecom organizations to manage their OFCs/cables using RFID tags and readers/writers. It is an unique solution build over the strong Java framework. The powerful blend of an advanced rules engine, SDK, and web service APIs facilitates a seemless integration and implementation.
+<!-- 			<b>Cyient ROFC-RFID application</b> is with open APIs that facilitates the telecom organizations to manage their OFCs/cables using RFID tags and readers/writers. It is an unique solution build over the strong Java framework. The powerful blend of an advanced rules engine, SDK, and web service APIs facilitates a seemless integration and implementation. -->
 		</div>
 		<div class="card-footer1">
 									

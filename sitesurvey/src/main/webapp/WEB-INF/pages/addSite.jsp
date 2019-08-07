@@ -8,39 +8,26 @@
 
 <head>
 
-<spring:url value="resources/css/styling.css" var="mainCss" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
 
-
-<title>RFID</title>
+<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
-	<link href="${mainCss}" rel="stylesheet" />
-
-
-<spring:url value="resources/css/jquery-ui.css" var="jqueryCss" />
-<spring:url value="/resources/js/jquery.min.js" var="jqueryJs" />
-	<spring:url value="/resources/js/jquery-ui.min.js" var="jqueryuiJs" />
-		<spring:url value="/resources/js/validations.js" var="validationsJs" />
+<script src="<c:url value='resources/js/jquery.min.js' />"></script>
+	
+	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
+	<script src="<c:url value='resources/js/validations.js' />"></script>
+	
+	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">	
 		
-	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
 
-	<link href="${jqueryCss}" rel="stylesheet" />
-	<script src="${jqueryJs}"></script>
-    <script src="${jqueryuiJs}"></script>
-    <script src="${validationsJs}"></script>
      
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 
 <script type="text/javascript">
-
-// createFolder("C:\\TEST\\")
-// function createFolder(folder){
-// makeDir(folder)
-// }
-
 
 WebFont.load({
 	google: {"families":["Open+Sans:300,400,600,700"]},
@@ -50,55 +37,37 @@ WebFont.load({
 	}
 });
 
-function validatePassword()
-{
-	if(document.getElementById('pwd').value==document.getElementById('cpwd').value)
-		{}
-	else {
-		alert("Please Check");
-		$('#cpwd').val('');
-	}
-
-}
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#sidebar").load('<c:url value="/resources/common/sidebar.jsp" />'); 
-	dateFun();
-		$("#username,#emailId,#mobileNum,#pwd,#cpwd").attr('required', '');  
-		 $(".isa_success").fadeOut(5000);
+	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	//  getRegions();
+		
+		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
+		 $(".isa_success").fadeOut(10000);
 });
 
 function populateDropdown(data,id)
 {
-	var	catOptions="<option value='Select'>Select</option>";
+	var	catOptions="<option value=''>Select</option>";
  	for (i in data) {
  		
    	 	 catOptions += "<option>" + data[i] + "</option>";
  		}
  		document.getElementById(id).innerHTML = catOptions;
- 		 $("select option[value='Select']").attr('disabled','disabled');
+ 		 $("select option[value='']").attr('disabled','disabled');
 }
 
-	function dateFun()
-	{
-		var today = new Date();
-		document.getElementById('createdDate').value=today;
-	}
-
-	function getRegion(value)
+	function getRegions()
 	{	
-	
-		var name=$("#name").val();
-		
-			$.ajax({
+		$.ajax({
 		         type:"get",
-		         url:"getRegion",
+		         url:"getRegions",
 		         contentType: 'application/json',
 		         datatype : "json",
 		         success:function(data1) {
 		         	jsonData = JSON.parse(data1);
-		         	populateDropdown(jsonData,"region");
+		         	populateDropdown(jsonData,"regions");
 		         },
 		         error:function()
 		         {
@@ -107,13 +76,44 @@ function populateDropdown(data,id)
 		 	});	
 	}
 	
-function getUsername()
-{
-	var name=$("#name").val();
-	$("#username").val(name);
-}
-
 	
+	function getSiteId()
+	{
+		var jsonArr1;
+			$.ajax({
+		        type:"get",
+		        url:"getLastSiteId",
+		        contentType: 'application/json',
+		        datatype : "json",
+		        success:function(data) {
+		        	var jsonArr=JSON.parse(data);	        	
+		        	 if(jsonArr.length==0){
+			        		jsonArr1="TECH001";
+			        	}  	
+		        	 else{
+			        	var dataSplit=jsonArr[0].split("H");
+			        	console.log(dataSplit[0]);
+			        	var dataSplitInt=parseInt(dataSplit[1]);
+			        	console.log(dataSplitInt+1);
+			        	dataSplitInt=dataSplitInt+1;
+			        	
+			        	if(dataSplitInt>0&&dataSplitInt<=9)
+			        		jsonArr1="TECH00"+dataSplitInt;
+			        	else if(dataSplitInt>9&&dataSplitInt<99)
+			        		jsonArr1="TECH0"+dataSplitInt;
+			        	else if(dataSplitInt>99)
+			        		jsonArr1="TECH"+dataSplitInt;        	
+	        		}	        	
+		        	$('#siteId').val(jsonArr1);	        	
+		        },
+		        error:function()
+		        {
+		        	console.log("Error");
+		        }
+			});
+	}
+
+
 
 </script>
 <style>
@@ -121,6 +121,10 @@ function getUsername()
 .fa-ellipsis-v
 {
 color: #fff!important;
+}
+label {
+    color: #495057!important;
+    font-size: 13px!important;
 }
 </style>
 <body  class="login">
@@ -154,65 +158,49 @@ color: #fff!important;
 		</div>
 
 		<!-- Sidebar -->
-<div id="sidebar">
+<div id="superAdminSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-    <div align="center"><span class="isa_success" style="color:#012169;font-size:20px">${status}</span></div>	<br><br>
-			<h3 class="text-center">Add User</h3>
-			<form:form action="saveUser" method="post" modelAttribute="User">
+    <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
+    
+			<h3 class="text-center">Add Site</h3>
+				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
+			<form:form action="saveSite" method="post" modelAttribute="Site" >
 			<div class="login-form">
-			<div class="form-group form-floating-label">
-				<label for="Type" class="Type">Role</label>
-                <form:select id="type" path="type" name="type" class="form-control" onchange="getRegion(this.value);">
-                <form:option value="Select">Select</form:option>
-                	<form:option value="Admin">Admin</form:option>
-                	<form:option value="Manager">Manager</form:option>
+			
+				
+				 <br>
+				<label for="Site ID" class="placeholder">Site ID</label>
+				<form:input id="siteid" path="siteid" class="form-control input-full filled" />
+				<br>
+				<label for="latitude" class="placeholder">latitude</label>
+				<form:input id="latitude" path="latitude" class="form-control input-full filled"     />
+				<br>
+				
+				<label for="longitude" class="placeholder">longitude</label> 
+				<form:input id="longitude" path="longitude" autocomplete="new-password" name="longitude"  class="form-control input-full filled"  />
+				<br>
+               
+				<label for="Region" class="region">Region</label>
+                <form:select id="regions" path="region" name="regions" class="form-control input-full filled" >
                 </form:select>
-                </div>			
-				<div class="form-group "> 
-				<label for="name" class="placeholder">Name</label>
-				<form:input id="name" path="name" class="form-control input-border-bottom" onkeypress="return isCharacters(event);"/>
-					<!-- <input  id="fullname" name="fullname" type="text" class="form-control input-border-bottom" required> -->
-					
-				</div>
-				
-				<form:hidden path="username" id="username" value="" />
-				
-				<div class="form-group ">
-				<label for="email" class="placeholder">Email ID</label>
-				<form:input id="emailId" path="emailId" class="form-control input-border-bottom"   onchange="validateEmailId(this.value,this.id)"  />
-					<!-- <input  id="email" name="email" type="email" class="form-control input-border-bottom" required>-->
-					
-				</div>
-				
-				<div class="form-group ">
-				<label for="passwordsignin" class="placeholder">Password</label> 
-				<form:password id="pwd" path="password" name="passwordsignin"  class="form-control input-border-bottom"  />
-					<!-- <input  id="passwordsignin" name="passwordsignin" type="password" class="form-control input-border-bottom" required>-->
-					
-				</div>
-				<div class="form-group ">
-				<label for="confirmpassword" class="placeholder">Confirm Password</label>
-				<form:password id="cpwd" path="" onchange="validatePassword()" name="confirmpassword" class="form-control input-border-bottom"  />
-					<!-- <input  id="confirmpassword" name="confirmpassword" type="password" class="form-control input-border-bottom" required> -->
-					
-				</div>
-				<div class="form-group ">
-				<label for="mobile" class="placeholder">Mobile</label>
-				<form:input id="mobileNum" path="mobileNumber" onkeypress="return isNumber(event);" onchange="ValidateNumber(this.id)" class="form-control input-border-bottom"  />
-				
-				</div>
-                <div class="form-group " id="regionDiv" onchange="getUsername();">
-				<label for="Type" class="Type">Region</label>
-                <form:select id="region" path="region" name="region" class="form-control" >
+                <br>
                 
+                <label for="State" class="state">State</label>
+                <form:select id="state" path="state" name="state" class="form-control input-full filled" >
                 </form:select>
-                 <!-- <span id="regionIdMsg" style="color:red;display:none;font-size:15px">Region Already Exists</span>--> 
-                </div>
-				<form:hidden path="createdDate" id="createdDate" value="" />
+              <br>
+              <label for="District" class="district">District</label>
+                <form:select id="regions" path="district" name="regions" class="form-control input-full filled" >
+                </form:select>
+                <br>
+                <label for="city" class="city">City</label>
+                <form:select id="city" path="city" name="city" class="form-control input-full filled" >
+                </form:select>
+               
 				<div class="form-action">
 					<a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>
 					<input type="submit" id="submit" value="Add" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">

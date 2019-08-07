@@ -27,7 +27,6 @@ public class PPE_Master implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-
 	@Column(name="PPE")
 	private String ppe;
 	
