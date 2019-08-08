@@ -46,10 +46,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Regions> getStates(String region) {
-		
-		//return sessionFactory.getCurrentSession().createQuery("select distinct state from Regions where region='"+region+"'").list();
-	        
+	public List<Regions> getStates(String region) {		
+		//return sessionFactory.getCurrentSession().createQuery("select distinct state from Regions where region='"+region+"'").list();	        
 	        return sessionFactory.getCurrentSession().createCriteria(Regions.class)  
 	        	      .add(Restrictions.eq("region", region))  
 	        	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
@@ -58,12 +56,21 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Regions> getDistricts(String region, String state) {
-		return sessionFactory.getCurrentSession().createQuery("select region from Regions").list();
+		  return sessionFactory.getCurrentSession().createCriteria(Regions.class)  
+        	      .add(Restrictions.eq("region", region))  
+        	      .add(Restrictions.eq("state", state))  
+        	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
+        	      .list();  
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Regions> getCities(String region, String state, String district) {
-		return sessionFactory.getCurrentSession().createQuery("select region from Regions").list();
+		  return sessionFactory.getCurrentSession().createCriteria(Regions.class)  
+        	      .add(Restrictions.eq("region", region))  
+        	      .add(Restrictions.eq("state", state))  
+        	      .add(Restrictions.eq("district", district))  
+        	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
+        	      .list();  
 	} 
 	
 }
