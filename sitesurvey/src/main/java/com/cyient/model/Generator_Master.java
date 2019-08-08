@@ -37,6 +37,16 @@ public class Generator_Master implements Serializable {
 	private String capacity;
 
 
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
 	public String getDgManufacturer() {
 		return dgManufacturer;
 	}

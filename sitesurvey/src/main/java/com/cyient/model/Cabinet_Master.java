@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "Site_Cabinet")
+@Table(name = "Cabinet_Master")
 public class Cabinet_Master implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
