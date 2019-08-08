@@ -101,29 +101,10 @@ public class SiteSurveyController {
 		return model;
 	}
 	
-	@RequestMapping(value = "/newSite", method = RequestMethod.GET)
-	public ModelAndView newSite(ModelAndView model) {
-		Site site = new Site();
-		model.addObject("Site", site);
-		model.setViewName("addSite");
-		return model;
-	}
-	
-	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
-	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
-		String status="Site Added Successfully";
-		if (site.getSiteid() !=null) { 
-			surveyDAO.addSite(site);
-		} 
-		redirectAttributes.addFlashAttribute("status", status);
-		return new ModelAndView("redirect:/newSite");
-	}
-	
 	@RequestMapping(value = "/logout")
 	 public String logout(@ModelAttribute User user, HttpSession session,HttpServletRequest request) {
           	  session.removeAttribute("userName");
               return "redirect:/";
 	 }
-
 	
 }

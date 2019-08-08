@@ -74,7 +74,7 @@ color: #fff!important;
 
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-			
+			  //getCount();
 			//  tableData();	
 			 
 		
@@ -115,6 +115,24 @@ color: #fff!important;
 				
 
 		}
+			});
+		}
+		
+function getCount(){
+			
+			$.ajax({
+		        type:"get",
+		        url:"ticketsCount",
+		        contentType: 'application/json',
+		        datatype : "json",
+		        success:function(result) {
+		        	var jsonArr = $.parseJSON(result);
+		        	$('#openTicketCount')[0].innerHTML=jsonArr[0];
+		          $('#assignedTicketCount')[0].innerHTML=jsonArr[1];
+		          $('#historyTicketCount')[0].innerHTML=jsonArr[2];
+		          $('#totalTicketCount')[0].innerHTML=jsonArr[3];
+		            
+		        }
 			});
 		}
 	
@@ -184,7 +202,7 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body " onclick="location.href='/sitesurvey/openTickets'" >
+								<div class="card-body " onclick="location.href='/sitesurvey/openTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">

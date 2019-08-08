@@ -40,7 +40,7 @@
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 			  getTicketId();
-			  getRegions();
+			 // getRegions();
 			  dateFun();
 			  $("#region","#city","#exchange","#floor","#suite","#rack","#sub_rack","#customerId").attr('required','');
 			  $(".isa_success").fadeOut(10000);

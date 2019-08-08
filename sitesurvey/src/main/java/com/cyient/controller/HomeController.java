@@ -2,7 +2,10 @@ package com.cyient.controller;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -24,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cyient.dao.SurveyDAO;
+import com.cyient.model.Regions;
 import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
@@ -72,6 +76,14 @@ public class HomeController {
 	@RequestMapping(value = "/totalTickets")
 	public ModelAndView totalTickets(ModelAndView model) throws IOException {
 		model.setViewName("totalTickets");
+		return model;
+	}
+	
+	@RequestMapping(value = "/newTicket")
+	public ModelAndView newTicket(ModelAndView model) throws IOException {
+		Ticketing ticketing=new Ticketing();
+		model.addObject("Ticketing", ticketing);
+		model.setViewName("createTicket");
 		return model;
 	}
 	
@@ -221,6 +233,78 @@ public class HomeController {
 //      
     
     
+	
+	@RequestMapping(value = "/newSite", method = RequestMethod.GET)
+	public ModelAndView newSite(ModelAndView model) {
+		Site site = new Site();
+		model.addObject("Site", site);
+		model.setViewName("addSite");
+		return model;
+	}
+	
+	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
+	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
+		String status="Site Added Successfully";
+		if (site.getSiteid() !=null) { 
+			surveyDAO.addSite(site);
+		} 
+		redirectAttributes.addFlashAttribute("status", status);
+		return new ModelAndView("redirect:/newSite");
+	}
+	
+	
+	@ModelAttribute("regionsList")
+	   public Map<String, String> getRegions() {
+	      Map<String, String> regionsMap = new HashMap<String, String>();
+	      List<Regions> regions = surveyDAO.getRegions();
+	      for(Regions region : regions)
+	      {
+	    	  regionsMap.put(region.getRegion(), region.getRegion());
+	      }
+	      System.out.println("RegionsData "+regionsMap);
+	      return regionsMap;
+	   }
+	
+	 
+	 @RequestMapping(value="getStates", method = RequestMethod.GET)
+	    @ResponseBody
+	    public String getStates(ModelAndView model,HttpServletRequest request) {
+			String selectedRegion=request.getParameter("selectedRegion");		
+			//List<Regions> listStates = surveyDAO.getStates(selectedRegion);
+			 List<Regions> regions = surveyDAO.getStates(selectedRegion);
+			 List<String> listStates = new ArrayList<String>();
+		      for(Regions region : regions)
+		      {
+		    	  listStates.add(region.getState());
+		      }
+			  	   Gson gsonBuilder = new GsonBuilder().create();
+	        	   String statesJson = gsonBuilder.toJson(listStates);
+	        	   System.out.println("StatesJSON"+statesJson);
+		              return statesJson.toString();
+	    }
+	 
+	 @RequestMapping(value="getDistricts", method = RequestMethod.GET)
+	    @ResponseBody
+	    public String getDistricts(ModelAndView model,HttpServletRequest request) {
+		 String selectedRegion=request.getParameter("selectedRegion");
+			String selectedState=request.getParameter("selectedState");		
+			List<Regions> listDistricts = surveyDAO.getDistricts(selectedRegion,selectedState);
+			  	   Gson gsonBuilder = new GsonBuilder().create();
+	        	   String districtsJson = gsonBuilder.toJson(listDistricts);
+		              return districtsJson.toString();
+	    }
+	 
+	 @RequestMapping(value="getCities", method = RequestMethod.GET)
+	    @ResponseBody
+	    public String getCities(ModelAndView model,HttpServletRequest request) {
+		 String selectedRegion=request.getParameter("selectedRegion");
+			String selectedState=request.getParameter("selectedState");	
+			String selectedDistrict=request.getParameter("selectedDistrict");	
+			List<Regions> listCities = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
+			  	   Gson gsonBuilder = new GsonBuilder().create();
+	        	   String totalJson = gsonBuilder.toJson(listCities);
+		              return totalJson.toString();
+	    }
     
     
 }

@@ -47,7 +47,7 @@ public class Ticketing implements Serializable {
 	private Date openDate;
 	
 	@Column(name="Open_Time")
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIME)	
 	private Date openTime;
 	
 	@Column(name="Closed_Date")

@@ -41,7 +41,7 @@ WebFont.load({
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-	//  getRegions();
+	  //getRegions();
 		
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
@@ -75,6 +75,29 @@ function populateDropdown(data,id)
 		         }
 		 	});	
 	}
+	
+	
+	function getStates()
+	{	
+		SelectedRegion=$('#regions').val();
+	
+		$.ajax({
+		         type:"get",
+		         url:"getStates",
+		         contentType: 'application/json',
+		         datatype : "json",
+		         data:{"selectedRegion":SelectedRegion},
+		         success:function(data1) {
+		         	jsonData = JSON.parse(data1);
+		         	populateDropdown(jsonData,"states");
+		         },
+		         error:function()
+		         {
+		         	console.log("Error");
+		         }
+		 	});	
+	}
+	
 	
 	
 	function getSiteId()
@@ -185,20 +208,22 @@ label {
 				<br>
                
 				<label for="Region" class="region">Region</label>
-                <form:select id="regions" path="region" name="regions" class="form-control input-full filled" >
+                <form:select id="regions" path="region" name="regions" class="form-control input-full filled" onchange="getStates()">
+                <form:option value = "NONE" label = "Select"/>
+                 <form:options items = "${regionsList}"></form:options>
                 </form:select>
                 <br>
                 
                 <label for="State" class="state">State</label>
-                <form:select id="state" path="state" name="state" class="form-control input-full filled" >
+                <form:select id="states" path="state" name="states" class="form-control input-full filled" >
                 </form:select>
               <br>
               <label for="District" class="district">District</label>
-                <form:select id="regions" path="district" name="regions" class="form-control input-full filled" >
+                <form:select id="districts" path="district" name="districts" class="form-control input-full filled" >
                 </form:select>
                 <br>
-                <label for="city" class="city">City</label>
-                <form:select id="city" path="city" name="city" class="form-control input-full filled" >
+                <label for="cities" class="city">City</label>
+                <form:select id="cities" path="city" name="cities" class="form-control input-full filled" >
                 </form:select>
                
 				<div class="form-action">
