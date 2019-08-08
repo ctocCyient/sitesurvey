@@ -39,11 +39,19 @@
 	<script>
 	var name,role;
 	$(function(){
+		<% if (session.getAttribute("userName") == null) { %>
+		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
+	<% } else {%>
+	  name='<%=session.getAttribute("userName").toString()%>';
+	   role='<%=session.getAttribute("userRole").toString()%>';
+	<% } %>
+	
+	
 		  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 		  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-		  
-		   name='<%=session.getAttribute("userName").toString()%>';
-		   role='<%=session.getAttribute("userRole").toString()%>';
+	
+		
+		   
 	  });
 
 
@@ -105,12 +113,15 @@ color: #fff!important;
 
 
 <!-- Admin -->
-
-<% String s = session.getAttribute("userName").toString(); %>
-<% String role = session.getAttribute("userRole").toString(); %>
-
-    <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %> 
-    
+		<%
+		String s,role = " ";
+		if (session.getAttribute("userName") == null) { %>
+		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
+	<% } else {
+		 s = session.getAttribute("userName").toString();
+		 role = session.getAttribute("userRole").toString(); 
+	 } %>
+    <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>     
     <!-- Sidebar -->
 		<div id="superAdminSidebar">
 		</div>
