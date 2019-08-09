@@ -73,4 +73,23 @@ public class SurveyDAOImpl implements SurveyDAO {
         	      .list();  
 	} 
 	
+	
+	public String getUserName(String role, String username) {
+		    Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
+	        c.add(Restrictions.eq("username",username));
+	        c.add(Restrictions.eq("role",role));
+			List<User> userlist = c.list();
+			Integer count = userlist.size();
+			//Integer count = (Integer)c.uniqueResult();
+
+			if(count!=0)
+			{
+				return "Exists";
+			}
+			else
+			{
+      	      return "New";
+			}
+	} 
+	
 }

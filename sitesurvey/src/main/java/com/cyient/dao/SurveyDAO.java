@@ -32,5 +32,6 @@ public interface SurveyDAO {
 	@Transactional
 	public List<Regions> getCities(String region,String state,String district);
 	
-	
+	@Transactional
+	public String getUserName(String role, String username);
 }

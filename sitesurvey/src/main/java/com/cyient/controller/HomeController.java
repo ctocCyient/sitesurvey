@@ -253,7 +253,9 @@ public class HomeController {
 	}
 	
 	
-	@ModelAttribute("regionsList")
+	
+	 
+	   @ModelAttribute("regionsList")	
 	   public Map<String, String> getRegions() {
 	      Map<String, String> regionsMap = new HashMap<String, String>();
 	      List<Regions> regions = surveyDAO.getRegions();
@@ -269,6 +271,13 @@ public class HomeController {
 	      return regionsMap;
 	   }
 	
+		@RequestMapping(value = "/newUser", method = RequestMethod.GET)
+		public ModelAndView newUser(ModelAndView model) {
+			User user = new User();
+			model.addObject("User", user);
+			model.setViewName("userReg");
+			return model;
+		}
 	 
 	 @RequestMapping(value="getStates", method = RequestMethod.GET)
 	    @ResponseBody

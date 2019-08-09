@@ -40,7 +40,7 @@
 	var name,role;
 	$(function(){
 		<% if (session.getAttribute("userName") == null) { %>
-		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
+		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/logout"/>';
 	<% } else {%>
 	  name='<%=session.getAttribute("userName").toString()%>';
 	   role='<%=session.getAttribute("userRole").toString()%>';
