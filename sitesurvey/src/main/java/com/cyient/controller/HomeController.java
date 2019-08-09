@@ -332,6 +332,16 @@ public class HomeController {
 //	        	   String totalJson = gsonBuilder.toJson(listCities);
 		              return citiesMap;
 	    }
-    
+	 @RequestMapping(value="/getLastSiteId", method=RequestMethod.GET)
+	  @ResponseBody
+	  public String getLastTicketId(HttpServletRequest request){
+	  
+	   List<Site> siteidList=surveyDAO.getSiteId();
+	   System.out.println("siteid>>>>>>...."+siteidList);
+	   Gson gsonBuilder=new GsonBuilder().create();
+	   String executiveJson=gsonBuilder.toJson(siteidList);
+	   return executiveJson.toString();
+	  
+	  }
     
 }

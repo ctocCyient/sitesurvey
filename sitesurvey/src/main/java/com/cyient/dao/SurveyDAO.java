@@ -34,4 +34,7 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public String getUserName(String role, String username);
+	
+	@Transactional
+	public List<Site> getSiteId();
 }

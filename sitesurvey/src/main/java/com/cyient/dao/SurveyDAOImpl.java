@@ -90,6 +90,11 @@ public class SurveyDAOImpl implements SurveyDAO {
 			{
       	      return "New";
 			}
+	}
+
+	public List<Site> getSiteId() {
+		// TODO Auto-generated method stub
+		  return sessionFactory.getCurrentSession().createQuery("select siteid from Site where siteid=(select max(siteid) from Site)").list();
 	} 
 	
 }
