@@ -165,7 +165,7 @@
 		}
 	 	
 	 	 function getUserName(){
-
+	 		 
 	 		var username=$("#technicianName").val();
 	 		var role="FieldTechnician";
 	 		$.ajax({
@@ -195,7 +195,7 @@
 	 		});	 
 	 	} 
 		
-	 	 
+
 		 function getState(region)
 		 {
 			 $.ajax({

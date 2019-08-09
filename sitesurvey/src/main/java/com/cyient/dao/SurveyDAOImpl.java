@@ -38,6 +38,19 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(site);
 	}
 
+
+	public String getUserName(String role, String username) {
+		//List list=sessionFactory.getCurrentSession().createQuery("select username from User where username='"+username+"'and role='"+role+"'").list();
+		Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
+		c.add(Restrictions.eq("username",username));
+		c.add(Restrictions.eq("role",role));
+		List list = c.list();
+		if(list.isEmpty())
+			return "Not Exists";
+		else
+			return "Exists";
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Regions> getRegions() {
 		System.out.println("getRegions" );

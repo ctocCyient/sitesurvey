@@ -87,6 +87,7 @@ public class HomeController {
 		return model;
 	}
 	
+
 	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
 	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
 		String status="Technician Added Successfully";
@@ -384,5 +385,15 @@ public class HomeController {
 			Gson gsonBuilder = new GsonBuilder().create();
 			String managerJSON = gsonBuilder.toJson(listManagers);
 	 	   	return managerJSON;
+		}
+
+
+	    @RequestMapping(value = "/getUserName", method = RequestMethod.GET)
+		@ResponseBody
+		public String getUserName(HttpServletRequest request) {		
+			String username=request.getParameter("username");
+	    	String role=request.getParameter("role");
+	    	String user=surveyDAO.getUserName(role,username);
+			return user;
 		}
 }

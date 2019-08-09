@@ -110,38 +110,37 @@ function populateDropdown(data,id)
 		 	});	
 	}*/
 	
-function getUserName(){
-	var username=$("#username").val();
-	var role=$("#type").val();
-	$.ajax({
-        type:"post",
-        url:"getUserName",
-        contentType: 'application/json',
-        datatype : "text",
-        data:{"username":username,"role":role},
-        success:function(data1) {
-        	alert(data1);
-       
-        	if(data1=="Exists")
-        	{
-        		alert(data1);
-        		$("#unameMsg").css("display","block");
-        		$("#unameMsg").val('');
-        		$("#submit").attr('disabled',true);
-        	}
-        	else
-        	{
-        		$("#unameMsg").css("display","none");
-        		//$("#name").val(username);
-        		$("#submit").attr('disabled',false);
-        	}
-        },
-        error:function()
-        {
-        	console.log("Error");
-        }
-	});	 
-}
+
+	function getUserName(){
+
+		var username=$("#username").val();
+		var role=$("#type").val();
+		$.ajax({
+	        type:"get",
+	        url:"getUserName",
+	        contentType: 'application/json',
+	        datatype : "json",
+	        data:{"username":username,"role":role},
+	        success:function(data1) {
+	        	if(data1=="Exists")
+	        	{
+	        		$("#unameMsg").css("display","block");
+	        		$("#unameMsg").val('');
+	        		$("#submit").attr('disabled',true);
+	        	}
+	        	else
+	        	{
+	        		$("#unameMsg").css("display","none");
+	        		$("#name").val(username);
+	        		$("#submit").attr('disabled',false);
+	        	}
+	        },
+	        error:function()
+	        {
+	        	console.log("Error");
+	        }
+		});	 
+	}
 
 
 </script>
@@ -241,8 +240,16 @@ label {
 				<label for="Type" class="Type">Region</label>
                 <form:select id="region" path="region" name="region" class="form-control input-full filled" >
                 
+<<<<<<< HEAD
                 <form:option value="Select">Select</form:option>
              <form:options items="${regionsList}"></form:options>
+=======
+
+                 <form:option value="Select">Select</form:option>
+             <form:options items="${regionsList}"></form:options> 
+
+            
+>>>>>>> branch 'kiran' of https://github.com/ctocCyient/sitesurvey
                 
                 </form:select>
                 <!--  <span id="regionIdMsg" style="color:red;display:none;font-size:15px">Please Select Region</span>  -->
