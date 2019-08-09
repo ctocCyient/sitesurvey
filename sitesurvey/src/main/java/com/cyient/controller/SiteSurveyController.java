@@ -38,7 +38,6 @@ public class SiteSurveyController {
 
 		System.out.println("SiteSurveyController()");
 	}
-
 	@Autowired
 	private SurveyDAO surveyDAO;
 	

@@ -41,6 +41,9 @@ public interface SurveyDAO {
 	public List<User> getManager(String region);
 	
 	@Transactional
+	public List<Site> getSiteId();
+
+	@Transactional
 	public String getManagerId(String managerName);
 	
 	@Transactional
@@ -54,4 +57,5 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public void addTechnicianIntoUsers(User user);
+
 }

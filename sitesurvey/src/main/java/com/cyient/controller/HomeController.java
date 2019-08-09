@@ -4,8 +4,10 @@ package com.cyient.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -104,6 +106,7 @@ public class HomeController {
 			user.setRole("FieldTechnician");
     	   surveyDAO.addTechnician(technician);
     	   surveyDAO.addTechnicianIntoUsers(user);
+    	   System.out.println("Manager+++++++++++++++"+technician.getManager());
 		   managerId=surveyDAO.getManagerId(technician.getManager());
 		   final String managerName=technician.getManager();
 		   final String managerEmailId=managerId.substring(1, managerId.length()-1);
@@ -267,6 +270,7 @@ public class HomeController {
 	}
 	
 
+
 	 @RequestMapping(value="/getLastTicketId", method=RequestMethod.GET)
 	 @ResponseBody
 	 public String getLastTicketId(HttpServletRequest request){
@@ -277,6 +281,7 @@ public class HomeController {
 		 return executiveJson.toString();
 		 
 	 }
+
 	 
 	   @ModelAttribute("regionsList")	
 	   public Map<String, String> getRegions() {
@@ -293,32 +298,37 @@ public class HomeController {
 	      System.out.println("RegionsData "+regionsMap);
 	      return regionsMap;
 	   }
-	 
+
 	 @RequestMapping(value="getStates", method = RequestMethod.GET)
 	    @ResponseBody
+
 	    public String getStates(ModelAndView model,HttpServletRequest request) {
-		 Map<String, String> statesMap = new HashMap<String, String>();
-			String selectedRegion=request.getParameter("selectedRegion");		
+		String selectedRegion=request.getParameter("selectedRegion");		
 			//List<Regions> listStates = surveyDAO.getStates(selectedRegion);
 			 List<Regions> regions = surveyDAO.getStates(selectedRegion);
 			 List<String> listStates = new ArrayList<String>();
 		      for(Regions region : regions)
 		      {
-		    	//  statesMap.put(region.getState(),region.getState());
+    	//  statesMap.put(region.getState(),region.getState());
 		    	  listStates.add(region.getState());
+
 		      }
-			  	   Gson gsonBuilder = new GsonBuilder().create();
-	        	   String statesJson = gsonBuilder.toJson(listStates);
-	        	   System.out.println("StatesJSON"+statesJson);
-	        	   return statesJson;
+		      
+		      List<Object> listWithoutDuplicates = listStates.stream().distinct().collect(Collectors.toList());
+		      Gson gsonBuilder = new GsonBuilder().create();
+	          String statesJson = gsonBuilder.toJson(listWithoutDuplicates);
+	          System.out.println("StatesJSON"+statesJson);
+	          return statesJson;
     	  // return statesMap;
-		            
+
 	    }
 	 
 	 @RequestMapping(value="getDistricts", method = RequestMethod.GET)
 	    @ResponseBody
+
 	    public  String getDistricts(ModelAndView model,HttpServletRequest request) {
 		 String selectedRegion=request.getParameter("selectedRegion");
+
 			String selectedState=request.getParameter("selectedState");	
 			List<Regions> districts = surveyDAO.getDistricts(selectedRegion,selectedState);
 			List<String> listDistricts = new ArrayList<String>();
@@ -326,8 +336,9 @@ public class HomeController {
 			{
 				listDistricts.add(region.getDistrict());
 			}
+			List<Object> listWithoutDuplicates = listDistricts.stream().distinct().collect(Collectors.toList());
 			Gson gsonBuilder = new GsonBuilder().create();
-		    String districtsJson = gsonBuilder.toJson(listDistricts);
+		    String districtsJson = gsonBuilder.toJson(listWithoutDuplicates);
 			return districtsJson;
 			/*List<Regions> regions = surveyDAO.getDistricts(selectedRegion,selectedState);
 			 Map<String, String> districtsMap = new HashMap<String, String>();
@@ -344,20 +355,23 @@ public class HomeController {
 	 
 	    @RequestMapping(value="getCities", method = RequestMethod.GET)
 	    @ResponseBody
+
 	    public  String getCities(ModelAndView model,HttpServletRequest request) {
+
 		 String selectedRegion=request.getParameter("selectedRegion");
 			String selectedState=request.getParameter("selectedState");	
 			String selectedDistrict=request.getParameter("selectedDistrict");	
-
 			List<Regions> cities = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
 			List<String> listCities=new ArrayList<String>();
 			for(Regions region:cities)
 			{
 				listCities.add(region.getCity());
 			}
+			List<Object> listWithoutDuplicates = listCities.stream().distinct().collect(Collectors.toList());
 			Gson gsonBuilder = new GsonBuilder().create();
-	        String totalJson = gsonBuilder.toJson(listCities);
+	        String totalJson = gsonBuilder.toJson(listWithoutDuplicates);
 		    return totalJson;
+	   
 
 			/*List<Regions> regions = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
 			 Map<String, String> citiesMap = new HashMap<String, String>();
@@ -372,6 +386,18 @@ public class HomeController {
 
 	    }
 	    
+	 @RequestMapping(value="/getLastSiteId", method=RequestMethod.GET)
+	  @ResponseBody
+	  public String getLastSiteId(HttpServletRequest request){
+	  
+	   List<Site> siteidList=surveyDAO.getSiteId();
+	   System.out.println("siteid>>>>>>...."+siteidList);
+	   Gson gsonBuilder=new GsonBuilder().create();
+	   String executiveJson=gsonBuilder.toJson(siteidList);
+	   return executiveJson.toString();
+	  
+	  }
+    
 	    @RequestMapping(value= "getManager", method = RequestMethod.GET)
 		@ResponseBody
 		public String getManager(HttpServletRequest request) {

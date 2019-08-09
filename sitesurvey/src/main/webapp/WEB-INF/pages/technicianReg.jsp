@@ -198,6 +198,7 @@
 
 		 function getState(region)
 		 {
+			 
 			 $.ajax({
 				 	type:"get",
 				 	url:"getStates",
@@ -344,8 +345,7 @@ label {
                 <br>
                  <label for="state" class="placeholder">State</label>
                 	<form:select id="state" path="state" name="state" class="form-control input-full filled" onchange="getDistrict(this.value);"  > 
-                	<form:option value="Select">Select</form:option>
-            	<form:options items="${getStates}"></form:options>
+                	
                 	</form:select>
                 <br>
                  <label for="district" class="placeholder">District</label>

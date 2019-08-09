@@ -239,18 +239,8 @@ label {
                 <div  id="regionDiv" >
 				<label for="Type" class="Type">Region</label>
                 <form:select id="region" path="region" name="region" class="form-control input-full filled" >
-                
-<<<<<<< HEAD
                 <form:option value="Select">Select</form:option>
-             <form:options items="${regionsList}"></form:options>
-=======
-
-                 <form:option value="Select">Select</form:option>
-             <form:options items="${regionsList}"></form:options> 
-
-            
->>>>>>> branch 'kiran' of https://github.com/ctocCyient/sitesurvey
-                
+          	   <form:options items="${regionsList}"></form:options>
                 </form:select>
                 <!--  <span id="regionIdMsg" style="color:red;display:none;font-size:15px">Please Select Region</span>  -->
                 </div>
