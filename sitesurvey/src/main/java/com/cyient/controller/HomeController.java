@@ -87,48 +87,47 @@ public class HomeController {
 		return model;
 	}
 	
-//	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
-//	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
-//		String status="Technician Added Successfully";
-//		final JSONArray json=new JSONArray();
-//			String managerId=null;
-//			User user=new User();
-//			user.setUsername(technician.getTechnicianId());
-//			user.setName(technician.getTechnicianName());
-//			user.setEmailId(technician.getEmailId());
-//			user.setMobileNumber(technician.getMobile());
-//			user.setPassword(technician.getPassword());
-//			user.setRegion(technician.getRegion());
-//			user.setCreatedDate(technician.getCreatedDate());
-//			user.setRole("FieldTechnician");
-//    	   surveyDAO.addTechnician(technician);
-//    	   surveyDAO.addTechnicianIntoUsers(user);
-//		   managerId=surveyDAO.getManagerId(technician.getManager());
-//		   final String managerName=technician.getManager();
-//		   final String managerEmailId=managerId.substring(1, managerId.length()-1);
-//		   System.out.println("mail::::"+mailSender);
-//        	List<User> ManagerDetails=surveyDAO.getManagerDetails(technician.getManager());
-//		   
-//			for(User det:ManagerDetails)
-//			{
-//				json.add(det.getName());
-//				json.add(det.getUsername());
-//				json.add(det.getPassword());
-//			}
-//
-//		      mailSender.send(new MimeMessagePreparator() {
-//		    	  public void prepare(MimeMessage mimeMessage) throws MessagingException {		    		
-//		    	    MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-//		    	    message.setFrom("Neeraja.Chaparala@cyient.com");
-//		    	    message.setTo(managerEmailId);
-//		    	    message.setSubject("Acceptance of Feild Technician Creation");	    	 
-//		    	  // message.setText("Dear <b>" + managerName +"</b> ,<br><br> Ticket with Id <b>" +selectedTicketNum+" </b> is assigned. Tikcet Details are:<br> Severity: <b>"+severity+ "</b> <br>Ticket Description: <b>" + ticketDesc+"</b><br>Customer ID <b>"+customerId+"</b> . <br> Please <a href='http://172.16.53.79:8080/RFIDAssetTracking/'>login</a> for other details", true);
-//		    	    message.setText("Dear <b>" + json.get(0) +"</b> ,<br><br> A new Technician created under your region with details:<br><b>Tehnician Id: </b>"+technician.getTechnicianId()+"<br><b>Technician Name: </b>"+technician.getTechnicianName()+"<br><b>Region: </b> "+technician.getRegion()+"<br><br>Please <a href='http://ctoceu.cyient.com:3290/RFIDAssetTracking/'>login</a> for other details with credetials:<br> <b>Username</b>: "+json.get(1)+"<br><b>Password</b>:"+json.get(2)+"", true);
-//		    	  }
-//		    	});
-//		      redirectAttributes.addFlashAttribute("status", status);
-//				return new ModelAndView("redirect:/newTechnician");
-//	}
+	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
+	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
+		String status="Technician Added Successfully";
+		final JSONArray json=new JSONArray();
+			String managerId=null;
+			User user=new User();
+			user.setUsername(technician.getTechnicianId());
+			user.setName(technician.getTechnicianName());
+			user.setEmailId(technician.getEmailId());
+			user.setMobileNumber(technician.getMobile());
+			user.setPassword(technician.getPassword());
+			user.setRegion(technician.getRegion());
+			user.setCreatedDate(technician.getCreatedDate());
+			user.setRole("FieldTechnician");
+    	   surveyDAO.addTechnician(technician);
+    	   surveyDAO.addTechnicianIntoUsers(user);
+		   managerId=surveyDAO.getManagerId(technician.getManager());
+		   final String managerName=technician.getManager();
+		   final String managerEmailId=managerId.substring(1, managerId.length()-1);
+		   System.out.println("mail::::"+mailSender);
+        	List<User> ManagerDetails=surveyDAO.getManagerDetails(technician.getManager());
+		   final List<String> managerDet=new ArrayList<String>();
+			for(User det:ManagerDetails)
+			{
+				managerDet.add(det.getName());
+				managerDet.add(det.getUsername());
+				managerDet.add(det.getPassword());
+			}
+		      mailSender.send(new MimeMessagePreparator() {
+		    	  public void prepare(MimeMessage mimeMessage) throws MessagingException {		    		
+		    	    MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+		    	    message.setFrom("Neeraja.Chaparala@cyient.com");
+		    	    message.setTo(managerEmailId);
+		    	    message.setSubject("Acceptance of Feild Technician Creation");	    	 
+		    	  // message.setText("Dear <b>" + managerName +"</b> ,<br><br> Ticket with Id <b>" +selectedTicketNum+" </b> is assigned. Tikcet Details are:<br> Severity: <b>"+severity+ "</b> <br>Ticket Description: <b>" + ticketDesc+"</b><br>Customer ID <b>"+customerId+"</b> . <br> Please <a href='http://172.16.53.79:8080/RFIDAssetTracking/'>login</a> for other details", true);
+		    	    message.setText("Dear <b>" + managerDet.get(0) +"</b> ,<br><br> A new Technician created under your region with details:<br><b>Tehnician Id: </b>"+technician.getTechnicianId()+"<br><b>Technician Name: </b>"+technician.getTechnicianName()+"<br><b>Region: </b> "+technician.getRegion()+"<br><br>Please <a href='http://ctoceu.cyient.com:3290/RFIDAssetTracking/'>login</a> for other details with credetials:<br> <b>Username</b>: "+managerDet.get(1)+"<br><b>Password</b>:"+managerDet.get(2)+"", true);
+		    	  }
+		    	});
+		      redirectAttributes.addFlashAttribute("status", status);
+			return new ModelAndView("redirect:/newTechnician");
+	}
 //	                                                                                                                                                                                                                                                                                   
 //   @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
 //    @ResponseBody
@@ -231,8 +230,21 @@ public class HomeController {
 //  		return "Mail Sent";
 //  	}
 //      
+	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
+	public ModelAndView newUser(ModelAndView model) {
+		User user = new User();
+		model.addObject("User", user);
+		model.setViewName("userReg");
+		return model;
+	}
     
-    
+	@RequestMapping(value = "/newTechnician", method = RequestMethod.GET)
+	public ModelAndView newTechnician(ModelAndView model) {
+		Technician technician = new Technician();
+		model.addObject("Technician", technician);
+		model.setViewName("technicianReg");
+		return model;
+	}
 	
 	@RequestMapping(value = "/newSite", method = RequestMethod.GET)
 	public ModelAndView newSite(ModelAndView model) {
@@ -252,6 +264,17 @@ public class HomeController {
 		return new ModelAndView("redirect:/newSite");
 	}
 	
+
+	 @RequestMapping(value="/getLastTicketId", method=RequestMethod.GET)
+	 @ResponseBody
+	 public String getLastTicketId(HttpServletRequest request){
+		
+		 List<Ticketing> ticketList=surveyDAO.getTicketId();
+		 Gson gsonBuilder=new GsonBuilder().create();
+		 String executiveJson=gsonBuilder.toJson(ticketList);
+		 return executiveJson.toString();
+		 
+	 }
 	
 	@ModelAttribute("regionsList")
 	   public Map<String, String> getRegions() {
@@ -280,7 +303,7 @@ public class HomeController {
 			  	   Gson gsonBuilder = new GsonBuilder().create();
 	        	   String statesJson = gsonBuilder.toJson(listStates);
 	        	   System.out.println("StatesJSON"+statesJson);
-		              return statesJson.toString();
+		           return statesJson;
 	    }
 	 
 	 @RequestMapping(value="getDistricts", method = RequestMethod.GET)
@@ -288,23 +311,46 @@ public class HomeController {
 	    public String getDistricts(ModelAndView model,HttpServletRequest request) {
 		 String selectedRegion=request.getParameter("selectedRegion");
 			String selectedState=request.getParameter("selectedState");		
-			List<Regions> listDistricts = surveyDAO.getDistricts(selectedRegion,selectedState);
-			  	   Gson gsonBuilder = new GsonBuilder().create();
-	        	   String districtsJson = gsonBuilder.toJson(listDistricts);
-		              return districtsJson.toString();
+			List<Regions> districts = surveyDAO.getDistricts(selectedRegion,selectedState);
+			List<String> listDistricts = new ArrayList<String>();
+			for(Regions region: districts)
+			{
+				listDistricts.add(region.getDistrict());
+			}
+			Gson gsonBuilder = new GsonBuilder().create();
+		    String districtsJson = gsonBuilder.toJson(listDistricts);
+			return districtsJson.toString();
 	    }
 	 
-	 @RequestMapping(value="getCities", method = RequestMethod.GET)
+	    @RequestMapping(value="getCities", method = RequestMethod.GET)
 	    @ResponseBody
 	    public String getCities(ModelAndView model,HttpServletRequest request) {
 		 String selectedRegion=request.getParameter("selectedRegion");
 			String selectedState=request.getParameter("selectedState");	
 			String selectedDistrict=request.getParameter("selectedDistrict");	
-			List<Regions> listCities = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
-			  	   Gson gsonBuilder = new GsonBuilder().create();
-	        	   String totalJson = gsonBuilder.toJson(listCities);
-		              return totalJson.toString();
+			List<Regions> cities = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
+			List<String> listCities=new ArrayList<String>();
+			for(Regions region:cities)
+			{
+				listCities.add(region.getCity());
+			}
+			Gson gsonBuilder = new GsonBuilder().create();
+	        String totalJson = gsonBuilder.toJson(listCities);
+		    return totalJson.toString();
 	    }
-    
-    
+	    
+	    @RequestMapping(value= "getManager", method = RequestMethod.GET)
+		@ResponseBody
+		public String getManager(HttpServletRequest request) {
+		 String region=request.getParameter("selectedRegion");
+			List<User> managers = surveyDAO.getManager(region);
+			List<String> listManagers=new ArrayList<String>();
+			for(User user: managers)
+			{
+				listManagers.add(user.getUsername());
+			}
+			Gson gsonBuilder = new GsonBuilder().create();
+			String managerJSON = gsonBuilder.toJson(listManagers);
+	 	   	return managerJSON;
+		}
 }

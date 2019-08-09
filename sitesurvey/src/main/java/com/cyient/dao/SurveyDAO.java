@@ -6,6 +6,8 @@ import javax.transaction.Transactional;
 
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Technician;
+import com.cyient.model.Ticketing;
 import com.cyient.model.User;
 
 
@@ -31,6 +33,24 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public List<Regions> getCities(String region,String state,String district);
+	
+	@Transactional
+	public List<User> getManager(String region);
+	
+	@Transactional
+	public String getManagerId(String managerName);
+	
+	@Transactional
+	 public List<User> getManagerDetails(String managerId);
+	
+	@Transactional
+	public List<Ticketing> getTicketId();
+	
+	@Transactional
+	public void addTechnician(Technician technician);
+	
+	@Transactional
+	public void addTechnicianIntoUsers(User user);
 	
 	
 }

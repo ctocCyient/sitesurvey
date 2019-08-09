@@ -30,7 +30,6 @@ public class SiteSurveyController {
 
 	public SiteSurveyController() {
 		System.out.println("SiteSurveyController()");
-		 
 	}
 
 	@Autowired
@@ -66,7 +65,6 @@ public class SiteSurveyController {
 	              model.setViewName("homePage");
 	              return model;
            }
-
     }	
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
@@ -75,13 +73,7 @@ public class SiteSurveyController {
 		return model;
 	}
 	
-	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
-	public ModelAndView newUser(ModelAndView model) {
-		User user = new User();
-		model.addObject("User", user);
-		model.setViewName("userReg");
-		return model;
-	}
+	
 	
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public ModelAndView saveUser(@ModelAttribute User user,RedirectAttributes redirectAttributes) {
@@ -93,13 +85,6 @@ public class SiteSurveyController {
 		return new ModelAndView("redirect:/newUser");
 	}
 	
-	@RequestMapping(value = "/newTechnician", method = RequestMethod.GET)
-	public ModelAndView newTechnician(ModelAndView model) {
-		Technician technician = new Technician();
-		model.addObject("Technician", technician);
-		model.setViewName("technicianReg");
-		return model;
-	}
 	
 	@RequestMapping(value = "/logout")
 	 public String logout(@ModelAttribute User user, HttpSession session,HttpServletRequest request) {
