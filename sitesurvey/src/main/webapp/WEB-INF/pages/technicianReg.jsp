@@ -164,10 +164,10 @@
 				});
 		}
 	 	
-	 	/* function getUserName(){
+	 	 function getUserName(){
 
-	 		var username=$("#executiveName").val();
-	 		var role="FeildExecutive";
+	 		var username=$("#technicianName").val();
+	 		var role="FieldTechnician";
 	 		$.ajax({
 	 	        type:"get",
 	 	        url:"getUserName",
@@ -193,7 +193,7 @@
 	 	        	console.log("Error");
 	 	        }
 	 		});	 
-	 	} */
+	 	} 
 		
 		 function getState(region)
 		 {
@@ -321,8 +321,8 @@ label {
 				
                 <form:hidden id="technicianId" path="technicianId" name="technicianId" />
             	
-            	<label for="executiveName" class="placeholder">Technician Name</label>
-            	<form:input id="technicianName" path="technicianName" name="technicianName" class="form-control input-full filled" onkeypress="return isCharacters(event);"  onblur="getUserName();"/>
+            	<label for="technicianName" class="placeholder">Technician Name</label>
+            	<form:input id="technicianName" path="technicianName" name="technicianName" class="form-control input-full filled" onkeypress="return isCharacters(event);" onblur="getUserName()"/>
             	<span id="execNameMsg" style="color:red;display:none;font-size:15px">Name already Exists</span>
             	<br>
          		 <label for="emailID" class="placeholder">Email ID</label>
@@ -343,6 +343,8 @@ label {
                 <br>
                  <label for="state" class="placeholder">State</label>
                 	<form:select id="state" path="state" name="state" class="form-control input-full filled" onchange="getDistrict(this.value);"  > 
+                	<form:option value="Select">Select</form:option>
+            	<form:options items="${getStates}"></form:options>
                 	</form:select>
                 <br>
                  <label for="district" class="placeholder">District</label>

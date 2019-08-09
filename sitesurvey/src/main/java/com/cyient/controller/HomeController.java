@@ -230,6 +230,7 @@ public class HomeController {
 //  		return "Mail Sent";
 //  	}
 //      
+	
 	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
 	public ModelAndView newUser(ModelAndView model) {
 		User user = new User();
@@ -275,11 +276,15 @@ public class HomeController {
 		 return executiveJson.toString();
 		 
 	 }
-	
-	@ModelAttribute("regionsList")
+	 
+	   @ModelAttribute("regionsList")	
 	   public Map<String, String> getRegions() {
 	      Map<String, String> regionsMap = new HashMap<String, String>();
 	      List<Regions> regions = surveyDAO.getRegions();
+	      int i=0;
+	      for(i=0;i<regions.size();i++){
+	    	  System.out.println(regions.get(i));
+	    	 }
 	      for(Regions region : regions)
 	      {
 	    	  regionsMap.put(region.getRegion(), region.getRegion());
@@ -287,30 +292,33 @@ public class HomeController {
 	      System.out.println("RegionsData "+regionsMap);
 	      return regionsMap;
 	   }
-	
 	 
 	 @RequestMapping(value="getStates", method = RequestMethod.GET)
 	    @ResponseBody
 	    public String getStates(ModelAndView model,HttpServletRequest request) {
+		 Map<String, String> statesMap = new HashMap<String, String>();
 			String selectedRegion=request.getParameter("selectedRegion");		
 			//List<Regions> listStates = surveyDAO.getStates(selectedRegion);
 			 List<Regions> regions = surveyDAO.getStates(selectedRegion);
 			 List<String> listStates = new ArrayList<String>();
 		      for(Regions region : regions)
 		      {
+		    	//  statesMap.put(region.getState(),region.getState());
 		    	  listStates.add(region.getState());
 		      }
 			  	   Gson gsonBuilder = new GsonBuilder().create();
 	        	   String statesJson = gsonBuilder.toJson(listStates);
 	        	   System.out.println("StatesJSON"+statesJson);
-		           return statesJson;
+	        	   return statesJson;
+    	  // return statesMap;
+		            
 	    }
 	 
 	 @RequestMapping(value="getDistricts", method = RequestMethod.GET)
 	    @ResponseBody
-	    public String getDistricts(ModelAndView model,HttpServletRequest request) {
+	    public  String getDistricts(ModelAndView model,HttpServletRequest request) {
 		 String selectedRegion=request.getParameter("selectedRegion");
-			String selectedState=request.getParameter("selectedState");		
+			String selectedState=request.getParameter("selectedState");	
 			List<Regions> districts = surveyDAO.getDistricts(selectedRegion,selectedState);
 			List<String> listDistricts = new ArrayList<String>();
 			for(Regions region: districts)
@@ -319,15 +327,27 @@ public class HomeController {
 			}
 			Gson gsonBuilder = new GsonBuilder().create();
 		    String districtsJson = gsonBuilder.toJson(listDistricts);
-			return districtsJson.toString();
+			return districtsJson;
+			/*List<Regions> regions = surveyDAO.getDistricts(selectedRegion,selectedState);
+			 Map<String, String> districtsMap = new HashMap<String, String>();
+			 for(Regions region : regions)
+		      {
+				 districtsMap.put(region.getDistrict(),region.getDistrict());
+		      }
+//			  	   Gson gsonBuilder = new GsonBuilder().create();
+//	        	   String districtsJson = gsonBuilder.toJson(listDistricts);
+		              //return districtsJson.toString();
+			 return districtsMap;*/
+
 	    }
 	 
 	    @RequestMapping(value="getCities", method = RequestMethod.GET)
 	    @ResponseBody
-	    public String getCities(ModelAndView model,HttpServletRequest request) {
+	    public  String getCities(ModelAndView model,HttpServletRequest request) {
 		 String selectedRegion=request.getParameter("selectedRegion");
 			String selectedState=request.getParameter("selectedState");	
 			String selectedDistrict=request.getParameter("selectedDistrict");	
+
 			List<Regions> cities = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
 			List<String> listCities=new ArrayList<String>();
 			for(Regions region:cities)
@@ -336,7 +356,19 @@ public class HomeController {
 			}
 			Gson gsonBuilder = new GsonBuilder().create();
 	        String totalJson = gsonBuilder.toJson(listCities);
-		    return totalJson.toString();
+		    return totalJson;
+
+			/*List<Regions> regions = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
+			 Map<String, String> citiesMap = new HashMap<String, String>();
+			 for(Regions region : regions)
+		      {
+				 citiesMap.put(region.getCity(),region.getCity());
+		      }
+			
+//			  	   Gson gsonBuilder = new GsonBuilder().create();
+//	        	   String totalJson = gsonBuilder.toJson(listCities);
+		              return citiesMap;*/
+
 	    }
 	    
 	    @RequestMapping(value= "getManager", method = RequestMethod.GET)

@@ -14,12 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cyient.dao.SurveyDAO;
-import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.User;
 
@@ -73,6 +71,13 @@ public class SiteSurveyController {
 		return model;
 	}
 	
+
+	/*@RequestMapping(value = "/getUserName", method = RequestMethod.GET)
+	public String getUserName(HttpServletRequest request) {		
+		System.out.println(surveyDAO.getUserName(request.getParameter("role"),request.getParameter("username")));
+		return surveyDAO.getUserName(request.getParameter("role"),request.getParameter("username"));
+	}*/
+
 	
 	
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
@@ -91,5 +96,8 @@ public class SiteSurveyController {
           	  session.removeAttribute("userName");
               return "redirect:/";
 	 }
+	
+	
+	
 	
 }

@@ -35,6 +35,7 @@ public interface SurveyDAO {
 	public List<Regions> getCities(String region,String state,String district);
 	
 	@Transactional
+
 	public List<User> getManager(String region);
 	
 	@Transactional
@@ -51,6 +52,4 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public void addTechnicianIntoUsers(User user);
-	
-	
 }
