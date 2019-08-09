@@ -185,7 +185,7 @@ position: fixed;
 						<span class="input-group-text" id="basic-addon1"><i style='font-size:15px;width:12px' class='fas'>&#xf4fe;</i>	</span>
                 <form:select style='font-size:12.5px;' id="role" path="role" name="role" class="form-control input-full "  >
                 <form:option  value="Select">Select Role</form:option>
-                	<form:option value="SuperAdmin">SuperAdmin</form:option>
+                	<form:option value="SuperAdmin">Super Admin</form:option>
                 	<form:option value="Admin">Admin</form:option>
                 	<form:option  value="Manager">Manager</form:option>
                 	<form:option  value="FeildTechnician">Field Technician</form:option>                	

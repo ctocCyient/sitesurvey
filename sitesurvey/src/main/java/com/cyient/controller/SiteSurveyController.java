@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cyient.dao.SurveyDAO;
-import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.User;
 
@@ -42,57 +41,6 @@ public class SiteSurveyController {
 		return model;
 	}
 	
-	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
-	public ModelAndView newUser(ModelAndView model) {
-		User user = new User();
-		model.addObject("User", user);
-		model.setViewName("userReg");
-		return model;
-	}
-	
-	@RequestMapping(value = "/newTechnician", method = RequestMethod.GET)
-	public ModelAndView newTechnician(ModelAndView model) {
-		Technician technician = new Technician();
-		model.addObject("Technician", technician);
-		model.setViewName("technicianReg");
-		return model;
-	}
-	
-	
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public ModelAndView redirectHome(ModelAndView model) {
-		model.setViewName("homePage");
-		return model;
-	}
-	
-	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
-	public ModelAndView saveUser(@ModelAttribute User user,RedirectAttributes redirectAttributes) {
-		String status="User Added Successfully";
-		if (user.getUsername() !=null) { 
-			surveyDAO.addUser(user);
-		} 
-		redirectAttributes.addFlashAttribute("status", status);
-		return new ModelAndView("redirect:/newUser");
-	}
-	
-	
-	@RequestMapping(value = "/newSite", method = RequestMethod.GET)
-	public ModelAndView newSite(ModelAndView model) {
-		Site site = new Site();
-		model.addObject("Site", site);
-		model.setViewName("addSite");
-		return model;
-	}
-	
-	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
-	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
-		String status="Site Added Successfully";
-		if (site.getSiteid() !=null) { 
-			surveyDAO.addSite(site);
-		} 
-		redirectAttributes.addFlashAttribute("status", status);
-		return new ModelAndView("redirect:/newSite");
-	}
 	
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
     public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) {
@@ -118,14 +66,44 @@ public class SiteSurveyController {
 
     }	
 	
-		
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public ModelAndView redirectHome(ModelAndView model) {
+		model.setViewName("homePage");
+		return model;
+	}
 	
-	 @RequestMapping(value = "/logout")
+	@RequestMapping(value = "/getUserName", method = RequestMethod.GET)
+	public String getUserName(HttpServletRequest request) {		
+		System.out.println(surveyDAO.getUserName(request.getParameter("role"),request.getParameter("username")));
+		return surveyDAO.getUserName(request.getParameter("role"),request.getParameter("username"));
+	}
+	
+	
+	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
+	public ModelAndView saveUser(@ModelAttribute User user,RedirectAttributes redirectAttributes) {
+		String status="User Added Successfully";
+		if (user.getUsername() !=null) { 
+			surveyDAO.addUser(user);
+		} 
+		redirectAttributes.addFlashAttribute("status", status);
+		return new ModelAndView("redirect:/newUser");
+	}
+	
+	@RequestMapping(value = "/newTechnician", method = RequestMethod.GET)
+	public ModelAndView newTechnician(ModelAndView model) {
+		Technician technician = new Technician();
+		model.addObject("Technician", technician);
+		model.setViewName("technicianReg");
+		return model;
+	}
+	
+	@RequestMapping(value = "/logout")
 	 public String logout(@ModelAttribute User user, HttpSession session,HttpServletRequest request) {
           	  session.removeAttribute("userName");
               return "redirect:/";
 	 }
-
 	
-	 
+	
+	
+	
 }

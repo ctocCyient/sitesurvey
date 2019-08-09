@@ -17,11 +17,10 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "Battery_Bank_Master")
-public class Battery_Bank_Master implements Serializable {
+@Table(name = "Regions")
+public class Regions implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
-
 
 	@Id
 	@Column(name="Id")
@@ -29,12 +28,17 @@ public class Battery_Bank_Master implements Serializable {
 	private int id;
 	
 
+	@Column(name="Region")
+	private String region;
 	
-	@Column(name="Manufacturer")
-	private String Manufacturer;
+	@Column(name="State")
+	private String state;
 	
-	@Column(name="Type")
-	private String type;
+	@Column(name="District")
+	private String district;
+	
+	@Column(name="City")
+	private String city;
 
 	public int getId() {
 		return id;
@@ -44,21 +48,35 @@ public class Battery_Bank_Master implements Serializable {
 		this.id = id;
 	}
 
-	public String getManufacturer() {
-		return Manufacturer;
+	public String getRegion() {
+		return region;
 	}
 
-	public void setManufacturer(String manufacturer) {
-		Manufacturer = manufacturer;
+	public void setRegion(String region) {
+		this.region = region;
 	}
 
-	public String getType() {
-		return type;
+	public String getState() {
+		return state;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setState(String state) {
+		this.state = state;
 	}
-	
-	
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}	
 }

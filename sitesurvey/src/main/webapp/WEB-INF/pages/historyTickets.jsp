@@ -1,31 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>Site Survey</title>
+	<title>RFID</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
-	<script src="<c:url value='resources/js/jquery.min.js' />"></script>
+	<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
+
+	<!-- Fonts and icons -->
+	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
+	
+		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/js/validations.js' />"></script>
 	
-	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">	
-	
-	<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-<script type="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script type="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-
-
-	<!-- Fonts and icons -->
-	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
+	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">
+		
 	<script>
 		WebFont.load({
 			google: {"families":["Open+Sans:300,400,600,700"]},
@@ -34,29 +30,114 @@
 				sessionStorage.fonts = true;
 			}
 		});
-	
-	</script>
-	<script>
-	var name,role;
-	$(function(){
-		<% if (session.getAttribute("userName") == null) { %>
-		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/logout"/>';
-	<% } else {%>
-	  name='<%=session.getAttribute("userName").toString()%>';
-	   role='<%=session.getAttribute("userRole").toString()%>';
-	<% } %>
-	
-	
-		  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-		  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-	
+		$(document).ready(function() {
+			
+			 $("#navbar").load('<c:url value="/resources/common/header.jsp" />');  
+			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />');
+			
+			  //tableData();
+			  //getCount();
+			
+			  	
+			 
 		
-		   
-	  });
+			  
+		});
+		var dataSet=[];
+		 var ticketId,custId,ticketType;
+		
+		function tableData()
+		{			
+			$.ajax({
+               type:"get",
+               url:"getHistoryTickets",
+               contentType: 'application/json',
+               datatype : "json",
+               success:function(data) {
+                   historyTicketsList = JSON.parse(data);
+					
+                   for(var i=0;i<historyTicketsList.length;i++)
+        		   {
+					uid=historyTicketsList[i].uniqueId	
+					 	var Unique= hex2a(uid);
+                   	dataSet.push([historyTicketsList[i].ticketNum,historyTicketsList[i].customer.customerId,historyTicketsList[i].ticketType,Unique,historyTicketsList[i].executiveName]);
+        			   
+        		   }
+                  
+                   
+			 var table1=$('#historyTickets').DataTable({
+					destroy:true,
+					language: {
+					  emptyTable: "No Data Available"
+					},	
+					columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<button style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn'>View</button>"}],					
+			        data: dataSet,
+			        columns: [
+						{title: "Ticket Id" },
+						{title: "Customer Id" },
+						{title: "Ticket Type" },	
+						{title: "Unique Id" },
+						{title: "Technician Name" },						
+						{title: "Action" }
+			        ]
+			    } );
+			 
+			 $('#historyTickets tbody').on('click', '[id*=viewBtn]', function () {
+		            data1 =  table1.row($(this).parents('tr')).data();
+		           
+		           ticketId=data1[0];
+		           custId=data1[1];
+		           ticketType=null;
+		           
+		           console.log("Cust"+custId);
+		           
+		          // window.location.href = '/RFIDAssetTracking/viewTicketDetails';
+					
 
+					$.ajax({
+		                type: "get",
+		                url: "getDetails",
+		                contentType: 'application/json',
+		                data :{
+		                	custId,ticketId
+		                  },
+		                datatype: "json",
+		                success: function(result) {
+		                    listData = JSON.parse(result);
+		                   window.location.href = '/RFIDAssetTracking/viewTicketDetails?listDetails='+ window.encodeURIComponent(JSON.stringify(listData)); 
+		                  
 
+		                }
+					
+		       		 }); 
+			 
+             });
+		}
+			});
+		}
+		
+		
+function getCount(){
 	
-	
+	$.ajax({
+        type:"get",
+        url:"ticketsCount",
+        contentType: 'application/json',
+        datatype : "json",
+        success:function(result) {
+        	var jsonArr = $.parseJSON(result);
+        	$('#openTicketCount')[0].innerHTML=jsonArr[0];
+            /* $('#closedTicketCount')[0].innerHTML=jsonArr[1];
+            $('#historyTicketCount')[0].innerHTML=jsonArr[2]; */
+            $('#assignedTicketCount')[0].innerHTML=jsonArr[1];
+               //$('#unassignedTicketCount')[0].innerHTML=jsonArr[2];
+               $('#historyTicketCount')[0].innerHTML=jsonArr[2];
+               $('#totalTicketCount')[0].innerHTML=jsonArr[3];
+            
+        }
+	});
+}
+
 	</script>
 <style>
 .fa-bars,
@@ -65,15 +146,25 @@
 color: #fff!important;
 }
 
-.isa_success{
-    color:#10F564;
-}
+.btn-border.btn-assign {
+    color: #6610f2!important;
+    border: 1px solid #6610f2!important;
+    }
+    
 </style>
 	<!-- CSS Files -->
+
+	
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 
-	</head>
+	<!-- CSS Just for demo purpose, don't include it in your project -->
+	<link rel="stylesheet" href="<c:url value='resources/assets/css/demo.css' />">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+</head>
 <body>
 	<div class="wrapper">
 		<!--
@@ -101,32 +192,17 @@ color: #fff!important;
 			</div>
 			<!-- End Logo Header -->
 
-			<!-- Navbar Header -->
+<!-- Navbar Header -->
 			<div id="navbar">	
 			</div>
 			<!-- End Navbar -->
 		</div>
 
-		
+		<!-- Sidebar -->
+<div id="superAdminSidebar">
+</div>
 
 
-
-
-<!-- Admin -->
-		<%
-		String s,role = " ";
-		if (session.getAttribute("userName") == null) { %>
-		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
-	<% } else {
-		 s = session.getAttribute("userName").toString();
-		 role = session.getAttribute("userRole").toString(); 
-	 } %>
-    <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>     
-    <!-- Sidebar -->
-		<div id="superAdminSidebar">
-		</div>
-		<!-- End Sidebar -->
-    
 
 		<div class="main-panel">
 			<div class="content">
@@ -134,20 +210,22 @@ color: #fff!important;
 					<div class="page-header">
 						<h4 class="page-title">Dashboard</h4>						
 					</div>
+					
+					
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div" onclick="location.href='/sitesurvey/openTickets'" style="background-color:#00B1BF;">
-									<div class="row align-items-center" >
-										<div class="col-icon" >
+							<div class="card card-stats card-round">
+								<div class="card-body " onclick="location.href='/sitesurvey/openTickets'" style="cursor:pointer;">
+									<div class="row align-items-center">
+										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
 											<img src="<c:url value='resources/assets/img/open.svg' />" >
 											</div>
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category" style="color:#ffffff;">Open</p>
-												<h4 class="card-title" id="assignSurveyCount" style="color:#ffffff;"></h4>
+												<p class="card-category" >Open</p>
+												<h4 class="card-title" id="openTicketCount" ></h4>
 											</div>
 										</div>
 									</div>
@@ -156,7 +234,7 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/sitesurvey/assignedTickets'" >
+								<div class="card-body" onclick="location.href='/sitesurvey/assignedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#F98B88;border-radius: 5px">
@@ -173,25 +251,27 @@ color: #fff!important;
 								</div>
 							</div>
 						</div>
+						
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/RFIDAssetTracking/historyTickets'">
+								<div class="card-body" onclick="location.href='/sitesurvey/historyTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px;">
 											<img src="<c:url value='resources/assets/img/history.svg' />" >
 											</div>
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category">History</p>
-												<h4 class="card-title" id="historyTicketCount"></h4>
+												<p class="card-category" style="color:#ffffff;" >History</p>
+												<h4 class="card-title" style="color:#ffffff;" id="historyTicketCount" ></h4>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+						
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
 								<div class="card-body" onclick="location.href='/sitesurvey/totalTickets'" style="cursor:pointer;">
@@ -211,18 +291,27 @@ color: #fff!important;
 								</div>
 							</div>
 						</div>
-						
 					</div>
+				
 					
-					
+
+					<div class="row">
+							<div class="col-md-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title">Tickets</h4>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table id="historyTickets" style="width:100%" class="display table table-striped table-hover" ></table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-			
 		</div>
-		
-		<%} %>
-		
-		
 		
 	</div>
 
@@ -235,8 +324,11 @@ color: #fff!important;
 <script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
 
 <!-- jQuery UI -->
+
+
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' />"></script>
+
 
 <!-- jQuery Scrollbar -->
 <script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
@@ -256,24 +348,28 @@ color: #fff!important;
 <!-- Datatables -->
 <script src="<c:url value='resources/assets/js/plugin/datatables/datatables.min.js' />"></script>
 
+<!-- Bootstrap Notify -->
+<script src="<c:url value='resources/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' />"></script>
+
 <!-- Bootstrap Toggle -->
 <script src="<c:url value='resources/assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' />"></script>
 
 <!-- jQuery Vector Maps -->
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/jquery.vmap.min.js' />"></script>
+
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js' />"></script>
 
 <!-- Google Maps Plugin -->
 <script src="<c:url value='resources/assets/js/plugin/gmaps/gmaps.js' />"></script>
 
 <!-- Sweet Alert -->
+
 <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 <!-- Azzara JS -->
+
 <script src="<c:url value='resources/assets/js/ready.min.js' />"></script>
 
-<script src="<c:url value='resources/assets/js/setting-demo.js' />"></script>
-<script src="<c:url value='resources/assets/js/demo.js' />"></script>
 
 </body>
 </html>

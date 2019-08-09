@@ -64,10 +64,15 @@ function validatePassword()
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-	  getRegions();
+	  //getRegions();
 		dateFun();
-		$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum").attr('required', '');  
+		$("#type,#username,#name,#emailId,#pwd,#cpwd,#mobileNum").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
+		 
+		 
+		 //$('#type').attr('readonly',true); 
+     	$('#type').addClass('input-disabled');
+         $("select option:contains('Select')").attr("disabled","disabled");
 });
 
 function populateDropdown(data,id)
@@ -87,7 +92,7 @@ function populateDropdown(data,id)
 		document.getElementById('createdDate').value=today;
 	}
 
-	function getRegions()
+/*	function getRegions()
 	{	
 		$.ajax({
 		         type:"get",
@@ -103,21 +108,23 @@ function populateDropdown(data,id)
 		         	console.log("Error");
 		         }
 		 	});	
-	}
+	}*/
 	
 function getUserName(){
-
 	var username=$("#username").val();
 	var role=$("#type").val();
 	$.ajax({
-        type:"get",
+        type:"post",
         url:"getUserName",
         contentType: 'application/json',
-        datatype : "json",
+        datatype : "text",
         data:{"username":username,"role":role},
         success:function(data1) {
+        	alert(data1);
+       
         	if(data1=="Exists")
         	{
+        		alert(data1);
         		$("#unameMsg").css("display","block");
         		$("#unameMsg").val('');
         		$("#submit").attr('disabled',true);
@@ -125,7 +132,7 @@ function getUserName(){
         	else
         	{
         		$("#unameMsg").css("display","none");
-        		$("#name").val(username);
+        		//$("#name").val(username);
         		$("#submit").attr('disabled',false);
         	}
         },
@@ -195,15 +202,19 @@ label {
 			
 				<label for="Type" class="Type">Role</label>
                 <form:select id="type" path="role" name="type" class="form-control">
-                <form:option value="">Select</form:option>
+                <form:option value="Select">Select</form:option>
                 	<form:option value="Admin">Admin</form:option>
                 	<form:option value="Manager">Manager</form:option>
                 </form:select>
-                <form:hidden path="name" id="name" value="" />
+               
 				 <br>
-				<label for="username" class="placeholder">UserName</label>
+				<label for="username" class="placeholder">User Name</label>
 				<form:input id="username" path="username" class="form-control input-full filled" onkeypress="return isCharacters(event);" onblur="getUserName();"/>
 				<span id="unameMsg" style="color:red;display:none;font-size:15px">Username already Exists</span>
+				 <br>
+				<label for="name" class="placeholder">FullName</label>
+				<form:input id="name" path="name" class="form-control input-full filled" onkeypress="return isCharacters(event);"/>
+				<span id="unameMsg" style="color:red;display:none;font-size:15px">Username already Exists</span>				
 				<br>
 				<label for="email" class="placeholder">Email ID</label>
 				<form:input id="emailId" path="emailId" class="form-control input-full filled"   onchange="validateEmailId(this.value,this.id,'emailIdMsg')"  />
@@ -229,6 +240,10 @@ label {
                 <div  id="regionDiv" >
 				<label for="Type" class="Type">Region</label>
                 <form:select id="region" path="region" name="region" class="form-control input-full filled" >
+                
+                <form:option value="Select">Select</form:option>
+             <form:options items="${regionsList}"></form:options>
+                
                 </form:select>
                 <!--  <span id="regionIdMsg" style="color:red;display:none;font-size:15px">Please Select Region</span>  -->
                 </div>

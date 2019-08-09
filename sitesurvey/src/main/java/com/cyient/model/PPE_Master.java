@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "Survey_Team_PPE")
+@Table(name = "PPE_Master")
 public class PPE_Master implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
@@ -38,6 +38,46 @@ public class PPE_Master implements Serializable {
 	
 	@Column(name="Photo", unique = false, nullable = false, length = 16777215)
 	private byte[] photo;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getPpe() {
+		return ppe;
+	}
+
+	public void setPpe(String ppe) {
+		this.ppe = ppe;
+	}
+
+	public byte[] getPhotoSurveyTeam() {
+		return photoSurveyTeam;
+	}
+
+	public void setPhotoSurveyTeam(byte[] photoSurveyTeam) {
+		this.photoSurveyTeam = photoSurveyTeam;
+	}
+
+	public String getPhotoName() {
+		return photoName;
+	}
+
+	public void setPhotoName(String photoName) {
+		this.photoName = photoName;
+	}
+
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
+	}
 
 	
 }

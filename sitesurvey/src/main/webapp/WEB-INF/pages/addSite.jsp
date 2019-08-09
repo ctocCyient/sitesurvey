@@ -41,7 +41,7 @@ WebFont.load({
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-	//  getRegions();
+	  //getRegions();
 		
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
@@ -58,17 +58,26 @@ function populateDropdown(data,id)
  		 $("select option[value='']").attr('disabled','disabled');
 }
 
-	function getRegions()
+
+	
+	function getStates()
 	{	
+		selectedRegion=$('#regions').val();
+	
 		$.ajax({
 		         type:"get",
-		         url:"getRegions",
+		         url:"getStates",
 		         contentType: 'application/json',
 		         datatype : "json",
+		         data:{"selectedRegion":selectedRegion},
 		         success:function(data1) {
-		         	jsonData = JSON.parse(data1);
-		         	populateDropdown(jsonData,"regions");
-		         },
+// 		         	jsonData = JSON.parse(data1);
+// 		         	populateDropdown(jsonData,"states");
+					var select = document.getElementById("states");
+					for(index in data1) {
+					    select.options[select.options.length] = new Option(data1[index], index);
+					}
+				},
 		         error:function()
 		         {
 		         	console.log("Error");
@@ -76,6 +85,58 @@ function populateDropdown(data,id)
 		 	});	
 	}
 	
+	
+	function getDistricts()
+	{	
+		selectedRegion=$('#regions').val();
+		selectedstate=$('#states').val();
+		
+		$.ajax({
+		         type:"get",
+		         url:"getDistricts",
+		         contentType: 'application/json',
+		         datatype : "json",
+		         data:{"selectedRegion":selectedRegion,"selectedstate":selectedstate},
+		         success:function(data1) {
+// 		         	jsonData = JSON.parse(data1);
+// 		         	populateDropdown(jsonData,"states");
+					var select = document.getElementById("districts");
+					for(index in data1) {
+					    select.options[select.options.length] = new Option(data1[index], index);
+					}
+				},
+		         error:function()
+		         {
+		         	console.log("Error");
+		         }
+		 	});	
+	}
+	
+	function getCities()
+	{	
+		selectedRegion=$('#regions').val();
+		selectedstate=$('#states').val();
+		selectedDistrict=$('#districts').val();
+		$.ajax({
+		         type:"get",
+		         url:"getCities",
+		         contentType: 'application/json',
+		         datatype : "json",
+		         data:{"selectedRegion":selectedRegion,"selectedstate":selectedstate,"selectedDistrict":selectedDistrict},
+		         success:function(data1) {
+// 		         	jsonData = JSON.parse(data1);
+// 		         	populateDropdown(jsonData,"states");
+					var select = document.getElementById("cities");
+					for(index in data1) {
+					    select.options[select.options.length] = new Option(data1[index], index);
+					}
+				},
+		         error:function()
+		         {
+		         	console.log("Error");
+		         }
+		 	});	
+	}
 	
 	function getSiteId()
 	{
@@ -185,20 +246,22 @@ label {
 				<br>
                
 				<label for="Region" class="region">Region</label>
-                <form:select id="regions" path="region" name="regions" class="form-control input-full filled" >
+                <form:select id="regions" path="region" name="regions" class="form-control input-full filled" onchange="getStates()">
+                <form:option value = "NONE" label = "Select"/>
+                 <form:options items = "${regionsList}"></form:options>
                 </form:select>
                 <br>
                 
                 <label for="State" class="state">State</label>
-                <form:select id="state" path="state" name="state" class="form-control input-full filled" >
+                <form:select id="states" path="state" name="states" class="form-control input-full filled" onblur="getDistricts()">
                 </form:select>
               <br>
               <label for="District" class="district">District</label>
-                <form:select id="regions" path="district" name="regions" class="form-control input-full filled" >
+                <form:select id="districts" path="district" name="districts" class="form-control input-full filled" onblur="getCities()">
                 </form:select>
                 <br>
-                <label for="city" class="city">City</label>
-                <form:select id="city" path="city" name="city" class="form-control input-full filled" >
+                <label for="cities" class="city">City</label>
+                <form:select id="cities" path="city" name="cities" class="form-control input-full filled" >
                 </form:select>
                
 				<div class="form-action">
