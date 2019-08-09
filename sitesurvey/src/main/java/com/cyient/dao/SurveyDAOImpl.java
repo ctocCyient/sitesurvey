@@ -87,6 +87,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	public String getManagerId(String managerName) {
 		List<User> list=sessionFactory.getCurrentSession().createQuery("select distinct emailId from User where username='"+managerName+"'").list();
