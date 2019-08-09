@@ -121,8 +121,8 @@ function getUserName(){
         data:{"username":username,"role":role},
         success:function(data1) {
         	alert(data1);
-        }
-        	/*if(data1=="Exists")
+       
+        	if(data1=="Exists")
         	{
         		alert(data1);
         		$("#unameMsg").css("display","block");
