@@ -32,8 +32,8 @@
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />');
 			  dateFun();
-			  getTechnicianId();
-			  $("#technicianName,#emailID,#mobile,#password,#region,#state,#district,#manager,#city").attr('required', ''); 
+			  //getTechnicianId();
+			  $("#technicianName,#emailID,#mobile,#password,#region,#state,#district,#manager,#city,#pincode").attr('required', ''); 
 			 
 			  $(".isa_success").fadeOut(10000);
 		});
@@ -128,7 +128,7 @@
 			}
 		 
 		
-	 	function getTechnicianId()
+	 	/*function getTechnicianId()
 		{
 			var jsonArr1;
 				$.ajax({
@@ -162,7 +162,7 @@
 			        	console.log("Error");
 			        }
 				});
-		}
+		}*/
 	 	
 	 	 function getUserName(){
 	 		 
@@ -335,7 +335,8 @@ label {
             	<form:input type="password" id="password" path="password" autocomplete="new-password" name="password" class="form-control input-full filled"  />
             	<br>
             	<label for="mobile" class="placeholder">Mobile</label>
-                <form:input id="mobile" path="mobile" name="mobile" class="form-control input-full filled" />
+                <form:input id="mobile" path="mobile" name="mobile" class="form-control input-full filled" onkeypress="return isNumber(event);"  onchange="ValidateNumber(this.id,'mobileIdMsg')"/>
+                <span id="mobileIdMsg" style="color:red;display:none;font-size:15px">Please enter valid Mobile No</span>
                  <br>  
                   <label for="region" class="placeholder">Region</label>
                	<form:select id="region" path="region" name="region" class="form-control input-border" onchange="getState(this.value);getManager(this.value)"  >
@@ -345,7 +346,6 @@ label {
                 <br>
                  <label for="state" class="placeholder">State</label>
                 	<form:select id="state" path="state" name="state" class="form-control input-full filled" onchange="getDistrict(this.value);"  > 
-                	
                 	</form:select>
                 <br>
                  <label for="district" class="placeholder">District</label>
@@ -355,10 +355,16 @@ label {
       			<label for="city" class="placeholder">City</label>
                 <form:select id="city" path="city" name="city" class="form-control input-border"  />
                <br>
+                <label for="pincode" class="placeholder">Zip Code</label>
+            	<form:input id="pincode" path="pincode" name="pincode" class="form-control input-full filled" onkeypress="return isNumber(event);" onchange="ValidatePinCode(this.id,'pincodeMsg')"/>
+            	<span id="pincodeMsg" style="color:red;display:none;font-size:15px">Enter valid PinCode</span>
+            	<br>
                 <label for="manager" class="placeholder">Manager</label>
                 <form:select id="manager" path="manager" name="manager" class="form-control input-border" />
 				 <span id="managerIdMsg" style="color:red;display:none;font-size:15px">Assign Manager to that Region</span> 
-				 <form:hidden path="createdDate" id="createdDate" value="" />     
+				 
+				 <form:hidden path="createdDate" id="createdDate" value="" />   
+				   
                 <div class="form-action">
 					<a href="home" id="" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>
 					<input type="submit" id="submit" value="Add" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">

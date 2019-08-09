@@ -47,6 +47,9 @@ public class Technician implements Serializable {
 	@Column(name="City")
 	private String city;
 	
+	@Column(name="PinCode")
+	private String pincode;
+	
 	@Column(name="Manager")
 	private String manager;
 	
@@ -143,6 +146,14 @@ public class Technician implements Serializable {
 
 	public void setDistrict(String district) {
 		this.district = district;
+	}
+
+	public String getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
 	}	
 	
 }
