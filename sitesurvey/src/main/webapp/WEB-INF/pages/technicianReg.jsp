@@ -195,6 +195,7 @@
 	 		});	 
 	 	} 
 		
+	 	 
 		 function getState(region)
 		 {
 			 $.ajax({
