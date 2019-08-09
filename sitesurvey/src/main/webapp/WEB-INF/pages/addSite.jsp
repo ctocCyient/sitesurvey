@@ -58,25 +58,72 @@ function populateDropdown(data,id)
  		 $("select option[value='']").attr('disabled','disabled');
 }
 
-	function getRegions()
-	{	
-		$.ajax({
-		         type:"get",
-		         url:"getRegions",
-		         contentType: 'application/json',
-		         datatype : "json",
-		         success:function(data1) {
-		         	jsonData = JSON.parse(data1);
-		         	populateDropdown(jsonData,"regions");
-		         },
-		         error:function()
-		         {
-		         	console.log("Error");
-		         }
-		 	});	
-	}
+
+
+function getState(region)
+{
+	//alert(region)
+	 $.ajax({
+		 	type:"get",
+		 	url:"getStates",
+		 	contentType:'application/json',
+		 	datatype:"json",
+		 	data:{"selectedRegion":region},
+		 	success:function(res){
+		 		//alert(JSON.parse(res))
+		 		console.log(res);
+		 		jsonData=JSON.parse(res);
+		 		populateDropdown(jsonData,"state");
+		 	},
+		 	error:function()
+		 	{
+		 		console.log("Error");	
+		 	}
+	 });
+}
 	
+function getDistrict(state)
+{ 
+	var selectedRegion=$("#regions").val();
+	 $.ajax({
+	         type:"get",
+	         url:"getDistricts",
+	         contentType: 'application/json',
+	         datatype : "json",
+	         data:{"selectedRegion":selectedRegion,"selectedState":state},
+	         success:function(data1) {
+	         	jsonData = JSON.parse(data1);
+	         	populateDropdown(jsonData,"districts");
+	         },
+	         error:function()
+	         {
+	         	console.log("Error");
+	         }
+	 	});
+}
+function getCity(district)
+{ 
 	
+	var selectedRegion=$("#regions").val();
+	var selectedState=$("#state").val();
+	 $.ajax({
+	         type:"get",
+	         url:"getCities",
+	         contentType: 'application/json',
+	         datatype : "json",
+	         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":district},
+	         success:function(data1) {
+	         	jsonData = JSON.parse(data1);
+	         	populateDropdown(jsonData,"city");
+	         },
+	         error:function()
+	         {
+	         	console.log("Error");
+	         }
+	 	});
+}
+
+
 	function getSiteId()
 	{
 		var jsonArr1;
@@ -187,16 +234,18 @@ label {
 				<br>
                
 				<label for="Region" class="region">Region</label>
-                <form:select id="regions" path="region" name="regions" class="form-control input-full filled" >
-                </form:select>
+                <form:select id="regions" path="region" name="regions" class="form-control input-full filled" onchange="getState(this.value);" >
+                <form:option value="Select">Select</form:option>
+            	<form:options items="${regionsList}"></form:options>
+            	</form:select>
                 <br>
                 
                 <label for="State" class="state">State</label>
-                <form:select id="state" path="state" name="state" class="form-control input-full filled" >
+                <form:select id="state" path="state" name="state" class="form-control input-full filled" onblur="getDistrict(this.value)">
                 </form:select>
               <br>
               <label for="District" class="district">District</label>
-                <form:select id="regions" path="district" name="regions" class="form-control input-full filled" >
+                 <form:select id="districts" path="district" name="districts" class="form-control input-full filled" onblur="getCity(this.value)">
                 </form:select>
                 <br>
                 <label for="city" class="city">City</label>
