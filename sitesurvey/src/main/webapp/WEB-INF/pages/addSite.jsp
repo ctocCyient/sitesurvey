@@ -92,7 +92,6 @@ function populateDropdown(data,id)
 			        		jsonArr1="IND001";
 			        	}  	
 		        	 else{
-		        		 
 			        	var dataSplit=jsonArr[0].split("D");
 			        	console.log(dataSplit[0]);
 			        	var dataSplitInt=parseInt(dataSplit[1]);
