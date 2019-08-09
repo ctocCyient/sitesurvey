@@ -258,9 +258,7 @@
 			         }
 			 	});
 		 }
-	 	
-	 	
-		
+	 			
 	</script>
 	<style>
 .fa-bars,
