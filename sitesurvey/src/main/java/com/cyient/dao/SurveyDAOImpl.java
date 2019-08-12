@@ -25,6 +25,11 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(user);
 	}
 	
+	public void addTicket(Ticketing ticket){
+		
+		sessionFactory.getCurrentSession().saveOrUpdate(ticket);
+	}
+	
 	public User getAllUsersOnCriteria(String username,String password,String type) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
         c.add(Restrictions.eq("username",username));
@@ -78,6 +83,19 @@ public class SurveyDAOImpl implements SurveyDAO {
         	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
         	      .list();  
 	} 
+	
+	@SuppressWarnings("unchecked")
+	public List<Site> getSiteIdsForRegion(String region, String state, String district, String city){
+		
+		return sessionFactory.getCurrentSession().createCriteria(Site.class)
+				.add(Restrictions.eq("region", region))
+				.add(Restrictions.eq("state", state))
+				.add(Restrictions.eq("district", district))
+				.add(Restrictions.eq("city", city))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+				.list();
+		
+	}
 	
 	
 	public String getUserName(String role, String username) {
@@ -138,9 +156,4 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(technician);
 	}
 
-	public List<Site> getSiteIdsForRegion(String region, String state, String district, String city) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }

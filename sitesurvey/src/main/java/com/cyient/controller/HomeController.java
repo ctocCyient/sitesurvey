@@ -146,6 +146,17 @@ public class HomeController {
 		      redirectAttributes.addFlashAttribute("status", status);
 			return new ModelAndView("redirect:/newTechnician");
 	}
+	
+	 @RequestMapping(value = "/saveCreatedTicket", method = RequestMethod.POST)
+		public ModelAndView saveTicket(@ModelAttribute Ticketing ticket,RedirectAttributes redirectAttributes) {
+		
+		 	surveyDAO.addTicket(ticket);
+			String status="Ticket Created Successfully";
+			redirectAttributes.addFlashAttribute("status", status);
+			return new ModelAndView("redirect:/newTicket");
+		}
+	
+	
 //	                                                                                                                                                                                                                                                                                   
 //   @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
 //    @ResponseBody
@@ -411,12 +422,12 @@ public class HomeController {
 			String selectedDistrict=request.getParameter("selectedDistrict");	
 			String selectedCity=request.getParameter("selectedCity");	
 			List<Site> siteIds = surveyDAO.getSiteIdsForRegion(selectedRegion,selectedState,selectedDistrict,selectedCity);
-			List<String> listCities=new ArrayList<String>();
-			for(Site region:siteIds)
+			List<String> listSiteIds=new ArrayList<String>();
+			for(Site site:siteIds)
 			{
-				listCities.add(region.getCity());
+				listSiteIds.add(site.getSiteid());
 			}
-			List<Object> listWithoutDuplicates = listCities.stream().distinct().collect(Collectors.toList());
+			List<Object> listWithoutDuplicates = listSiteIds.stream().distinct().collect(Collectors.toList());
 			Gson gsonBuilder = new GsonBuilder().create();
 	        String totalJson = gsonBuilder.toJson(listWithoutDuplicates);
 		    return totalJson;

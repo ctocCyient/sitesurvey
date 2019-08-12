@@ -23,6 +23,9 @@ public interface SurveyDAO {
 	public void addSite(Site site);
 	
 	@Transactional
+	public void addTicket(Ticketing ticket);
+	
+	@Transactional
 	public List<Regions> getRegions();
 	
 	@Transactional

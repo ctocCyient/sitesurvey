@@ -35,15 +35,41 @@
 	<script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 	<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
 	<script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
+		<style>
+	
+	label {
+    color: #495057!important;
+    font-size: 13px!important;
+}
+.fa-bars,
+.fa-ellipsis-v
+{
+color: #fff!important;
+}
+.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
+    width: 700px;
+    background: #fff;
+    padding: 74px 40px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    border: 1px solid #ebecec;
+}
+</style>
+	</head>
+
 	<script >
-		$(document).ready(function() {			
+		$(document).ready(function() {	
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 			  getTicketId();
-			 // getRegions();
+			 //getRegions();
 			  dateFun();
 			  $("#region","#city","#exchange","#floor","#suite","#rack","#sub_rack","#customerId").attr('required','');
 			  $(".isa_success").fadeOut(10000);
+			  
+			 
 			 /*  $("input[name='ticketType']").change(function(){
 		            var radioValue = $("input[name='ticketType']:checked").val();
 		            var ticketId=$("#ticketId").val();
@@ -88,7 +114,6 @@
 		
 var jsonData=[];
 
-
 		function populateDropdown(data,id)
 		{
 			var	catOptions="<option value=''>Select</option>";
@@ -97,7 +122,6 @@ var jsonData=[];
            	 	 catOptions += "<option>" + data[i] + "</option>";
          		}
          		document.getElementById(id).innerHTML = catOptions;
-	
 		}
 
 		 function getTicketId()
@@ -695,7 +719,9 @@ var jsonData=[];
 			 function dateFun()
 			 {
 			 	var today = new Date();
-			 	document.getElementById('openDate,openTime').value=today;
+			 	
+			 	document.getElementById('openDate').value=today;
+			 	//document.getElementById('openTime').value=today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 			 }
 			 
 			 function getSeverityMsg(val)
@@ -826,29 +852,7 @@ var jsonData=[];
 		} // onKeyDown
 			 
 	</script>
-	<style>
-	
-	label {
-    color: #495057!important;
-    font-size: 13px!important;
-}
-.fa-bars,
-.fa-ellipsis-v
-{
-color: #fff!important;
-}
-.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
-    width: 700px;
-    background: #fff;
-    padding: 74px 40px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
-    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
-    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
-    border: 1px solid #ebecec;
-}
-</style>
-	</head>
+
 	
 <body class="login">
 
@@ -916,11 +920,9 @@ color: #fff!important;
                <br>
             	<div class="form-group ">
             	 <label for="siteid" class="placeholder">Site Id</label>
-                <form:select id="siteid" path="siteid" name="siteid" class="form-control input-border"   />
+                <form:select id="siteid" path="siteid" name="siteid" class="form-control input-border" multiple="multiple"/>
                <span id="siteMsg" style="color:red;display:none;font-size:15px">Please select Site</span>
-            	</div>
-            	
-            	
+            	</div>	
                 <form:hidden id="status" value="Open" path="status" name="status" />              
             	
             	<div class="form-group">
@@ -928,7 +930,7 @@ color: #fff!important;
 					<form:textarea path="ticketDescription" placeholder="Enter upto 120 characters" id="ticketDescription"   class="form-control" onkeypress="textarea_validation();" onkeydown = "onKeyDown()"/>
 				</div>
 				<form:hidden path="openDate" id="openDate" value="" />
-				<form:hidden path="openTime" id="openTime" value="" />
+				
             		<div class="form-action">
             	<input type="submit" id="submit" value="Create" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 					<a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>
