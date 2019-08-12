@@ -68,12 +68,7 @@ color: #fff!important;
 			  dateFun();
 			  $("#region","#city","#exchange","#floor","#suite","#rack","#sub_rack","#customerId").attr('required','');
 			  $(".isa_success").fadeOut(10000);
-<<<<<<< HEAD
 
-=======
-			  
-			 
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 			 /*  $("input[name='ticketType']").change(function(){
 		            var radioValue = $("input[name='ticketType']:checked").val();
 		            var ticketId=$("#ticketId").val();
@@ -164,34 +159,9 @@ var jsonData=[];
 				        }
 					});
 			}
-<<<<<<< HEAD
-		 
-=======
 
-		 
-
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 		 function getState(region)
 		 {
-<<<<<<< HEAD
-			 $.ajax({
-				 	type:"get",
-				 	url:"getStates",
-				 	contentType:'application/json',
-				 	datatype:"json",
-				 	data:{"selectedRegion":region},
-				 	success:function(res){
-				 		console.log(res);
-				 		jsonData=JSON.parse(res);
-				 		populateDropdown(jsonData,"state");
-				 	},
-				 	error:function()
-				 	{
-				 		console.log("Error");	
-				 	}
-			 });
-=======
-			 
 			 $.ajax({
 				 	type:"get",
 				 	url:"getStates",
@@ -228,11 +198,8 @@ var jsonData=[];
 			         	console.log("Error");
 			         }
 			 	});
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 		 }
-		 
-<<<<<<< HEAD
-=======
+
 	 	function getCity(district)
 		 { 
 	 		
@@ -277,10 +244,7 @@ var jsonData=[];
 			         }
 			 	});
 		 }
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
-		 
-<<<<<<< HEAD
-=======
+
 		 
 		 /*	 
 		 function getState(region)
@@ -303,8 +267,6 @@ var jsonData=[];
 			 });
 		 }
 		 
-		 
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 		 function getCity(state)
 		 { 
 			 $.ajax({
@@ -323,12 +285,8 @@ var jsonData=[];
 			         }
 			 	});
 		 }
-		 
-<<<<<<< HEAD
-	/*	 function getDistrict(value)
-=======
+
 	 function getDistrict(value)
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 		 { 
 			 	var selectedCity=value;
 			 	var radioValue = $("input[name='ticketType']:checked").val();
@@ -937,31 +895,6 @@ var jsonData=[];
       				<label for="ticketId" class="placeholder">Ticket ID</label>
                 <form:input id="ticketId" path="ticketNum" name="ticketId" class="form-control input-solid"  readonly="true"/>
             	</div>
-<<<<<<< HEAD
-				<div class="form-group " id="regionDiv">
-				<label for="region" class="placeholder">Region</label>
-            	<form:select id="region" path="region" name="region" class="form-control input-border" onchange="getState(this.value);"  >
-            	<form:option value="Select">Select</form:option>
-            	<form:options items="${regionsList}"></form:options>
-            	</form:select>
-            	<span id="regionMsg" style="color:red;display:none;font-size:15px">Please select Region</span>
-            	</div>
-            	<div class="form-group " id="stateDiv">
-            	<label for="region" class="placeholder">State</label>
-            	<form:select id="state" path="state" name="state" class="form-control input-border" onchange="getDistrict();" />
-            	<span id="stateMsg" style="color:red;display:none;font-size:15px">Please select State</span>
-            	</div>
-            	<div class="form-group " id="districtDiv">
-            	<label for="region" class="placeholder">District</label>
-            	<form:select id="district" path="district" name="district" class="form-control input-border" onchange="getCity();" />
-            	<span id="districtMsg" style="color:red;display:none;font-size:15px">Please select District</span>
-            	</div>
-            	<div class="form-group " id="cityDiv">
-            	<label for="region" class="placeholder">City</label>
-            	<form:select id="city" path="city" name="city" class="form-control input-border" onchange="getSites();" />
-            	<span id="cityMsg" style="color:red;display:none;font-size:15px">Please select City</span>
-            	</div>
-=======
 				<br>  
                   <label for="region" class="placeholder">Region</label>
                	<form:select id="region" path="region" name="region" class="form-control input-border" onchange="getState(this.value);getManager(this.value)"  >
@@ -980,15 +913,9 @@ var jsonData=[];
       			<label for="city" class="placeholder">City</label>
                 <form:select id="city" path="city" name="city" class="form-control input-border"  onchange="getSiteId(this.value);" />
                <br>
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
             	<div class="form-group ">
             	 <label for="siteid" class="placeholder">Site Id</label>
-<<<<<<< HEAD
-                <form:select id="siteid" path="siteid" name="siteid" class="form-control input-border" onchange="getFloor(this.value);"    />
-
-=======
-                <form:select id="siteid" path="siteid" name="siteid" class="form-control input-border" multiple="multiple"/>
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
+	             <form:select id="siteid" path="siteid" name="siteid" class="form-control input-border" multiple="multiple"/>
                <span id="siteMsg" style="color:red;display:none;font-size:15px">Please select Site</span>
             	</div>	
                 <form:hidden id="status" value="Open" path="status" name="status" />              

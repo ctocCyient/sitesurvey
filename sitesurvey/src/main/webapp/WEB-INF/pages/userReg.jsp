@@ -205,7 +205,7 @@ label {
                 	<form:option value="Admin">Admin</form:option>
                 	<form:option value="Manager">Manager</form:option>
                 </form:select>
-               
+              
 				 <br>
 				<label for="username" class="placeholder">User Name</label>
 				<form:input id="username" path="username" class="form-control input-full filled" onkeypress="return isCharacters(event);" onblur="getUserName();"/>
