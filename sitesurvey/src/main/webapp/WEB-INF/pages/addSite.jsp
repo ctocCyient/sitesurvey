@@ -41,8 +41,12 @@ WebFont.load({
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+<<<<<<< HEAD
+	  getSiteId();
+=======
 	//  getRegions();
 		getSiteId();
+>>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
 });
@@ -250,6 +254,7 @@ label {
                 <br>
                 <label for="city" class="city">City</label>
                 <form:select id="city" path="city" name="city" class="form-control input-full filled" >
+
                 </form:select>
                
 				<div class="form-action">

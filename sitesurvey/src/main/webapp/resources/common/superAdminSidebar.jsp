@@ -57,16 +57,7 @@
 								<a  href="newSite">&nbsp;&nbsp;
 								<span class="fas fa-user" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Site</span></a>
 						</li>
-						<li class="nav-item">
-								<a  href="newTicket">&nbsp;&nbsp;
-								<span class="fas fa-user" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create Ticket</span></a>
-						</li>
 						
-						
-<!-- 						<li class="nav-item"> -->
-<!-- 								<a href="superAdminTotalTickets">&nbsp;&nbsp; -->
-<!-- 								<span  class="fas fa-ticket-alt" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Total Tickets</span></a> -->
-<!-- 						</li> -->
 					</ul>
 				</div>
 			</div>
