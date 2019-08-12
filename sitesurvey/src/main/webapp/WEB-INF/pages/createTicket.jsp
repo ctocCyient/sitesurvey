@@ -878,7 +878,6 @@ var jsonData=[];
 			</div>
 			<!-- End Navbar -->
 		</div>
-
 		<!-- Sidebar -->
 <div id="adminSidebar">
 </div>
