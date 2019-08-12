@@ -41,8 +41,7 @@ WebFont.load({
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-	  //getRegions();
-		
+	  getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
 });
@@ -59,85 +58,71 @@ function populateDropdown(data,id)
 }
 
 
+
+function getState(region)
+{
+	//alert(region)
+	 $.ajax({
+		 	type:"get",
+		 	url:"getStates",
+		 	contentType:'application/json',
+		 	datatype:"json",
+		 	data:{"selectedRegion":region},
+		 	success:function(res){
+		 		//alert(JSON.parse(res))
+		 		console.log(res);
+		 		jsonData=JSON.parse(res);
+		 		populateDropdown(jsonData,"state");
+		 	},
+		 	error:function()
+		 	{
+		 		console.log("Error");	
+		 	}
+	 });
+}
 	
-	function getStates()
-	{	
-		selectedRegion=$('#regions').val();
+function getDistrict(state)
+{ 
+	var selectedRegion=$("#regions").val();
+	 $.ajax({
+	         type:"get",
+	         url:"getDistricts",
+	         contentType: 'application/json',
+	         datatype : "json",
+	         data:{"selectedRegion":selectedRegion,"selectedState":state},
+	         success:function(data1) {
+	         	jsonData = JSON.parse(data1);
+	         	populateDropdown(jsonData,"districts");
+	         },
+	         error:function()
+	         {
+	         	console.log("Error");
+	         }
+	 	});
+}
+function getCity(district)
+{ 
 	
-		$.ajax({
-		         type:"get",
-		         url:"getStates",
-		         contentType: 'application/json',
-		         datatype : "json",
-		         data:{"selectedRegion":selectedRegion},
-		         success:function(data1) {
-// 		         	jsonData = JSON.parse(data1);
-// 		         	populateDropdown(jsonData,"states");
-					var select = document.getElementById("states");
-					for(index in data1) {
-					    select.options[select.options.length] = new Option(data1[index], index);
-					}
-				},
-		         error:function()
-		         {
-		         	console.log("Error");
-		         }
-		 	});	
-	}
-	
-	
-	function getDistricts()
-	{	
-		selectedRegion=$('#regions').val();
-		selectedstate=$('#states').val();
-		
-		$.ajax({
-		         type:"get",
-		         url:"getDistricts",
-		         contentType: 'application/json',
-		         datatype : "json",
-		         data:{"selectedRegion":selectedRegion,"selectedstate":selectedstate},
-		         success:function(data1) {
-// 		         	jsonData = JSON.parse(data1);
-// 		         	populateDropdown(jsonData,"states");
-					var select = document.getElementById("districts");
-					for(index in data1) {
-					    select.options[select.options.length] = new Option(data1[index], index);
-					}
-				},
-		         error:function()
-		         {
-		         	console.log("Error");
-		         }
-		 	});	
-	}
-	
-	function getCities()
-	{	
-		selectedRegion=$('#regions').val();
-		selectedstate=$('#states').val();
-		selectedDistrict=$('#districts').val();
-		$.ajax({
-		         type:"get",
-		         url:"getCities",
-		         contentType: 'application/json',
-		         datatype : "json",
-		         data:{"selectedRegion":selectedRegion,"selectedstate":selectedstate,"selectedDistrict":selectedDistrict},
-		         success:function(data1) {
-// 		         	jsonData = JSON.parse(data1);
-// 		         	populateDropdown(jsonData,"states");
-					var select = document.getElementById("cities");
-					for(index in data1) {
-					    select.options[select.options.length] = new Option(data1[index], index);
-					}
-				},
-		         error:function()
-		         {
-		         	console.log("Error");
-		         }
-		 	});	
-	}
-	
+	var selectedRegion=$("#regions").val();
+	var selectedState=$("#state").val();
+	 $.ajax({
+	         type:"get",
+	         url:"getCities",
+	         contentType: 'application/json',
+	         datatype : "json",
+	         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":district},
+	         success:function(data1) {
+	         	jsonData = JSON.parse(data1);
+	         	populateDropdown(jsonData,"city");
+	         },
+	         error:function()
+	         {
+	         	console.log("Error");
+	         }
+	 	});
+}
+
+
 	function getSiteId()
 	{
 		var jsonArr1;
@@ -147,25 +132,27 @@ function populateDropdown(data,id)
 		        contentType: 'application/json',
 		        datatype : "json",
 		        success:function(data) {
-		        	var jsonArr=JSON.parse(data);	        	
+		        	var jsonArr=JSON.parse(data);	
+//		        	alert(jsonArr)
 		        	 if(jsonArr.length==0){
-			        		jsonArr1="TECH001";
+			        		jsonArr1="IND001";
 			        	}  	
 		        	 else{
-			        	var dataSplit=jsonArr[0].split("H");
+			        	var dataSplit=jsonArr[0].split("D");
 			        	console.log(dataSplit[0]);
 			        	var dataSplitInt=parseInt(dataSplit[1]);
 			        	console.log(dataSplitInt+1);
 			        	dataSplitInt=dataSplitInt+1;
 			        	
 			        	if(dataSplitInt>0&&dataSplitInt<=9)
-			        		jsonArr1="TECH00"+dataSplitInt;
+			        		jsonArr1="IND00"+dataSplitInt;
 			        	else if(dataSplitInt>9&&dataSplitInt<99)
-			        		jsonArr1="TECH0"+dataSplitInt;
+			        		jsonArr1="IND0"+dataSplitInt;
 			        	else if(dataSplitInt>99)
-			        		jsonArr1="TECH"+dataSplitInt;        	
+			        		jsonArr1="IND"+dataSplitInt;        	
 	        		}	        	
-		        	$('#siteId').val(jsonArr1);	        	
+		        	$('#siteid').val(jsonArr1);	 
+		        	$('#siteid').attr('readonly', true);
 		        },
 		        error:function()
 		        {
@@ -246,22 +233,23 @@ label {
 				<br>
                
 				<label for="Region" class="region">Region</label>
-                <form:select id="regions" path="region" name="regions" class="form-control input-full filled" onchange="getStates()">
-                <form:option value = "NONE" label = "Select"/>
-                 <form:options items = "${regionsList}"></form:options>
-                </form:select>
+                <form:select id="regions" path="region" name="regions" class="form-control input-full filled" onchange="getState(this.value);" >
+                <form:option value="Select">Select</form:option>
+            	<form:options items="${regionsList}"></form:options>
+            	</form:select>
                 <br>
                 
                 <label for="State" class="state">State</label>
-                <form:select id="states" path="state" name="states" class="form-control input-full filled" onblur="getDistricts()">
+                <form:select id="state" path="state" name="state" class="form-control input-full filled" onblur="getDistrict(this.value)">
                 </form:select>
               <br>
               <label for="District" class="district">District</label>
-                <form:select id="districts" path="district" name="districts" class="form-control input-full filled" onblur="getCities()">
+                 <form:select id="districts" path="district" name="districts" class="form-control input-full filled" onblur="getCity(this.value)">
                 </form:select>
                 <br>
-                <label for="cities" class="city">City</label>
-                <form:select id="cities" path="city" name="cities" class="form-control input-full filled" >
+                <label for="city" class="city">City</label>
+                <form:select id="city" path="city" name="city" class="form-control input-full filled" >
+
                 </form:select>
                
 				<div class="form-action">

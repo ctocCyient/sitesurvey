@@ -36,6 +36,31 @@ public interface SurveyDAO {
 	public List<Regions> getCities(String region,String state,String district);
 	
 	@Transactional
+	public String getUserName(String role, String username);
+
+	@Transactional
+	public List<User> getManager(String region);
+	
+	@Transactional
+	public List<Site> getSiteId();
+
+	@Transactional
+	public String getManagerId(String managerName);
+	
+	@Transactional
+	 public List<User> getManagerDetails(String managerId);
+	
+	@Transactional
+	public List<Ticketing> getTicketId();
+	
+	@Transactional
+	public void addTechnician(Technician technician);
+	
+	@Transactional
+	public void addTechnicianIntoUsers(User user);
+	
+	
+	@Transactional
 	public List<Ticketing> openTicketsData();
 
 	@Transactional
@@ -49,6 +74,5 @@ public interface SurveyDAO {
 
 	@Transactional
 	public List<Technician> getUnassignedTechniciansData(String region, String city);
-	
-	
+
 }

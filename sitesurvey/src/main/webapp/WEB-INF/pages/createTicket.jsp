@@ -44,7 +44,8 @@
 			  dateFun();
 			  $("#region","#city","#exchange","#floor","#suite","#rack","#sub_rack","#customerId").attr('required','');
 			  $(".isa_success").fadeOut(10000);
-			  $("input[name='ticketType']").change(function(){
+
+			 /*  $("input[name='ticketType']").change(function(){
 		            var radioValue = $("input[name='ticketType']:checked").val();
 		            var ticketId=$("#ticketId").val();
 		            
@@ -76,8 +77,8 @@
 		            	$("#submit").attr('disabled',false);
 		            }
 		            
-		        });
-		});
+		        });*/
+		}); 
 		WebFont.load({
 			google: {"families":["Open+Sans:300,400,600,700"]},
 			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands"], urls: ["<c:url value='resources/assets/css/fonts.css' />"]},
@@ -136,61 +137,30 @@ var jsonData=[];
 				        }
 					});
 			}
-		 	
-		 function getExistingRegion()
+		 
+		 function getState(region)
 		 {
-			 var radioValue = $("input[name='ticketType']:checked").val();
-		      
-			 	$.ajax({
-			         type:"get",
-			         url:"getExistingRegion",
-			         contentType: 'application/json',
-			         datatype : "json",
-			         success:function(data1) {
-			         	jsonData = JSON.parse(data1);
-			         	populateDropdown(jsonData,"region");
-			         },
-			         error:function()
-			         {
-			         	console.log("Error");
-			         }
-			 	});
-			 	
-			 	/* if($("#region").val()=="")
-			 		$("#regionMsg").css("display","block");
-			 	else
-			 		$("#regionMsg").css("display","none"); */
-			 		
-			 		
+			 $.ajax({
+				 	type:"get",
+				 	url:"getStates",
+				 	contentType:'application/json',
+				 	datatype:"json",
+				 	data:{"selectedRegion":region},
+				 	success:function(res){
+				 		console.log(res);
+				 		jsonData=JSON.parse(res);
+				 		populateDropdown(jsonData,"state");
+				 	},
+				 	error:function()
+				 	{
+				 		console.log("Error");	
+				 	}
+			 });
 		 }
 		 
-		 function getRegions()
-		 { 
-			     
-			 	$.ajax({
-			         type:"get",
-			         url:"getRegions",
-			         contentType: 'application/json',
-			         datatype : "json",
-			         success:function(data1) {
-			         	jsonData = JSON.parse(data1);
-			         	populateDropdown(jsonData,"region");
-			         },
-			         error:function()
-			         {
-			         	console.log("Error");
-			         }
-			 	});
-			 	
-			 	 /* if($("#region").val()=="")
-			 		$("#regionMsg").css("display","block");
-			 	else
-			 		$("#regionMsg").css("display","none");  */
-		 }
 		 
-		 function getCity()
+		 function getCity(state)
 		 { 
-			
 			 $.ajax({
 			         type:"get",
 			         url:"getCity",
@@ -206,11 +176,9 @@ var jsonData=[];
 			         	console.log("Error");
 			         }
 			 	});
-			
-			 
 		 }
 		 
-		 function getDistrict(value)
+	/*	 function getDistrict(value)
 		 { 
 			 	var selectedCity=value;
 			 	var radioValue = $("input[name='ticketType']:checked").val();
@@ -569,38 +537,6 @@ var jsonData=[];
 		    		 	});
 		            	
 				
-					/*var jsonArr1;
-						$.ajax({
-					        type:"get",
-					        url:"getLastUniqueId",
-					        contentType: 'application/json',
-					        datatype : "json",
-					        success:function(data) {
-					        	var jsonArr=JSON.parse(data);	        	
-					        	 if(jsonArr.length==0){
-						        		jsonArr1=selectedCustomerId+"_001";
-						        	}  	
-					        	 else{
-						        	var dataSplit=jsonArr[0].split("_");
-						        	console.log(dataSplit[0]);
-						        	var dataSplitInt=parseInt(dataSplit[1]);
-						        	console.log(dataSplitInt+1);
-						        	dataSplitInt=dataSplitInt+1;
-						        	
-						        	if(dataSplitInt>0&&dataSplitInt<=9)
-						        		jsonArr1=selectedCustomerId+"_00"+dataSplitInt;
-						        	else if(dataSplitInt>9&&dataSplitInt<99)
-						        		jsonArr1=selectedCustomerId+"_0"+dataSplitInt;
-						        	else if(dataSplitInt>99)
-						        		jsonArr1=selectedCustomerId+"_"+dataSplitInt;        	
-				        		}	        	
-					        	$('#uniqueId').val(jsonArr1);	        	
-					        },
-					        error:function()
-					        {
-					        	console.log("Error");
-					        }
-						});*/
 				}
 		            
 		            if($("#customerId").val()=="")
@@ -664,7 +600,7 @@ var jsonData=[];
 							console.log("Error");
 						}
 				 });
-			 }
+			 } */
 			 
 			 
 			 function dateFun()
@@ -798,7 +734,7 @@ var jsonData=[];
 				    // disable key press porcessing
 				    event.returnValue = false;
 				  }
-				} // onKeyDown
+		} // onKeyDown
 			 
 	</script>
 	<style>
@@ -870,31 +806,13 @@ color: #fff!important;
       			<div class="form-group">
       				<label for="ticketId" class="placeholder">Ticket ID</label>
                 <form:input id="ticketId" path="ticketNum" name="ticketId" class="form-control input-solid"  readonly="true"/>
-            
-            	</div>
-            	<div class="form-check">
-										<label>Ticket Type</label><br>
-										<label class="form-radio-label">
-											<form:radiobutton  class="form-radio-input"  name="ticketType" id="ticketTypeNew" path="ticketType" value="New" checked="checked"/>
-											<span class="form-radio-sign">New</span>
-										</label>
-										<label class="form-radio-label ml-3">
-											<form:radiobutton  class="form-radio-input"  name="ticketType" id="ticketTypeExist" path="ticketType" value="Existing"/>
-											<span class="form-radio-sign">Existing</span>
-										</label>
-				</div>
-				<div class="form-group ">
-				 <label for="rack" class="placeholder">Severity</label>
-                <form:select id="severity" path="severity" name="severity" class="form-control input-border"  onchange="getSeverityMsg(this.value);">
-                			 <form:option value="">Select</form:option>
-               		 		 <form:option value="Major">Major</form:option>
-              				 <form:option value="Minor">Minor</form:option>
-                </form:select>
-               <span id="severityMsg" style="color:red;display:none;font-size:15px">Please enter Severity</span>
             	</div>
 				<div class="form-group " id="regionDiv">
 				<label for="region" class="placeholder">Region</label>
-            	<form:select id="region" path="region" name="region" class="form-control input-border" onchange="getState();"  />
+            	<form:select id="region" path="region" name="region" class="form-control input-border" onchange="getState(this.value);"  >
+            	<form:option value="Select">Select</form:option>
+            	<form:options items="${regionsList}"></form:options>
+            	</form:select>
             	<span id="regionMsg" style="color:red;display:none;font-size:15px">Please select Region</span>
             	</div>
             	<div class="form-group " id="stateDiv">
@@ -913,8 +831,9 @@ color: #fff!important;
             	<span id="cityMsg" style="color:red;display:none;font-size:15px">Please select City</span>
             	</div>
             	<div class="form-group ">
-            	 <label for="exchange" class="placeholder">Site Id</label>
-                <form:select id="exchange" path="exchangeName" name="exchange" class="form-control input-border" onchange="getFloor(this.value);"    />
+            	 <label for="siteid" class="placeholder">Site Id</label>
+                <form:select id="siteid" path="siteid" name="siteid" class="form-control input-border" onchange="getFloor(this.value);"    />
+
                <span id="siteMsg" style="color:red;display:none;font-size:15px">Please select Site</span>
             	</div>
             	

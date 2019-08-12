@@ -38,8 +38,17 @@ public class Technician implements Serializable {
 	@Column(name="Region")
 	private String region;
 	
+	@Column(name="State")
+	private String state;
+	
+	@Column(name="District")
+	private String district;
+	
 	@Column(name="City")
 	private String city;
+	
+	@Column(name="PinCode")
+	private String pincode;
 	
 	@Column(name="Manager")
 	private String manager;
@@ -121,7 +130,30 @@ public class Technician implements Serializable {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
 	}	
-	
 	
 }

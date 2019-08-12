@@ -53,30 +53,93 @@ public class SurveyDAOImpl implements SurveyDAO {
 		//return sessionFactory.getCurrentSession().createQuery("select distinct state from Regions where region='"+region+"'").list();	        
 	        return sessionFactory.getCurrentSession().createCriteria(Regions.class)  
 	        	      .add(Restrictions.eq("region", region))  
-	        	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
-	        	      .list();  
+	        	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+	        
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Regions> getDistricts(String region, String state) {
-		System.out.println("region"+region);
-		System.out.println("stete"+state);
-		  return sessionFactory.getCurrentSession().createCriteria(Regions.class)  
-        	      .add(Restrictions.eq("region", region))  
-        	      .add(Restrictions.eq("state", state))  
-        	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
-        	      .list();  
+
+	//	return sessionFactory.getCurrentSession().createQuery("select region from Regions").list();
+		
+		return sessionFactory.getCurrentSession().createCriteria(Regions.class)
+				.add(Restrictions.eq("region", region))
+				.add(Restrictions.eq("state",state))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Regions> getCities(String region, String state, String district) {
+
 		  return sessionFactory.getCurrentSession().createCriteria(Regions.class)  
         	      .add(Restrictions.eq("region", region))  
         	      .add(Restrictions.eq("state", state))  
         	      .add(Restrictions.eq("district", district))  
         	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
         	      .list();  
+	} 
+	
+	
+	public String getUserName(String role, String username) {
+		    Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
+	        c.add(Restrictions.eq("username",username));
+	        c.add(Restrictions.eq("role",role));
+			List<User> userlist = c.list();
+			Integer count = userlist.size();
+			//Integer count = (Integer)c.uniqueResult();
+
+			if(count!=0)
+			{
+				return "Exists";
+			}
+			else
+			{
+      	      return "New";
+			}
 	}
+
+	public List<Site> getSiteId() {
+		// TODO Auto-generated method stub
+		  return sessionFactory.getCurrentSession().createQuery("select siteid from Site where siteid=(select max(siteid) from Site)").list();
+
+	} 
+
+	@SuppressWarnings("unchecked")
+	public List<User> getManager(String region){
+		return sessionFactory.getCurrentSession().createCriteria(User.class)
+				.add(Restrictions.eq("region", region))
+				.add(Restrictions.eq("role", "Manager"))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public String getManagerId(String managerName) {
+		List<User> list=sessionFactory.getCurrentSession().createQuery("select distinct emailId from User where username='"+managerName+"'").list();
+		return list.toString();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getManagerDetails(String managerId){
+		return sessionFactory.getCurrentSession().createQuery("from User where username='"+managerId+"'").list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Ticketing> getTicketId(){		
+		return sessionFactory.getCurrentSession().createQuery("select ticketNum from Ticketing where id=(select max(id) from Ticketing)").list();
+	}
+
+	public void addTechnician(Technician technician) {
+		sessionFactory.getCurrentSession().saveOrUpdate(technician);
+	}
+	
+	public void addTechnicianIntoUsers(User technician){
+		sessionFactory.getCurrentSession().saveOrUpdate(technician);
+	}
+	
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<Ticketing> openTicketsData() {
@@ -104,5 +167,4 @@ public class SurveyDAOImpl implements SurveyDAO {
 		return sessionFactory.getCurrentSession().createQuery("FROM Technician where region='"+region+"' and city ='"+city+"'").list();
 		//return sessionFactory.getCurrentSession().createQuery("FROM Executive where region='"+region+"' and city ='"+city+"' and executiveId NOT IN (SELECT executiveId FROM ExecutiveTicketInfo)").list();
 	}
-	
 }

@@ -6,17 +6,14 @@ function validateEmailId(email,emailId,emailIdMsg) {
 	  else {
 		  $("#"+emailIdMsg).css("display","block");
 		  $('#'+emailId).val('');
-  	}
-	   
-	  
-	 }
+  	} 
+}
 	 
 function validateEmail(email) {
 	  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	  return re.test(email);
 	}
 	
-
 function isCharacters(e)
 {
 	/*var key = e.keyCode;
@@ -64,6 +61,19 @@ function isNumber(evt) {
 	  }
 	}
 	
+	
+	function ValidatePinCode(id,pinIdMsg) {
+		  var pincode = document.getElementById(id);
+
+		  if (pincode.value.length < 6 || pincode.value.length > 6) {
+			  $("#"+pinIdMsg).css("display","block");
+		      $('#'+id).val('');
+		  }
+		  else
+		  {
+			  $("#"+pinIdMsg).css("display","none");
+		  }
+		}
 	
 	function GST_valid(id)
 	{
