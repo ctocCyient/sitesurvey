@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.jboss.logging.Logger;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -295,6 +296,7 @@ public class HomeController {
 		 String selectedRegion=request.getParameter("selectedRegion");
 			String selectedState=request.getParameter("selectedState");		
 			List<Regions> regions = surveyDAO.getDistricts(selectedRegion,selectedState);
+			System.out.println("regionsdao"+regions);
 			 Map<String, String> districtsMap = new HashMap<String, String>();
 			 for(Regions region : regions)
 		      {
@@ -323,6 +325,58 @@ public class HomeController {
 //	        	   String totalJson = gsonBuilder.toJson(listCities);
 		              return citiesMap;
 	    }
+	 
+	 @RequestMapping("ticketsCount")
+	    @ResponseBody
+	    public String  ticketsCountData(ModelAndView model) {
+			List<Ticketing> listOpen = surveyDAO.openTicketsData();		              
+		    List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+		      List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
+		      List<Ticketing> listTotal =surveyDAO.getAllTicketsData();
+		     
+			   JSONObject countData=new JSONObject();
+			   countData.put("OpenTickets",listOpen.size());
+			   countData.put("AssignedTickets",listAssigned.size());
+			   countData.put("HistoryTickets",listHistory.size());
+			   countData.put("TotalTickets",listTotal.size());
+			   System.out.println(countData);			   
+		          return countData.toString();
+	    }
+	 
+	    @RequestMapping("getOpenTickets")
+	    @ResponseBody
+	    public String  getOpenTicketsData(ModelAndView model) {
+			List<Ticketing> listOpen = surveyDAO.openTicketsData();			
+			Gson gsonBuilder = new GsonBuilder().create();
+			String openJson = gsonBuilder.toJson(listOpen);
+    	   	return openJson.toString();
+	    }
+		
+		@RequestMapping("getAssignedTickets")
+	    @ResponseBody
+	    public String  getAssignedTicketsData(ModelAndView model) {
+			List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+			Gson gsonBuilder = new GsonBuilder().create();
+			String closedJson = gsonBuilder.toJson(listAssigned);
+    	   	return closedJson.toString();
+	    }
+		
+		@RequestMapping("getHistoryTickets")
+	    @ResponseBody
+	    public String  getHistoryTicketsData(ModelAndView model) {
+			List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
+	  	    Gson gsonBuilder = new GsonBuilder().create();
+    	    String historyJson = gsonBuilder.toJson(listHistory);
+              return historyJson.toString();
+	    }
     
-    
+		@RequestMapping("getTotalTickets")
+	    @ResponseBody
+	    public String  getTotalTicketsData(ModelAndView model) {
+			List<Ticketing> listTotal = surveyDAO.getAllTicketsData();
+	         Gson gsonBuilder = new GsonBuilder().create();
+	    	 String totalJson = gsonBuilder.toJson(listTotal);
+	         return totalJson.toString();
+	    }
+		
 }

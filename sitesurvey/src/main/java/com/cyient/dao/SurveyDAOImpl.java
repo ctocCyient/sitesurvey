@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Technician;
+import com.cyient.model.TechnicianTicketInfo;
+import com.cyient.model.Ticketing;
 import com.cyient.model.User;
 
 
@@ -56,6 +59,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Regions> getDistricts(String region, String state) {
+		System.out.println("region"+region);
+		System.out.println("stete"+state);
 		  return sessionFactory.getCurrentSession().createCriteria(Regions.class)  
         	      .add(Restrictions.eq("region", region))  
         	      .add(Restrictions.eq("state", state))  
@@ -71,6 +76,33 @@ public class SurveyDAOImpl implements SurveyDAO {
         	      .add(Restrictions.eq("district", district))  
         	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
         	      .list();  
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Ticketing> openTicketsData() {
+		return sessionFactory.getCurrentSession().createQuery("FROM Ticketing where status='Open'").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> assignedTicketsData() {
+		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='InProgress'").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> historyTicketsData() {
+		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='Closed'").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Ticketing> getAllTicketsData() {
+		return sessionFactory.getCurrentSession().createQuery("FROM Ticketing").list();
 	} 
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Technician> getUnassignedTechniciansData(String region,String city){
+		return sessionFactory.getCurrentSession().createQuery("FROM Technician where region='"+region+"' and city ='"+city+"'").list();
+		//return sessionFactory.getCurrentSession().createQuery("FROM Executive where region='"+region+"' and city ='"+city+"' and executiveId NOT IN (SELECT executiveId FROM ExecutiveTicketInfo)").list();
+	}
 	
 }

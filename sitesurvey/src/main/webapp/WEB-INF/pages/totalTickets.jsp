@@ -202,7 +202,7 @@ function getCount(){
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body " onclick="location.href='/sitesurvey/openTickets'" style="cursor:pointer;">
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -221,7 +221,7 @@ function getCount(){
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/sitesurvey/assignedTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/assignedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#F98B88;border-radius: 5px">
@@ -240,7 +240,7 @@ function getCount(){
 						</div>						
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/sitesurvey/historyTickets'" style=cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/historyTickets'" style=cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px;">
@@ -259,7 +259,7 @@ function getCount(){
 						</div>						
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/sitesurvey/totalTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/totalTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px;">
