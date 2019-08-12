@@ -22,8 +22,6 @@ public class Battery_Bank_Master implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-
-	
 	@Column(name="Manufacturer")
 	private String Manufacturer;
 	
