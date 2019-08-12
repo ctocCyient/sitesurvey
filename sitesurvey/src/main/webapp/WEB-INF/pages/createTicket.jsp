@@ -136,7 +136,97 @@ var jsonData=[];
 				        }
 					});
 			}
+
 		 
+
+		 function getState(region)
+		 {
+			 
+			 $.ajax({
+				 	type:"get",
+				 	url:"getStates",
+				 	contentType:'application/json',
+				 	datatype:"json",
+				 	data:{"selectedRegion":region},
+				 	success:function(res){
+				 		console.log(res);
+				 		jsonData=JSON.parse(res);
+				 		populateDropdown(jsonData,"state");
+				 	},
+				 	error:function()
+				 	{
+				 		console.log("Error");	
+				 	}
+			 });
+		 }
+	 	
+	 	function getDistrict(state)
+		 { 
+	 		var selectedRegion=$("#region").val();
+			 $.ajax({
+			         type:"get",
+			         url:"getDistricts",
+			         contentType: 'application/json',
+			         datatype : "json",
+			         data:{"selectedRegion":selectedRegion,"selectedState":state},
+			         success:function(data1) {
+			         	jsonData = JSON.parse(data1);
+			         	populateDropdown(jsonData,"district");
+			         },
+			         error:function()
+			         {
+			         	console.log("Error");
+			         }
+			 	});
+		 }
+		 
+	 	function getCity(district)
+		 { 
+	 		
+	 		var selectedRegion=$("#region").val();
+	 		var selectedState=$("#state").val();
+			 $.ajax({
+			         type:"get",
+			         url:"getCities",
+			         contentType: 'application/json',
+			         datatype : "json",
+			         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":district},
+			         success:function(data1) {
+			         	jsonData = JSON.parse(data1);
+			         	populateDropdown(jsonData,"city");
+			         },
+			         error:function()
+			         {
+			         	console.log("Error");
+			         }
+			 	});
+		 }
+	 	
+	 	function getSiteId(city)
+		 { 
+	 		
+	 		var selectedRegion=$("#region").val();
+	 		var selectedState=$("#state").val();
+	 		var selectedDistrict=$("#district").val();
+			 $.ajax({
+			         type:"get",
+			         url:"getSiteId",
+			         contentType: 'application/json',
+			         datatype : "json",
+			         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":selectedDistrict,"selectedCity":city},
+			         success:function(data1) {
+			         	jsonData = JSON.parse(data1);
+			         	populateDropdown(jsonData,"siteid");
+			         },
+			         error:function()
+			         {
+			         	console.log("Error");
+			         }
+			 	});
+		 }
+		 
+		 
+		 /*	 
 		 function getState(region)
 		 {
 			 $.ajax({
@@ -177,7 +267,7 @@ var jsonData=[];
 			 	});
 		 }
 		 
-	/*	 function getDistrict(value)
+	 function getDistrict(value)
 		 { 
 			 	var selectedCity=value;
 			 	var radioValue = $("input[name='ticketType']:checked").val();
@@ -806,32 +896,27 @@ color: #fff!important;
       				<label for="ticketId" class="placeholder">Ticket ID</label>
                 <form:input id="ticketId" path="ticketNum" name="ticketId" class="form-control input-solid"  readonly="true"/>
             	</div>
-				<div class="form-group " id="regionDiv">
-				<label for="region" class="placeholder">Region</label>
-            	<form:select id="region" path="region" name="region" class="form-control input-border" onchange="getState(this.value);"  >
+				<br>  
+                  <label for="region" class="placeholder">Region</label>
+               	<form:select id="region" path="region" name="region" class="form-control input-border" onchange="getState(this.value);getManager(this.value)"  >
             	<form:option value="Select">Select</form:option>
             	<form:options items="${regionsList}"></form:options>
             	</form:select>
-            	<span id="regionMsg" style="color:red;display:none;font-size:15px">Please select Region</span>
-            	</div>
-            	<div class="form-group " id="stateDiv">
-            	<label for="region" class="placeholder">State</label>
-            	<form:select id="state" path="state" name="state" class="form-control input-border" onchange="getDistrict();" />
-            	<span id="stateMsg" style="color:red;display:none;font-size:15px">Please select State</span>
-            	</div>
-            	<div class="form-group " id="districtDiv">
-            	<label for="region" class="placeholder">District</label>
-            	<form:select id="district" path="district" name="district" class="form-control input-border" onchange="getCity();" />
-            	<span id="districtMsg" style="color:red;display:none;font-size:15px">Please select District</span>
-            	</div>
-            	<div class="form-group " id="cityDiv">
-            	<label for="region" class="placeholder">City</label>
-            	<form:select id="city" path="city" name="city" class="form-control input-border" onchange="getSites();" />
-            	<span id="cityMsg" style="color:red;display:none;font-size:15px">Please select City</span>
-            	</div>
+                <br>
+                 <label for="state" class="placeholder">State</label>
+                	<form:select id="state" path="state" name="state" class="form-control input-full filled" onchange="getDistrict(this.value);"  > 
+                	</form:select>
+                <br>
+                 <label for="district" class="placeholder">District</label>
+                	<form:select id="district" path="district" name="district" class="form-control input-full filled"  onchange="getCity(this.value);" >
+                	</form:select>
+                <br>
+      			<label for="city" class="placeholder">City</label>
+                <form:select id="city" path="city" name="city" class="form-control input-border"  onchange="getSiteId(this.value);" />
+               <br>
             	<div class="form-group ">
             	 <label for="siteid" class="placeholder">Site Id</label>
-                <form:select id="siteid" path="siteid" name="siteid" class="form-control input-border" onchange="getFloor(this.value);"    />
+                <form:select id="siteid" path="siteid" name="siteid" class="form-control input-border"   />
                <span id="siteMsg" style="color:red;display:none;font-size:15px">Please select Site</span>
             	</div>
             	

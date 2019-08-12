@@ -137,5 +137,10 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public void addTechnicianIntoUsers(User technician){
 		sessionFactory.getCurrentSession().saveOrUpdate(technician);
 	}
+
+	public List<Site> getSiteIdsForRegion(String region, String state, String district, String city) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

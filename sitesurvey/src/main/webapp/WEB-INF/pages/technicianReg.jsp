@@ -106,7 +106,7 @@
 		 	});
 		}
 		
-		function getCity(selectedRegion)
+	/* 	function getCity(selectedRegion)
 		 { 
 			
 			 $.ajax({
@@ -126,7 +126,7 @@
 			 	});
 			
 			}
-		 
+		  */
 		
 	 	/*function getTechnicianId()
 		{
