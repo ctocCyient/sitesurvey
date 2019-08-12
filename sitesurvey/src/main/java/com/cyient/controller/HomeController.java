@@ -94,7 +94,7 @@ public class HomeController {
 	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
 	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
 		String status="Technician Added Successfully";
-		final JSONArray json=new JSONArray();
+		//final JSONArray json=new JSONArray();
 			String managerId=null;
 			User user=new User();
 			user.setUsername(technician.getTechnicianId());
@@ -109,7 +109,7 @@ public class HomeController {
     	   surveyDAO.addTechnicianIntoUsers(user);
     	   System.out.println("Manager+++++++++++++++"+technician.getManager());
 		   managerId=surveyDAO.getManagerId(technician.getManager());
-		   final String managerName=technician.getManager();
+		  // final String managerName=technician.getManager();
 		   final String managerEmailId=managerId.substring(1, managerId.length()-1);
 		   System.out.println("mail::::"+mailSender);
         	List<User> ManagerDetails=surveyDAO.getManagerDetails(technician.getManager());

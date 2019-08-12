@@ -41,7 +41,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Regions> getRegions() {
-		System.out.println("getRegions" );
 		//return sessionFactory.getCurrentSession().createQuery("from Regions").list();
 		 return sessionFactory.getCurrentSession().createCriteria(Regions.class)         	      
        	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
@@ -80,11 +79,11 @@ public class SurveyDAOImpl implements SurveyDAO {
         	      .list();  
 	} 
 	
-	
+	@SuppressWarnings("unchecked")
 	public String getUserName(String role, String username) {
 		    Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
 	        c.add(Restrictions.eq("username",username));
-	        c.add(Restrictions.eq("role",role));
+	        c.add(Restrictions.eq("role",role));			
 			List<User> userlist = c.list();
 			Integer count = userlist.size();
 			//Integer count = (Integer)c.uniqueResult();
@@ -99,6 +98,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 			}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Site> getSiteId() {
 		// TODO Auto-generated method stub
 		  return sessionFactory.getCurrentSession().createQuery("select siteid from Site where siteid=(select max(siteid) from Site)").list();
@@ -139,8 +139,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(technician);
 	}
 	
-	
-	
 	@SuppressWarnings("unchecked")
 	public List<Ticketing> openTicketsData() {
 		return sessionFactory.getCurrentSession().createQuery("FROM Ticketing where status='Open'").list();
@@ -160,7 +158,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public List<Ticketing> getAllTicketsData() {
 		return sessionFactory.getCurrentSession().createQuery("FROM Ticketing").list();
 	} 
-	
 	
 	@SuppressWarnings("unchecked")
 	public List<Technician> getUnassignedTechniciansData(String region,String city){
