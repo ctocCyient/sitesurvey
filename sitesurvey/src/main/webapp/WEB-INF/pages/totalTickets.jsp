@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>RFID</title>
+	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
@@ -74,8 +74,8 @@ color: #fff!important;
 
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-			  //getCount();
-			//  tableData();	
+			  getCount();
+			  tableData();	
 			 
 		
 		});	
@@ -87,7 +87,7 @@ color: #fff!important;
 		{			
 			$.ajax({
                 type:"get",
-                url:"getAllTickets",
+                url:"getTotalTickets",
                 contentType: 'application/json',
                 datatype : "json",
                 success:function(data) {
@@ -95,7 +95,7 @@ color: #fff!important;
 					
                     for(var i=0;i<totalTicketsList.length;i++)
          		   {
-                    	dataSet.push([totalTicketsList[i].ticketNum,totalTicketsList[i].customer.customerId,totalTicketsList[i].status]);
+                    	dataSet.push([totalTicketsList[i].ticketNum,totalTicketsList[i].status]);
          			   
          		   }
                    
@@ -108,7 +108,6 @@ color: #fff!important;
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
-						{title: "Customer Id" },
 						{title: "Status" },	
 			        ]
 			    } );
@@ -127,14 +126,15 @@ function getCount(){
 		        datatype : "json",
 		        success:function(result) {
 		        	var jsonArr = $.parseJSON(result);
-		        	$('#openTicketCount')[0].innerHTML=jsonArr[0];
-		          $('#assignedTicketCount')[0].innerHTML=jsonArr[1];
-		          $('#historyTicketCount')[0].innerHTML=jsonArr[2];
-		          $('#totalTicketCount')[0].innerHTML=jsonArr[3];
+		        	$('#openTicketCount')[0].innerHTML=jsonArr.OpenTickets;
+		            $('#assignedTicketCount')[0].innerHTML=jsonArr.AssignedTickets;
+	               $('#historyTicketCount')[0].innerHTML=jsonArr.HistoryTickets;
+	               $('#totalTicketCount')[0].innerHTML=jsonArr.TotalTickets;
 		            
 		        }
 			});
 		}
+	
 	
 		
 	</script>
@@ -288,7 +288,7 @@ function getCount(){
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">
-										<table id="totalTickts" style="width:100%" class="display table table-striped table-hover" >
+										<table id="totalTickets" style="width:100%" class="display table table-striped table-hover" >
 										</table>
 									</div>
 								</div>

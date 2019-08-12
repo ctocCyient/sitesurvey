@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>Site Survey</title>
+	<title>RFID</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
@@ -24,6 +24,90 @@
 		
 <style type="text/css">
 
+/* #openModal { */
+/* 	text-align:center; */
+/* 	margin:auto; */
+/* 	width:50%; */
+/* 	height:30%; */
+/* 	opacity:.95; */
+/* 	top:0; */
+/* 	bottom:0; */
+/* 	right:0; */
+/* 	left:0;	 */
+/* 	position:absolute; */
+/* 	background-color:#ffffff; */
+/* 	overflow:auto */
+/* } */
+
+/* The Modal (background) */
+.modal2 {
+	display: none; /* Hidden by default */
+	position: absolute; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	padding-top: 100px; /* Location of the box */
+	padding-left:25px;
+	padding-right:30px;
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+	background-color: #fefefe;
+	margin: auto;
+	position: relative;
+	padding: 20px;
+	border: 1px solid #888;
+	height: 80%; /* Full height */
+}
+
+#loading {
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   position: fixed;
+   display: block;
+   opacity: 0.7;
+   background-color: #fff;
+   z-index: 99;
+   text-align: center;
+}
+
+#loading-image {
+  position: absolute;
+  top: 50%;
+    left: 50%;
+  z-index: 100;
+}
+
+
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-border.btn-assign {
+    color: #6610f2!important;
+    border: 1px solid #6610f2!important;
+    }
+   
 .fa-bars,
 .fa-ellipsis-v
 {
@@ -46,32 +130,17 @@ color: #fff!important;
 
 
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-			  getCount();
-			 tableData();
-			 
+			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
+			  getAdminCount();
+			  tableData();
 			  
-			
+			  
+			  $(".closeBtn").click(function () {
+				  $("#technicianTable").find("tr:gt(0)").remove();
+				 document.getElementById('openModal').style.display = "none";
+              });
+		
 		});	
-		
-		
-		function getCount(){
-			
-			$.ajax({
-		        type:"get",
-		        url:"ticketsCount",
-		        contentType: 'application/json',
-		        datatype : "json",
-		        success:function(result) {
-		        	var jsonArr = $.parseJSON(result);
-		        	$('#openTicketCount')[0].innerHTML=jsonArr.OpenTickets;
-		            $('#assignedTicketCount')[0].innerHTML=jsonArr.AssignedTickets;
-	               $('#historyTicketCount')[0].innerHTML=jsonArr.HistoryTickets;
-	               $('#totalTicketCount')[0].innerHTML=jsonArr.TotalTickets;
-		            
-		        }
-			});
-		}
 	
 		var dataSet=[];
 		 var ticketId;
@@ -90,7 +159,7 @@ color: #fff!important;
 					
                     for(var i=0;i<openTicketsList.length;i++)
          		   {
-                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].status,openTicketsList[i].region,openTicketsList[i].city]);
+                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].region,openTicketsList[i].city]);
          			   
          		   }
                    
@@ -99,21 +168,108 @@ color: #fff!important;
 					destroy:true,
 					language: {
 					  emptyTable: "No Data Available"
-					},										
+					},		
+					columnDefs: [ 
+					{ "targets": -1, "data": null, "defaultContent": "<button style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;'  id='assignBtn' onclick='on()'>Assign</button>"}],					
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
-						{title: "Status" },
 						{title: "Region"},
-						{title: "City"}						
+						{title: "City"},
+						{title: "Action" }							
 			        ]
 			    } );
+			  
+			 $('#openTickets tbody').on('click', '[id*=assignBtn]', function () {
+		            data1 =  table1.row($(this).parents('tr')).data();
+		            rowIndex = $(this).parent().index();
+					 rowToDelete= table1.row($(this).parents('tr'));
+		            // alert(data1[0] );
+		           ticketId=data1[0];
+		           region=data1[4];
+		           city=data1[5];
+		           $.ajax({
+		                type: "get",
+		                url: "getUnassignedTechnicians",
+		                contentType: 'application/json',
+		                datatype: "json", 
+						    data:{"region":region,"city":city},
+		                success: function(result) {
+		                    techniciansList = JSON.parse(result);
+							 if(techniciansList==""){
+		                    	
+		                    	var newrow = $('<tr><label>No Technicians Available<label></tr>');
+		            			
+		            	         $('.technicianRow').after(newrow);
+		                    }else{
+		                   
+		                    //document.getElementById('openModal').style.display="";
+		                	for(i=0;i<techniciansList.length;i++){
+		            			var newrow = $('<tr><td><a href="#" onclick=saveTechnicians(this)>'+techniciansList[i].technicianId+'</a></td><td>'+techniciansList[i].technicianName+'</td> <td>'+techniciansList[i].region+'</td> <td>'+techniciansList[i].city+'</td> </tr>');
+		            			
+		            	         $('.technicianRow').after(newrow);
+		            			}
+						}
+		                }
+					
+		       		 });
 			 
+                });
 		}
 			});
 		}
 		
-
+		
+		function saveTechnicians(value){
+			var techId=value.innerHTML;
+			 $('#loading').show();
+			$.ajax({
+                type:"get",
+                url:"assignTechnician",
+                contentType: 'application/json',
+                datatype : "json",     
+                data: {"technicianId":techId,"ticketId":ticketId},
+                success:function(data) {
+                	 $('#loading').hide();
+                	
+					var content = document.createElement('div');
+					    content.innerHTML = 'Ticket <strong>'+ticketId+'</strong> assigned to technician <strong>'+techId+'</strong>';
+		                 swal(content, {
+	                	buttons: {        			
+	    					confirm: {
+	    						className : 'btn btn-success'
+	    					}
+	    				},
+					});
+  					
+  				
+                  document.getElementById('openModal').style.display="none";
+                  var OpenTicketCount=parseInt($('#openTicketCount')[0].innerHTML);
+                // table1.row(':eq(0)').remove().draw();
+				 rowToDelete.remove().draw();
+				 $("#technicianTable").find("tr:gt(0)").remove();
+                  $('#openTicketCount')[0].innerHTML=OpenTicketCount-1;
+                }
+     			
+			});
+		}
+		
+function getAdminCount(){
+			
+			$.ajax({
+                type:"get",
+                url:"getAdminTicketsCount",
+                contentType: 'application/json',
+                datatype : "json",
+                success:function(result) {
+                	var jsonArr = $.parseJSON(result);
+                  $('#openTicketCount')[0].innerHTML=jsonArr.OpenTickets;
+                  $('#assignedTicketCount')[0].innerHTML=jsonArr.AssignedTickets;
+                  $('#historyTicketCount')[0].innerHTML=jsonArr.HistoryTickets;    
+                  $('#totalTicketCount')[0].innerHTML=jsonArr.TotalTickets; 
+                }
+			});
+		}
 		
 	</script>
 
@@ -145,7 +301,26 @@ color: #fff!important;
   cursor: pointer;
 }
 </style>
+<script>
+function on() {
+	
+	//$("#sysAdminSidebar").hide();
+	document.getElementById("openModal").style.display = "block";
+	//}
 
+	// When the user clicks on <span> (x), close the modal
+	document.getElementsByClassName("close")[0].onclick = function() {
+		 $("#technicianTable").find("tr:gt(0)").remove();
+		document.getElementById("openModal").style.display = "none";
+	}
+
+}
+
+// function off() {
+// 	//document.getElementById("overlay").style.display = "none";
+// 	 $("#technicianTable").find("tr:gt(0)").remove();
+// }
+</script>
 
 </head>
 <body>
@@ -185,7 +360,7 @@ color: #fff!important;
 		</div>
 
 		<!-- Sidebar -->
-<div id="superAdminSidebar">
+<div id="adminSidebar">
 </div>
 		<!-- End Sidebar -->
 
@@ -203,7 +378,6 @@ color: #fff!important;
 					<div class="row" >
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-
 								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
@@ -251,7 +425,7 @@ color: #fff!important;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category">History</p>
+												<p class="card-category" >History</p>
 												<h4 class="card-title" id="historyTicketCount" ></h4>
 											</div>
 										</div>
@@ -262,7 +436,6 @@ color: #fff!important;
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
 								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/totalTickets'" style="cursor:pointer;">
-
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px;">
@@ -303,7 +476,66 @@ color: #fff!important;
 	
 
 			</div>
+			
+			<!-- popup -->
+<!-- 			<div id="openModal" align="center" style="display:none"> -->
+<!-- 			<div onclick="off()"><span class="close">&times;</span></div> -->
+<!-- 		<div class="card"> -->
+<!-- 								<div class="card-header"> -->
+<!-- 									<div class="card-title">Field Technicians List</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="card-body"> -->
+		
+		
+<!-- 		<table id="technicianTable" class="table table-hover" border=1 style="width:100%;margin-top:10px;margin-bottom:10px;">   -->
+<!-- 			<tr class="technicianRow"><th scope="col">Technician Id</th><th scope="col">Technician Name</th></tr>		 -->
+<!-- 		</table> -->
+<!-- 		<div id="techniciansData"></div> -->
+		
+<!-- 		</div> -->
+<!-- 		</div> -->
+<!-- 		</div> -->
 
+<!-- popup -->
+					<div id="openModal" class="modal2" align="center">
+						<div class="modal-content">
+							<div>
+								<span class="close">&times;</span>
+							</div>
+							<div>
+								<div>
+									<div><h1>Field Technicians List</h1></div>
+								</div>
+								<br>
+								<div>
+
+
+									<table id="technicianTable" class="table table-hover" border=1
+										style="width: 80%; margin-top: 10px; margin-bottom: 10px;">
+										<tr class="technicianRow">
+											<th scope="col">Technician Id</th>
+											<th scope="col">Technician Name</th>
+											<th scope="col">Region</th>
+											<th scope="col">City</th>
+										</tr>
+									</table>
+
+
+
+									<!-- <div id="techniciansData"></div>-->
+
+								</div>
+							</div>
+							<div id="loading-image" style="display: none;">
+							<img src="<c:url value='resources/assets/img/ajax-loader.gif'  />" alt="navbar brand" class="navbar-brand">
+							</div>
+							
+
+          <button type="button"  class="closeBtn" style=' background-color: #00B1BF;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer; width:80px;'>Close</button>
+        
+						</div>
+						
+					</div>
 		</div>
 	</div>
 	</div>

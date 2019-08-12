@@ -24,7 +24,7 @@
 								<span>
 									${sessionScope.userName}
 									<span class="user-level">Logged in as</span>
-									<span class="user-level">Super Admin</span>									
+									<span class="user-level">Manager</span>									
 								</span>
 							</a>
 							
@@ -37,27 +37,19 @@
 								<p> Dashboard </p>								
 							</a>
 						</li>
-						<li class="nav-section">
-							<span class="sidebar-mini-icon">
-								<i class="fa fa-ellipsis-h"></i>
-							</span>
-							<h4 class="text-section">Modules</h4>
-						</li>
 						
 						
 						<li class="nav-item">
 								<a  href="newUser">&nbsp;&nbsp;
-								<span class="fas fa-users" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Add User</span></a>
-						</li>
-						<li class="nav-item">
-								<a  href="newTechnician">&nbsp;&nbsp;
-								<span class="fas fa-user" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Technician</span></a>
-						</li>
-								<li class="nav-item">
-								<a  href="newSite">&nbsp;&nbsp;
-								<span class="fas fa-user" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Site</span></a>
+								<span class="fas fa-users" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Technician List</span></a>
 						</li>
 						
+						
+						
+<!-- 						<li class="nav-item"> -->
+<!-- 								<a href="superAdminTotalTickets">&nbsp;&nbsp; -->
+<!-- 								<span  class="fas fa-ticket-alt" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Total Tickets</span></a> -->
+<!-- 						</li> -->
 					</ul>
 				</div>
 			</div>

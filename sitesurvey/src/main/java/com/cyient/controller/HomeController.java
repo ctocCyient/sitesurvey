@@ -107,7 +107,7 @@ public class HomeController {
 			user.setRole("FieldTechnician");
     	   surveyDAO.addTechnician(technician);
     	   surveyDAO.addTechnicianIntoUsers(user);
-    	   System.out.println("Manager+++++++++++++++"+technician.getManager());
+    	   System.out.println("Manager+++++"+technician.getManager());
 		   managerId=surveyDAO.getManagerId(technician.getManager());
 		  // final String managerName=technician.getManager();
 		   final String managerEmailId=managerId.substring(1, managerId.length()-1);
@@ -147,20 +147,20 @@ public class HomeController {
 		      redirectAttributes.addFlashAttribute("status", status);
 			return new ModelAndView("redirect:/newTechnician");
 	}
-//	                                                                                                                                                                                                                                                                                   
-//   @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String  getTechniciansData(ModelAndView model,HttpServletRequest request) {
-//    	 String region=request.getParameter("region");
-//    	 String city=request.getParameter("city");
-//    	 System.out.println("city :::"+city);
-//		List<Technician> listTechnicians = surveyDAO.getUnassignedTechniciansData(region,city);
-//		System.out.println(listTechnicians);
-//	   Gson gsonBuilder = new GsonBuilder().create();
-//	   String techniciansJson = gsonBuilder.toJson(listTechnicians);
-//          return techniciansJson.toString();
-//    }
-//    
+	                                                                                                                                                                                                                                                                                   
+   @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
+    @ResponseBody
+    public String  getTechniciansData(ModelAndView model,HttpServletRequest request) {
+    	 String region=request.getParameter("region");
+    	 String city=request.getParameter("city");
+    	 System.out.println("city :::"+city);
+		List<Technician> listTechnicians = surveyDAO.getUnassignedTechniciansData(region,city);
+		System.out.println(listTechnicians);
+	   Gson gsonBuilder = new GsonBuilder().create();
+	   String techniciansJson = gsonBuilder.toJson(listTechnicians);
+          return techniciansJson.toString();
+    }
+
 //   @RequestMapping(value = "/saveCreatedTicket", method = RequestMethod.POST)
 //	public ModelAndView saveTicket(@ModelAttribute Ticketing ticket,RedirectAttributes redirectAttributes) {
 //	
@@ -490,5 +490,29 @@ public class HomeController {
 	         Gson gsonBuilder = new GsonBuilder().create();
 	    	 String totalJson = gsonBuilder.toJson(listTotal);
 	         return totalJson.toString();
+	    }
+		
+		@RequestMapping(value = "/adminOpenTickets")
+		public ModelAndView adminOpenTickets(ModelAndView model) throws IOException {
+			model.setViewName("adminOpenTickets");
+			return model;
+		}
+		
+		
+		 @RequestMapping("getAdminTicketsCount")
+	    @ResponseBody
+	    public String  getAdminTicketsCount(ModelAndView model) {
+			List<Ticketing> listOpen = surveyDAO.openTicketsData();		              
+		    List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+		      List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
+		      List<Ticketing> listTotal =surveyDAO.getAllTicketsData();
+		     
+			   JSONObject countData=new JSONObject();
+			   countData.put("OpenTickets",listOpen.size());
+			   countData.put("AssignedTickets",listAssigned.size());
+			   countData.put("HistoryTickets",listHistory.size());
+			   countData.put("TotalTickets",listTotal.size());
+			   System.out.println(countData);			   
+		          return countData.toString();
 	    }
 }
