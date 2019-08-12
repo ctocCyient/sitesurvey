@@ -507,38 +507,39 @@ public class HomeController {
 	  
 	  }
 
-@RequestMapping("getTotalTickets")
-@ResponseBody
-public String  getTotalTicketsData(ModelAndView model) {
-	List<Ticketing> listTotal = surveyDAO.getAllTicketsData();
-     Gson gsonBuilder = new GsonBuilder().create();
-	 String totalJson = gsonBuilder.toJson(listTotal);
-     return totalJson.toString();
-}
-
-@RequestMapping(value = "/adminOpenTickets")
-public ModelAndView adminOpenTickets(ModelAndView model) throws IOException {
-	model.setViewName("adminOpenTickets");
-	return model;
-}
-
-
- @RequestMapping("getAdminTicketsCount")
-@ResponseBody
-public String  getAdminTicketsCount(ModelAndView model) {
-	List<Ticketing> listOpen = surveyDAO.openTicketsData();		              
-    List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
-      List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
-      List<Ticketing> listTotal =surveyDAO.getAllTicketsData();
-     
-	   JSONObject countData=new JSONObject();
-	   countData.put("OpenTickets",listOpen.size());
-	   countData.put("AssignedTickets",listAssigned.size());
-	   countData.put("HistoryTickets",listHistory.size());
-	   countData.put("TotalTickets",listTotal.size());
-	   System.out.println(countData);			   
-          return countData.toString();
-}
+		@RequestMapping("getTotalTickets")
+		@ResponseBody
+		public String  getTotalTicketsData(ModelAndView model) {
+			List<Ticketing> listTotal = surveyDAO.getAllTicketsData();
+		     Gson gsonBuilder = new GsonBuilder().create();
+			 String totalJson = gsonBuilder.toJson(listTotal);
+		     return totalJson.toString();
+		}
+		
+		@RequestMapping(value = "/adminOpenTickets")
+		public ModelAndView adminOpenTickets(ModelAndView model) throws IOException {
+			model.setViewName("adminOpenTickets");
+			return model;
+		}
+		
+		
+		 @RequestMapping("getAdminTicketsCount")
+		@ResponseBody
+		public String  getAdminTicketsCount(ModelAndView model) {
+			List<Ticketing> listOpen = surveyDAO.openTicketsData();		              
+		    List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+		      List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
+		      List<Ticketing> listTotal =surveyDAO.getAllTicketsData();
+		     
+			   JSONObject countData=new JSONObject();
+			   countData.put("OpenTickets",listOpen.size());
+			   countData.put("AssignedTickets",listAssigned.size());
+			   countData.put("HistoryTickets",listHistory.size());
+			   countData.put("TotalTickets",listTotal.size());
+			   System.out.println(countData);			   
+		          return countData.toString();
+		}
+		 
 	    @RequestMapping(value= "getManager", method = RequestMethod.GET)
 		@ResponseBody
 		public String getManager(HttpServletRequest request) {

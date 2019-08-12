@@ -74,6 +74,7 @@ color: #fff!important;
 
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
 			  getCount();
 			  tableData();	
 			 
@@ -157,6 +158,14 @@ function getCount(){
 </head>
 <body>
 	<div class="wrapper">
+	<%
+		String s,role = " ";
+		if (session.getAttribute("userName") == null) { %>
+		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
+	<% } else {
+		 s = session.getAttribute("userName").toString();
+		 role = session.getAttribute("userRole").toString(); 
+	 } %>
 		<!--
 			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
 		-->
@@ -187,11 +196,18 @@ function getCount(){
 			</div>
 			<!-- End Navbar -->
 		</div>
-
-
+		
+		 <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
+		<!-- Sidebar -->
 <div id="superAdminSidebar">
 </div>
+<%} %>
 
+ <% if (role.equalsIgnoreCase(("Admin"))) { %>  
+		<!-- Sidebar -->
+<div id="adminSidebar">
+</div>
+<%} %>
 
 		<div class="main-panel">
 			<div class="content">
@@ -202,8 +218,12 @@ function getCount(){
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-
-								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="cursor:pointer;">
+							 <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="cursor:pointer;" >
+								<%} %>
+ 								<% if (role.equalsIgnoreCase(("Admin"))) { %>  
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/adminOpenTickets'" style="cursor:pointer;" >
+								<%} %>
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -296,7 +316,7 @@ function getCount(){
 						</div>
 					</div>
 							
-		
+		</div>
 		</div>
 	</div>
 	</div>

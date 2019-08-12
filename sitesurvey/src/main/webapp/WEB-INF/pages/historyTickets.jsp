@@ -33,7 +33,8 @@
 		$(document).ready(function() {
 			
 			 $("#navbar").load('<c:url value="/resources/common/header.jsp" />');  
-			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />');
+			 $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
 			  getCount();
 			  tableData();
 			  
@@ -123,6 +124,14 @@ color: #fff!important;
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 </head>
 <body>
+<%
+		String s,role = " ";
+		if (session.getAttribute("userName") == null) { %>
+		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
+	<% } else {
+		 s = session.getAttribute("userName").toString();
+		 role = session.getAttribute("userRole").toString(); 
+	 } %>
 	<div class="wrapper">
 		<!--
 			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
@@ -155,11 +164,17 @@ color: #fff!important;
 			<!-- End Navbar -->
 		</div>
 
+		 <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
 		<!-- Sidebar -->
 <div id="superAdminSidebar">
 </div>
+<%} %>
 
-
+ <% if (role.equalsIgnoreCase(("Admin"))) { %>  
+		<!-- Sidebar -->
+<div id="adminSidebar">
+</div>
+<%} %>
 
 		<div class="main-panel">
 			<div class="content">
@@ -167,13 +182,15 @@ color: #fff!important;
 					<div class="page-header">
 						<h4 class="page-title">Dashboard</h4>						
 					</div>
-					
-					
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-
-								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="cursor:pointer;">
+								<% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="cursor:pointer;" >
+								<%} %>
+ 								<% if (role.equalsIgnoreCase(("Admin"))) { %>  
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/adminOpenTickets'" style="cursor:pointer;" >
+								<%} %>
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -270,7 +287,7 @@ color: #fff!important;
 				</div>
 			</div>
 		</div>
-		
+		</div>
 	</div>
 
 <!--   Core JS Files   -->
