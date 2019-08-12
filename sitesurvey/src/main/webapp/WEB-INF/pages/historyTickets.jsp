@@ -36,11 +36,6 @@
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />');
 			  getCount();
 			  tableData();
-			 
-			
-			  	
-			 
-		
 			  
 		});
 		var dataSet=[];
