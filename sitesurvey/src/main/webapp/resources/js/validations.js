@@ -73,6 +73,7 @@ function isNumber(evt) {
 		  {
 			  $("#"+pinIdMsg).css("display","none");
 		  }
+
 		}
 	
 	function GST_valid(id)

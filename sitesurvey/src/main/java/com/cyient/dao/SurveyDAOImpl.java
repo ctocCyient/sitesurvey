@@ -26,6 +26,11 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(user);
 	}
 	
+	public void addTicket(Ticketing ticket){
+		
+		sessionFactory.getCurrentSession().saveOrUpdate(ticket);
+	}
+	
 	public User getAllUsersOnCriteria(String username,String password,String type) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
         c.add(Restrictions.eq("username",username));
@@ -80,10 +85,23 @@ public class SurveyDAOImpl implements SurveyDAO {
 	} 
 	
 	@SuppressWarnings("unchecked")
+	public List<Site> getSiteIdsForRegion(String region, String state, String district, String city){
+		
+		return sessionFactory.getCurrentSession().createCriteria(Site.class)
+				.add(Restrictions.eq("region", region))
+				.add(Restrictions.eq("state", state))
+				.add(Restrictions.eq("district", district))
+				.add(Restrictions.eq("city", city))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+				.list();
+		
+	}
+	
+	
 	public String getUserName(String role, String username) {
 		    Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
 	        c.add(Restrictions.eq("username",username));
-	        c.add(Restrictions.eq("role",role));			
+	        c.add(Restrictions.eq("role",role));
 			List<User> userlist = c.list();
 			Integer count = userlist.size();
 			//Integer count = (Integer)c.uniqueResult();
@@ -98,7 +116,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 			}
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Site> getSiteId() {
 		// TODO Auto-generated method stub
 		  return sessionFactory.getCurrentSession().createQuery("select siteid from Site where siteid=(select max(siteid) from Site)").list();
@@ -138,6 +155,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public void addTechnicianIntoUsers(User technician){
 		sessionFactory.getCurrentSession().saveOrUpdate(technician);
 	}
+
 	
 	@SuppressWarnings("unchecked")
 	public List<Ticketing> openTicketsData() {

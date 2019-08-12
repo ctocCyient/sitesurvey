@@ -24,6 +24,9 @@ public interface SurveyDAO {
 	public void addSite(Site site);
 	
 	@Transactional
+	public void addTicket(Ticketing ticket);
+	
+	@Transactional
 	public List<Regions> getRegions();
 	
 	@Transactional
@@ -34,6 +37,10 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public List<Regions> getCities(String region,String state,String district);
+	
+	@Transactional
+	public List<Site> getSiteIdsForRegion(String region, String state, String district, String city);
+
 	
 	@Transactional
 	public String getUserName(String role, String username);
@@ -60,6 +67,7 @@ public interface SurveyDAO {
 	public void addTechnicianIntoUsers(User user);
 	
 	
+
 	@Transactional
 	public List<Ticketing> openTicketsData();
 

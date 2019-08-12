@@ -35,16 +35,45 @@
 	<script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 	<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
 	<script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
+		<style>
+	
+	label {
+    color: #495057!important;
+    font-size: 13px!important;
+}
+.fa-bars,
+.fa-ellipsis-v
+{
+color: #fff!important;
+}
+.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
+    width: 700px;
+    background: #fff;
+    padding: 74px 40px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    border: 1px solid #ebecec;
+}
+</style>
+	</head>
+
 	<script >
-		$(document).ready(function() {			
+		$(document).ready(function() {	
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 			  getTicketId();
-			 // getRegions();
+			 //getRegions();
 			  dateFun();
 			  $("#region","#city","#exchange","#floor","#suite","#rack","#sub_rack","#customerId").attr('required','');
 			  $(".isa_success").fadeOut(10000);
+<<<<<<< HEAD
 
+=======
+			  
+			 
+>>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 			 /*  $("input[name='ticketType']").change(function(){
 		            var radioValue = $("input[name='ticketType']:checked").val();
 		            var ticketId=$("#ticketId").val();
@@ -89,7 +118,6 @@
 		
 var jsonData=[];
 
-
 		function populateDropdown(data,id)
 		{
 			var	catOptions="<option value=''>Select</option>";
@@ -98,7 +126,6 @@ var jsonData=[];
            	 	 catOptions += "<option>" + data[i] + "</option>";
          		}
          		document.getElementById(id).innerHTML = catOptions;
-	
 		}
 
 		 function getTicketId()
@@ -137,7 +164,125 @@ var jsonData=[];
 				        }
 					});
 			}
+<<<<<<< HEAD
 		 
+=======
+
+		 
+
+>>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
+		 function getState(region)
+		 {
+<<<<<<< HEAD
+			 $.ajax({
+				 	type:"get",
+				 	url:"getStates",
+				 	contentType:'application/json',
+				 	datatype:"json",
+				 	data:{"selectedRegion":region},
+				 	success:function(res){
+				 		console.log(res);
+				 		jsonData=JSON.parse(res);
+				 		populateDropdown(jsonData,"state");
+				 	},
+				 	error:function()
+				 	{
+				 		console.log("Error");	
+				 	}
+			 });
+=======
+			 
+			 $.ajax({
+				 	type:"get",
+				 	url:"getStates",
+				 	contentType:'application/json',
+				 	datatype:"json",
+				 	data:{"selectedRegion":region},
+				 	success:function(res){
+				 		console.log(res);
+				 		jsonData=JSON.parse(res);
+				 		populateDropdown(jsonData,"state");
+				 	},
+				 	error:function()
+				 	{
+				 		console.log("Error");	
+				 	}
+			 });
+		 }
+	 	
+	 	function getDistrict(state)
+		 { 
+	 		var selectedRegion=$("#region").val();
+			 $.ajax({
+			         type:"get",
+			         url:"getDistricts",
+			         contentType: 'application/json',
+			         datatype : "json",
+			         data:{"selectedRegion":selectedRegion,"selectedState":state},
+			         success:function(data1) {
+			         	jsonData = JSON.parse(data1);
+			         	populateDropdown(jsonData,"district");
+			         },
+			         error:function()
+			         {
+			         	console.log("Error");
+			         }
+			 	});
+>>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
+		 }
+		 
+<<<<<<< HEAD
+=======
+	 	function getCity(district)
+		 { 
+	 		
+	 		var selectedRegion=$("#region").val();
+	 		var selectedState=$("#state").val();
+			 $.ajax({
+			         type:"get",
+			         url:"getCities",
+			         contentType: 'application/json',
+			         datatype : "json",
+			         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":district},
+			         success:function(data1) {
+			         	jsonData = JSON.parse(data1);
+			         	populateDropdown(jsonData,"city");
+			         },
+			         error:function()
+			         {
+			         	console.log("Error");
+			         }
+			 	});
+		 }
+	 	
+	 	function getSiteId(city)
+		 { 
+	 		
+	 		var selectedRegion=$("#region").val();
+	 		var selectedState=$("#state").val();
+	 		var selectedDistrict=$("#district").val();
+			 $.ajax({
+			         type:"get",
+			         url:"getSiteId",
+			         contentType: 'application/json',
+			         datatype : "json",
+			         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":selectedDistrict,"selectedCity":city},
+			         success:function(data1) {
+			         	jsonData = JSON.parse(data1);
+			         	populateDropdown(jsonData,"siteid");
+			         },
+			         error:function()
+			         {
+			         	console.log("Error");
+			         }
+			 	});
+		 }
+>>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
+		 
+<<<<<<< HEAD
+=======
+		 
+		 /*	 
 		 function getState(region)
 		 {
 			 $.ajax({
@@ -159,6 +304,7 @@ var jsonData=[];
 		 }
 		 
 		 
+>>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 		 function getCity(state)
 		 { 
 			 $.ajax({
@@ -178,7 +324,11 @@ var jsonData=[];
 			 	});
 		 }
 		 
+<<<<<<< HEAD
 	/*	 function getDistrict(value)
+=======
+	 function getDistrict(value)
+>>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 		 { 
 			 	var selectedCity=value;
 			 	var radioValue = $("input[name='ticketType']:checked").val();
@@ -606,7 +756,9 @@ var jsonData=[];
 			 function dateFun()
 			 {
 			 	var today = new Date();
-			 	document.getElementById('openDate,openTime').value=today;
+			 	
+			 	document.getElementById('openDate').value=today;
+			 	//document.getElementById('openTime').value=today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 			 }
 			 
 			 function getSeverityMsg(val)
@@ -737,29 +889,7 @@ var jsonData=[];
 		} // onKeyDown
 			 
 	</script>
-	<style>
-	
-	label {
-    color: #495057!important;
-    font-size: 13px!important;
-}
-.fa-bars,
-.fa-ellipsis-v
-{
-color: #fff!important;
-}
-.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
-    width: 700px;
-    background: #fff;
-    padding: 74px 40px;
-    border-radius: 5px;
-    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
-    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
-    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
-    border: 1px solid #ebecec;
-}
-</style>
-	</head>
+
 	
 <body class="login">
 
@@ -807,6 +937,7 @@ color: #fff!important;
       				<label for="ticketId" class="placeholder">Ticket ID</label>
                 <form:input id="ticketId" path="ticketNum" name="ticketId" class="form-control input-solid"  readonly="true"/>
             	</div>
+<<<<<<< HEAD
 				<div class="form-group " id="regionDiv">
 				<label for="region" class="placeholder">Region</label>
             	<form:select id="region" path="region" name="region" class="form-control input-border" onchange="getState(this.value);"  >
@@ -830,14 +961,36 @@ color: #fff!important;
             	<form:select id="city" path="city" name="city" class="form-control input-border" onchange="getSites();" />
             	<span id="cityMsg" style="color:red;display:none;font-size:15px">Please select City</span>
             	</div>
+=======
+				<br>  
+                  <label for="region" class="placeholder">Region</label>
+               	<form:select id="region" path="region" name="region" class="form-control input-border" onchange="getState(this.value);getManager(this.value)"  >
+            	<form:option value="Select">Select</form:option>
+            	<form:options items="${regionsList}"></form:options>
+            	</form:select>
+                <br>
+                 <label for="state" class="placeholder">State</label>
+                	<form:select id="state" path="state" name="state" class="form-control input-full filled" onchange="getDistrict(this.value);"  > 
+                	</form:select>
+                <br>
+                 <label for="district" class="placeholder">District</label>
+                	<form:select id="district" path="district" name="district" class="form-control input-full filled"  onchange="getCity(this.value);" >
+                	</form:select>
+                <br>
+      			<label for="city" class="placeholder">City</label>
+                <form:select id="city" path="city" name="city" class="form-control input-border"  onchange="getSiteId(this.value);" />
+               <br>
+>>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
             	<div class="form-group ">
             	 <label for="siteid" class="placeholder">Site Id</label>
+<<<<<<< HEAD
                 <form:select id="siteid" path="siteid" name="siteid" class="form-control input-border" onchange="getFloor(this.value);"    />
 
+=======
+                <form:select id="siteid" path="siteid" name="siteid" class="form-control input-border" multiple="multiple"/>
+>>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
                <span id="siteMsg" style="color:red;display:none;font-size:15px">Please select Site</span>
-            	</div>
-            	
-            	
+            	</div>	
                 <form:hidden id="status" value="Open" path="status" name="status" />              
             	
             	<div class="form-group">
@@ -845,7 +998,7 @@ color: #fff!important;
 					<form:textarea path="ticketDescription" placeholder="Enter upto 120 characters" id="ticketDescription"   class="form-control" onkeypress="textarea_validation();" onkeydown = "onKeyDown()"/>
 				</div>
 				<form:hidden path="openDate" id="openDate" value="" />
-				<form:hidden path="openTime" id="openTime" value="" />
+				
             		<div class="form-action">
             	<input type="submit" id="submit" value="Create" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 					<a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>

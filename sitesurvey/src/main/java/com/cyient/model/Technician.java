@@ -41,7 +41,7 @@ public class Technician implements Serializable {
 	
 	@Column(name="District")
 	private String district;
-	
+		
 	@Column(name="City")
 	private String city;
 	

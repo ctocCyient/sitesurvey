@@ -105,7 +105,7 @@
 		 	});
 		}
 		
-		function getCity(selectedRegion)
+	/* 	function getCity(selectedRegion)
 		 { 
 			
 			 $.ajax({
@@ -125,7 +125,7 @@
 			 	});
 			
 			}
-		 
+		  */
 		
 	 	/*function getTechnicianId()
 		{
@@ -363,7 +363,7 @@ label {
 				 <span id="managerIdMsg" style="color:red;display:none;font-size:15px">Assign Manager to that Region</span> 
 				 
 				 <form:hidden path="createdDate" id="createdDate" value="" />   
-		
+
                 <div class="form-action">
 					<a href="home" id="" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>
 					<input type="submit" id="submit" value="Add" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">

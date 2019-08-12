@@ -94,7 +94,8 @@ public class HomeController {
 	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
 	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
 		String status="Technician Added Successfully";
-		//final JSONArray json=new JSONArray();
+
+		final JSONArray json=new JSONArray();
 			String managerId=null;
 			User user=new User();
 			user.setUsername(technician.getTechnicianId());
@@ -107,9 +108,9 @@ public class HomeController {
 			user.setRole("FieldTechnician");
     	   surveyDAO.addTechnician(technician);
     	   surveyDAO.addTechnicianIntoUsers(user);
-    	   System.out.println("Manager+++++"+technician.getManager());
+    	   System.out.println("Manager+++++++++++++++"+technician.getManager());
 		   managerId=surveyDAO.getManagerId(technician.getManager());
-		  // final String managerName=technician.getManager();
+		   final String managerName=technician.getManager();
 		   final String managerEmailId=managerId.substring(1, managerId.length()-1);
 		   System.out.println("mail::::"+mailSender);
         	List<User> ManagerDetails=surveyDAO.getManagerDetails(technician.getManager());
@@ -147,19 +148,31 @@ public class HomeController {
 		      redirectAttributes.addFlashAttribute("status", status);
 			return new ModelAndView("redirect:/newTechnician");
 	}
-	                                                                                                                                                                                                                                                                                   
-   @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
-    @ResponseBody
-    public String  getTechniciansData(ModelAndView model,HttpServletRequest request) {
-    	 String region=request.getParameter("region");
-    	 String city=request.getParameter("city");
-    	 System.out.println("city :::"+city);
-		List<Technician> listTechnicians = surveyDAO.getUnassignedTechniciansData(region,city);
-		System.out.println(listTechnicians);
-	   Gson gsonBuilder = new GsonBuilder().create();
-	   String techniciansJson = gsonBuilder.toJson(listTechnicians);
-          return techniciansJson.toString();
-    }
+	
+	 @RequestMapping(value = "/saveCreatedTicket", method = RequestMethod.POST)
+		public ModelAndView saveTicket(@ModelAttribute Ticketing ticket,RedirectAttributes redirectAttributes) {
+		
+		 	surveyDAO.addTicket(ticket);
+			String status="Ticket Created Successfully";
+			redirectAttributes.addFlashAttribute("status", status);
+			return new ModelAndView("redirect:/newTicket");
+		}
+	
+	
+//	                                                                                                                                                                                                                                                                                   
+//   @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String  getTechniciansData(ModelAndView model,HttpServletRequest request) {
+//    	 String region=request.getParameter("region");
+//    	 String city=request.getParameter("city");
+//    	 System.out.println("city :::"+city);
+//		List<Technician> listTechnicians = surveyDAO.getUnassignedTechniciansData(region,city);
+//		System.out.println(listTechnicians);
+//	   Gson gsonBuilder = new GsonBuilder().create();
+//	   String techniciansJson = gsonBuilder.toJson(listTechnicians);
+//          return techniciansJson.toString();
+//    }
+//    
 
 //   @RequestMapping(value = "/saveCreatedTicket", method = RequestMethod.POST)
 //	public ModelAndView saveTicket(@ModelAttribute Ticketing ticket,RedirectAttributes redirectAttributes) {
@@ -385,7 +398,7 @@ public class HomeController {
 			List<Object> listWithoutDuplicates = listCities.stream().distinct().collect(Collectors.toList());
 			Gson gsonBuilder = new GsonBuilder().create();
 	        String totalJson = gsonBuilder.toJson(listWithoutDuplicates);
-		    return totalJson;
+		    return totalJson.toString();
 	   
 
 			/*List<Regions> regions = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
@@ -399,45 +412,10 @@ public class HomeController {
 //	        	   String totalJson = gsonBuilder.toJson(listCities);
 		              return citiesMap;*/
 
+
 	    }
 	    
-	 @RequestMapping(value="/getLastSiteId", method=RequestMethod.GET)
-	  @ResponseBody
-	  public String getLastSiteId(HttpServletRequest request){
-	  
-	   List<Site> siteidList=surveyDAO.getSiteId();
-	   System.out.println("siteid>>>>>>...."+siteidList);
-	   Gson gsonBuilder=new GsonBuilder().create();
-	   String executiveJson=gsonBuilder.toJson(siteidList);
-	   return executiveJson.toString();
-	  
-	  }
-    
-	    @RequestMapping(value= "getManager", method = RequestMethod.GET)
-		@ResponseBody
-		public String getManager(HttpServletRequest request) {
-		 String region=request.getParameter("selectedRegion");
-			List<User> managers = surveyDAO.getManager(region);
-			List<String> listManagers=new ArrayList<String>();
-			for(User user: managers)
-			{
-				listManagers.add(user.getUsername());
-			}
-			Gson gsonBuilder = new GsonBuilder().create();
-			String managerJSON = gsonBuilder.toJson(listManagers);
-	 	   	return managerJSON;
-		}
-
-
-	    @RequestMapping(value = "/getUserName", method = RequestMethod.GET)
-		@ResponseBody
-		public String getUserName(HttpServletRequest request) {		
-			String username=request.getParameter("username");
-	    	String role=request.getParameter("role");
-	    	String user=surveyDAO.getUserName(role,username);
-			return user;
-		}
-	    
+		
 	    
 	    @RequestMapping("ticketsCount")
 	    @ResponseBody
@@ -481,38 +459,108 @@ public class HomeController {
 	  	    Gson gsonBuilder = new GsonBuilder().create();
     	    String historyJson = gsonBuilder.toJson(listHistory);
               return historyJson.toString();
-	    }
-    
-		@RequestMapping("getTotalTickets")
-	    @ResponseBody
-	    public String  getTotalTicketsData(ModelAndView model) {
-			List<Ticketing> listTotal = surveyDAO.getAllTicketsData();
-	         Gson gsonBuilder = new GsonBuilder().create();
-	    	 String totalJson = gsonBuilder.toJson(listTotal);
-	         return totalJson.toString();
-	    }
-		
-		@RequestMapping(value = "/adminOpenTickets")
-		public ModelAndView adminOpenTickets(ModelAndView model) throws IOException {
-			model.setViewName("adminOpenTickets");
-			return model;
 		}
 		
-		
-		 @RequestMapping("getAdminTicketsCount")
+	    @RequestMapping(value="getSiteId", method = RequestMethod.GET)
 	    @ResponseBody
-	    public String  getAdminTicketsCount(ModelAndView model) {
-			List<Ticketing> listOpen = surveyDAO.openTicketsData();		              
-		    List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
-		      List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
-		      List<Ticketing> listTotal =surveyDAO.getAllTicketsData();
-		     
-			   JSONObject countData=new JSONObject();
-			   countData.put("OpenTickets",listOpen.size());
-			   countData.put("AssignedTickets",listAssigned.size());
-			   countData.put("HistoryTickets",listHistory.size());
-			   countData.put("TotalTickets",listTotal.size());
-			   System.out.println(countData);			   
-		          return countData.toString();
+
+	    public  String getSiteId(ModelAndView model,HttpServletRequest request) {
+
+		 String selectedRegion=request.getParameter("selectedRegion");
+			String selectedState=request.getParameter("selectedState");	
+			String selectedDistrict=request.getParameter("selectedDistrict");	
+			String selectedCity=request.getParameter("selectedCity");	
+			List<Site> siteIds = surveyDAO.getSiteIdsForRegion(selectedRegion,selectedState,selectedDistrict,selectedCity);
+			List<String> listSiteIds=new ArrayList<String>();
+			for(Site site:siteIds)
+			{
+				listSiteIds.add(site.getSiteid());
+			}
+			List<Object> listWithoutDuplicates = listSiteIds.stream().distinct().collect(Collectors.toList());
+			Gson gsonBuilder = new GsonBuilder().create();
+	        String totalJson = gsonBuilder.toJson(listWithoutDuplicates);
+		    return totalJson;
+	   
+
+			/*List<Regions> regions = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
+			 Map<String, String> citiesMap = new HashMap<String, String>();
+			 for(Regions region : regions)
+		      {
+				 citiesMap.put(region.getCity(),region.getCity());
+		      }
+			
+//			  	   Gson gsonBuilder = new GsonBuilder().create();
+//	        	   String totalJson = gsonBuilder.toJson(listCities);
+		              return citiesMap;*/
+
 	    }
+	    
+	 @RequestMapping(value="/getLastSiteId", method=RequestMethod.GET)
+	  @ResponseBody
+	  public String getLastSiteId(HttpServletRequest request){
+	  
+	   List<Site> siteidList=surveyDAO.getSiteId();
+	   System.out.println("siteid>>>>>>...."+siteidList);
+	   Gson gsonBuilder=new GsonBuilder().create();
+	   String executiveJson=gsonBuilder.toJson(siteidList);
+	   return executiveJson.toString();
+	  
+	  }
+
+@RequestMapping("getTotalTickets")
+@ResponseBody
+public String  getTotalTicketsData(ModelAndView model) {
+	List<Ticketing> listTotal = surveyDAO.getAllTicketsData();
+     Gson gsonBuilder = new GsonBuilder().create();
+	 String totalJson = gsonBuilder.toJson(listTotal);
+     return totalJson.toString();
+}
+
+@RequestMapping(value = "/adminOpenTickets")
+public ModelAndView adminOpenTickets(ModelAndView model) throws IOException {
+	model.setViewName("adminOpenTickets");
+	return model;
+}
+
+
+ @RequestMapping("getAdminTicketsCount")
+@ResponseBody
+public String  getAdminTicketsCount(ModelAndView model) {
+	List<Ticketing> listOpen = surveyDAO.openTicketsData();		              
+    List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+      List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
+      List<Ticketing> listTotal =surveyDAO.getAllTicketsData();
+     
+	   JSONObject countData=new JSONObject();
+	   countData.put("OpenTickets",listOpen.size());
+	   countData.put("AssignedTickets",listAssigned.size());
+	   countData.put("HistoryTickets",listHistory.size());
+	   countData.put("TotalTickets",listTotal.size());
+	   System.out.println(countData);			   
+          return countData.toString();
+}
+	    @RequestMapping(value= "getManager", method = RequestMethod.GET)
+		@ResponseBody
+		public String getManager(HttpServletRequest request) {
+		 String region=request.getParameter("selectedRegion");
+			List<User> managers = surveyDAO.getManager(region);
+			List<String> listManagers=new ArrayList<String>();
+			for(User user: managers)
+			{
+				listManagers.add(user.getUsername());
+			}
+			Gson gsonBuilder = new GsonBuilder().create();
+			String managerJSON = gsonBuilder.toJson(listManagers);
+	 	   	return managerJSON;
+		}
+
+
+	    @RequestMapping(value = "/getUserName", method = RequestMethod.GET)
+		@ResponseBody
+		public String getUserName(HttpServletRequest request) {		
+			String username=request.getParameter("username");
+	    	String role=request.getParameter("role");
+	    	String user=surveyDAO.getUserName(role,username);
+			return user;
+		}
 }

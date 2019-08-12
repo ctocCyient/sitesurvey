@@ -31,7 +31,7 @@ public class Ticketing implements Serializable {
 	
 	@Column(name="City")
 	private String city;	
-
+	
 	@Column(name="siteID",length=16777215)
 	private String siteid;
 	
