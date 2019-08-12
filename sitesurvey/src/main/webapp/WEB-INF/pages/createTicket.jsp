@@ -11,7 +11,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 
-<title>RFID</title>
+<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
 		
@@ -62,7 +62,7 @@ color: #fff!important;
 	<script >
 		$(document).ready(function() {	
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
 			  getTicketId();
 			 //getRegions();
 			  dateFun();
@@ -880,7 +880,7 @@ var jsonData=[];
 		</div>
 
 		<!-- Sidebar -->
-<div id="superAdminSidebar">
+<div id="adminSidebar">
 </div>
 		<!-- End Sidebar -->
 		  <div class="wrapper wrapper-login">
