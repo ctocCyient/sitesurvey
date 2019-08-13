@@ -243,7 +243,8 @@ var jsonData=[];
 			 	var today = new Date();
 			 	
 			 	document.getElementById('openDate').value=today;
-			 	//document.getElementById('openTime').value=today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+			 	document.getElementById('openTime').value=today;
+			 	
 			 }
 			 
 			 function getSeverityMsg(val)
@@ -344,8 +345,9 @@ var jsonData=[];
                  <form:hidden id="status" value="Open" path="status" name="status" />    
                  <br>          
             	<label for="ticketDescription">Ticket Description</label>
-				<form:textarea path="ticketDescription" placeholder="Enter upto 120 characters" id="ticketDescription"   class="form-control" onkeypress="textarea_validation();" onkeydown = "onKeyDown()"/>
+				<form:textarea path="ticketDescription" placeholder="Enter upto 120 characters" id="ticketDescription"  class="form-control" onkeypress="textarea_validation();" onkeydown = "onKeyDown()"/>
 				<form:hidden path="openDate" id="openDate" value="" />
+				<form:hidden path="openTime" id="openTime" value="" />
             	<div class="form-action">
             	<input type="submit" id="submit" value="Create" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 					<a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>
