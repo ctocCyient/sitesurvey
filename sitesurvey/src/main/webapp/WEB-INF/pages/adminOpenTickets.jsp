@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>RFID</title>
+	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
@@ -186,8 +186,8 @@ color: #fff!important;
 					 rowToDelete= table1.row($(this).parents('tr'));
 		            // alert(data1[0] );
 		           ticketId=data1[0];
-		           region=data1[4];
-		           city=data1[5];
+		           region=data1[1];
+		           city=data1[2];
 		           $.ajax({
 		                type: "get",
 		                url: "getUnassignedTechnicians",
