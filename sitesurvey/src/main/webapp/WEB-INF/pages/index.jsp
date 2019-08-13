@@ -35,6 +35,37 @@
 		 $("select option[value='Select']").attr('disabled','disabled');
  	});
 
+	function Login(){
+
+		var username=$("#username").val();
+		var role=$("#role").val();
+		var password=$("#password").val();
+		$.ajax({
+	        type:"get",
+	        url:"validateUserAjax",
+	        contentType: 'application/json',
+	        datatype : "json",
+	        data:{"username":username,"role":role,"password":password},
+	        success:function(data1) {
+	        	if(data1=="success")
+	        	{
+	        		sessionStorage.setItem("username", username);
+	        		sessionStorage.setItem("password",password);
+	        		sessionStorage.setItem("role",role);	      
+	        		window.location.href = "/sitesurvey/home";
+	        	}
+	        	else
+	        	{
+	        		alert("Failed to login");	
+	        		sessionStorage.clear();
+	        	}
+	        },
+	        error:function()
+	        {
+	        	console.log("Error");
+	        }
+		});	 
+	}
 
 
 
@@ -160,7 +191,7 @@ position: fixed;
 	<div class=" bg wrapper1 wrapper-login  " >
 		<div  class="absolute container container-login animated fadeIn ">
 			<h3 class="text-center">Login</h3>
-			        <form:form action="validateUser" method="post" modelAttribute="User">
+	<!--  		        <form:form action="validateUser" method="post" modelAttribute="User">-->
 			<div class="login-form">
 				<div class="form-group form-floating-label input-group-prepend">
 				
@@ -195,13 +226,13 @@ position: fixed;
                 
 
 				<div class="form-action mb-3">
-				<input  type="submit" class="btn btn-primary1 btn-rounded btn-login" value="Sign In">
+				<input  type="button" class="btn btn-primary1 btn-rounded btn-login" onclick="Login()" value="Sign In">
 				
 				</div>
 				
 			</div>
 						
-			        </form:form>
+			   <!--     </form:form>-->
 			        
 			 
 		</div>

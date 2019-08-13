@@ -80,6 +80,30 @@ public class SiteSurveyController {
            }
     }	
 	
+	@RequestMapping(value = "/validateUserAjax", method = RequestMethod.GET)
+	@ResponseBody
+    public String validateUserAjax(HttpServletRequest request) {
+		String username=request.getParameter("username");
+    	String password=request.getParameter("password");
+    	String role=request.getParameter("role");
+    	try
+    	{
+    	User resp = surveyDAO.getAllUsersOnCriteria(username,password,role);	
+    	if(resp.getUsername().equals(username) & resp.getRole().equals(role))
+    	{
+    		return "success";
+    	}
+    	else
+    	{
+    		return "failure";
+    	}
+    	}
+    	catch(Exception e)
+    	{
+    		return "failure";
+    	}
+    }	
+	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public ModelAndView redirectHome(ModelAndView model) {
 		model.setViewName("homePage");
