@@ -116,6 +116,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 			}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Site> getSiteId() {
 		// TODO Auto-generated method stub
 		  return sessionFactory.getCurrentSession().createQuery("select siteid from Site where siteid=(select max(siteid) from Site)").list();
@@ -181,5 +182,30 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public List<Technician> getUnassignedTechniciansData(String region,String city){
 		return sessionFactory.getCurrentSession().createQuery("FROM Technician where region='"+region+"' and city ='"+city+"'").list();
 		//return sessionFactory.getCurrentSession().createQuery("FROM Executive where region='"+region+"' and city ='"+city+"' and executiveId NOT IN (SELECT executiveId FROM ExecutiveTicketInfo)").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> managerOpenTickets(String username) {
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='InProgress'").list();	
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> managerClosedTickets(String username) {
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='Closed'").list();	
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Technician> getManagerTechnicians(String username) {
+		return sessionFactory.getCurrentSession().createQuery("from Technician where manager='"+username+"'").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> techAssignedTicketsData(String username) {
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='InProgress' and technicianId='"+username+"'").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> techClosedTicketsData(String username) {
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='Closed' and technicianId='"+username+"'").list();
 	}
 }

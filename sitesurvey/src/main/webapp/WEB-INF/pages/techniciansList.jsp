@@ -43,7 +43,7 @@
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#managerSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
 			  
-			//  tableData();
+			 tableData();
 			
 			 
 		});	
@@ -62,10 +62,9 @@
                 data:{"username":s},
                 success:function(data) {
                     techniciansList = JSON.parse(data);
-					console.log(techniciansList);
                     for(var i=0;i<techniciansList.length;i++)
          		   {
-                    	dataSet.push([techniciansList[i].executiveId,techniciansList[i].executiveName,techniciansList[i].city,techniciansList[i].region]);
+                    	dataSet.push([techniciansList[i].technicianId,techniciansList[i].technicianName,techniciansList[i].city,techniciansList[i].region]);
          			   
          		   }
                    
@@ -178,24 +177,17 @@ color: #fff!important;
 			</div>
 			
 		</div>
-		
-		
-		
-		
+				
 	</div>
 	</div>
 </div>
+
 <!--   Core JS Files   -->
-
-
-
 <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
 
 <!-- jQuery UI -->
-
-
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' />"></script>
 
@@ -228,8 +220,6 @@ color: #fff!important;
 
 <!-- Bootstrap Toggle -->
 <script src="<c:url value='resources/assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' />"></script>
-
-
 
 <!-- jQuery Vector Maps -->
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/jquery.vmap.min.js' />"></script>

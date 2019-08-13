@@ -53,7 +53,25 @@
 		  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
 		  $("#managerSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
 		  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
-		
+		   name='<%=session.getAttribute("userName").toString()%>';
+		   role='<%=session.getAttribute("userRole").toString()%>';
+	  
+		  if(role=="SuperAdmin"){
+		  //	getAdminCount();
+			document.getElementById("open_div").click();	
+		  }
+		  else if(role=="Admin"){
+			 // getCount();
+				document.getElementById("open_div_admin").click();	
+	      }
+		  else if(role=="Manager"){
+			  	//getManagerCount();
+				document.getElementById("manager_div").click();	
+			}
+			else if(role=="FieldTechnician"){
+				 // getExecutiveTicketsCount();
+					document.getElementById("tech_div").click();	
+		    }
 		   
 	  });
 
@@ -243,7 +261,7 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/adminOpenTickets'" style="background-color:#00B1BF;cursor:pointer;">
+								<div class="card-body" id="open_div_admin" onclick="location.href='${pageContext.request.contextPath}/adminOpenTickets'" style="background-color:#00B1BF;cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -348,7 +366,7 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="background-color:#00B1BF;cursor:pointer;">
+								<div class="card-body" id="manager_div" onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="background-color:#00B1BF;cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -358,7 +376,7 @@ color: #fff!important;
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
 												<p class="card-category" style="color:#ffffff;">Open</p>
-												<h4 class="card-title" id="assignSurveyCount" style="color:#ffffff;"></h4>
+												<h4 class="card-title" id="openCount" style="color:#ffffff;"></h4>
 											</div>
 										</div>
 									</div>
@@ -367,16 +385,16 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/historyTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerClosedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/history.svg' />" >
+											<img src="<c:url value='resources/assets/img/closed.svg' />" >
 											</div>
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category">History</p>
+												<p class="card-category">Closed</p>
 												<h4 class="card-title" id="historyTicketCount"></h4>
 											</div>
 										</div>
@@ -413,7 +431,7 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="background-color:#00B1BF;cursor:pointer;">
+								<div class="card-body" id="tech_div" onclick="location.href='${pageContext.request.contextPath}/technicianAssignedTickets'" style="background-color:#00B1BF;cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -422,8 +440,8 @@ color: #fff!important;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category" style="color:#ffffff;">Open</p>
-												<h4 class="card-title" id="assignSurveyCount" style="color:#ffffff;"></h4>
+												<p class="card-category" style="color:#ffffff;">Assigned</p>
+												<h4 class="card-title" id="openTicketCount" style="color:#ffffff;"></h4>
 											</div>
 										</div>
 									</div>
@@ -432,16 +450,16 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/historyTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianClosedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/history.svg' />" >
+											<img src="<c:url value='resources/assets/img/closed.svg' />" >
 											</div>
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category">History</p>
+												<p class="card-category">Closed</p>
 												<h4 class="card-title" id="closedTicketCount"></h4>
 											</div>
 										</div>
