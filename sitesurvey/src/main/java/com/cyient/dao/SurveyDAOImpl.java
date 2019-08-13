@@ -3,6 +3,7 @@ package com.cyient.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +99,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public String getUserName(String role, String username) {
 		    Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
 	        c.add(Restrictions.eq("username",username));
@@ -207,5 +209,28 @@ public class SurveyDAOImpl implements SurveyDAO {
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techClosedTicketsData(String username) {
 		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='Closed' and technicianId='"+username+"'").list();
+	}
+
+	public String assignTechnician(TechnicianTicketInfo technicianTicket) {
+		sessionFactory.getCurrentSession().saveOrUpdate(technicianTicket);
+		return "Assigned";
+	}
+
+	
+	public String updateTicketingStatus(String ticketId) {
+		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
+		 Ticketing ticketing = (Ticketing)q1.list().get(0);		 
+		 ticketing.setStatus("InProgress");	
+		 sessionFactory.getCurrentSession().update(ticketing);		
+		return "Assigned";
+	}
+
+	public Technician getTechniciansData(String technicianId) {
+		return (Technician) sessionFactory.getCurrentSession().get(Technician.class, technicianId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Ticketing> getTicketsData(String ticketNum) {
+		return sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum='"+ticketNum+"'").list();
 	}
 }

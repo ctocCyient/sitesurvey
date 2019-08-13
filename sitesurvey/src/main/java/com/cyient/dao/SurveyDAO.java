@@ -96,4 +96,16 @@ public interface SurveyDAO {
 	@Transactional
 	public List<TechnicianTicketInfo> techClosedTicketsData(String username);
 
+	@Transactional
+	public String assignTechnician(TechnicianTicketInfo technicianTicket);
+
+	@Transactional
+	public String updateTicketingStatus(String ticketId);
+
+	@Transactional
+	public Technician getTechniciansData(String technicianId);
+
+	@Transactional
+	public List<Ticketing> getTicketsData(String ticketNum);
+
 }

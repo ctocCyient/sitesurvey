@@ -49,14 +49,12 @@ public class HomeController {
 		 
 	}
 
+	
 	@Autowired
 	private SurveyDAO surveyDAO;
 	
 	@Autowired
 	private JavaMailSender mailSender;
-	
-	String selectedTechnicianId=null;
-	String selectedSiteId=null;
 	
 	@RequestMapping(value = "/openTickets")
 	public ModelAndView openTickets(ModelAndView model) throws IOException {
@@ -174,94 +172,62 @@ public class HomeController {
     }
     
 
-//   @RequestMapping(value = "/saveCreatedTicket", method = RequestMethod.POST)
-//	public ModelAndView saveTicket(@ModelAttribute Ticketing ticket,RedirectAttributes redirectAttributes) {
-//	
-//		rfidDAO.addTicket(ticket);
-//		String status="Ticket Created Successfully";
-//		redirectAttributes.addFlashAttribute("status", status);
-//		return new ModelAndView("redirect:/newTicket");
-//	}
-//   
-//    @RequestMapping(value="/assignTechnician", method = RequestMethod.GET)
-//    @ResponseBody
-//	public String assignTechnician(HttpServletRequest request) throws MessagingException {	
-//    	
-//    	 selectedTechnicianId=request.getParameter("technicianId");
-//    	 
-//    	 Technician TechniciansData = surveyDAO.getTechniciansData(selectedTechnicianId);
-//    	 System.out.println("technicians: "+TechniciansData);
-//    	 String ticketId = null;
-//    	 selectedTicketNum=request.getParameter("ticketId");
-//    	 
-//    	 List<Ticketing> ticketData = surveyDAO.getTicketsData(selectedTicketNum);
-//    	 System.out.println("Tickets: "+ticketData);
-//    	 TechnicianTicketInfo technicianTicket=new  TechnicianTicketInfo();
-//    	 
-//    	 technicianTicket.setTechnicianId(TechniciansData.getTechnicianId());
-//    	 technicianTicket.setTechnicianName(TechniciansData.getTechnicianName());
-//    	 technicianTicket.setRegion(TechniciansData.getRegion());
-//    	 technicianTicket.setManager(TechniciansData.getManager());
-//    	 technicianTicket.setCity(TechniciansData.getCity());
-//    	
-//    	 
-//    	 for(Ticketing ticket : ticketData)
-//	      {
-//    		 ticketId=ticket.getTicketNum();
-//    		 //Customer custId = ticket.getCustomer().getCustomerId();
-//    		 technicianTicket.setCustomer(ticket.getCustomer());
-//    		 technicianTicket.setUniqueId(surveyDAO.ASCIItoHEX(ticket.getUniqueId()));
-//        	 technicianTicket.setTicketNum(ticket.getTicketNum());
-//        	 technicianTicket.setTicketDescription(ticket.getTicketDescription());        	   	 
-//        	 technicianTicket.setSeverity(ticket.getSeverity());
-//        	 technicianTicket.setTicketType(ticket.getTicketType());
-//        	 
-//	      }
-//    	
-//    	 if (technicianTicket.getCustomer() != null) { 
-//			String status=surveyDAO.assignTechnician(technicianTicket);
-//			String StatusUpdate=surveyDAO.updateTicketingStatus(ticketId);
-//			if(status.equalsIgnoreCase("Assigned")&&StatusUpdate.equalsIgnoreCase("Assigned"))
-//			{
-//				sendEmail();
-//			}
-//    	 }
-//    	
-//    	return "Assigned";		
-//	}
-//    
-//    
-//    @RequestMapping(value = "/sendEmail")
-//  	public String sendEmail() throws MessagingException {
-//  	     
-//        mailSender.send(new MimeMessagePreparator() {
-//      	  public void prepare(MimeMessage mimeMessage) throws MessagingException {
-//      		  
-//      		  String severity=null,ticketType=null;
-//  			
-//      		  
-//      		  Technician technicianData = surveyDAO.getTechniciansData(selectedTechnicianId);
-//      		  
-//      		  List<Ticketing> ticketData = surveyDAO.getTicketsData(selectedTicketNum);
-//      		  
-//      		  for(Ticketing ticket : ticketData)
-//      	      {
-//          		 
-//              	 ticketType=ticket.getTicketType();           	 
-//              	 severity=ticket.getSeverity();
-//      	      }
-//      	      
-//      	    MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-//      	    message.setTo(technicianData.getEmailId());
-//      	    message.setSubject("Ticket Information");	    	 
-//      	    message.setText("Dear <b>" + technicianData.getTechnicianName() +"</b> ,<br><br> Site with Id "+selectedSiteId+" is assigned for Survey . <br><br> Please <a href='http://ctoceu.cyient.com:3290/RFIDAssetTracking/'>login</a> for other details", true);
-//      	    
-//      	  }
-//      	});
-//  		
-//  		return "Mail Sent";
-//  	}
-//      
+    @RequestMapping(value="/assignTechnician", method = RequestMethod.GET)
+    @ResponseBody
+	public String assignTechnician(HttpServletRequest request) throws MessagingException {	
+    	
+    	 String selectedTechnicianId=request.getParameter("technicianId");
+    	 
+    	 final Technician technicianData = surveyDAO.getTechniciansData(selectedTechnicianId);
+    	 System.out.println("technicians: "+technicianData);
+    	
+    	 String selectedTicketNum=request.getParameter("ticketId");
+    	 
+    	 List<Ticketing> ticketData = surveyDAO.getTicketsData(selectedTicketNum);
+    	 
+    	 TechnicianTicketInfo technicianTicket=new  TechnicianTicketInfo();
+    	 
+    	 technicianTicket.setTechnicianId(technicianData.getTechnicianId());
+    	 technicianTicket.setTechnicianName(technicianData.getTechnicianName());
+    	 technicianTicket.setRegion(technicianData.getRegion());
+    	 technicianTicket.setState(technicianData.getState());
+    	 technicianTicket.setDistrict(technicianData.getDistrict());
+    	 technicianTicket.setManager(technicianData.getManager());
+    	 technicianTicket.setCity(technicianData.getCity());
+    	 technicianTicket.setStatus("InProgress");
+    	
+    	 
+    	 String ticketId = null;
+		for(Ticketing ticket : ticketData)
+	      {
+    		 ticketId=ticket.getTicketNum();
+        	 technicianTicket.setTicketNum(ticket.getTicketNum());
+        	 technicianTicket.setSiteid(ticket.getSiteid());  
+        	 technicianTicket.setOpenDate(ticket.getOpenDate());
+        	 technicianTicket.setOpenTime(ticket.getOpenTime());  
+        	 technicianTicket.setTicketDescription(ticket.getTicketDescription());    
+	      }
+    	
+    	 if (technicianTicket.getSiteid() != null) { 
+			String status=surveyDAO.assignTechnician(technicianTicket);
+			String StatusUpdate=surveyDAO.updateTicketingStatus(ticketId);
+			if(status.equalsIgnoreCase("Assigned")&&StatusUpdate.equalsIgnoreCase("Assigned"))
+			{
+				mailSender.send(new MimeMessagePreparator() {
+			      	  public void prepare(MimeMessage mimeMessage) throws MessagingException {
+			      	    MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+			      	    message.setTo("lakshmimadhuri.pulavarthy@cyient.com");
+			      	    message.setSubject("Ticket Information");	    	 
+			      	    message.setText("Dear <b>" + technicianData.getTechnicianName() +"</b> ,<br><br> Site with Id is assigned for Survey . <br><br> Please <a href='http://ctoceu.cyient.com:3290/RFIDAssetTracking/'>login</a> for other details", true);
+			      	    
+			      	  }
+			      	});
+			}
+    	 }
+    	
+    	return "Assigned";		
+	}
+      
 	
 	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
 	public ModelAndView newUser(ModelAndView model) {
