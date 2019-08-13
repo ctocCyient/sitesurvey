@@ -66,8 +66,6 @@ public interface SurveyDAO {
 	@Transactional
 	public void addTechnicianIntoUsers(User user);
 	
-	
-
 	@Transactional
 	public List<Ticketing> openTicketsData();
 
@@ -82,5 +80,20 @@ public interface SurveyDAO {
 
 	@Transactional
 	public List<Technician> getUnassignedTechniciansData(String region, String city);
+
+	@Transactional
+	public List<TechnicianTicketInfo> managerOpenTickets(String username);
+	
+	@Transactional
+	public List<TechnicianTicketInfo> managerClosedTickets(String username);
+	
+	@Transactional
+	public List<Technician> getManagerTechnicians(String username);
+
+	@Transactional
+	public List<TechnicianTicketInfo> techAssignedTicketsData(String username);
+	
+	@Transactional
+	public List<TechnicianTicketInfo> techClosedTicketsData(String username);
 
 }

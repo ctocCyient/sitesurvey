@@ -49,6 +49,7 @@ public class HomeController {
 		 
 	}
 
+	
 	@Autowired
 	private SurveyDAO surveyDAO;
 	
@@ -159,20 +160,20 @@ public class HomeController {
 		}
 	
 	
-//	                                                                                                                                                                                                                                                                                   
-//   @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String  getTechniciansData(ModelAndView model,HttpServletRequest request) {
-//    	 String region=request.getParameter("region");
-//    	 String city=request.getParameter("city");
-//    	 System.out.println("city :::"+city);
-//		List<Technician> listTechnicians = surveyDAO.getUnassignedTechniciansData(region,city);
-//		System.out.println(listTechnicians);
-//	   Gson gsonBuilder = new GsonBuilder().create();
-//	   String techniciansJson = gsonBuilder.toJson(listTechnicians);
-//          return techniciansJson.toString();
-//    }
-//    
+	                                                                                                                                                                                                                                                                                   
+   @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
+    @ResponseBody
+    public String  getTechniciansData(ModelAndView model,HttpServletRequest request) {
+    	 String region=request.getParameter("region");
+    	 String city=request.getParameter("city");
+    	 System.out.println("city :::"+city);
+		List<Technician> listTechnicians = surveyDAO.getUnassignedTechniciansData(region,city);
+		System.out.println(listTechnicians);
+	   Gson gsonBuilder = new GsonBuilder().create();
+	   String techniciansJson = gsonBuilder.toJson(listTechnicians);
+          return techniciansJson.toString();
+    }
+    
 
 //   @RequestMapping(value = "/saveCreatedTicket", method = RequestMethod.POST)
 //	public ModelAndView saveTicket(@ModelAttribute Ticketing ticket,RedirectAttributes redirectAttributes) {

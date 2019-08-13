@@ -188,7 +188,7 @@ position: fixed;
                 	<form:option value="SuperAdmin">Super Admin</form:option>
                 	<form:option value="Admin">Admin</form:option>
                 	<form:option  value="Manager">Manager</form:option>
-                	<form:option  value="FeildTechnician">Field Technician</form:option>                	
+                	<form:option  value="FieldTechnician">Field Technician</form:option>                	
                 </form:select>
                
                 </div>

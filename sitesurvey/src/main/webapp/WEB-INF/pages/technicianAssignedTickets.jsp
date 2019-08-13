@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>RFID</title>
+	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
@@ -21,6 +21,7 @@
 
 	<!-- Fonts and icons -->
 	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
+		
 		
 		<style type="text/css">
 #openModal {
@@ -79,33 +80,30 @@ color: #fff!important;
 	
 	<script >
 		$(document).ready(function() {
-
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-			  $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
-			  getExecCount();
-			  tableData();
-			  
-			 
+			  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
+			  getCount();
+			  tableData();			  
 		});	
+		
 	
 		var dataSet=[];
 		 var custId;
 		 var ticketType;
 		 
-		 function getExecCount(){
+		 function getCount(){
 			 var s='<%=session.getAttribute("userName").toString()%>';
 				$.ajax({
 	                type:"get",
-	                url:"getExecTicketsCount",
+	                url:"getTechTicketsCount",
 	                contentType: 'application/json',
 	                datatype : "json",
 	                data:{"username":s},
 	                success:function(result) {
 	                	var jsonArr = $.parseJSON(result);
-	                  $('#assignedExecTickets')[0].innerHTML=jsonArr[0];
-	                  $('#closedExecTickets')[0].innerHTML=jsonArr[1];
+	                  $('#assignedTechTickets')[0].innerHTML=jsonArr.OpenTickets;
+	                  $('#closedTechTickets')[0].innerHTML=jsonArr.ClosedTickets;
 	                  
-	                    
 	                }
 				});
 			}
@@ -117,143 +115,35 @@ color: #fff!important;
 			$.ajax({
                 type:"get",
                 async: false,
-                url:"getExecutiveAssignedTickets",
+                url:"getTechnicianAssignedTickets",
                 contentType: 'application/json',
                 datatype : "json",
                  data:{"username":s},
                 success:function(data1) {
                     openTicketsList = JSON.parse(data1);                    
-                    console.log(openTicketsList[0]);					
-//                     for(var i=0;i<openTicketsList.length;i++)
-//          		   {
-//                     	dataSet.push([openTicketsList[i][0].ticketNum,openTicketsList[i][0].customer.customerId,openTicketsList[i][0].ticketDescription,openTicketsList[i][0].ticketType,openTicketsList[i][0].uniqueId,openTicketsList[i][0].severity,openTicketsList[i][0].status]);
-// 		 		   }
-					
 
- 					for(var i=0;i<openTicketsList.length;i++)
+                    for(var i=0;i<openTicketsList.length;i++)
          		   {
-						uid=openTicketsList[i].uniqueId	
-					 	var Unique= hex2a(uid)
-                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].customer.customerId,openTicketsList[i].ticketDescription,openTicketsList[i].ticketType,Unique,openTicketsList[i].severity,openTicketsList[i].status]);
+                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].ticketDescription]);
 		 		   }
                                        
-			 var table1=$('#executiveAssignedTickets').DataTable({
+			 var table1=$('#technicianAssignedTickets').DataTable({
 					destroy:true,
 					language: {
 					  emptyTable: "No Data Available"
-					},	
-					columnDefs: [{ "targets": -1, "data": null, render: function (a,b,data,d) {
-			            if (data[3] =='New') {
-			                return "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='Write to tag' />";
-			            }
-			            else if (data[3] =='Existing') {
-				                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='Fix the cable' />";
-				            }
-			            }			            
-			        }],
+					},						
 					//columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='View' />"}],	
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
-						{title: "Customer Id" },
 						{title: "Ticket Description" },
-						{title: "Ticket Type" },
-						{title: "Unique ID" },
-						{title: "Severity" },		
-						{title: "Action" ,width:"100px" }
 			        ]
 			    } );
 			 
-			 
-			 $('#executiveAssignedTickets tbody').on('click', '[id*=viewBtn]', function () {
-		            data1 =  table1.row($(this).parents('tr')).data();
-		            rowIndex = $(this).parent().index();		
-		            ticketId=data1[0];
-		            custId=data1[1];
-		            ticketType=data1[3];
-		            if(ticketType=='New')
-	            	{
-		            	redirectToOther();
-	            	}		            
-		            else if(ticketType=='Existing')
-	            	{
-	          			 myFunction();
-	            	}
-		          
-             });
-			 
 		}
 			});
 		}
-		function hex2a(uid) {
-		    var str_uniq = '';
-		    for (var i = 0; i < uid.length; i += 2) str_uniq += String.fromCharCode(parseInt(uid.substr(i, 2), 16));
-		    return str_uniq;
-		}
-// 		function myFunction() {
-// 			  var txt;
-// 			  var r = confirm("Is there any Changes ?");
-// 			  if (r == true) {
-// 				  redirectToOther();
-// 			  }
-// 			  else {
-// 				  window.location.href = '/RFIDAssetTracking/home';
-// 			  }			  
-// 			}
-
-function myFunction() {
 	
-			swal({
-				//title: 'Are you sure?',
-				text: "Are there any changes?",
-				type: 'warning',
-				buttons:{
-					confirm: {
-						text : 'Yes',
-						className : 'btn btn-success'
-					},
-					cancel: {
-						visible: true,
-						className: 'btn btn-danger'
-					}
-				}
-			}).then((Delete) => {
-				if (Delete) {
-					redirectToOther();
-				} else {
-					swal.close();
-					
-				}
-			});
-		
-		}
-		
-		function redirectToOther()
-		{
-			console.log("Cust"+custId);
-			
-			$.ajax({
-                type: "get",
-                url: "getinventorydetails",
-                contentType: 'application/json',
-                data :{
-                	custId,ticketId
-                  },
-                datatype: "json",
-                success: function(result) {
-                    inventoryList = JSON.parse(result);
-                   window.location.href = '/RFIDAssetTracking/fetchinventoryDetails?ticketid='+window.encodeURIComponent(ticketId)+'&ticketType='+ticketType+'&inventoryDetails='+ window.encodeURIComponent(JSON.stringify(inventoryList)); 
-                  
-
-                }
-			
-       		 }); 
-			
-		}
-		
-		
-		
-		
 	</script>
 
 
@@ -306,7 +196,7 @@ function myFunction() {
 		</div>
 
 		<!-- Sidebar -->
-<div id="execSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
 
@@ -318,18 +208,18 @@ function myFunction() {
 					</div>
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body " onclick="location.href='/RFIDAssetTracking/executiveAssignedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;" >
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#F98B88;border-radius: 5px;" >
+							<div class="card card-stats card-round" >
+								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/technicianAssignedTickets'" style="background-color:#00B1BF;cursor:pointer;">
+									<div class="row align-items-center" >
+										<div class="col-icon" >
+											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
 											<img src="<c:url value='resources/assets/img/open.svg' />" >
 											</div>
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
 												<p class="card-category" style="color:#ffffff;">Assigned</p>
-												<h4 class="card-title" style="color:#ffffff;" id="assignedExecTickets"></h4>
+												<h4 class="card-title" id="assignedTechTickets" style="color:#ffffff;"></h4>
 											</div>
 										</div>
 									</div>
@@ -338,7 +228,7 @@ function myFunction() {
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/RFIDAssetTracking/executiveClosedTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianClosedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
@@ -348,14 +238,13 @@ function myFunction() {
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
 												<p class="card-category">Closed</p>
-												<h4 class="card-title" id="closedExecTickets"></h4>
+												<h4 class="card-title" id="closedTechTickets"></h4>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					
 						
 					</div>
 
@@ -370,7 +259,7 @@ function myFunction() {
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">
-										<table id="executiveAssignedTickets" style="width:100%" class="display table table-striped table-hover" >
+										<table id="technicianAssignedTickets" style="width:100%" class="display table table-striped table-hover" >
 											
 										</table>
 									</div>
