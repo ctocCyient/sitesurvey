@@ -216,6 +216,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		return "Assigned";
 	}
 
+	
 	public String updateTicketingStatus(String ticketId) {
 		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
 		 Ticketing ticketing = (Ticketing)q1.list().get(0);		 
