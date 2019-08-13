@@ -211,6 +211,9 @@
 				 		console.log("Error");	
 				 	}
 			 });
+			 $("#state").val('');
+			 $("#district").val('');
+			 $("#city").val('');
 		 }
 	 	
 	 	function getDistrict(state)
@@ -231,6 +234,8 @@
 			         	console.log("Error");
 			         }
 			 	});
+			 $("#district").val('');
+			 $("#city").val('');
 		 }
 		 
 	 	function getCity(district)
@@ -253,6 +258,7 @@
 			         	console.log("Error");
 			         }
 			 	});
+			 $("#city").val('');
 		 }
 	 	
 	 	
