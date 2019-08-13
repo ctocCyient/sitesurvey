@@ -237,8 +237,7 @@ var jsonData=[];
 			 	$("#siteid").val('');
 			 }
 
-	 
-			 function dateFun()
+	 		 function dateFun()
 			 {
 			 	var today = new Date();
 			 	
