@@ -15,10 +15,6 @@
 <title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
-
-
-
-
 <script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
@@ -26,20 +22,11 @@
 	
 	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">	
 	
-
-
-     
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 
 <script type="text/javascript">
-
-// createFolder("C:\\TEST\\")
-// function createFolder(folder){
-// makeDir(folder)
-// }
-
 
 WebFont.load({
 	google: {"families":["Open+Sans:300,400,600,700"]},
@@ -269,11 +256,8 @@ label {
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' />"></script>
 
-
 <!-- jQuery Scrollbar -->
 <script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
-
-
 
 <!-- jQuery Sparkline -->
 
