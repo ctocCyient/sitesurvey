@@ -7,7 +7,9 @@ import javax.transaction.Transactional;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 import com.cyient.model.Technician;
+import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
+import com.cyient.model.Track_User;
 import com.cyient.model.User;
 
 
@@ -23,6 +25,9 @@ public interface SurveyDAO {
 	public void addSite(Site site);
 	
 	@Transactional
+	public void addTicket(Ticketing ticket);
+	
+	@Transactional
 	public List<Regions> getRegions();
 	
 	@Transactional
@@ -33,6 +38,10 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public List<Regions> getCities(String region,String state,String district);
+	
+	@Transactional
+	public List<Site> getSiteIdsForRegion(String region, String state, String district, String city);
+
 	
 	@Transactional
 	public String getUserName(String role, String username);
@@ -57,5 +66,25 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public void addTechnicianIntoUsers(User user);
+	
+	
 
+	@Transactional
+	public List<Ticketing> openTicketsData();
+
+	@Transactional
+	public List<TechnicianTicketInfo> assignedTicketsData();
+
+	@Transactional
+	public List<TechnicianTicketInfo> historyTicketsData();
+
+	@Transactional
+	public List<Ticketing> getAllTicketsData();
+
+	@Transactional
+
+	public List<Technician> getUnassignedTechniciansData(String region, String city);
+
+	@Transactional
+	public String saveTrackuser(Track_User tu);
 }

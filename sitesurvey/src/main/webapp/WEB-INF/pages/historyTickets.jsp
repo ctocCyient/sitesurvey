@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>RFID</title>
+	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
 	<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
@@ -33,14 +33,10 @@
 		$(document).ready(function() {
 			
 			 $("#navbar").load('<c:url value="/resources/common/header.jsp" />');  
-			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />');
-			
-			  //tableData();
-			  //getCount();
-			
-			  	
-			 
-		
+			 $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
+			  getCount();
+			  tableData();
 			  
 		});
 		var dataSet=[];
@@ -58,9 +54,8 @@
 					
                    for(var i=0;i<historyTicketsList.length;i++)
         		   {
-					uid=historyTicketsList[i].uniqueId	
-					 	var Unique= hex2a(uid);
-                   	dataSet.push([historyTicketsList[i].ticketNum,historyTicketsList[i].customer.customerId,historyTicketsList[i].ticketType,Unique,historyTicketsList[i].executiveName]);
+					
+                   	dataSet.push([historyTicketsList[i].ticketNum,historyTicketsList[i].technicianName]);
         			   
         		   }
                   
@@ -69,74 +64,37 @@
 					destroy:true,
 					language: {
 					  emptyTable: "No Data Available"
-					},	
-					columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<button style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn'>View</button>"}],					
+					},											
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
-						{title: "Customer Id" },
-						{title: "Ticket Type" },	
-						{title: "Unique Id" },
-						{title: "Technician Name" },						
-						{title: "Action" }
+						{title: "Technician Name" }
 			        ]
 			    } );
 			 
-			 $('#historyTickets tbody').on('click', '[id*=viewBtn]', function () {
-		            data1 =  table1.row($(this).parents('tr')).data();
-		           
-		           ticketId=data1[0];
-		           custId=data1[1];
-		           ticketType=null;
-		           
-		           console.log("Cust"+custId);
-		           
-		          // window.location.href = '/RFIDAssetTracking/viewTicketDetails';
-					
-
-					$.ajax({
-		                type: "get",
-		                url: "getDetails",
-		                contentType: 'application/json',
-		                data :{
-		                	custId,ticketId
-		                  },
-		                datatype: "json",
-		                success: function(result) {
-		                    listData = JSON.parse(result);
-		                   window.location.href = '/RFIDAssetTracking/viewTicketDetails?listDetails='+ window.encodeURIComponent(JSON.stringify(listData)); 
-		                  
-
-		                }
-					
-		       		 }); 
-			 
-             });
 		}
 			});
 		}
 		
 		
 function getCount(){
+			
+			$.ajax({
+		        type:"get",
+		        url:"ticketsCount",
+		        contentType: 'application/json',
+		        datatype : "json",
+		        success:function(result) {
+		        	var jsonArr = $.parseJSON(result);
+		        	$('#openTicketCount')[0].innerHTML=jsonArr.OpenTickets;
+		            $('#assignedTicketCount')[0].innerHTML=jsonArr.AssignedTickets;
+	               $('#historyTicketCount')[0].innerHTML=jsonArr.HistoryTickets;
+	               $('#totalTicketCount')[0].innerHTML=jsonArr.TotalTickets;
+		            
+		        }
+			});
+		}
 	
-	$.ajax({
-        type:"get",
-        url:"ticketsCount",
-        contentType: 'application/json',
-        datatype : "json",
-        success:function(result) {
-        	var jsonArr = $.parseJSON(result);
-        	$('#openTicketCount')[0].innerHTML=jsonArr[0];
-            /* $('#closedTicketCount')[0].innerHTML=jsonArr[1];
-            $('#historyTicketCount')[0].innerHTML=jsonArr[2]; */
-            $('#assignedTicketCount')[0].innerHTML=jsonArr[1];
-               //$('#unassignedTicketCount')[0].innerHTML=jsonArr[2];
-               $('#historyTicketCount')[0].innerHTML=jsonArr[2];
-               $('#totalTicketCount')[0].innerHTML=jsonArr[3];
-            
-        }
-	});
-}
 
 	</script>
 <style>
@@ -166,6 +124,14 @@ color: #fff!important;
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 </head>
 <body>
+<%
+		String s,role = " ";
+		if (session.getAttribute("userName") == null) { %>
+		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
+	<% } else {
+		 s = session.getAttribute("userName").toString();
+		 role = session.getAttribute("userRole").toString(); 
+	 } %>
 	<div class="wrapper">
 		<!--
 			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
@@ -198,11 +164,17 @@ color: #fff!important;
 			<!-- End Navbar -->
 		</div>
 
+		 <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
 		<!-- Sidebar -->
 <div id="superAdminSidebar">
 </div>
+<%} %>
 
-
+ <% if (role.equalsIgnoreCase(("Admin"))) { %>  
+		<!-- Sidebar -->
+<div id="adminSidebar">
+</div>
+<%} %>
 
 		<div class="main-panel">
 			<div class="content">
@@ -210,12 +182,15 @@ color: #fff!important;
 					<div class="page-header">
 						<h4 class="page-title">Dashboard</h4>						
 					</div>
-					
-					
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body " onclick="location.href='/sitesurvey/openTickets'" style="cursor:pointer;">
+								<% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="cursor:pointer;" >
+								<%} %>
+ 								<% if (role.equalsIgnoreCase(("Admin"))) { %>  
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/adminOpenTickets'" style="cursor:pointer;" >
+								<%} %>
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -234,7 +209,7 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/sitesurvey/assignedTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/assignedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#F98B88;border-radius: 5px">
@@ -254,7 +229,7 @@ color: #fff!important;
 						
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/sitesurvey/historyTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/historyTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px;">
@@ -274,7 +249,7 @@ color: #fff!important;
 						
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/sitesurvey/totalTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/totalTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px;">
@@ -312,7 +287,7 @@ color: #fff!important;
 				</div>
 			</div>
 		</div>
-		
+		</div>
 	</div>
 
 <!--   Core JS Files   -->

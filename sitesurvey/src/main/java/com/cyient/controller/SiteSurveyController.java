@@ -2,6 +2,13 @@ package com.cyient.controller;
 
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +24,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cyient.dao.SurveyDAO;
+
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 import com.cyient.model.Technician;
+import com.cyient.model.Track_User;
 import com.cyient.model.User;
 
 
@@ -54,9 +64,11 @@ public class SiteSurveyController {
 	}
 	
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
-    public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) {
+    public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) throws UnknownHostException, SocketException {
 		System.out.println("Usernaem"+user.getUsername()+"Password"+user.getPassword()+"Role:"+user.getRole());
-           User resp = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());        
+           User resp = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());   
+           
+          
            if(resp==null)
            {
                   return new ModelAndView("redirect:/");
@@ -71,7 +83,19 @@ public class SiteSurveyController {
         	  session.setAttribute("userRole",user.getRole());
         	  System.out.println(user.getUsername());
         	  System.out.println(user.getName());
-      	         	   
+        	  Enumeration e = NetworkInterface.getNetworkInterfaces();
+        	  while(e.hasMoreElements())
+        	  {
+        	      NetworkInterface n = (NetworkInterface) e.nextElement();
+        	      Enumeration ee = n.getInetAddresses();
+        	      while (ee.hasMoreElements())
+        	      {
+        	          InetAddress i = (InetAddress) ee.nextElement();
+        	          System.out.println(i.getHostAddress());
+        	      }
+        	  } 
+        	  
+        	  // System.out.println("IP of my system is := "+IP.getHostAddress());  
 	              model.setViewName("homePage");
 	              return model;
            }
@@ -93,6 +117,23 @@ public class SiteSurveyController {
 		return new ModelAndView("redirect:/newUser");
 	}
 	
+	@RequestMapping(value = "/saveLoginInfo", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView TrackUser(ModelAndView model,HttpServletRequest request) {
+		String Uname= request.getParameter("UserName");
+		String CurrentIP= request.getParameter("CurrentIP");
+		String Type= request.getParameter("Type");
+		String Time= request.getParameter("Time");
+		
+		System.out.println("user + ip"+Uname  +CurrentIP);
+		Track_User trackuser= new Track_User();
+		trackuser.setUsername(Uname);
+		trackuser.setCurrentip(CurrentIP);
+		trackuser.setTime2(Time);
+		trackuser.setType(Type);
+		String status=surveyDAO.saveTrackuser(trackuser);
+		return null;
+	}
 	/*@RequestMapping(value = "/newTechnician", method = RequestMethod.GET)
 	public ModelAndView newTechnician(ModelAndView model) {
 		Technician technician = new Technician();
@@ -107,8 +148,6 @@ public class SiteSurveyController {
           	  session.removeAttribute("userName");
               return "redirect:/";
 	 }
-	
-	
 	
 	
 }

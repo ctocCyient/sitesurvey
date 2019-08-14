@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>RFID</title>
+	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
 	<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
@@ -35,8 +35,9 @@
 
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-			 // getCount();
-			//tableData();
+			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
+			 getCount();
+			tableData();
 			
 		
 
@@ -56,7 +57,7 @@
 					
                     for(var i=0;i<assignTicketsList.length;i++)
          		   {
-                    	dataSet.push([assignTicketsList[i].ticketNum,assignTicketsList[i].customer.customerId,assignTicketsList[i].executiveName,assignTicketsList[i].status]);
+                    	dataSet.push([assignTicketsList[i].ticketNum,assignTicketsList[i].technicianName,assignTicketsList[i].status]);
          			   
          		   }
                    
@@ -69,7 +70,6 @@
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
-						{title: "Customer Id" },
 						{title: "Technician Name" },
 						{title: "Status" }						
 			        ]
@@ -88,14 +88,15 @@
 		        datatype : "json",
 		        success:function(result) {
 		        	var jsonArr = $.parseJSON(result);
-		        	$('#openTicketCount')[0].innerHTML=jsonArr[0];
-		          $('#assignedTicketCount')[0].innerHTML=jsonArr[1];
-		          $('#historyTicketCount')[0].innerHTML=jsonArr[2];
-		          $('#totalTicketCount')[0].innerHTML=jsonArr[3];
+		        	$('#openTicketCount')[0].innerHTML=jsonArr.OpenTickets;
+		            $('#assignedTicketCount')[0].innerHTML=jsonArr.AssignedTickets;
+	               $('#historyTicketCount')[0].innerHTML=jsonArr.HistoryTickets;
+	               $('#totalTicketCount')[0].innerHTML=jsonArr.TotalTickets;
 		            
 		        }
 			});
 		}
+	
 
 	</script>
 		
@@ -121,6 +122,15 @@ color: #fff!important;
 </style>
 </head>
 <body>
+		<%
+		String s,role = " ";
+		if (session.getAttribute("userName") == null) { %>
+		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
+	<% } else {
+		 s = session.getAttribute("userName").toString();
+		 role = session.getAttribute("userRole").toString(); 
+	 } %>
+   
 	<div class="wrapper">
 		<!--
 			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
@@ -153,10 +163,17 @@ color: #fff!important;
 			<!-- End Navbar -->
 		</div>
 		
+		 <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
 		<!-- Sidebar -->
 <div id="superAdminSidebar">
 </div>
+<%} %>
 
+ <% if (role.equalsIgnoreCase(("Admin"))) { %>  
+		<!-- Sidebar -->
+<div id="adminSidebar">
+</div>
+<%} %>
 
 		<!-- End Sidebar -->
 
@@ -169,7 +186,12 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body " onclick="location.href='/sitesurvey/openTickets'" style="cursor:pointer;" >
+							 <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="cursor:pointer;" >
+								<%} %>
+ 								<% if (role.equalsIgnoreCase(("Admin"))) { %>  
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/adminOpenTickets'" style="cursor:pointer;" >
+								<%} %>
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -188,7 +210,7 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/sitesurvey/assignedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/assignedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#F98B88;border-radius: 5px">
@@ -207,7 +229,7 @@ color: #fff!important;
 						</div>						
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/sitesurvey/historyTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/historyTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px;">
@@ -226,7 +248,8 @@ color: #fff!important;
 						</div>						
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='/sitesurvey/totalTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/totalTickets'" style="cursor:pointer;">
+
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px;">
@@ -263,7 +286,7 @@ color: #fff!important;
 	
 		</div>
 		
-		
+		</div>
 	</div>
 	</div>
 </div>

@@ -205,7 +205,7 @@ label {
                 	<form:option value="Admin">Admin</form:option>
                 	<form:option value="Manager">Manager</form:option>
                 </form:select>
-               
+              
 				 <br>
 				<label for="username" class="placeholder">User Name</label>
 				<form:input id="username" path="username" class="form-control input-full filled" onkeypress="return isCharacters(event);" onblur="getUserName();"/>
@@ -219,23 +219,19 @@ label {
 				<form:input id="emailId" path="emailId" class="form-control input-full filled"   onchange="validateEmailId(this.value,this.id,'emailIdMsg')"  />
 				<span id="emailIdMsg" style="color:red;display:none;font-size:15px">Please enter valid Email Id</span>
 				<br>
-				
 				<label for="passwordsignin" class="placeholder">Password</label> 
 				<form:password id="pwd" path="password" autocomplete="new-password" name="passwordsignin"  class="form-control input-full filled"  />
 					<!-- <input  id="passwordsignin" name="passwordsignin" type="password" class="form-control input-border-bottom" required>-->
-					
 				<br>
 				<label for="confirmpassword" class="placeholder">Confirm Password</label>
 				<form:password id="cpwd" path="" onchange="validatePassword()" name="confirmpassword" class="form-control input-full filled"  />
 					<!-- <input  id="confirmpassword" name="confirmpassword" type="password" class="form-control input-border-bottom" required> -->
 					<span id="pwdIdMsg" style="color:red;display:none;font-size:15px">Password must be same</span>
 				<br>
-				
 				<label for="mobile" class="placeholder">Mobile</label>
 				<form:input id="mobileNum" path="mobileNumber" onkeypress="return isNumber(event);" onchange="ValidateNumber(this.id,'mobileIdMsg')" class="form-control input-full filled"  />
 				<span id="mobileIdMsg" style="color:red;display:none;font-size:15px">Please enter valid Mobile Number</span>
 				<br>
-				
                 <div  id="regionDiv" >
 				<label for="Type" class="Type">Region</label>
                 <form:select id="region" path="region" name="region" class="form-control input-full filled" >

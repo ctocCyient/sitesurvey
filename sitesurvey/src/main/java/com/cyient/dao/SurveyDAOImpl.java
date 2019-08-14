@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 import com.cyient.model.Technician;
+import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
+import com.cyient.model.Track_User;
 import com.cyient.model.User;
 
 
@@ -23,6 +25,11 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	public void addUser(User user) {
 		sessionFactory.getCurrentSession().saveOrUpdate(user);
+	}
+	
+	public void addTicket(Ticketing ticket){
+		
+		sessionFactory.getCurrentSession().saveOrUpdate(ticket);
 	}
 	
 	public User getAllUsersOnCriteria(String username,String password,String type) {
@@ -40,7 +47,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Regions> getRegions() {
-		System.out.println("getRegions" );
 		//return sessionFactory.getCurrentSession().createQuery("from Regions").list();
 		 return sessionFactory.getCurrentSession().createCriteria(Regions.class)         	      
        	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
@@ -78,6 +84,19 @@ public class SurveyDAOImpl implements SurveyDAO {
         	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
         	      .list();  
 	} 
+	
+	@SuppressWarnings("unchecked")
+	public List<Site> getSiteIdsForRegion(String region, String state, String district, String city){
+		
+		return sessionFactory.getCurrentSession().createCriteria(Site.class)
+				.add(Restrictions.eq("region", region))
+				.add(Restrictions.eq("state", state))
+				.add(Restrictions.eq("district", district))
+				.add(Restrictions.eq("city", city))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+				.list();
+		
+	}
 	
 	
 	public String getUserName(String role, String username) {
@@ -137,5 +156,37 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public void addTechnicianIntoUsers(User technician){
 		sessionFactory.getCurrentSession().saveOrUpdate(technician);
 	}
+
 	
+	@SuppressWarnings("unchecked")
+	public List<Ticketing> openTicketsData() {
+		return sessionFactory.getCurrentSession().createQuery("FROM Ticketing where status='Open'").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> assignedTicketsData() {
+		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='InProgress'").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> historyTicketsData() {
+		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='Closed'").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Ticketing> getAllTicketsData() {
+		return sessionFactory.getCurrentSession().createQuery("FROM Ticketing").list();
+	} 
+	
+	@SuppressWarnings("unchecked")
+	public List<Technician> getUnassignedTechniciansData(String region,String city){
+		return sessionFactory.getCurrentSession().createQuery("FROM Technician where region='"+region+"' and city ='"+city+"'").list();
+		//return sessionFactory.getCurrentSession().createQuery("FROM Executive where region='"+region+"' and city ='"+city+"' and executiveId NOT IN (SELECT executiveId FROM ExecutiveTicketInfo)").list();
+	}
+
+	public String saveTrackuser(Track_User tu) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().save(tu);
+		return "success";
+	}
 }

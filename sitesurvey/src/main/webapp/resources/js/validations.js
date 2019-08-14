@@ -62,6 +62,20 @@ function isNumber(evt) {
 	}
 	
 	
+	function ValidatePinCode(id,pinIdMsg) {
+		  var pincode = document.getElementById(id);
+
+		  if (pincode.value.length < 6 || pincode.value.length > 6) {
+			  $("#"+pinIdMsg).css("display","block");
+		      $('#'+id).val('');
+		  }
+		  else
+		  {
+			  $("#"+pinIdMsg).css("display","none");
+		  }
+
+		}
+	
 	function GST_valid(id)
 	{
 	///   36AAACI4487J1Z9

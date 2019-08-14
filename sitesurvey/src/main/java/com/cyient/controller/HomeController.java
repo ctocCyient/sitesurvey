@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import org.jboss.logging.Logger;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -93,6 +94,7 @@ public class HomeController {
 	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
 	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
 		String status="Technician Added Successfully";
+
 		final JSONArray json=new JSONArray();
 			String managerId=null;
 			User user=new User();
@@ -129,9 +131,34 @@ public class HomeController {
 		    	    message.setText("Dear <b>" + managerDet.get(0) +"</b> ,<br><br> A new Technician created under your region with details:<br><b>Tehnician Id: </b>"+technician.getTechnicianId()+"<br><b>Technician Name: </b>"+technician.getTechnicianName()+"<br><b>Region: </b> "+technician.getRegion()+"<br><br>Please <a href='http://ctoceu.cyient.com:3290/RFIDAssetTracking/'>login</a> for other details with credetials:<br> <b>Username</b>: "+managerDet.get(1)+"<br><b>Password</b>:"+managerDet.get(2)+"", true);
 		    	  }
 		    	});
+		      
+		      /*Sending Mail for Technician with his login Details*/ 
+		      
+		      mailSender.send(new MimeMessagePreparator() {
+		    	  public void prepare(MimeMessage mimeMessage) throws MessagingException {		    		
+		    	    MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+		    	    message.setFrom("Neeraja.Chaparala@cyient.com");
+		    	    message.setTo(technician.getEmailId());
+		    	    message.setSubject("Login Credentials");	    	 
+		    	  // message.setText("Dear <b>" + managerName +"</b> ,<br><br> Ticket with Id <b>" +selectedTicketNum+" </b> is assigned. Tikcet Details are:<br> Severity: <b>"+severity+ "</b> <br>Ticket Description: <b>" + ticketDesc+"</b><br>Customer ID <b>"+customerId+"</b> . <br> Please <a href='http://172.16.53.79:8080/RFIDAssetTracking/'>login</a> for other details", true);
+		    	    message.setText("Dear <b>" + technician.getTechnicianName() +"</b> ,<br>You were registered as a Technicinan. <br>Please <a href='http://ctoceu.cyient.com:3290/RFIDAssetTracking/'>login</a> for other details with credetials:<br> <b>Username</b>: "+technician.getTechnicianName()+"<br><b>Password</b>:"+technician.getPassword()+"", true);
+		    	  }
+		    	});
+		      
 		      redirectAttributes.addFlashAttribute("status", status);
 			return new ModelAndView("redirect:/newTechnician");
 	}
+	
+	 @RequestMapping(value = "/saveCreatedTicket", method = RequestMethod.POST)
+		public ModelAndView saveTicket(@ModelAttribute Ticketing ticket,RedirectAttributes redirectAttributes) {
+		
+		 	surveyDAO.addTicket(ticket);
+			String status="Ticket Created Successfully";
+			redirectAttributes.addFlashAttribute("status", status);
+			return new ModelAndView("redirect:/newTicket");
+		}
+	
+	
 //	                                                                                                                                                                                                                                                                                   
 //   @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
 //    @ResponseBody
@@ -146,6 +173,7 @@ public class HomeController {
 //          return techniciansJson.toString();
 //    }
 //    
+
 //   @RequestMapping(value = "/saveCreatedTicket", method = RequestMethod.POST)
 //	public ModelAndView saveTicket(@ModelAttribute Ticketing ticket,RedirectAttributes redirectAttributes) {
 //	
@@ -370,6 +398,87 @@ public class HomeController {
 			List<Object> listWithoutDuplicates = listCities.stream().distinct().collect(Collectors.toList());
 			Gson gsonBuilder = new GsonBuilder().create();
 	        String totalJson = gsonBuilder.toJson(listWithoutDuplicates);
+		    return totalJson.toString();
+	   
+
+			/*List<Regions> regions = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
+			 Map<String, String> citiesMap = new HashMap<String, String>();
+			 for(Regions region : regions)
+		      {
+				 citiesMap.put(region.getCity(),region.getCity());
+		      }
+			
+//			  	   Gson gsonBuilder = new GsonBuilder().create();
+//	        	   String totalJson = gsonBuilder.toJson(listCities);
+		              return citiesMap;*/
+
+
+	    }
+	    
+		
+	    
+	    @RequestMapping("ticketsCount")
+	    @ResponseBody
+	    public String  ticketsCountData(ModelAndView model) {
+			List<Ticketing> listOpen = surveyDAO.openTicketsData();		              
+		    List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+		      List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
+		      List<Ticketing> listTotal =surveyDAO.getAllTicketsData();
+		     
+			   JSONObject countData=new JSONObject();
+			   countData.put("OpenTickets",listOpen.size());
+			   countData.put("AssignedTickets",listAssigned.size());
+			   countData.put("HistoryTickets",listHistory.size());
+			   countData.put("TotalTickets",listTotal.size());
+			   System.out.println(countData);			   
+		          return countData.toString();
+	    }
+	 
+	    @RequestMapping("getOpenTickets")
+	    @ResponseBody
+	    public String  getOpenTicketsData(ModelAndView model) {
+			List<Ticketing> listOpen = surveyDAO.openTicketsData();			
+			Gson gsonBuilder = new GsonBuilder().create();
+			String openJson = gsonBuilder.toJson(listOpen);
+    	   	return openJson.toString();
+	    }
+		
+		@RequestMapping("getAssignedTickets")
+	    @ResponseBody
+	    public String  getAssignedTicketsData(ModelAndView model) {
+			List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+			Gson gsonBuilder = new GsonBuilder().create();
+			String closedJson = gsonBuilder.toJson(listAssigned);
+    	   	return closedJson.toString();
+	    }
+		
+		@RequestMapping("getHistoryTickets")
+	    @ResponseBody
+	    public String  getHistoryTicketsData(ModelAndView model) {
+			List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
+	  	    Gson gsonBuilder = new GsonBuilder().create();
+    	    String historyJson = gsonBuilder.toJson(listHistory);
+              return historyJson.toString();
+		}
+		
+	    @RequestMapping(value="getSiteId", method = RequestMethod.GET)
+	    @ResponseBody
+
+	    public  String getSiteId(ModelAndView model,HttpServletRequest request) {
+
+		 String selectedRegion=request.getParameter("selectedRegion");
+			String selectedState=request.getParameter("selectedState");	
+			String selectedDistrict=request.getParameter("selectedDistrict");	
+			String selectedCity=request.getParameter("selectedCity");	
+			List<Site> siteIds = surveyDAO.getSiteIdsForRegion(selectedRegion,selectedState,selectedDistrict,selectedCity);
+			List<String> listSiteIds=new ArrayList<String>();
+			for(Site site:siteIds)
+			{
+				listSiteIds.add(site.getSiteid());
+			}
+			List<Object> listWithoutDuplicates = listSiteIds.stream().distinct().collect(Collectors.toList());
+			Gson gsonBuilder = new GsonBuilder().create();
+	        String totalJson = gsonBuilder.toJson(listWithoutDuplicates);
 		    return totalJson;
 	   
 
@@ -397,7 +506,40 @@ public class HomeController {
 	   return executiveJson.toString();
 	  
 	  }
-    
+
+		@RequestMapping("getTotalTickets")
+		@ResponseBody
+		public String  getTotalTicketsData(ModelAndView model) {
+			List<Ticketing> listTotal = surveyDAO.getAllTicketsData();
+		     Gson gsonBuilder = new GsonBuilder().create();
+			 String totalJson = gsonBuilder.toJson(listTotal);
+		     return totalJson.toString();
+		}
+		
+		@RequestMapping(value = "/adminOpenTickets")
+		public ModelAndView adminOpenTickets(ModelAndView model) throws IOException {
+			model.setViewName("adminOpenTickets");
+			return model;
+		}
+		
+		
+		 @RequestMapping("getAdminTicketsCount")
+		@ResponseBody
+		public String  getAdminTicketsCount(ModelAndView model) {
+			List<Ticketing> listOpen = surveyDAO.openTicketsData();		              
+		    List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+		      List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
+		      List<Ticketing> listTotal =surveyDAO.getAllTicketsData();
+		     
+			   JSONObject countData=new JSONObject();
+			   countData.put("OpenTickets",listOpen.size());
+			   countData.put("AssignedTickets",listAssigned.size());
+			   countData.put("HistoryTickets",listHistory.size());
+			   countData.put("TotalTickets",listTotal.size());
+			   System.out.println(countData);			   
+		          return countData.toString();
+		}
+		 
 	    @RequestMapping(value= "getManager", method = RequestMethod.GET)
 		@ResponseBody
 		public String getManager(HttpServletRequest request) {

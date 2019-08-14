@@ -6,8 +6,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,9 +41,12 @@ public class Technician implements Serializable {
 	
 	@Column(name="District")
 	private String district;
-	
+		
 	@Column(name="City")
 	private String city;
+	
+	@Column(name="PinCode")
+	private String pincode;
 	
 	@Column(name="Manager")
 	private String manager;
@@ -143,6 +144,14 @@ public class Technician implements Serializable {
 
 	public void setDistrict(String district) {
 		this.district = district;
+	}
+
+	public String getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
 	}	
 	
 }
