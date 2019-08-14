@@ -260,12 +260,17 @@
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-
-
+							<script type="text/javascript">
+									if (role == "Admin") {
+								 		document.write('<div class="card-body" onclick="location.href="'${pageContext.request.contextPath}'"'/adminOpenTickets'" style="background-color: #00B1BF; border-radius: 10px; cursor: pointer;">');				
+									}
+									else if (role == "SuperAdmin") {
+									 	document.write('<div class="card-body" onclick="location.href='${pageContext.request.contextPath}'/openTickets" style="background-color: #00B1BF; border-radius: 10px; cursor: pointer;">');				
+									}
+								</script>
 								<div class="row align-items-center">
 									<div class="col-icon">
-										<div class="icon-big text-center bubble-shadow-small"
-											style="background: #f3545d; border-radius: 5px">
+										<div class="icon-big text-center bubble-shadow-small" style="background: #f3545d; border-radius: 5px">
 											<img src="<c:url value='resources/assets/img/open.svg' />">
 										</div>
 									</div>
@@ -277,13 +282,10 @@
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
+						</div>					
 					<div class="col-sm-6 col-md-3">
 						<div class="card card-stats card-round">
-							<div class="card-body"
-								onclick="location.href='${pageContext.request.contextPath}/assignedTickets'"
-								style="background-color: #00B1BF; border-radius: 10px; cursor: pointer;">
+							<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/assignedTickets'"	style="background-color: #00B1BF; border-radius: 10px; cursor: pointer;">
 								<div class="row align-items-center">
 									<div class="col-icon">
 										<div class="icon-big text-center bubble-shadow-small"
@@ -369,7 +371,6 @@
 			</div>
 
 		</div>
-	</div>
 	</div>
 	</div>
 

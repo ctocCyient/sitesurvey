@@ -9,6 +9,7 @@ import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
+import com.cyient.model.Track_Users;
 import com.cyient.model.User;
 
 
@@ -107,5 +108,8 @@ public interface SurveyDAO {
 
 	@Transactional
 	public List<Ticketing> getTicketsData(String ticketNum);
+
+	@Transactional
+	public String saveTrackuser(Track_Users trackuser);
 
 }

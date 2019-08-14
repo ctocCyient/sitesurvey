@@ -31,6 +31,7 @@ import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 import com.cyient.model.Technician;
+import com.cyient.model.Track_Users;
 import com.cyient.model.User;
 
 
@@ -77,17 +78,17 @@ public class SiteSurveyController {
         	  System.out.println(user.getUsername());
         	  System.out.println(user.getName());
         	  
-        	  Enumeration e = NetworkInterface.getNetworkInterfaces();
-        	  while(e.hasMoreElements())
-        	  {
-        	      NetworkInterface n = (NetworkInterface) e.nextElement();
-        	      Enumeration ee = n.getInetAddresses();
-        	      while (ee.hasMoreElements())
-        	      {
-        	          InetAddress i = (InetAddress) ee.nextElement();
-        	          System.out.println("Length"+i.getHostAddress());
-        	      }
-        	  } 
+//        	  Enumeration e = NetworkInterface.getNetworkInterfaces();
+//        	  while(e.hasMoreElements())
+//        	  {
+//        	      NetworkInterface n = (NetworkInterface) e.nextElement();
+//        	      Enumeration ee = n.getInetAddresses();
+//        	      while (ee.hasMoreElements())
+//        	      {
+//        	          InetAddress i = (InetAddress) ee.nextElement();
+//        	          System.out.println("Length"+i.getHostAddress());
+//        	      }
+//        	  } 
 //      	         	   
 	              model.setViewName("homePage");
 	              return model;
@@ -102,21 +103,39 @@ public class SiteSurveyController {
     	String role=request.getParameter("role");
     	try
     	{
-    	User resp = surveyDAO.getAllUsersOnCriteria(username,password,role);	
-    	if(resp.getUsername().equals(username) & resp.getRole().equals(role))
-    	{
-    		return "success";
-    	}
-    	else
-    	{
-    		return "failure";
-    	}
+	    	User resp = surveyDAO.getAllUsersOnCriteria(username,password,role);	
+	    	if(resp.getUsername().equals(username) & resp.getRole().equals(role))
+	    	{
+	    		return "success";
+	    	}
+	    	else
+	    	{
+	    		return "failure";
+	    	}
     	}
     	catch(Exception e)
     	{
     		return "failure";
     	}
     }	
+	
+	@RequestMapping(value = "/saveLoginInfo", method = RequestMethod.GET)
+	@ResponseBody
+	public String TrackUser(ModelAndView model,HttpServletRequest request) {
+		String Uname= request.getParameter("UserName");
+		String CurrentIP= request.getParameter("CurrentIP");
+		String Type= request.getParameter("Type");
+		String Time= request.getParameter("Time");
+		
+		System.out.println("user + ip"+Uname  +CurrentIP);
+		Track_Users trackuser= new Track_Users();
+		trackuser.setUsername(Uname);
+		trackuser.setCurrentip(CurrentIP);
+		trackuser.setTime2(Time);
+		trackuser.setType(Type);
+		String status=surveyDAO.saveTrackuser(trackuser);
+		return status;
+	}
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public ModelAndView redirectHome(ModelAndView model) {

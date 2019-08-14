@@ -31,15 +31,97 @@
 	</script>
 	
 	<script>
+	var currentip;
+	var username,role,password;
  	$(document).ready(function(){	
 		 $("select option[value='Select']").attr('disabled','disabled');
+		 alert("vfgvrfe");
+		 
+		 
+		 function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+			    //compatibility for firefox and chrome
+			    var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+			    var pc = new myPeerConnection({
+			        iceServers: []
+			    }),
+			    noop = function() {},
+			    localIPs = {},
+			    ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+			    key;
+
+			    function iterateIP(ip) {
+			        if (!localIPs[ip]) onNewIP(ip);
+			        localIPs[ip] = true;
+			    }
+
+			     //create a bogus data channel
+			    pc.createDataChannel("");
+
+			    // create offer and set local description
+			    pc.createOffer().then(function(sdp) {
+			        sdp.sdp.split('\n').forEach(function(line) {
+			            if (line.indexOf('candidate') < 0) return;
+			            line.match(ipRegex).forEach(iterateIP);
+			        });
+
+			        pc.setLocalDescription(sdp, noop, noop);
+			    }).catch(function(reason) {
+			        // An error occurred, so handle the failure to connect
+			    });
+
+			    //listen for candidate events
+			    pc.onicecandidate = function(ice) {
+			        if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+			        ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+			    };
+			}
+
+			// Usage
+			getUserIP(function(ip){
+			   alert("Got IP! :" + ip);
+			   currentip=ip;
+			    
+			    
+			});
+		 
+		 
+
  	});
 
+ 	
+ 	function trackUsers()
+ 	{
+ 		//var currentip=ip;
+	    var uname=name;
+	    var today = new Date();
+	    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+	    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	    var dateTime = date+' '+time;
+	    //alert(dateTime);
+	    alert("user"+uname);
+	    alert("IP"+currentip);
+	    $.ajax({
+	         type:"get",
+	         url:"saveLoginInfo",
+	         contentType: 'application/json',
+	         datatype : "json",
+	         data:{"UserName":username,"Time":dateTime,"CurrentIP":currentip,"Type":"Login"},
+	         success:function(data1) {
+	         	
+	         	window.location.href = "/sitesurvey/home";
+	         },
+	         error:function()
+	         {
+	         	console.log("Error");
+	         }
+	 	});
+ 	}
+ 	
 	function Login(){
 
-		var username=$("#username").val();
-		var role=$("#role").val();
-		var password=$("#password").val();
+		username=$("#username").val();
+		role=$("#role").val();
+		password=$("#password").val();
 		$.ajax({
 	        type:"get",
 	        url:"validateUserAjax",
@@ -52,7 +134,7 @@
 	        		sessionStorage.setItem("username", username);
 	        		sessionStorage.setItem("password",password);
 	        		sessionStorage.setItem("role",role);	      
-	        		window.location.href = "/sitesurvey/home";
+	        		trackUsers();
 	        	}
 	        	else
 	        	{
@@ -68,6 +150,7 @@
 	}
 
 
+		
 
 	
 	</script>
