@@ -92,7 +92,6 @@ function loadDashboard(value){
 
 function session_out(){
 	sessionStorage.clear();
-
 }
 
 </script>

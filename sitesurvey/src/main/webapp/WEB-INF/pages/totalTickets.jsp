@@ -227,34 +227,20 @@ function getCount(){
 			</div>
 			<!-- End Navbar -->
 		</div>
-		
-	<script>
-		    if(role=="SuperAdmin")
-    	{
-    	
-        //alert(sessionStorage.getItem("username"));
-		  </script>
-		  		<!-- Sidebar -->
-		  
-		  <div id="superAdminSidebar">
-</div>
-		  <script>
-
-    	}
-    </script>
-    
-
-
-		<script>
-		    if(role=="Admin")
-    	{
-		    	</script>
-        	<script>
 		<!-- Sidebar -->
-		<div id="adminSidebar">
-		</div>
-    	}
-    </script>
+		<script>
+			if (role == "SuperAdmin") {
+				document.write('<div id="superAdminSidebar"></div>');
+			}
+		</script>
+
+
+<!-- Sidebar -->
+		<script type="text/javascript">
+			if (role == "Admin") {
+		 document.write('<div id="adminSidebar"></div>');				
+			}
+		</script>
 		<div class="main-panel">
 			<div class="content">
 				<div class="page-inner">
