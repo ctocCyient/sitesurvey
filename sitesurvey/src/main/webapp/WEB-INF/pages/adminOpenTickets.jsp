@@ -159,7 +159,7 @@ color: #fff!important;
 					
                     for(var i=0;i<openTicketsList.length;i++)
          		   {
-                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].region,openTicketsList[i].city]);
+                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteid,openTicketsList[i].region,openTicketsList[i].city]);
          			   
          		   }
                    
@@ -174,6 +174,7 @@ color: #fff!important;
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
+						{title: "Site Id" },
 						{title: "Region"},
 						{title: "City"},
 						{title: "Action" }							
@@ -186,8 +187,8 @@ color: #fff!important;
 					 rowToDelete= table1.row($(this).parents('tr'));
 		            // alert(data1[0] );
 		           ticketId=data1[0];
-		           region=data1[1];
-		           city=data1[2];
+		           region=data1[2];
+		           city=data1[3];
 		           $.ajax({
 		                type: "get",
 		                url: "getUnassignedTechnicians",

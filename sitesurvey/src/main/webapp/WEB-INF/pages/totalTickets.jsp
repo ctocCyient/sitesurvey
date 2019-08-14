@@ -96,7 +96,7 @@ color: #fff!important;
 					
                     for(var i=0;i<totalTicketsList.length;i++)
          		   {
-                    	dataSet.push([totalTicketsList[i].ticketNum,totalTicketsList[i].status]);
+                    	dataSet.push([totalTicketsList[i].ticketNum,totalTicketsList[i].siteid,totalTicketsList[i].status]);
          			   
          		   }
                    
@@ -109,6 +109,7 @@ color: #fff!important;
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
+						{title: "Site Id" },
 						{title: "Status" },	
 			        ]
 			    } );

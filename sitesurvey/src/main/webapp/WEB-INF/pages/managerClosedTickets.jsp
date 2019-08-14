@@ -118,7 +118,7 @@ max-width:100%;
 					
                     for(var i=0;i<closedTicketsList.length;i++)
          		   {
-                    	dataSet.push([closedTicketsList[i].ticketNum,closedTicketsList[i].technicianName,closedTicketsList[i].status]);
+                    	dataSet.push([closedTicketsList[i].ticketNum,closedTicketsList[i].siteid,closedTicketsList[i].technicianName,closedTicketsList[i].status]);
          			   
          		   }
                    
@@ -131,6 +131,7 @@ max-width:100%;
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
+						{title: "Site Id" },
 						{title: "Technician Name" },
 						{title: "Status" },	
 			        ]
@@ -208,7 +209,7 @@ max-width:100%;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="cursor:pointer;">
+								<div class="card-body"  onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -227,7 +228,7 @@ max-width:100%;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerClosedTickets'" style="background-color:#00B1BF;cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerClosedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">

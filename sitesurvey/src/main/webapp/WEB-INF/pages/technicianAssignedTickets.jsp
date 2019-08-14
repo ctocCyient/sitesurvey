@@ -124,7 +124,7 @@ color: #fff!important;
 
                     for(var i=0;i<openTicketsList.length;i++)
          		   {
-                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].ticketDescription]);
+                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteid,openTicketsList[i].ticketDescription]);
 		 		   }
                                        
 			 var table1=$('#technicianAssignedTickets').DataTable({
@@ -136,6 +136,7 @@ color: #fff!important;
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
+						{title: "Site Id" },
 						{title: "Ticket Description" },
 			        ]
 			    } );
@@ -209,7 +210,7 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/technicianAssignedTickets'" style="background-color:#00B1BF;cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianAssignedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -266,9 +267,6 @@ color: #fff!important;
 								</div>
 							</div>
 						</div>
-	
-	
-
 			</div>
 			
 		</div>
@@ -278,17 +276,13 @@ color: #fff!important;
 	</div>
 	</div>
 </div>
+
 <!--   Core JS Files   -->
-
-
-
 <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
 
 <!-- jQuery UI -->
-
-
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' />"></script>
 
@@ -300,17 +294,13 @@ color: #fff!important;
 <script src="<c:url value='resources/assets/js/plugin/moment/moment.min.js' />"></script>
 
 <!-- Chart JS -->
-
 <script src="<c:url value='resources/assets/js/plugin/chart.js/chart.min.js' />"></script>
 
 <!-- jQuery Sparkline -->
-
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
-
 
 <!-- Chart Circle -->
 <script src="<c:url value='resources/assets/js/plugin/chart-circle/circles.min.js' />"></script>
-
 
 <!-- Datatables -->
 <script src="<c:url value='resources/assets/js/plugin/datatables/datatables.min.js' />"></script>
@@ -318,11 +308,8 @@ color: #fff!important;
 <!-- Bootstrap Notify -->
 <script src="<c:url value='resources/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' />"></script>
 
-
 <!-- Bootstrap Toggle -->
 <script src="<c:url value='resources/assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' />"></script>
-
-
 
 <!-- jQuery Vector Maps -->
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/jquery.vmap.min.js' />"></script>
@@ -333,11 +320,9 @@ color: #fff!important;
 <script src="<c:url value='resources/assets/js/plugin/gmaps/gmaps.js' />"></script>
 
 <!-- Sweet Alert -->
-
 <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 <!-- Azzara JS -->
-
 <script src="<c:url value='resources/assets/js/ready.min.js' />"></script>
 
 
