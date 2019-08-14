@@ -233,8 +233,6 @@ function getCount(){
 				document.write('<div id="superAdminSidebar"></div>');
 			}
 		</script>
-
-
 <!-- Sidebar -->
 		<script type="text/javascript">
 			if (role == "Admin") {
