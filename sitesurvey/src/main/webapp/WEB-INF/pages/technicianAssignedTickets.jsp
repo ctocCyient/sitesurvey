@@ -9,9 +9,15 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	
+
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
-	
+			<script type="text/javascript">
+	   if(sessionStorage.getItem("username")==null)
+   	{
+		   url = "/sitesurvey/";
+		  $( location ).attr("href", url);
+   	}	
+	</script>
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/js/validations.js' />"></script>
 	
@@ -92,7 +98,7 @@ color: #fff!important;
 		 var ticketType;
 		 
 		 function getCount(){
-			 var s='<%=session.getAttribute("userName").toString()%>';
+			 var s=sessionStorage.getItem("username");
 				$.ajax({
 	                type:"get",
 	                url:"getTechTicketsCount",
@@ -110,7 +116,8 @@ color: #fff!important;
 		
 		function tableData()
 		{	
-			var s='<%=session.getAttribute("userName").toString()%>';
+
+			var s=sessionStorage.getItem("username");
 			
 			$.ajax({
                 type:"get",

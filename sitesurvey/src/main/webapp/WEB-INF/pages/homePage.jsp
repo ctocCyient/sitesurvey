@@ -160,7 +160,7 @@ color: #fff!important;
     if(role=="SuperAdmin")
     	{
     	
-        alert(sessionStorage.getItem("username"));
+       // alert(sessionStorage.getItem("username"));
 
     </script>
     

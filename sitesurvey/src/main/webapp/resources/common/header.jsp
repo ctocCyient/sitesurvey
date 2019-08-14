@@ -10,10 +10,11 @@ var userName;
 var pasword;
 var type;
 $(document).ready(function() {	
-	userName = '<%=session.getAttribute("userName")%>';
-	password = '<%=session.getAttribute("password")%>';
-	type = '<%=session.getAttribute("userRole")%>';
-	
+
+	userName = sessionStorage.getItem("username");
+	password = sessionStorage.getItem("password");
+	type = sessionStorage.getItem("role");
+	//alert(userName);
 	//getRoles();
 });
 
@@ -89,6 +90,11 @@ function loadDashboard(value){
 		 
 }
 
+function session_out(){
+	sessionStorage.clear();
+
+}
+
 </script>
 <style>
 .sample.form-control {
@@ -134,7 +140,13 @@ function loadDashboard(value){
 										<div class="avatar-lg"><img src="<c:url value='resources/assets/img/profile2.jpg' />" alt="image profile" class="avatar-img rounded"></div>
 										<div class="u-text">
 										<br>
-											<h4>${sessionScope.userName}</h4>
+										<h4 id="demo"></h4>
+											
+
+<script>
+document.getElementById("demo").innerHTML = sessionStorage.getItem("username");
+
+</script>
 <!-- 											<p class="text-muted">Hello</p> -->
 <!-- 												<a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a> -->
 										</div>
@@ -142,7 +154,7 @@ function loadDashboard(value){
 								</li>
 								<li>
 									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="logout">Logout</a>
+									<a class="dropdown-item" href="logout" onclick="session_out()">Logout</a>
 								</li>
 							</ul>
 						</li>

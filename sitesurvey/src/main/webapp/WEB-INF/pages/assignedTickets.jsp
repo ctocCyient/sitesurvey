@@ -16,7 +16,13 @@
 	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
-	
+				<script type="text/javascript">
+	   if(sessionStorage.getItem("username")==null)
+   	{
+		   url = "/sitesurvey/";
+		  $( location ).attr("href", url);
+   	}	
+	</script>	
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/js/validations.js' />"></script>
 	
@@ -31,8 +37,15 @@
 			}
 		});
 		$(document).ready(function() {
-	
-
+			if(sessionStorage.getItem("username")=="SuperAdmin")
+				{
+				window.location.href = "/sitesurvey/openTickets";
+				}
+			if(sessionStorage.getItem("username")=="Admin")
+			{
+			window.location.href = "/sitesurvey/adminOpenTickets";
+			}					
+		
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
@@ -122,14 +135,22 @@ color: #fff!important;
 </style>
 </head>
 <body>
-		<%
-		String s,role = " ";
-		if (session.getAttribute("userName") == null) { %>
-		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
-	<% } else {
-		 s = session.getAttribute("userName").toString();
-		 role = session.getAttribute("userRole").toString(); 
-	 } %>
+    <script>
+    if(sessionStorage.getItem("username")==null)
+    	{
+		//window.location.href = "/sitesurvey/";
+		   url = "/sitesurvey/";
+		      $( location ).attr("href", url);
+    	}
+    	else
+		{
+		s=sessionStorage.getItem("username");
+		role=sessionStorage.getItem("role");
+		}
+    
+  
+    </script>
+
    
 	<div class="wrapper">
 		<!--
@@ -162,18 +183,33 @@ color: #fff!important;
 			</div>
 			<!-- End Navbar -->
 		</div>
-		
-		 <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
+		<script>
+		    if(role=="SuperAdmin")
+    	{
+		    	 </script>
+        //alert(sessionStorage.getItem("username"));
 		<!-- Sidebar -->
-<div id="superAdminSidebar">
+		 
+		  <div id="superAdminSidebar">
 </div>
-<%} %>
+		  <script>
 
- <% if (role.equalsIgnoreCase(("Admin"))) { %>  
+    	}
+    </script>
+    
+
+
+		<script>
+		    if(role=="Admin")
+    	{
+		    	</script>
+        //alert(sessionStorage.getItem("username"));
+        	<script>
 		<!-- Sidebar -->
-<div id="adminSidebar">
-</div>
-<%} %>
+		<div id="adminSidebar">
+		</div>
+    	}
+    </script>
 
 		<!-- End Sidebar -->
 
@@ -186,12 +222,8 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-							 <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
-								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="cursor:pointer;" >
-								<%} %>
- 								<% if (role.equalsIgnoreCase(("Admin"))) { %>  
-								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/adminOpenTickets'" style="cursor:pointer;" >
-								<%} %>
+
+								
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -210,7 +242,7 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/assignedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
+								<div class="card-body"  onclick="location.href='${pageContext.request.contextPath}/assignedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#F98B88;border-radius: 5px">
