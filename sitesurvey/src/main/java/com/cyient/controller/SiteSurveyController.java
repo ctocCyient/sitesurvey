@@ -2,7 +2,10 @@ package com.cyient.controller;
 
 
 import java.io.IOException;
-
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +60,7 @@ public class SiteSurveyController {
 	}
 	
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
-    public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) {
+    public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) throws SocketException {
 		System.out.println("Usernaem"+user.getUsername()+"Password"+user.getPassword()+"Role:"+user.getRole());
            User resp = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());        
            if(resp==null)
@@ -69,12 +72,23 @@ public class SiteSurveyController {
         	  Session_counter = Session_counter + 1;
         	  session=request.getSession();
         	  session.setAttribute("userName",user.getUsername());
-        	  session.setAttribute("personName",user.getName());
 			  session.setAttribute("password",user.getPassword());
         	  session.setAttribute("userRole",user.getRole());
         	  System.out.println(user.getUsername());
         	  System.out.println(user.getName());
-      	         	   
+        	  
+        	  Enumeration e = NetworkInterface.getNetworkInterfaces();
+        	  while(e.hasMoreElements())
+        	  {
+        	      NetworkInterface n = (NetworkInterface) e.nextElement();
+        	      Enumeration ee = n.getInetAddresses();
+        	      while (ee.hasMoreElements())
+        	      {
+        	          InetAddress i = (InetAddress) ee.nextElement();
+        	          System.out.println("Length"+i.getHostAddress());
+        	      }
+        	  } 
+//      	         	   
 	              model.setViewName("homePage");
 	              return model;
            }

@@ -86,7 +86,7 @@
 					
                     for(var i=0;i<closedTicketsList.length;i++)
          		   {
-                    	dataSet.push([closedTicketsList[i].ticketNum,closedTicketsList[i].customer.customerId,closedTicketsList[i].ticketDescription,closedTicketsList[i].severity]);
+                    	dataSet.push([closedTicketsList[i].ticketNum,closedTicketsList[i].siteid,closedTicketsList[i].ticketDescription,closedTicketsList[i].severity]);
          			   
          		   }
                    
@@ -96,13 +96,12 @@
 					language: {
 					  emptyTable: "No Data Available"
 					},	
-					columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<button style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn'>View</button>"}],					
+					//columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<button style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn'>View</button>"}],					
 			        data: dataSet,
 			        columns: [
 			        	{title: "Ticket Id" },
-						{title: "Customer Id" },
-						{title: "Ticket Description" },		
-						{title: "Severity" },		
+						{title: "Site Id" },
+						{title: "Ticket Description" },									
 						{title: "Action" },						
 			        ]
 			    } );
@@ -210,7 +209,7 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/technicianAssignedTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianAssignedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -229,7 +228,7 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianClosedTickets'" style="background-color:#00B1BF;cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianClosedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">

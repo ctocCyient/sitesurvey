@@ -105,10 +105,48 @@
 		});
 	}
 
-	function getCount() {
+	
 
-		$
-				.ajax({
+		var dataSet=[];
+		 var ticketId;
+		
+		function tableData()
+		{	
+			$.ajax({
+                type:"get",
+                url:"getAssignedTickets",
+                contentType: 'application/json',
+                datatype : "json",
+                success:function(data) {
+                    assignTicketsList = JSON.parse(data);
+					
+                    for(var i=0;i<assignTicketsList.length;i++)
+         		   {
+                    	dataSet.push([assignTicketsList[i].ticketNum,assignTicketsList[i].siteid,assignTicketsList[i].technicianName,assignTicketsList[i].status]);
+         			   
+         		   }
+                   
+                    
+			 var table2=$('#assignTickets').DataTable({
+					destroy:true,
+					language: {
+					  emptyTable: "No Data Available"
+					},											
+			        data: dataSet,
+			        columns: [
+						{title: "Ticket Id" },
+						{title: "Site Id" },
+						{title: "Technician Name" },
+						{title: "Status" }						
+			        ]
+			    });			 
+				}
+			});
+		}		
+		
+		
+		function getCount() {
+		$.ajax({
 					type : "get",
 					url : "ticketsCount",
 					contentType : 'application/json',

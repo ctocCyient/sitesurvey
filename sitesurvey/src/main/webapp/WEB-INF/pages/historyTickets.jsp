@@ -72,7 +72,7 @@
                    for(var i=0;i<historyTicketsList.length;i++)
         		   {
 					
-                   	dataSet.push([historyTicketsList[i].ticketNum,historyTicketsList[i].technicianName]);
+                   	dataSet.push([historyTicketsList[i].ticketNum,historyTicketsList[i].siteid,historyTicketsList[i].technicianName]);
         			   
         		   }
                   
@@ -85,6 +85,7 @@
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
+						{title: "Site Id" },
 						{title: "Technician Name" }
 			        ]
 			    } );
@@ -316,8 +317,6 @@ color: #fff!important;
 				</div>
 			</div>
 		</div>
-		</div>
-	</div>
 
 <!--   Core JS Files   -->
 
