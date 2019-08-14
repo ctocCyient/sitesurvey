@@ -21,7 +21,15 @@
 
      		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
-	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
+				<script type="text/javascript">
+	   if(sessionStorage.getItem("username")==null)
+   	{
+		   url = "/sitesurvey/";
+		  $( location ).attr("href", url);
+   	}	
+	</script>	
+	
+
 	<script src="<c:url value='resources/js/validations.js' />"></script>
 	
 	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">
