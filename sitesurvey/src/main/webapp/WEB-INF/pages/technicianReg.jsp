@@ -237,7 +237,7 @@
 			 $("#district").val('');
 			 $("#city").val('');
 		 }
-		 
+	 			 
 	 	function getCity(district)
 		 { 
 	 		
@@ -260,9 +260,7 @@
 			 	});
 			 $("#city").val('');
 		 }
-	 	
-	 	
-		
+	 			
 	</script>
 	<style>
 .fa-bars,
