@@ -44,10 +44,7 @@ public class SiteSurveyController {
 	@Autowired
 	private SurveyDAO surveyDAO;
 	
-	private Integer Session_counter = 0;
-	
-	
-	
+	private Integer Session_counter = 0;	
 	@RequestMapping(value = "/")
 	public ModelAndView viewIndex(ModelAndView model) throws IOException {
 		User user = new User();
