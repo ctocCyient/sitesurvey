@@ -35,7 +35,7 @@
 	var username,role,password;
  	$(document).ready(function(){	
 		 $("select option[value='Select']").attr('disabled','disabled');
-		 alert("vfgvrfe");
+		// alert("vfgvrfe");
 		 
 		 
 		 function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
@@ -78,7 +78,7 @@
 
 			// Usage
 			getUserIP(function(ip){
-			   alert("Got IP! :" + ip);
+			   //alert("Got IP! :" + ip);
 			   currentip=ip;
 			    
 			    
@@ -98,8 +98,8 @@
 	    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 	    var dateTime = date+' '+time;
 	    //alert(dateTime);
-	    alert("user"+uname);
-	    alert("IP"+currentip);
+	    //alert("user"+uname);
+	    //alert("IP"+currentip);
 	    $.ajax({
 	         type:"get",
 	         url:"saveLoginInfo",
@@ -129,14 +129,19 @@
 	        datatype : "json",
 	        data:{"username":username,"role":role,"password":password},
 	        success:function(data1) {
-	        	if(data1=="success")
+	        	
+	        	if(data1!="failure")
 	        	{
+	        		usersList = JSON.parse(data1);
+	        		console.log("USer"+usersList);
 	        		sessionStorage.setItem("username", username);
 	        		sessionStorage.setItem("password",password);
-	        		sessionStorage.setItem("role",role);	      
+	        		sessionStorage.setItem("role",role);	 
+	        		sessionStorage.setItem("region",usersList[0].region);	 
+	        		sessionStorage.setItem("city",usersList[0].city);	 
 	        		trackUsers();
 	        	}
-	        	else
+	        	else if(data1=="failure")
 	        	{
 	        		alert("Failed to login");	
 	        		sessionStorage.clear();

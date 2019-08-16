@@ -33,6 +33,8 @@ import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.Track_Users;
 import com.cyient.model.User;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 
@@ -63,8 +65,8 @@ public class SiteSurveyController {
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
     public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) throws SocketException {
 		System.out.println("Usernaem"+user.getUsername()+"Password"+user.getPassword()+"Role:"+user.getRole());
-           User resp = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());        
-           if(resp==null)
+		List<User> userList = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());        
+           if(userList.size()!=0)
            {
                   return new ModelAndView("redirect:/");
            }
@@ -103,10 +105,19 @@ public class SiteSurveyController {
     	String role=request.getParameter("role");
     	try
     	{
-	    	User resp = surveyDAO.getAllUsersOnCriteria(username,password,role);	
-	    	if(resp.getUsername().equals(username) & resp.getRole().equals(role))
+    		List<User> userList = surveyDAO.getAllUsersOnCriteria(username,password,role);	
+    		String userName=null,roleType=null;
+			for(User user:userList)
+    		{
+    			userName=user.getUsername();
+    			roleType=user.getRole();
+    		}
+	    	if(userName.equals(username) & roleType.equals(role))
 	    	{
-	    		return "success";
+	    		
+	    		 Gson gsonBuilder = new GsonBuilder().create();
+	        	   String userJson = gsonBuilder.toJson(userList);
+		              return userJson.toString();	    	
 	    	}
 	    	else
 	    	{

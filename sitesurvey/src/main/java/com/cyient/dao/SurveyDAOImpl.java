@@ -33,13 +33,14 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(ticket);
 	}
 	
-	public User getAllUsersOnCriteria(String username,String password,String type) {
+	@SuppressWarnings("unchecked")
+	public List<User> getAllUsersOnCriteria(String username,String password,String type) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
         c.add(Restrictions.eq("username",username));
         c.add(Restrictions.eq("password",password));
 		c.add(Restrictions.eq("role",type));
 		System.out.println(c.list());
-        return (User)c.uniqueResult();
+        return c.list();
 	}
 
 	public void addSite(Site site) {
@@ -188,8 +189,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TechnicianTicketInfo> managerOpenTickets(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='InProgress'").list();	
+	public List<TechnicianTicketInfo> managerOpenTickets(String username,String region,String city) {
+		return sessionFactory.getCurrentSession().createQuery("from Ticketing where status='Open' and region='"+region+"' and city ='"+city+"'").list();	
 	}
 
 	@SuppressWarnings("unchecked")

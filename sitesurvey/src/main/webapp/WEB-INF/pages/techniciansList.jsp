@@ -17,6 +17,10 @@
 		   url = "/sitesurvey/";
 		  $( location ).attr("href", url);
    	}	
+	   else {
+			s = sessionStorage.getItem("username");
+			role = sessionStorage.getItem("role");
+		}
 	</script>
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/js/validations.js' />"></script>
@@ -59,7 +63,7 @@
 		
 		function tableData()
 		{		
-			 var s='<%=session.getAttribute("userName").toString()%>';
+			
 			$.ajax({
                 type:"get",
                 url:"getManagerTechnicians",

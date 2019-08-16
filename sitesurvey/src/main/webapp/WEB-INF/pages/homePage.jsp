@@ -300,7 +300,7 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div_admin" onclick="location.href='${pageContext.request.contextPath}/adminOpenTickets'" style="background-color:#00B1BF;cursor:pointer;">
+								<div class="card-body" id="open_div_admin" onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="background-color:#00B1BF;cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">

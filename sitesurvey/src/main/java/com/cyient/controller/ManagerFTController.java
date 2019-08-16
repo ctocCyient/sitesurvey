@@ -51,8 +51,7 @@ public class ManagerFTController {
 
 	@Autowired
 	private SurveyDAO surveyDAO;
-	
-	
+		
 	 @RequestMapping(value = "/managerOpenTickets")
 		public ModelAndView managerOpenTickets(ModelAndView model) throws IOException {
 			model.setViewName("managerOpenTickets");
@@ -75,7 +74,10 @@ public class ManagerFTController {
 			@ResponseBody
 			public String  managerTicketsCount(ModelAndView model,HttpServletRequest request) {
 			 String username=request.getParameter("username");
-				List<TechnicianTicketInfo> listOpen = surveyDAO.managerOpenTickets(username);		              
+			 String region=request.getParameter("region");
+				String city=request.getParameter("city");
+				//List<TechnicianTicketInfo> listOpen = surveyDAO.managerOpenTickets(username);		    
+				List<TechnicianTicketInfo> listOpen =  surveyDAO.managerOpenTickets(username,region,city);   
 			      List<TechnicianTicketInfo> listClosed = surveyDAO.managerClosedTickets(username);
 			     
 				   JSONObject countData=new JSONObject();
@@ -89,8 +91,11 @@ public class ManagerFTController {
 		    @ResponseBody
 		    public String getManagerTotalTickets(ModelAndView model,HttpServletRequest request) {
 				String username=request.getParameter("username");
+				String region=request.getParameter("region");
+				String city=request.getParameter("city");
+				
 				System.out.println("USER"+username);
-				List<TechnicianTicketInfo> listOpen = surveyDAO.managerOpenTickets(username);
+				List<TechnicianTicketInfo> listOpen = surveyDAO.managerOpenTickets(username,region,city);
 				  	   Gson gsonBuilder = new GsonBuilder().create();
 		        	   String openJson = gsonBuilder.toJson(listOpen);
 			              return openJson.toString();
