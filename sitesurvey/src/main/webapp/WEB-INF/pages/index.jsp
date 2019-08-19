@@ -29,8 +29,7 @@
 			}
 		});
 	</script>
-	
-	<script>
+		<script>
 	var currentip;
 	var username,role,password;
  	$(document).ready(function(){	
