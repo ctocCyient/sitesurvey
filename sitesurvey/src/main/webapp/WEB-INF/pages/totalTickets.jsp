@@ -190,14 +190,6 @@ function getCount(){
   
     </script> 
 	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
 		<!--
 			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
 		-->
@@ -248,7 +240,8 @@ function getCount(){
 					</div>
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">				
+							<div class="card card-stats card-round">	
+							<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/openTickets'"	style="cursor: pointer;">			
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -346,7 +339,6 @@ function getCount(){
 	</div>
 	</div>
 
-</div>
 <!--   Core JS Files   -->
 
 

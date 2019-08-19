@@ -19,7 +19,7 @@ public interface SurveyDAO {
 	public void addUser(User user);
 	
 	@Transactional
-	public User getAllUsersOnCriteria(String username,String password,String type);
+	public List<User> getAllUsersOnCriteria(String username,String password,String type);
 	
 	@Transactional
 	public void addSite(Site site);
@@ -83,7 +83,7 @@ public interface SurveyDAO {
 	public List<Technician> getUnassignedTechniciansData(String region, String city);
 
 	@Transactional
-	public List<TechnicianTicketInfo> managerOpenTickets(String username);
+	public List<TechnicianTicketInfo> managerOpenTickets(String username,String region,String city);
 	
 	@Transactional
 	public List<TechnicianTicketInfo> managerClosedTickets(String username);

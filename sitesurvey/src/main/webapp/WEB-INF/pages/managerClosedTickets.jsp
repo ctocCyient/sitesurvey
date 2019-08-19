@@ -17,7 +17,12 @@
    	{
 		   url = "/sitesurvey/";
 		  $( location ).attr("href", url);
-   	}	
+   	}	else {
+		s = sessionStorage.getItem("username");
+		role = sessionStorage.getItem("role");
+		userRegion = sessionStorage.getItem("region");
+		userCity = sessionStorage.getItem("city");
+	}
 	</script>	
 	
 	
@@ -83,7 +88,6 @@ max-width:100%;
 	</script>
 	
 	<script >
-	var s='<%=session.getAttribute("userName").toString()%>';
 	
 		$(document).ready(function() {
 
@@ -104,7 +108,7 @@ max-width:100%;
 	                url:"getManagerTicketsCount",
 	                contentType: 'application/json',
 	                datatype : "json",
-	                data:{"username":s},
+	                data:{"username":s,"region":userRegion,"city":userCity},
 	                success:function(result) {
 	                	var jsonArr = $.parseJSON(result);
 	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets;    

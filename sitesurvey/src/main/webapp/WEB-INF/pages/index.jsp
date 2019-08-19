@@ -18,6 +18,7 @@
 	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' >
 	<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
 
+
 	<!-- Fonts and icons -->
 	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 	<script>
@@ -29,8 +30,7 @@
 			}
 		});
 	</script>
-	
-	<script>
+		<script>
 	var currentip;
 	var username,role,password;
  	$(document).ready(function(){	
@@ -39,7 +39,7 @@
 		$.getJSON('https://api.ipify.org?format=json', function(data){
     console.log(data);
 });
-		 
+
 		 function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
 			    //compatibility for firefox and chrome
 			    var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
@@ -80,7 +80,7 @@
 
 			// Usage
 			getUserIP(function(ip){
-			   alert("Got IP! :" + ip);
+			   //alert("Got IP! :" + ip);
 			   currentip=ip;
 			    
 			    
@@ -100,8 +100,8 @@
 	    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 	    var dateTime = date+' '+time;
 	    //alert(dateTime);
-	    alert("user"+uname);
-	    alert("IP"+currentip);
+	    //alert("user"+uname);
+	    //alert("IP"+currentip);
 	    $.ajax({
 	         type:"get",
 	         url:"saveLoginInfo",
@@ -131,14 +131,19 @@
 	        datatype : "json",
 	        data:{"username":username,"role":role,"password":password},
 	        success:function(data1) {
-	        	if(data1=="success")
+	        	
+	        	if(data1!="failure")
 	        	{
+	        		usersList = JSON.parse(data1);
+	        		console.log("USer"+usersList);
 	        		sessionStorage.setItem("username", username);
 	        		sessionStorage.setItem("password",password);
-	        		sessionStorage.setItem("role",role);	      
+	        		sessionStorage.setItem("role",role);	 
+	        		sessionStorage.setItem("region",usersList[0].region);	 
+	        		sessionStorage.setItem("city",usersList[0].city);	 
 	        		trackUsers();
 	        	}
-	        	else
+	        	else if(data1=="failure")
 	        	{
 	        		alert("Failed to login");	
 	        		sessionStorage.clear();
