@@ -9,7 +9,16 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+	<script type="text/javascript">
+	   if(sessionStorage.getItem("username")==null)
+   	{
+		//window.location.href = "/sitesurvey/";
+		//alert(sessionStorage.getItem("username"));
+		   url = "/sitesurvey/";
+		      $( location ).attr("href", url);
+   	}
 	
+	</script>
 	<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
@@ -40,21 +49,21 @@
 	var name,role;
 	$(function(){
 
-		<% if (session.getAttribute("userName") == null) { %>
-		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/logout"/>';
-	<% } else {%>
-	  name='<%=session.getAttribute("userName").toString()%>';
-	   role='<%=session.getAttribute("userRole").toString()%>';
-	<% } %>
-	
-	
+		if(sessionStorage.getItem("username")==null)
+			{
+			window.location.href = "/sitesurvey/";
+			}
+		else
+			{
+			name=sessionStorage.getItem("username");
+			   role=sessionStorage.getItem("role");
+			}	
 		  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 		  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 		  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
 		  $("#managerSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
 		  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
-		   name='<%=session.getAttribute("userName").toString()%>';
-		   role='<%=session.getAttribute("userRole").toString()%>';
+
 	  
 		  if(role=="SuperAdmin"){
 		  //	getAdminCount();
@@ -134,15 +143,30 @@ color: #fff!important;
 
 
 <!-- Admin -->
-		<%
-		String s,role = " ";
-		if (session.getAttribute("userName") == null) { %>
-		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
-	<% } else {
-		 s = session.getAttribute("userName").toString();
-		 role = session.getAttribute("userRole").toString(); 
-	 } %>
-    <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>     
+		
+    <script>
+    if(sessionStorage.getItem("username")==null)
+    	{
+		//window.location.href = "/sitesurvey/";
+		   url = "/sitesurvey/";
+		      $( location ).attr("href", url);
+    	}
+    	else
+		{
+		name=sessionStorage.getItem("username");
+		role=sessionStorage.getItem("role");
+		}
+    
+    if(role=="SuperAdmin")
+    	{
+    	
+       // alert(sessionStorage.getItem("username"));
+
+    </script>
+    
+    
+    
+    
     <!-- Sidebar -->
 		<div id="superAdminSidebar">
 		</div>
@@ -241,11 +265,26 @@ color: #fff!important;
 			
 		</div>
 		
-		<%} %>
+		
+		<script>
+    	}
+    </script>
 		
 		
-		
-		 <% if (role.equalsIgnoreCase(("Admin"))) { %>     
+    <script>
+    if(sessionStorage.getItem("username")==null)
+    	{
+		window.location.href = "/sitesurvey/";
+    	}
+    	else
+		{
+		name=sessionStorage.getItem("username");
+		role=sessionStorage.getItem("role");
+		}
+    
+    if(role=="Admin")
+    	   	
+    </script> 
     <!-- Sidebar -->
 		<div id="adminSidebar">
 		</div>
@@ -261,7 +300,7 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div_admin" onclick="location.href='${pageContext.request.contextPath}/adminOpenTickets'" style="background-color:#00B1BF;cursor:pointer;">
+								<div class="card-body" id="open_div_admin" onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="background-color:#00B1BF;cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -344,13 +383,28 @@ color: #fff!important;
 			
 		</div>
 		
-		<%} %>
+	
+		<script>}</script>
 		
 		
 		
+		    <script>
+    if(sessionStorage.getItem("username")==null)
+    	{
+		window.location.href = "/sitesurvey/";
+    	}
+    	else
+		{
+		name=sessionStorage.getItem("username");
+		role=sessionStorage.getItem("role");
+		}
+    
+    if(role=="Manager")
+    	{
+    	
+    	
+    </script>
 		
-		
-		 <% if (role.equalsIgnoreCase(("Manager"))) { %>     
     <!-- Sidebar -->
 		<div id="managerSidebar">
 		</div>
@@ -411,11 +465,25 @@ color: #fff!important;
 			
 		</div>
 		
-		<%} %>
+	
+		<script>}</script>
 		
-		
-		
-		 <% if (role.equalsIgnoreCase(("FieldTechnician"))) { %>     
+				    <script>
+    if(sessionStorage.getItem("username")==null)
+    	{
+		window.location.href = "/sitesurvey/";
+    	}
+    	else
+		{
+		name=sessionStorage.getItem("username");
+		role=sessionStorage.getItem("role");
+		}
+    
+    if(role=="FieldTechnician")
+    	{
+    	
+    	
+    </script>
     <!-- Sidebar -->
 		<div id="technicianSidebar">
 		</div>
@@ -476,9 +544,9 @@ color: #fff!important;
 			
 		</div>
 		
-		<%}%>
 		
 		
+		<script>}</script>
 		
 	</div>
 

@@ -7,35 +7,45 @@
 <html lang="en">
 <head>
 
-
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 <title>Site Survey</title>
 <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
-		
 <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore.js"></script>
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
+<script src="<c:url value='resources/js/jquery.min.js' />"></script>
+<script src="<c:url value='resources/js/validations.js' />"></script>
+	
+<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">
 
-     		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
-	
-	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
-	<script src="<c:url value='resources/js/validations.js' />"></script>
-	
-	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">
+
+<script type="text/javascript">
+  
+	if(sessionStorage.getItem("username")==null)
+   	{
+		   url = "/sitesurvey/";
+		  $( location ).attr("href", url);
+   	}	
+	 
+</script>	
 	
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
-	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
-	<script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
-	<script src="<c:url value='resources/assets/css/bootstrap.min.css' />"></script>
-	<script src="<c:url value='resources/assets/js/ready.js' />"></script>
-	<script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
-	<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
-	<script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
-		<style>
+<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
+<script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
+<script src="<c:url value='resources/assets/css/bootstrap.min.css' />"></script>
+<script src="<c:url value='resources/assets/js/ready.js' />"></script>
+<script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
+<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
+<script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
 	
+	
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
+<style>
+
 	label {
     color: #495057!important;
     font-size: 13px!important;
@@ -55,6 +65,9 @@ color: #fff!important;
     box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
     border: 1px solid #ebecec;
 }
+
+
+
 </style>
 	</head>
 
@@ -66,6 +79,7 @@ color: #fff!important;
 			  dateFun();
 			  $("#region,#state,#district,#city,#siteid,#ticketDescription").attr('required','');
 			   $(".isa_success").fadeOut(10000);
+			   $('.siteIds').select2();
 			
 	}); 
 		WebFont.load({
@@ -224,8 +238,9 @@ var jsonData=[];
 			         datatype : "json",
 			         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":selectedDistrict,"selectedCity":city},
 			         success:function(data1) {
-			         	jsonData = JSON.parse(data1);
-			         	populateDropdown(jsonData,"siteid");
+			        	 jsonData = JSON.parse(data1);
+			         	populateDropdown(jsonData,"siteIds");
+			         	
 			         },
 			         error:function()
 			         {
@@ -235,9 +250,22 @@ var jsonData=[];
 			 
 			 	$("#siteid").val('');
 			 }
+	 	
+	 	
+	 	 var categoryTypesArr=[];
+		   
+		    function categoryTypes() {
+		        var catOptions = "";
+		        for (categoryId in categoryTypesArr) {
+		            catOptions += "<option>" + categoryTypesArr[categoryId] + "</option>";
+		        }
+		      
+		       
+		       		document.getElementById("siteIds").innerHTML = catOptions;		       
+			      
+		        }
 
-	 
-			 function dateFun()
+	 		 function dateFun()
 			 {
 			 	var today = new Date();
 			 	
@@ -338,15 +366,19 @@ var jsonData=[];
       			<label for="city" class="placeholder">City</label>
                 <form:select id="city" path="city" name="city" class="form-control input-border"  onchange="getSiteId(this.value);" />
                <br>
-            	<label for="siteid" class="placeholder">Site Id</label>
-	             <form:select id="siteid" path="siteid" name="siteid" class="form-control input-border" multiple="multiple"/>
-     	          <span id="siteMsg" style="color:red;display:none;font-size:15px">Please select Site</span>
-                 <form:hidden id="status" value="Open" path="status" name="status" />    
-                 <br>          
+                 <form:hidden id="status" value="Open" path="status" name="status" />                  
+                 <label for="siteId">Site Id</label>
+				<form:select name="siteIds" id="siteIds" class="form-control input-full siteIds"  multiple="true" path="siteid"></form:select>
+				<br>   
+				<br>      
             	<label for="ticketDescription">Ticket Description</label>
 				<form:textarea path="ticketDescription" placeholder="Enter upto 120 characters" id="ticketDescription"  class="form-control" onkeypress="textarea_validation();" onkeydown = "onKeyDown()"/>
 				<form:hidden path="openDate" id="openDate" value="" />
 				<form:hidden path="openTime" id="openTime" value="" />
+				
+				
+				
+
             	<div class="form-action">
             	<input type="submit" id="submit" value="Create" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 					<a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>

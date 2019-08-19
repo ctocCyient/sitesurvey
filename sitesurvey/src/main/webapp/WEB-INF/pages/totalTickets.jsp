@@ -12,8 +12,13 @@
 	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
-	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
-	<script src="<c:url value='resources/js/validations.js' />"></script>
+			<script type="text/javascript">
+	   if(sessionStorage.getItem("username")==null)
+   	{
+		   url = "/sitesurvey/";
+		  $( location ).attr("href", url);
+   	}	
+	</script>		<script src="<c:url value='resources/js/validations.js' />"></script>
 	
 	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">
 	
@@ -72,6 +77,14 @@ color: #fff!important;
 	<script >
 		$(document).ready(function() {
 
+			if(sessionStorage.getItem("username")=="SuperAdmin")
+			{
+			window.location.href = "/sitesurvey/openTickets";
+			}
+		if(sessionStorage.getItem("username")=="Admin")
+		{
+		window.location.href = "/sitesurvey/adminOpenTickets";
+		}	
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
@@ -96,7 +109,7 @@ color: #fff!important;
 					
                     for(var i=0;i<totalTicketsList.length;i++)
          		   {
-                    	dataSet.push([totalTicketsList[i].ticketNum,totalTicketsList[i].status]);
+                    	dataSet.push([totalTicketsList[i].ticketNum,totalTicketsList[i].siteid,totalTicketsList[i].status]);
          			   
          		   }
                    
@@ -109,6 +122,7 @@ color: #fff!important;
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
+						{title: "Site Id" },
 						{title: "Status" },	
 			        ]
 			    } );
@@ -158,14 +172,24 @@ function getCount(){
 </head>
 <body>
 	<div class="wrapper">
-	<%
-		String s,role = " ";
-		if (session.getAttribute("userName") == null) { %>
-		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
-	<% } else {
-		 s = session.getAttribute("userName").toString();
-		 role = session.getAttribute("userRole").toString(); 
-	 } %>
+
+	 
+	    <script>
+    if(sessionStorage.getItem("username")==null)
+    	{
+		//window.location.href = "/sitesurvey/";
+		   url = "/sitesurvey/";
+		      $( location ).attr("href", url);
+    	}
+    	else
+		{
+		s=sessionStorage.getItem("username");
+		role=sessionStorage.getItem("role");
+		}
+    
+  
+    </script> 
+	 
 		<!--
 			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
 		-->
@@ -196,19 +220,18 @@ function getCount(){
 			</div>
 			<!-- End Navbar -->
 		</div>
-		
-		 <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
 		<!-- Sidebar -->
-<div id="superAdminSidebar">
-</div>
-<%} %>
-
- <% if (role.equalsIgnoreCase(("Admin"))) { %>  
-		<!-- Sidebar -->
-<div id="adminSidebar">
-</div>
-<%} %>
-
+		<script>
+			if (role == "SuperAdmin") {
+				document.write('<div id="superAdminSidebar"></div>');
+			}
+		</script>
+<!-- Sidebar -->
+		<script type="text/javascript">
+			if (role == "Admin") {
+		 document.write('<div id="adminSidebar"></div>');				
+			}
+		</script>
 		<div class="main-panel">
 			<div class="content">
 				<div class="page-inner">
@@ -217,13 +240,8 @@ function getCount(){
 					</div>
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-							 <% if (role.equalsIgnoreCase(("SuperAdmin"))) { %>  
-								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="cursor:pointer;" >
-								<%} %>
- 								<% if (role.equalsIgnoreCase(("Admin"))) { %>  
-								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/adminOpenTickets'" style="cursor:pointer;" >
-								<%} %>
+							<div class="card card-stats card-round">	
+							<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/openTickets'"	style="cursor: pointer;">			
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -321,7 +339,6 @@ function getCount(){
 	</div>
 	</div>
 
-</div>
 <!--   Core JS Files   -->
 
 

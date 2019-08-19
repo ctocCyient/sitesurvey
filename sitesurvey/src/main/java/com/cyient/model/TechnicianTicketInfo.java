@@ -32,14 +32,8 @@ public class TechnicianTicketInfo implements Serializable {
 	@Column(name="Ticket_Num")
 	private String ticketNum;
 	
-	@Column(name="SiteID")
+	@Column(name="siteID",length=16777215)
 	private String siteid;
-	
-	@Column(name="Latitude")
-	private String latitude;
-	
-	@Column(name="Longitude")
-	private String longitude;
 	
 	@Column(name="Region")
 	private String region;
@@ -116,22 +110,6 @@ public class TechnicianTicketInfo implements Serializable {
 
 	public void setSiteid(String siteid) {
 		this.siteid = siteid;
-	}
-
-	public String getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
-
-	public String getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
 	}
 
 	public String getRegion() {

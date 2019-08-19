@@ -9,12 +9,62 @@
 var userName;
 var pasword;
 var type;
+var currentip;
 $(document).ready(function() {	
-	userName = '<%=session.getAttribute("userName")%>';
-	password = '<%=session.getAttribute("password")%>';
-	type = '<%=session.getAttribute("userRole")%>';
-	
+
+	userName = sessionStorage.getItem("username");
+	password = sessionStorage.getItem("password");
+	type = sessionStorage.getItem("role");
+	//alert(userName);
 	//getRoles();
+	
+	
+	 
+	 function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+		    //compatibility for firefox and chrome
+		    var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+		    var pc = new myPeerConnection({
+		        iceServers: []
+		    }),
+		    noop = function() {},
+		    localIPs = {},
+		    ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+		    key;
+
+		    function iterateIP(ip) {
+		        if (!localIPs[ip]) onNewIP(ip);
+		        localIPs[ip] = true;
+		    }
+
+		     //create a bogus data channel
+		    pc.createDataChannel("");
+
+		    // create offer and set local description
+		    pc.createOffer().then(function(sdp) {
+		        sdp.sdp.split('\n').forEach(function(line) {
+		            if (line.indexOf('candidate') < 0) return;
+		            line.match(ipRegex).forEach(iterateIP);
+		        });
+
+		        pc.setLocalDescription(sdp, noop, noop);
+		    }).catch(function(reason) {
+		        // An error occurred, so handle the failure to connect
+		    });
+
+		    //listen for candidate events
+		    pc.onicecandidate = function(ice) {
+		        if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+		        ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+		    };
+		}
+
+		// Usage
+		getUserIP(function(ip){
+		    //alert("Got IP! :" + ip);
+		   currentip=ip;
+		    
+		    
+		});
 });
 
 function getRoles()
@@ -60,6 +110,7 @@ function populateRolesDropdown(data,id)
  		$("#role").val(type);
  		
 }
+
 function loadDashboard(value){
 	
 		 	var selectedRegion=value;
@@ -87,6 +138,38 @@ function loadDashboard(value){
 		         }
 		 	});
 		 
+}
+
+function trackUsers()
+	{
+		//var currentip=ip;
+    var uname=name;
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+    //alert(dateTime);
+    
+    $.ajax({
+         type:"get",
+         url:"saveLoginInfo",
+         contentType: 'application/json',
+         datatype : "json",
+         data:{"UserName":uname,"Time":dateTime,"CurrentIP":currentip,"Type":"Logout"},
+         success:function(data1) {
+         	
+         	window.location.href = "/sitesurvey/";
+         },
+         error:function()
+         {
+         	console.log("Error");
+         }
+ 	});
+	}
+	
+function session_out(){
+	trackUsers();
+	sessionStorage.clear();
 }
 
 </script>
@@ -134,7 +217,13 @@ function loadDashboard(value){
 										<div class="avatar-lg"><img src="<c:url value='resources/assets/img/profile2.jpg' />" alt="image profile" class="avatar-img rounded"></div>
 										<div class="u-text">
 										<br>
-											<h4>${sessionScope.userName}</h4>
+										<h4 id="demo"></h4>
+											
+
+<script>
+document.getElementById("demo").innerHTML = sessionStorage.getItem("username");
+
+</script>
 <!-- 											<p class="text-muted">Hello</p> -->
 <!-- 												<a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a> -->
 										</div>
@@ -142,7 +231,7 @@ function loadDashboard(value){
 								</li>
 								<li>
 									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="logout">Logout</a>
+									<a class="dropdown-item" href="logout" onclick="session_out()">Logout</a>
 								</li>
 							</ul>
 						</li>

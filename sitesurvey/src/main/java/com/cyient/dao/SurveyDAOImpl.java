@@ -3,6 +3,7 @@ package com.cyient.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
+import com.cyient.model.Track_Users;
 import com.cyient.model.User;
 
 
@@ -31,13 +33,14 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(ticket);
 	}
 	
-	public User getAllUsersOnCriteria(String username,String password,String type) {
+	@SuppressWarnings("unchecked")
+	public List<User> getAllUsersOnCriteria(String username,String password,String type) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
         c.add(Restrictions.eq("username",username));
         c.add(Restrictions.eq("password",password));
 		c.add(Restrictions.eq("role",type));
 		System.out.println(c.list());
-        return (User)c.uniqueResult();
+        return c.list();
 	}
 
 	public void addSite(Site site) {
@@ -98,6 +101,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public String getUserName(String role, String username) {
 		    Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
 	        c.add(Restrictions.eq("username",username));
@@ -185,8 +189,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TechnicianTicketInfo> managerOpenTickets(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='InProgress'").list();	
+	public List<TechnicianTicketInfo> managerOpenTickets(String username,String region,String city) {
+		return sessionFactory.getCurrentSession().createQuery("from Ticketing where status='Open' and region='"+region+"' and city ='"+city+"'").list();	
 	}
 
 	@SuppressWarnings("unchecked")
@@ -207,5 +211,33 @@ public class SurveyDAOImpl implements SurveyDAO {
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techClosedTicketsData(String username) {
 		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='Closed' and technicianId='"+username+"'").list();
+	}
+
+	public String assignTechnician(TechnicianTicketInfo technicianTicket) {
+		sessionFactory.getCurrentSession().saveOrUpdate(technicianTicket);
+		return "Assigned";
+	}
+
+	
+	public String updateTicketingStatus(String ticketId) {
+		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
+		 Ticketing ticketing = (Ticketing)q1.list().get(0);		 
+		 ticketing.setStatus("InProgress");	
+		 sessionFactory.getCurrentSession().update(ticketing);		
+		return "Assigned";
+	}
+
+	public Technician getTechniciansData(String technicianId) {
+		return (Technician) sessionFactory.getCurrentSession().get(Technician.class, technicianId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Ticketing> getTicketsData(String ticketNum) {
+		return sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum='"+ticketNum+"'").list();
+	}
+
+	public String saveTrackuser(Track_Users trackuser) {
+		sessionFactory.getCurrentSession().saveOrUpdate(trackuser);
+		return "Success";
 	}
 }

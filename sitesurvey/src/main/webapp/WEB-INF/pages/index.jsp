@@ -18,6 +18,7 @@
 	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' >
 	<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
 
+
 	<!-- Fonts and icons -->
 	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 	<script>
@@ -29,14 +30,132 @@
 			}
 		});
 	</script>
-	
-	<script>
+		<script>
+	var currentip;
+	var username,role,password;
  	$(document).ready(function(){	
 		 $("select option[value='Select']").attr('disabled','disabled');
+		// alert("vfgvrfe");
+		 
+		 
+		 function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+			    //compatibility for firefox and chrome
+			    var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+			    var pc = new myPeerConnection({
+			        iceServers: []
+			    }),
+			    noop = function() {},
+			    localIPs = {},
+			    ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+			    key;
+
+			    function iterateIP(ip) {
+			        if (!localIPs[ip]) onNewIP(ip);
+			        localIPs[ip] = true;
+			    }
+
+			     //create a bogus data channel
+			    pc.createDataChannel("");
+
+			    // create offer and set local description
+			    pc.createOffer().then(function(sdp) {
+			        sdp.sdp.split('\n').forEach(function(line) {
+			            if (line.indexOf('candidate') < 0) return;
+			            line.match(ipRegex).forEach(iterateIP);
+			        });
+
+			        pc.setLocalDescription(sdp, noop, noop);
+			    }).catch(function(reason) {
+			        // An error occurred, so handle the failure to connect
+			    });
+
+			    //listen for candidate events
+			    pc.onicecandidate = function(ice) {
+			        if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+			        ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+			    };
+			}
+
+			// Usage
+			getUserIP(function(ip){
+			   //alert("Got IP! :" + ip);
+			   currentip=ip;
+			    
+			    
+			});
+		 
+		 
+
  	});
 
+ 	
+ 	function trackUsers()
+ 	{
+ 		//var currentip=ip;
+	    var uname=name;
+	    var today = new Date();
+	    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+	    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	    var dateTime = date+' '+time;
+	    //alert(dateTime);
+	    //alert("user"+uname);
+	    //alert("IP"+currentip);
+	    $.ajax({
+	         type:"get",
+	         url:"saveLoginInfo",
+	         contentType: 'application/json',
+	         datatype : "json",
+	         data:{"UserName":username,"Time":dateTime,"CurrentIP":currentip,"Type":"Login"},
+	         success:function(data1) {
+	         	
+	         	window.location.href = "/sitesurvey/home";
+	         },
+	         error:function()
+	         {
+	         	console.log("Error");
+	         }
+	 	});
+ 	}
+ 	
+	function Login(){
+
+		username=$("#username").val();
+		role=$("#role").val();
+		password=$("#password").val();
+		$.ajax({
+	        type:"get",
+	        url:"validateUserAjax",
+	        contentType: 'application/json',
+	        datatype : "json",
+	        data:{"username":username,"role":role,"password":password},
+	        success:function(data1) {
+	        	
+	        	if(data1!="failure")
+	        	{
+	        		usersList = JSON.parse(data1);
+	        		console.log("USer"+usersList);
+	        		sessionStorage.setItem("username", username);
+	        		sessionStorage.setItem("password",password);
+	        		sessionStorage.setItem("role",role);	 
+	        		sessionStorage.setItem("region",usersList[0].region);	 
+	        		sessionStorage.setItem("city",usersList[0].city);	 
+	        		trackUsers();
+	        	}
+	        	else if(data1=="failure")
+	        	{
+	        		alert("Failed to login");	
+	        		sessionStorage.clear();
+	        	}
+	        },
+	        error:function()
+	        {
+	        	console.log("Error");
+	        }
+		});	 
+	}
 
 
+		
 
 	
 	</script>
@@ -160,7 +279,7 @@ position: fixed;
 	<div class=" bg wrapper1 wrapper-login  " >
 		<div  class="absolute container container-login animated fadeIn ">
 			<h3 class="text-center">Login</h3>
-			        <form:form action="validateUser" method="post" modelAttribute="User">
+	<!--  		        <form:form action="validateUser" method="post" modelAttribute="User">-->
 			<div class="login-form">
 				<div class="form-group form-floating-label input-group-prepend">
 				
@@ -195,13 +314,13 @@ position: fixed;
                 
 
 				<div class="form-action mb-3">
-				<input  type="submit" class="btn btn-primary1 btn-rounded btn-login" value="Sign In">
+				<input  type="button" class="btn btn-primary1 btn-rounded btn-login" onclick="Login()" value="Sign In">
 				
 				</div>
 				
 			</div>
 						
-			        </form:form>
+			   <!--     </form:form>-->
 			        
 			 
 		</div>

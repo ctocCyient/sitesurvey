@@ -13,6 +13,26 @@
 
 <title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+	<script type="text/javascript">
+	role=sessionStorage.getItem("role");
+	   if(sessionStorage.getItem("username")==null)
+   	{
+		//window.location.href = "/sitesurvey/";
+		//alert(sessionStorage.getItem("username"));
+		   url = "/sitesurvey/";
+		      $( location ).attr("href", url);
+   	}
+	   else if(role=="Admin" | role=="SuperAdmin")
+		   {
+		   
+		   }
+	   else
+		   {
+		   url = "/sitesurvey/";
+		      $( location ).attr("href", url);
+		   }
+
+</script>
 
 <script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	

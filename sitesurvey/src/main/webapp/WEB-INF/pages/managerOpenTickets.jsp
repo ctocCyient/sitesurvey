@@ -11,7 +11,19 @@
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
-	
+					<script type="text/javascript">
+	   if(sessionStorage.getItem("username")==null)
+   	{
+		   url = "/sitesurvey/";
+		  $( location ).attr("href", url);
+   	}	
+	   else {
+			s = sessionStorage.getItem("username");
+			role = sessionStorage.getItem("role");
+			userRegion = sessionStorage.getItem("region");
+			userCity = sessionStorage.getItem("city");
+		}
+	</script>
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/js/validations.js' />"></script>
 	
@@ -23,20 +35,70 @@
 	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 		
 		<style type="text/css">
-#openModal {
-	text-align:center;
-	margin:auto;
-	width:50%;
-	height:20%;
-	opacity:.95;
-	top:0;
-	bottom:0;
-	right:0;
-	left:0;	
-	position:absolute;
-	background-color:#ffffff;
-	overflow:auto
+
+/* #openModal { */
+/* 	text-align:center; */
+/* 	margin:auto; */
+/* 	width:50%; */
+/* 	height:30%; */
+/* 	opacity:.95; */
+/* 	top:0; */
+/* 	bottom:0; */
+/* 	right:0; */
+/* 	left:0;	 */
+/* 	position:absolute; */
+/* 	background-color:#ffffff; */
+/* 	overflow:auto */
+/* } */
+
+/* The Modal (background) */
+.modal2 {
+	display: none; /* Hidden by default */
+	position: absolute; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	padding-top: 100px; /* Location of the box */
+	padding-left:25px;
+	padding-right:30px;
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
+
+/* Modal Content */
+.modal-content {
+	background-color: #fefefe;
+	margin: auto;
+	position: relative;
+	padding: 20px;
+	border: 1px solid #888;
+	height: 80%; /* Full height */
+}
+
+#loading {
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   position: fixed;
+   display: block;
+   opacity: 0.7;
+   background-color: #fff;
+   z-index: 99;
+   text-align: center;
+}
+
+#loading-image {
+  position: absolute;
+  top: 50%;
+    left: 50%;
+  z-index: 100;
+}
+
+
 
 /* The Close Button */
 .close {
@@ -53,14 +115,15 @@
   cursor: pointer;
 }
 
+.btn-border.btn-assign {
+    color: #6610f2!important;
+    border: 1px solid #6610f2!important;
+    }
+   
 .fa-bars,
 .fa-ellipsis-v
 {
 color: #fff!important;
-}
-.totalTickets
-{
-max-width:100%;
 }
 </style>
 	<script>
@@ -74,8 +137,6 @@ max-width:100%;
 	</script>
 	
 	<script >
-	var s='<%=session.getAttribute("userName").toString()%>';
-	
 		$(document).ready(function() {
 
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
@@ -83,10 +144,17 @@ max-width:100%;
 			  getCount();
 			  tableData();			
 		
+			  $(".closeBtn").click(function () {
+				  $("#technicianTable").find("tr:gt(0)").remove();
+				 document.getElementById('openModal').style.display = "none";
+              });
+			  
 		});	
 	
 		var dataSet=[];
 		 var ticketId;
+		  var region,city;
+		 var rowIndex,table1,rowToDelete;
 		 
 		 function getCount(){
 			
@@ -95,7 +163,7 @@ max-width:100%;
 	                url:"getManagerTicketsCount",
 	                contentType: 'application/json',
 	                datatype : "json",
-	                data:{"username":s},
+	                data:{"username":s,"region":userRegion,"city":userCity},
 	                success:function(result) {
 	                	var jsonArr = $.parseJSON(result);
 	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets;    
@@ -110,15 +178,16 @@ max-width:100%;
 			$.ajax({
                 type:"get",
                 url:"getManagerOpenTickets",
+                //url:"getOpenTickets",
                 contentType: 'application/json',
                 datatype : "json",
-                data:{"username":s},
+                data:{"username":s,"region":userRegion,"city":userCity},
                 success:function(data) {
                     openTicketsList = JSON.parse(data);
 					
                     for(var i=0;i<openTicketsList.length;i++)
          		   {
-                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].technicianName,openTicketsList[i].status]);
+                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteid,openTicketsList[i].region,openTicketsList[i].city,openTicketsList[i].status]);
          			   
          		   }
                    
@@ -127,20 +196,114 @@ max-width:100%;
 					destroy:true,
 					language: {
 					  emptyTable: "No Data Available"
-					},								
+					},			
+					columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<button style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;'  id='assignBtn' onclick='on()'>Assign</button>"}],
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
-						{title: "Technician Name" },
-						{title: "Status" },	
+						{title: "Site Id" },
+						{title: "Region"},
+						{title: "City"},
+						{title: "Action" },	
 			        ]
 			    } );
+			 
+			 
+			 
+			 
+			 $('#openTickets tbody').on('click', '[id*=assignBtn]', function () {
+		            data1 =  table1.row($(this).parents('tr')).data();
+		            rowIndex = $(this).parent().index();
+					 rowToDelete= table1.row($(this).parents('tr'));
+		            // alert(data1[0] );
+		           ticketId=data1[0];
+		           region=data1[2];
+		           city=data1[3];
+		           $.ajax({
+		                type: "get",
+		                url: "getUnassignedTechnicians",
+		                contentType: 'application/json',
+		                datatype: "json", 
+						    data:{"region":region,"city":city},
+		                success: function(result) {
+		                    techniciansList = JSON.parse(result);
+							 if(techniciansList==""){
+		                    	
+		                    	var newrow = $('<tr><label>No Technicians Available<label></tr>');
+		            			
+		            	         $('.technicianRow').after(newrow);
+		                    }else{
+		                   
+		                    //document.getElementById('openModal').style.display="";
+		                	for(i=0;i<techniciansList.length;i++){
+		            			var newrow = $('<tr><td><a href="#" onclick=saveTechnicians(this)>'+techniciansList[i].technicianId+'</a></td><td>'+techniciansList[i].technicianName+'</td> <td>'+techniciansList[i].region+'</td> <td>'+techniciansList[i].city+'</td> </tr>');
+		            			
+		            	         $('.technicianRow').after(newrow);
+		            			}
+						}
+		                }
+					
+		       		 });
+			 
+             });
 				
 
 		}
 			});
 		}
 		
+		
+		
+
+		function saveTechnicians(value){
+			var techId=value.innerHTML;
+			 $('#loading').show();
+			$.ajax({
+                type:"get",
+                url:"assignTechnician",
+                contentType: 'application/json',
+                datatype : "json",     
+                data: {"technicianId":techId,"ticketId":ticketId},
+                success:function(data) {
+                	 $('#loading').hide();
+                	
+					var content = document.createElement('div');
+					    content.innerHTML = 'Ticket <strong>'+ticketId+'</strong> assigned to technician <strong>'+techId+'</strong>';
+		                 swal(content, {
+	                	buttons: {        			
+	    					confirm: {
+	    						className : 'btn btn-success'
+	    					}
+	    				},
+					});
+  					
+  				
+                  document.getElementById('openModal').style.display="none";
+                  var OpenTicketCount=parseInt($('#managerOpenTickets')[0].innerHTML);
+                // table1.row(':eq(0)').remove().draw();
+				 rowToDelete.remove().draw();
+				 $("#technicianTable").find("tr:gt(0)").remove();
+                  $('#managerOpenTickets')[0].innerHTML=OpenTicketCount-1;
+                }
+     			
+			});
+		}
+		
+		
+		function on() {
+			
+			//$("#sysAdminSidebar").hide();
+			document.getElementById("openModal").style.display = "block";
+			//}
+
+			// When the user clicks on <span> (x), close the modal
+			document.getElementsByClassName("close")[0].onclick = function() {
+				 $("#technicianTable").find("tr:gt(0)").remove();
+				document.getElementById("openModal").style.display = "none";
+			}
+
+		}
+
 		
 	</script>
 
@@ -208,7 +371,7 @@ max-width:100%;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="background-color:#00B1BF;cursor:pointer;">
+								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -265,6 +428,48 @@ max-width:100%;
 						</div>
 	
 			</div>
+			
+			
+			<!-- popup -->
+					<div id="openModal" class="modal2" align="center">
+						<div class="modal-content">
+							<div>
+								<span class="close">&times;</span>
+							</div>
+							<div>
+								<div>
+									<div><h1>Field Technicians List</h1></div>
+								</div>
+								<br>
+								<div>
+
+
+									<table id="technicianTable" class="table table-hover" border=1
+										style="width: 80%; margin-top: 10px; margin-bottom: 10px;">
+										<tr class="technicianRow">
+											<th scope="col">Technician Id</th>
+											<th scope="col">Technician Name</th>
+											<th scope="col">Region</th>
+											<th scope="col">City</th>
+										</tr>
+									</table>
+
+
+
+									<!-- <div id="techniciansData"></div>-->
+
+								</div>
+							</div>
+							<div id="loading-image" style="display: none;">
+							<img src="<c:url value='resources/assets/img/ajax-loader.gif'  />" alt="navbar brand" class="navbar-brand">
+							</div>
+							
+
+          <button type="button"  class="closeBtn" style=' background-color: #00B1BF;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer; width:80px;'>Close</button>
+        
+						</div>
+						
+					</div>
 			
 		</div>
 			
