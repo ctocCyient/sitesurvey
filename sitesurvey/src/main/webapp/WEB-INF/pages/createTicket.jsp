@@ -8,14 +8,13 @@
 <head>
 
 
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 <title>Site Survey</title>
-	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
 		
-		<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore.js"></script>
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
 
