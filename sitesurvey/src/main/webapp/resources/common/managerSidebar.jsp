@@ -38,7 +38,6 @@
 							</a>
 						</li>
 						
-						
 						<li class="nav-item">
 								<a  href="techniciansList">&nbsp;&nbsp;
 								<span class="fas fa-users" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Technician List</span></a>
