@@ -35,8 +35,6 @@
 	var username,role,password;
  	$(document).ready(function(){	
 		 $("select option[value='Select']").attr('disabled','disabled');
-		// alert("vfgvrfe");
-		 
 		 
 		 function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
 			    //compatibility for firefox and chrome
@@ -83,9 +81,6 @@
 			    
 			    
 			});
-		 
-		 
-
  	});
 
  	

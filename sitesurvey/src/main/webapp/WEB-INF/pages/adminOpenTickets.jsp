@@ -7,6 +7,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
 	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
@@ -189,6 +190,7 @@ color: #fff!important;
 		           ticketId=data1[0];
 		           region=data1[2];
 		           city=data1[3];
+
 		           $.ajax({
 		                type: "get",
 		                url: "getUnassignedTechnicians",

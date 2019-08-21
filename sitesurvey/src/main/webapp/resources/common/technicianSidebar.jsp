@@ -22,7 +22,6 @@
 						<div class="info">
 							<a data-toggle="collapse"  aria-expanded="">
 								<span>
-									${sessionScope.userName}
 									<span class="user-level">Logged in as</span>
 									<span class="user-level">Field Technician</span>									
 								</span>

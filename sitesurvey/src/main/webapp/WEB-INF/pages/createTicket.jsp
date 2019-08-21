@@ -13,6 +13,7 @@
 <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
 <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore.js"></script>
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
 <script src="<c:url value='resources/js/jquery.min.js' />"></script>
@@ -33,6 +34,7 @@
 	
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
+
 <link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 <script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/assets/css/bootstrap.min.css' />"></script>
@@ -353,6 +355,7 @@ var jsonData=[];
                 <label for="region" class="placeholder">Region</label>
                	<form:select id="region" path="region" name="region" class="form-control input-border" onchange="getState(this.value);"  >
             	<form:option value="">Select</form:option>
+
             	<form:options items="${regionsList}"></form:options>
             	</form:select>
                 <br>
@@ -373,12 +376,11 @@ var jsonData=[];
 				<br>      
             	<label for="ticketDescription">Ticket Description</label>
 				<form:textarea path="ticketDescription" placeholder="Enter upto 120 characters" id="ticketDescription"  class="form-control" onkeypress="textarea_validation();" onkeydown = "onKeyDown()"/>
+
 				<form:hidden path="openDate" id="openDate" value="" />
+
 				<form:hidden path="openTime" id="openTime" value="" />
 				
-				
-				
-
             	<div class="form-action">
             	<input type="submit" id="submit" value="Create" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 					<a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>

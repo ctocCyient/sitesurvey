@@ -172,8 +172,6 @@ function getCount(){
 </head>
 <body>
 	<div class="wrapper">
-
-	 
 	    <script>
     if(sessionStorage.getItem("username")==null)
     	{
@@ -241,7 +239,7 @@ function getCount(){
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">	
-							<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/openTickets'"	style="cursor: pointer;">			
+							<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/openTickets'"	style="cursor: pointer;">	
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -339,6 +337,7 @@ function getCount(){
 	</div>
 	</div>
 
+</div>
 <!--   Core JS Files   -->
 
 

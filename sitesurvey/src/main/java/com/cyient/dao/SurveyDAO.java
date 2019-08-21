@@ -25,9 +25,6 @@ public interface SurveyDAO {
 	public void addSite(Site site);
 	
 	@Transactional
-	public void addTicket(Ticketing ticket);
-	
-	@Transactional
 	public List<Regions> getRegions();
 	
 	@Transactional
@@ -66,7 +63,7 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public void addTechnicianIntoUsers(User user);
-	
+
 	@Transactional
 	public List<Ticketing> openTicketsData();
 
@@ -111,5 +108,8 @@ public interface SurveyDAO {
 
 	@Transactional
 	public String saveTrackuser(Track_Users trackuser);
+
+	@Transactional
+	public void addTicket(Ticketing ticket);
 
 }

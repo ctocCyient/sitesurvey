@@ -11,6 +11,7 @@
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
+
 					<script type="text/javascript">
 	   if(sessionStorage.getItem("username")==null)
    	{
