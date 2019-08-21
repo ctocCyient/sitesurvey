@@ -176,8 +176,6 @@ background-image:url("<c:url value='resources/assets/img/sitesurvey.jpg' />");
 background-repeat: no-repeat;
 background-size: 100% 450px;
 
-  
-
 }
 div.absolute {
   position: absolute;
