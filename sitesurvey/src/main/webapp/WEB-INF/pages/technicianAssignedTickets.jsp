@@ -7,6 +7,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
 	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
@@ -330,6 +331,7 @@ color: #fff!important;
 <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 <!-- Azzara JS -->
+
 <script src="<c:url value='resources/assets/js/ready.min.js' />"></script>
 
 

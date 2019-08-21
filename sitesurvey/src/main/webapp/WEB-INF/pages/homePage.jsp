@@ -44,11 +44,13 @@
 			}
 		});
 	
+		
+		
+		
 	</script>
 	<script>
 	var name,role;
 	$(function(){
-
 		if(sessionStorage.getItem("username")==null)
 			{
 			window.location.href = "/sitesurvey/";
@@ -58,12 +60,12 @@
 			name=sessionStorage.getItem("username");
 			   role=sessionStorage.getItem("role");
 			}	
+
 		  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 		  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 		  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
 		  $("#managerSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
 		  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
-
 	  
 		  if(role=="SuperAdmin"){
 		  //	getAdminCount();
@@ -547,6 +549,9 @@ color: #fff!important;
 		
 		
 		<script>}</script>
+		
+		
+		
 		
 	</div>
 

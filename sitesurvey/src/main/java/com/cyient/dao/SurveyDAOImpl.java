@@ -14,7 +14,9 @@ import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
+
 import com.cyient.model.Track_Users;
+
 import com.cyient.model.User;
 
 
@@ -32,6 +34,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 		
 		sessionFactory.getCurrentSession().saveOrUpdate(ticket);
 	}
+	
+
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsersOnCriteria(String username,String password,String type) {
@@ -239,5 +243,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public String saveTrackuser(Track_Users trackuser) {
 		sessionFactory.getCurrentSession().saveOrUpdate(trackuser);
 		return "Success";
+
 	}
 }

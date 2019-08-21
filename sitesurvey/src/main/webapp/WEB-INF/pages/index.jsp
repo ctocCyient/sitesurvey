@@ -35,8 +35,6 @@
 	var username,role,password;
  	$(document).ready(function(){	
 		 $("select option[value='Select']").attr('disabled','disabled');
-		// alert("vfgvrfe");
-		 
 		 
 		 function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
 			    //compatibility for firefox and chrome
@@ -83,9 +81,6 @@
 			    
 			    
 			});
-		 
-		 
-
  	});
 
  	
@@ -172,7 +167,7 @@ text-align:center
 .bg
 {
 
-background-image:url("<c:url value='resources/assets/img/sitesurvey.jpg' />");
+background-image:url("<c:url value='resources/assets/img/sitesurvey_img.png' />");
 background-repeat: no-repeat;
 background-size: 100% 450px;
 
@@ -328,7 +323,7 @@ position: fixed;
 		
 		</div>
 		<div class=" loginNmsDet" >
-<!--  			<b>Cyient ROFC-RFID application</b> is with open APIs that facilitates the telecom organizations to manage their OFCs/cables using RFID tags and readers/writers. It is an unique solution build over the strong Java framework. The powerful blend of an advanced rules engine, SDK, and web service APIs facilitates a seemless integration and implementation. -->
+  			<b>Cyient Site Survey and recommendation application</b> is with open APIs that facilitates the telecom organizations to survey their cell sites/shelters using Andriod devices. It is a solution build over the strong Java framework. The powerful blend of an advanced rules engine, SDK, and web service APIs facilitates a seemless integration and implementation.
 		</div>
 		<div class="card-footer1">
 									

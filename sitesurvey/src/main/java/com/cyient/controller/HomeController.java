@@ -48,7 +48,6 @@ public class HomeController {
 		System.out.println("HomeController()");
 		 
 	}
-
 	
 	@Autowired
 	private SurveyDAO surveyDAO;
@@ -88,7 +87,6 @@ public class HomeController {
 		return model;
 	}
 	
-
 	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
 	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
 		String status="Technician Added Successfully";
@@ -156,7 +154,7 @@ public class HomeController {
 			return new ModelAndView("redirect:/newTicket");
 		}
 	
-	
+
 	                                                                                                                                                                                                                                                                                   
    @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
     @ResponseBody
@@ -228,6 +226,7 @@ public class HomeController {
     	return "Assigned";		
 	}
       
+
 	
 	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
 	public ModelAndView newUser(ModelAndView model) {
