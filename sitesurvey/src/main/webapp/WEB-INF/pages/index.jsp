@@ -262,8 +262,6 @@ position: fixed;
 					<img src="<c:url value='resources/assets/img/logo.png' />" alt="navbar brand" class="navbar-brand">
 				</a>
 				
-				
-				
 			</div>
 <!-- <div style="width:100%;height:35%"> -->
 <%-- <img style="width:100%;height:100%" src="<c:url value='resources/assets/img/rfid3.jpg' />" /> --%>
