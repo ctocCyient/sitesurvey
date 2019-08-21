@@ -35,7 +35,11 @@
 	var username,role,password;
  	$(document).ready(function(){	
 		 $("select option[value='Select']").attr('disabled','disabled');
-		 
+		// alert("vfgvrfe");
+		$.getJSON('https://api.ipify.org?format=json', function(data){
+    console.log(data);
+});
+
 		 function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
 			    //compatibility for firefox and chrome
 			    var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
