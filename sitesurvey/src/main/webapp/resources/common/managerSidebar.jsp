@@ -8,7 +8,6 @@
 
 </head>
 <body>
-
 <div class="sidebar"  >
 			
 			<div class="sidebar-background"></div>
