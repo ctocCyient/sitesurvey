@@ -10,12 +10,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -33,12 +40,14 @@ import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.Track_Users;
 import com.cyient.model.User;
+import com.fasterxml.classmate.Filter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 
-
+@WebFilter
 @Controller
+//@SessionAttributes("user")
 public class SiteSurveyController {
 	private static final Logger logger = Logger
 			.getLogger(SiteSurveyController.class);
@@ -52,6 +61,10 @@ public class SiteSurveyController {
 	
 	private Integer Session_counter = 0;
 	
+	@ModelAttribute("user")
+	   public User setUpUserForm() {
+	      return new User();
+	   }
 	
 	
 	@RequestMapping(value = "/")
@@ -97,7 +110,7 @@ public class SiteSurveyController {
            }
     }	
 	
-	@RequestMapping(value = "/validateUserAjax", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/validateUserAjax", method = RequestMethod.GET)
 	@ResponseBody
     public String validateUserAjax(HttpServletRequest request) {
 		String username=request.getParameter("username");
@@ -128,7 +141,39 @@ public class SiteSurveyController {
     	{
     		return "failure";
     	}
-    }	
+    }*/	
+	@RequestMapping(value = "/validateUserAjax", method = RequestMethod.GET)
+	@ResponseBody
+    public String validateUserAjax(HttpServletRequest request,HttpSession session) {
+		String username=request.getParameter("username");
+    	String password=request.getParameter("password");
+    	String role=request.getParameter("role");
+    	try
+    	{
+    		List<User> userList = surveyDAO.getAllUsersOnCriteria(username,password,role);	
+    		String userName=null,roleType=null;
+			for(User user:userList)
+    		{
+    			userName=user.getUsername();
+    			roleType=user.getRole();
+    		}
+	    	if(userName.equals(username) & roleType.equals(role))
+	    	{
+	    		
+	    		 Gson gsonBuilder = new GsonBuilder().create();
+	        	   String userJson = gsonBuilder.toJson(userList);
+		              return userJson.toString();	    	
+	    	}
+	    	else
+	    	{
+	    		return "failure";
+	    	}
+    	}
+    	catch(Exception e)
+    	{
+    		return "failure";
+    	}
+    }
 	
 	@RequestMapping(value = "/saveLoginInfo", method = RequestMethod.GET)
 	@ResponseBody
@@ -174,10 +219,30 @@ public class SiteSurveyController {
 
 
 	@RequestMapping(value = "/logout")
-	 public String logout(@ModelAttribute User user, HttpSession session,HttpServletRequest request) {
+	 public String logout(@ModelAttribute User user, HttpSession session,HttpServletRequest request,HttpServletResponse httpResponse) {
           	  session.removeAttribute("userName");
+          	  request.getSession().invalidate();
+          	//httpResponse.setHeader("Cache-Control", "private,no-store,no-cache");
+
               return "redirect:/";
 	 }
+
+	/*public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        HttpServletResponse response = (HttpServletResponse) res;
+
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        response.setDateHeader("Expires", 0); // Proxies.
+
+        chain.doFilter(req, res);
+    }
+
+
+
+	public boolean include(Object arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}*/
 	
 	
 }

@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -281,7 +282,7 @@ position: fixed;
 	<div class=" bg wrapper1 wrapper-login  " >
 		<div  class="absolute container container-login animated fadeIn ">
 			<h3 class="text-center">Login</h3>
-	<!--  		        <form:form action="validateUser" method="post" modelAttribute="User">-->
+	 		        <form:form action="validateUser" method="post" modelAttribute="User">
 			<div class="login-form">
 				<div class="form-group form-floating-label input-group-prepend">
 				
@@ -322,7 +323,7 @@ position: fixed;
 				
 			</div>
 						
-			   <!--     </form:form>-->
+			   </form:form>
 			        
 			 
 		</div>

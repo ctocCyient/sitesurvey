@@ -142,7 +142,7 @@ function loadDashboard(value){
 
 function trackUsers()
 	{
-		//var currentip=ip;
+		var currentip=ip;
     var uname=name;
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
