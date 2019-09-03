@@ -9,16 +9,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<script type="text/javascript">
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		//window.location.href = "/sitesurvey/";
-		//alert(sessionStorage.getItem("username"));
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-   	}
 	
-	</script>
 	<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
@@ -48,39 +39,19 @@
 	<script>
 	var name,role;
 	$(function(){
-
-		if(sessionStorage.getItem("username")==null)
-			{
-			window.location.href = "/sitesurvey/";
-			}
-		else
-			{
-			name=sessionStorage.getItem("username");
-			   role=sessionStorage.getItem("role");
-			}	
+		<% if (session.getAttribute("userName") == null) { %>
+		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/logout"/>';
+	<% } else {%>
+	  name='<%=session.getAttribute("userName").toString()%>';
+	   role='<%=session.getAttribute("userRole").toString()%>';
+	<% } %>
+	alert(role);
+	
+	
 		  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 		  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-		  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
-		  $("#managerSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
-		  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
-
-	  
-		  if(role=="SuperAdmin"){
-		  //	getAdminCount();
-			document.getElementById("open_div").click();	
-		  }
-		  else if(role=="Admin"){
-			 // getCount();
-				document.getElementById("open_div_admin").click();	
-	      }
-		  else if(role=="Manager"){
-			  	//getManagerCount();
-				document.getElementById("manager_div").click();	
-			}
-			else if(role=="FieldTechnician"){
-				 // getExecutiveTicketsCount();
-					document.getElementById("tech_div").click();	
-		    }
+	
+		
 		   
 	  });
 
@@ -143,30 +114,15 @@ color: #fff!important;
 
 
 <!-- Admin -->
-		
-    <script>
-    if(sessionStorage.getItem("username")==null)
-    	{
-		//window.location.href = "/sitesurvey/";
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-    	}
-    	else
-		{
-		name=sessionStorage.getItem("username");
-		role=sessionStorage.getItem("role");
-		}
-    
-    if(role=="SuperAdmin")
-    	{
-    	
-       // alert(sessionStorage.getItem("username"));
-
-    </script>
-    
-    
-    
-    
+		<%
+		String s,role = " ";
+		if (session.getAttribute("userName") == null) { %>
+		window.location = '<c:set var="contextPath" value="${pageContext.request.contextPath}/"/>';
+	<% } else {
+		 s = session.getAttribute("userName").toString();
+		 role = session.getAttribute("userRole").toString(); 
+	 } %>
+    <% if (role=="SuperAdmin") { %>     
     <!-- Sidebar -->
 		<div id="superAdminSidebar">
 		</div>
@@ -182,7 +138,7 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="background-color:#00B1BF;">
+								<div class="card-body" id="open_div" onclick="location.href='/sitesurvey/openTickets'" style="background-color:#00B1BF;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -201,7 +157,7 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/assignedTickets'" >
+								<div class="card-body" onclick="location.href='/sitesurvey/assignedTickets'" >
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#F98B88;border-radius: 5px">
@@ -220,7 +176,7 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/historyTickets'">
+								<div class="card-body" onclick="location.href='/RFIDAssetTracking/historyTickets'">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
@@ -239,7 +195,7 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/totalTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='/sitesurvey/totalTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px;">
@@ -265,288 +221,9 @@ color: #fff!important;
 			
 		</div>
 		
-		
-		<script>
-    	}
-    </script>
+		<%} %>
 		
 		
-    <script>
-    if(sessionStorage.getItem("username")==null)
-    	{
-		window.location.href = "/sitesurvey/";
-    	}
-    	else
-		{
-		name=sessionStorage.getItem("username");
-		role=sessionStorage.getItem("role");
-		}
-    
-    if(role=="Admin")
-    	   	
-    </script> 
-    <!-- Sidebar -->
-		<div id="adminSidebar">
-		</div>
-		<!-- End Sidebar -->
-    
-
-		<div class="main-panel">
-			<div class="content">
-				<div class="page-inner">
-					<div class="page-header">
-						<h4 class="page-title">Dashboard</h4>						
-					</div>
-					<div class="row">
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div_admin" onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="background-color:#00B1BF;cursor:pointer;">
-									<div class="row align-items-center" >
-										<div class="col-icon" >
-											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/open.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category" style="color:#ffffff;">Open</p>
-												<h4 class="card-title" id="assignSurveyCount" style="color:#ffffff;"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/assignedTickets'" style="cursor:pointer;">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#F98B88;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/closed.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category" >Assigned</p>
-												<h4 class="card-title" id="assignedTicketCount" ></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/historyTickets'" style="cursor:pointer;">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/history.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category">History</p>
-												<h4 class="card-title" id="historyTicketCount"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/totalTickets'" style="cursor:pointer;">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px;">
-											<img src="<c:url value='resources/assets/img/closed.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category" >Total</p>
-												<h4 class="card-title" id="totalTicketCount" ></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-					</div>
-					
-					
-				</div>
-			</div>
-			
-		</div>
-		
-	
-		<script>}</script>
-		
-		
-		
-		    <script>
-    if(sessionStorage.getItem("username")==null)
-    	{
-		window.location.href = "/sitesurvey/";
-    	}
-    	else
-		{
-		name=sessionStorage.getItem("username");
-		role=sessionStorage.getItem("role");
-		}
-    
-    if(role=="Manager")
-    	{
-    	
-    	
-    </script>
-		
-    <!-- Sidebar -->
-		<div id="managerSidebar">
-		</div>
-		<!-- End Sidebar -->
-    
-
-		<div class="main-panel">
-			<div class="content">
-				<div class="page-inner">
-					<div class="page-header">
-						<h4 class="page-title">Dashboard</h4>						
-					</div>
-					<div class="row">
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round" >
-								<div class="card-body" id="manager_div" onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="background-color:#00B1BF;cursor:pointer;">
-									<div class="row align-items-center" >
-										<div class="col-icon" >
-											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/open.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category" style="color:#ffffff;">Open</p>
-												<h4 class="card-title" id="openCount" style="color:#ffffff;"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerClosedTickets'" style="cursor:pointer;">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/closed.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category">Closed</p>
-												<h4 class="card-title" id="historyTicketCount"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-					</div>
-					
-					
-				</div>
-			</div>
-			
-		</div>
-		
-	
-		<script>}</script>
-		
-				    <script>
-    if(sessionStorage.getItem("username")==null)
-    	{
-		window.location.href = "/sitesurvey/";
-    	}
-    	else
-		{
-		name=sessionStorage.getItem("username");
-		role=sessionStorage.getItem("role");
-		}
-    
-    if(role=="FieldTechnician")
-    	{
-    	
-    	
-    </script>
-    <!-- Sidebar -->
-		<div id="technicianSidebar">
-		</div>
-		<!-- End Sidebar -->
-    
-
-		<div class="main-panel">
-			<div class="content">
-				<div class="page-inner">
-					<div class="page-header">
-						<h4 class="page-title">Dashboard</h4>						
-					</div>
-					<div class="row">
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round" >
-								<div class="card-body" id="tech_div" onclick="location.href='${pageContext.request.contextPath}/technicianAssignedTickets'" style="background-color:#00B1BF;cursor:pointer;">
-									<div class="row align-items-center" >
-										<div class="col-icon" >
-											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/open.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category" style="color:#ffffff;">Assigned</p>
-												<h4 class="card-title" id="openTicketCount" style="color:#ffffff;"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianClosedTickets'" style="cursor:pointer;">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/closed.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category">Closed</p>
-												<h4 class="card-title" id="closedTicketCount"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-					</div>
-					
-					
-				</div>
-			</div>
-			
-		</div>
-		
-		
-		
-		<script>}</script>
 		
 	</div>
 

@@ -27,7 +27,7 @@
 			google: {"families":["Open+Sans:300,400,600,700"]},
 			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands"], urls: ['../resources/assets/css/fonts.css']},
 			active: function() {
-				sessionStorage.fonts = true;
+				sessionStorage.fonts = false;
 			}
 		});
 	</script>
@@ -39,6 +39,7 @@
 		// alert("vfgvrfe");
 		$.getJSON('https://api.ipify.org?format=json', function(data){
     console.log(data);
+    
 });
 
 		 function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
@@ -86,9 +87,6 @@
 			    
 			    
 			});
-		 
-		 
-
  	});
 
  	
@@ -175,11 +173,9 @@ text-align:center
 .bg
 {
 
-background-image:url("<c:url value='resources/assets/img/rfid3.jpg' />");
+background-image:url("<c:url value='resources/assets/img/sitesurvey_img.png' />");
 background-repeat: no-repeat;
 background-size: 100% 450px;
-
-  
 
 }
 div.absolute {
@@ -272,8 +268,6 @@ position: fixed;
 					<img src="<c:url value='resources/assets/img/logo.png' />" alt="navbar brand" class="navbar-brand">
 				</a>
 				
-				
-				
 			</div>
 <!-- <div style="width:100%;height:35%"> -->
 <%-- <img style="width:100%;height:100%" src="<c:url value='resources/assets/img/rfid3.jpg' />" /> --%>
@@ -317,7 +311,8 @@ position: fixed;
                 
 
 				<div class="form-action mb-3">
-				<input  type="button" class="btn btn-primary1 btn-rounded btn-login" onclick="Login()" value="Sign In">
+				
+				<input  type="submit" class="btn btn-primary1 btn-rounded btn-login"  value="Sign In">
 				
 				</div>
 				
@@ -333,7 +328,7 @@ position: fixed;
 		
 		</div>
 		<div class=" loginNmsDet" >
-<!-- 			<b>Cyient ROFC-RFID application</b> is with open APIs that facilitates the telecom organizations to manage their OFCs/cables using RFID tags and readers/writers. It is an unique solution build over the strong Java framework. The powerful blend of an advanced rules engine, SDK, and web service APIs facilitates a seemless integration and implementation. -->
+  			<b>Cyient Site Survey and recommendation application</b> is with open APIs that facilitates the telecom organizations to survey their cell sites/shelters using Andriod devices. It is a solution build over the strong Java framework. The powerful blend of an advanced rules engine, SDK, and web service APIs facilitates a seemless integration and implementation.
 		</div>
 		<div class="card-footer1">
 									

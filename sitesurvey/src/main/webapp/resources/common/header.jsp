@@ -12,10 +12,13 @@ var type;
 var currentip;
 $(document).ready(function() {	
 
-	userName = sessionStorage.getItem("username");
-	password = sessionStorage.getItem("password");
+	sessionStorage.clear();
+	//userName = sessionStorage.getItem("username");
+	userName = '<%=session.getAttribute("userName")%>';
+	//password = sessionStorage.getItem("password");
 	type = sessionStorage.getItem("role");
-	//alert(userName);
+	//alert("IN header"+password);
+	//alert("hellllloooo"+userr);
 	//getRoles();
 	
 	

@@ -2,9 +2,11 @@ package com.cyient.controller;
 
 
 import java.io.IOException;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -44,10 +47,8 @@ import com.fasterxml.classmate.Filter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-
-@WebFilter
 @Controller
-//@SessionAttributes("user")
+@SessionAttributes("user")
 public class SiteSurveyController {
 	private static final Logger logger = Logger
 			.getLogger(SiteSurveyController.class);
@@ -66,7 +67,6 @@ public class SiteSurveyController {
 	      return new User();
 	   }
 	
-	
 	@RequestMapping(value = "/")
 	public ModelAndView viewIndex(ModelAndView model) throws IOException {
 		User user = new User();
@@ -76,10 +76,15 @@ public class SiteSurveyController {
 	}
 	
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
+
     public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) throws SocketException {
+
+
 		System.out.println("Usernaem"+user.getUsername()+"Password"+user.getPassword()+"Role:"+user.getRole());
+
 		List<User> userList = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());        
-           if(userList.size()!=0)
+           if(userList.size()==0)
+
            {
                   return new ModelAndView("redirect:/");
            }
@@ -89,91 +94,28 @@ public class SiteSurveyController {
         	  session=request.getSession();
         	  session.setAttribute("userName",user.getUsername());
 			  session.setAttribute("password",user.getPassword());
-        	  session.setAttribute("userRole",user.getRole());
-        	  System.out.println(user.getUsername());
-        	  System.out.println(user.getName());
+        	  session.setAttribute(";",user.getRole());
+        	  System.out.println("user>>>>>>>>>>"+user.getUsername());
+        	  System.out.println("Name>>>>>>>>"+user.getName());
+
+        	  Enumeration e = NetworkInterface.getNetworkInterfaces();
+        	  while(e.hasMoreElements())
+        	  {
+        	      NetworkInterface n = (NetworkInterface) e.nextElement();
+        	      Enumeration ee = n.getInetAddresses();
+        	      while (ee.hasMoreElements())
+        	      {
+        	          InetAddress i = (InetAddress) ee.nextElement();
+        	          System.out.println(i.getHostAddress());
+        	      }
+        	  } 
         	  
-//        	  Enumeration e = NetworkInterface.getNetworkInterfaces();
-//        	  while(e.hasMoreElements())
-//        	  {
-//        	      NetworkInterface n = (NetworkInterface) e.nextElement();
-//        	      Enumeration ee = n.getInetAddresses();
-//        	      while (ee.hasMoreElements())
-//        	      {
-//        	          InetAddress i = (InetAddress) ee.nextElement();
-//        	          System.out.println("Length"+i.getHostAddress());
-//        	      }
-//        	  } 
-//      	         	   
 	              model.setViewName("homePage");
 	              return model;
            }
     }	
 	
-	/*@RequestMapping(value = "/validateUserAjax", method = RequestMethod.GET)
-	@ResponseBody
-    public String validateUserAjax(HttpServletRequest request) {
-		String username=request.getParameter("username");
-    	String password=request.getParameter("password");
-    	String role=request.getParameter("role");
-    	try
-    	{
-    		List<User> userList = surveyDAO.getAllUsersOnCriteria(username,password,role);	
-    		String userName=null,roleType=null;
-			for(User user:userList)
-    		{
-    			userName=user.getUsername();
-    			roleType=user.getRole();
-    		}
-	    	if(userName.equals(username) & roleType.equals(role))
-	    	{
-	    		
-	    		 Gson gsonBuilder = new GsonBuilder().create();
-	        	   String userJson = gsonBuilder.toJson(userList);
-		              return userJson.toString();	    	
-	    	}
-	    	else
-	    	{
-	    		return "failure";
-	    	}
-    	}
-    	catch(Exception e)
-    	{
-    		return "failure";
-    	}
-    }*/	
-	@RequestMapping(value = "/validateUserAjax", method = RequestMethod.GET)
-	@ResponseBody
-    public String validateUserAjax(HttpServletRequest request,HttpSession session) {
-		String username=request.getParameter("username");
-    	String password=request.getParameter("password");
-    	String role=request.getParameter("role");
-    	try
-    	{
-    		List<User> userList = surveyDAO.getAllUsersOnCriteria(username,password,role);	
-    		String userName=null,roleType=null;
-			for(User user:userList)
-    		{
-    			userName=user.getUsername();
-    			roleType=user.getRole();
-    		}
-	    	if(userName.equals(username) & roleType.equals(role))
-	    	{
-	    		
-	    		 Gson gsonBuilder = new GsonBuilder().create();
-	        	   String userJson = gsonBuilder.toJson(userList);
-		              return userJson.toString();	    	
-	    	}
-	    	else
-	    	{
-	    		return "failure";
-	    	}
-    	}
-    	catch(Exception e)
-    	{
-    		return "failure";
-    	}
-    }
+
 	
 	@RequestMapping(value = "/saveLoginInfo", method = RequestMethod.GET)
 	@ResponseBody
@@ -194,8 +136,18 @@ public class SiteSurveyController {
 	}
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public ModelAndView redirectHome(ModelAndView model) {
+	public ModelAndView redirectHome(ModelAndView model,@SessionAttribute("user")User user) {
+		
+		System.out.println("home user>>>>."+user.getUsername());
+		if(user.equals(null)){
+		//if(user.getUsername().isEmpty()){
+		
+			model.setViewName("index");
+		}
+		
+		else{
 		model.setViewName("homePage");
+		}
 		return model;
 	}
 
@@ -208,7 +160,7 @@ public class SiteSurveyController {
 		redirectAttributes.addFlashAttribute("status", status);
 		return new ModelAndView("redirect:/newUser");
 	}
-	
+
 	/*@RequestMapping(value = "/newTechnician", method = RequestMethod.GET)
 	public ModelAndView newTechnician(ModelAndView model) {
 		Technician technician = new Technician();
@@ -222,27 +174,13 @@ public class SiteSurveyController {
 	 public String logout(@ModelAttribute User user, HttpSession session,HttpServletRequest request,HttpServletResponse httpResponse) {
           	  session.removeAttribute("userName");
           	  request.getSession().invalidate();
+          	  request.getSession().removeAttribute("userName");
           	//httpResponse.setHeader("Cache-Control", "private,no-store,no-cache");
 
               return "redirect:/";
 	 }
 
-	/*public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        HttpServletResponse response = (HttpServletResponse) res;
-
-        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        response.setDateHeader("Expires", 0); // Proxies.
-
-        chain.doFilter(req, res);
-    }
-
-
-
-	public boolean include(Object arg0) {
-		// TODO Auto-generated method stub
-		return false;
-	}*/
+	
 	
 	
 }

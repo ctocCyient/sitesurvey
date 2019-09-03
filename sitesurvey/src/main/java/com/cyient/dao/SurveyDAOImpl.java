@@ -1,6 +1,14 @@
 package com.cyient.dao;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -14,9 +22,11 @@ import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
-import com.cyient.model.Track_Users;
-import com.cyient.model.User;
 
+import com.cyient.model.Track_Users;
+
+import com.cyient.model.User;
+import com.fasterxml.classmate.Filter;
 
 @Repository
 public class SurveyDAOImpl implements SurveyDAO {
@@ -32,6 +42,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 		
 		sessionFactory.getCurrentSession().saveOrUpdate(ticket);
 	}
+	
+
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsersOnCriteria(String username,String password,String type) {
@@ -239,5 +251,25 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public String saveTrackuser(Track_Users trackuser) {
 		sessionFactory.getCurrentSession().saveOrUpdate(trackuser);
 		return "Success";
+
 	}
+	
+	
+	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+    HttpServletResponse response = (HttpServletResponse) res;
+
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+    response.setDateHeader("Expires", 0); // Proxies.
+
+    chain.doFilter(req, res);
+}
+
+	public boolean include(Object arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	
 }
