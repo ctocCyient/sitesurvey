@@ -16,7 +16,7 @@ public class SiteSurveyAspect {
 		System.out.println(" site survey Aspect>>>>>>>");
 	}
 	
-	@Before("execution( * com.cyient.controller.SiteSurveyController.*(..))")         //point-cut expression
+	 /*@Before("execution( * com.cyient.controller.SiteSurveyController.*(..))")         //point-cut expression
     public void logBeforeV1(JoinPoint joinPoint)
     {
         System.out.println("RFIDAssetController.logBeforeUser() : " + joinPoint.getSignature().getName());
@@ -24,5 +24,5 @@ public class SiteSurveyAspect {
         Object[] args= joinPoint.getArgs();
         for(Object t:args)
         	System.out.println("args"+t);
-    }
+    }*/
 }

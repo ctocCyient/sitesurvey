@@ -84,7 +84,7 @@ public class SiteSurveyController {
 		System.out.println("Usernaem"+user.getUsername()+"Password"+user.getPassword()+"Role:"+user.getRole());
 
 		List<User> userList = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());        
-           if(userList.size()==0)
+          
 
            if(userList.size()!=0)
 
@@ -121,7 +121,7 @@ public class SiteSurveyController {
 	              model.setViewName("homePage");
 	              return model;
            }
-		return model;
+		
     }	
 	
 
