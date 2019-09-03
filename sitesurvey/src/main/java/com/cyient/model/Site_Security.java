@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import com.cyient.model.Site;
 
+
 @Entity
 @Table(name = "Site_Security")
 public class Site_Security implements Serializable {

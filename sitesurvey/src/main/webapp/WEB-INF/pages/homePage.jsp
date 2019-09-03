@@ -35,6 +35,9 @@
 			}
 		});
 	
+		
+		
+		
 	</script>
 	<script>
 	var name,role;
@@ -48,10 +51,41 @@
 	alert(role);
 	
 	
+		if(sessionStorage.getItem("username")==null)
+			{
+			window.location.href = "/sitesurvey/";
+			}
+		else
+			{
+			name=sessionStorage.getItem("username");
+			   role=sessionStorage.getItem("role");
+			}	
+
 		  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 		  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 	
 		
+		   
+		  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
+		  $("#managerSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
+		  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
+	  
+		  if(role=="SuperAdmin"){
+		  //	getAdminCount();
+			document.getElementById("open_div").click();	
+		  }
+		  else if(role=="Admin"){
+			 // getCount();
+				document.getElementById("open_div_admin").click();	
+	      }
+		  else if(role=="Manager"){
+			  	//getManagerCount();
+				document.getElementById("manager_div").click();	
+			}
+			else if(role=="FieldTechnician"){
+				 // getExecutiveTicketsCount();
+					document.getElementById("tech_div").click();	
+		    }
 		   
 	  });
 
@@ -222,6 +256,9 @@ color: #fff!important;
 		</div>
 		
 		<%} %>
+		
+		
+		
 		
 		
 		

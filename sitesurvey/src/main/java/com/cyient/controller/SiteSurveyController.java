@@ -67,6 +67,7 @@ public class SiteSurveyController {
 	      return new User();
 	   }
 	
+	
 	@RequestMapping(value = "/")
 	public ModelAndView viewIndex(ModelAndView model) throws IOException {
 		User user = new User();
@@ -85,6 +86,8 @@ public class SiteSurveyController {
 		List<User> userList = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());        
            if(userList.size()==0)
 
+           if(userList.size()!=0)
+
            {
                   return new ModelAndView("redirect:/");
            }
@@ -94,9 +97,14 @@ public class SiteSurveyController {
         	  session=request.getSession();
         	  session.setAttribute("userName",user.getUsername());
 			  session.setAttribute("password",user.getPassword());
+
         	  session.setAttribute(";",user.getRole());
         	  System.out.println("user>>>>>>>>>>"+user.getUsername());
         	  System.out.println("Name>>>>>>>>"+user.getName());
+
+        	  session.setAttribute("userRole",user.getRole());
+        	  System.out.println(user.getUsername());
+        	  System.out.println(user.getName());
 
         	  Enumeration e = NetworkInterface.getNetworkInterfaces();
         	  while(e.hasMoreElements())
@@ -113,6 +121,7 @@ public class SiteSurveyController {
 	              model.setViewName("homePage");
 	              return model;
            }
+		return model;
     }	
 	
 
