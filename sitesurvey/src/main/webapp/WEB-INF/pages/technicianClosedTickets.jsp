@@ -7,6 +7,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
 	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
@@ -64,9 +65,9 @@
 	                data:{"username":s},
 	                success:function(result) {
 	                	var jsonArr = $.parseJSON(result);
-	                	 $('#assignedTechTickets')[0].innerHTML=jsonArr.OpenTickets;
-		                  $('#closedTechTickets')[0].innerHTML=jsonArr.ClosedTickets;
-	                  
+	                	 $('#assignedTechTickets')[0].innerHTML=jsonArr.AssignedTickets;
+		                  $('#acceptedTechTickets')[0].innerHTML=jsonArr.AcceptedTickets;
+		                  $('#closedTechTickets')[0].innerHTML=jsonArr.ClosedTickets;            
 	                    
 	                }
 				});
@@ -212,7 +213,7 @@ color: #fff!important;
 								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianAssignedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
-											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#F98B88;border-radius: 5px">
 											<img src="<c:url value='resources/assets/img/open.svg' />" >
 											</div>
 										</div>
@@ -220,6 +221,25 @@ color: #fff!important;
 											<div class="numbers">
 												<p class="card-category">Assigned</p>
 												<h4 class="card-title" id="assignedTechTickets"></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round">
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/technicianAcceptedTickets'" style="cursor:pointer;">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center bubble-shadow-small"  style="background:#af91e1;border-radius: 5px">
+											<img src="<c:url value='resources/assets/img/open.svg' />" >
+											</div>
+										</div>
+										<div class="col col-stats ml-3 ml-sm-0">
+											<div class="numbers">
+												<p class="card-category">Accepted</p>
+												<h4 class="card-title" id="acceptedTechTickets"></h4>
 											</div>
 										</div>
 									</div>
@@ -257,8 +277,7 @@ color: #fff!important;
 								<div class="card-body">
 									<div class="table-responsive">
 										<table id="techClosedTickets" style="width:100%" class="display table table-striped table-hover" >
-											
-											
+
 										</table>
 									</div>
 								</div>

@@ -33,9 +33,6 @@ public interface SurveyDAO {
 	public void addSMPS(Site_SMPS smps);
 	
 	@Transactional
-	public void addTicket(Ticketing ticket);
-	
-	@Transactional
 	public List<Regions> getRegions();
 	
 	@Transactional
@@ -74,7 +71,7 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public void addTechnicianIntoUsers(User user);
-	
+
 	@Transactional
 	public List<Ticketing> openTicketsData();
 
@@ -103,6 +100,9 @@ public interface SurveyDAO {
 	public List<TechnicianTicketInfo> techAssignedTicketsData(String username);
 	
 	@Transactional
+	public List<TechnicianTicketInfo> techAcceptedTicketsData(String username);
+	
+	@Transactional
 	public List<TechnicianTicketInfo> techClosedTicketsData(String username);
 
 	@Transactional
@@ -119,5 +119,17 @@ public interface SurveyDAO {
 
 	@Transactional
 	public String saveTrackuser(Track_Users trackuser);
+
+	@Transactional
+	public void addTicket(Ticketing ticket);
+
+	 @Transactional
+	 public List<User> getRoles(String userName);
+	 
+	 @Transactional
+		public String saveTechStatus(String ticketId, String techStatus,String techId, String commentsData, String remarksData);
+
+	 @Transactional
+	public List<TechnicianTicketInfo> managerNotAcceptedTickets(String username);
 
 }

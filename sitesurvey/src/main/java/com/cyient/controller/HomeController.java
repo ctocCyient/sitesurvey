@@ -171,7 +171,6 @@ public class HomeController {
 			redirectAttributes.addFlashAttribute("status", status);
 			return new ModelAndView("redirect:/newTicket");
 		}
-	
 	                                                                                                                                                                                                                                                                                   
    @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
     @ResponseBody
@@ -243,6 +242,7 @@ public class HomeController {
     	return "Assigned";		
 	}
       
+
 	
 	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
 	public ModelAndView newUser(ModelAndView model) {

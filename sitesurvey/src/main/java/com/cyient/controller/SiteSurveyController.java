@@ -2,9 +2,11 @@ package com.cyient.controller;
 
 
 import java.io.IOException;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -50,10 +52,7 @@ public class SiteSurveyController {
 	@Autowired
 	private SurveyDAO surveyDAO;
 	
-	private Integer Session_counter = 0;
-	
-	
-	
+	private Integer Session_counter = 0;	
 	@RequestMapping(value = "/")
 	public ModelAndView viewIndex(ModelAndView model) throws IOException {
 		User user = new User();
@@ -63,10 +62,15 @@ public class SiteSurveyController {
 	}
 	
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
+
     public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) throws SocketException {
+
+
 		System.out.println("Usernaem"+user.getUsername()+"Password"+user.getPassword()+"Role:"+user.getRole());
+
 		List<User> userList = surveyDAO.getAllUsersOnCriteria(user.getUsername(),user.getPassword(),user.getRole());        
            if(userList.size()!=0)
+
            {
                   return new ModelAndView("redirect:/");
            }
@@ -79,19 +83,19 @@ public class SiteSurveyController {
         	  session.setAttribute("userRole",user.getRole());
         	  System.out.println(user.getUsername());
         	  System.out.println(user.getName());
+
+        	  Enumeration e = NetworkInterface.getNetworkInterfaces();
+        	  while(e.hasMoreElements())
+        	  {
+        	      NetworkInterface n = (NetworkInterface) e.nextElement();
+        	      Enumeration ee = n.getInetAddresses();
+        	      while (ee.hasMoreElements())
+        	      {
+        	          InetAddress i = (InetAddress) ee.nextElement();
+        	          System.out.println(i.getHostAddress());
+        	      }
+        	  } 
         	  
-//        	  Enumeration e = NetworkInterface.getNetworkInterfaces();
-//        	  while(e.hasMoreElements())
-//        	  {
-//        	      NetworkInterface n = (NetworkInterface) e.nextElement();
-//        	      Enumeration ee = n.getInetAddresses();
-//        	      while (ee.hasMoreElements())
-//        	      {
-//        	          InetAddress i = (InetAddress) ee.nextElement();
-//        	          System.out.println("Length"+i.getHostAddress());
-//        	      }
-//        	  } 
-//      	         	   
 	              model.setViewName("homePage");
 	              return model;
            }
@@ -163,7 +167,7 @@ public class SiteSurveyController {
 		redirectAttributes.addFlashAttribute("status", status);
 		return new ModelAndView("redirect:/newUser");
 	}
-	
+
 	/*@RequestMapping(value = "/newTechnician", method = RequestMethod.GET)
 	public ModelAndView newTechnician(ModelAndView model) {
 		Technician technician = new Technician();
@@ -171,8 +175,18 @@ public class SiteSurveyController {
 		model.setViewName("technicianReg");
 		return model;
 	}*/
-
-
+	
+	/*Added for fetching roles in header page */
+	 @RequestMapping(value= "getRoles", method = RequestMethod.GET)
+		@ResponseBody
+		public String getRoles(HttpServletRequest request) {
+		 String username=request.getParameter("userName");
+			List<User> user = surveyDAO.getRoles(username);
+			Gson gsonBuilder = new GsonBuilder().create();
+			String regionJSON = gsonBuilder.toJson(user);
+	 	   	return regionJSON;
+		}
+	 
 	@RequestMapping(value = "/logout")
 	 public String logout(@ModelAttribute User user, HttpSession session,HttpServletRequest request) {
           	  session.removeAttribute("userName");

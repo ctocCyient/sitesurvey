@@ -8,12 +8,11 @@
 
 </head>
 <body>
-
 <div class="sidebar"  >
 			
 			<div class="sidebar-background"></div>
 			<div class="sidebar-wrapper scrollbar-inner" >
-				<div class="sidebar-content" ">
+				<div class="sidebar-content">
 					<div class="user">
 						<div class="avatar-sm float-left mr-2">
 							<img src="<c:url value='resources/assets/img/profile.jpg' />" alt="..." class="avatar-img rounded-circle">
@@ -23,10 +22,6 @@
 							<a data-toggle="collapse"  aria-expanded="">
 								<span>
 									<span class="user-level1" id="result"></span>
-									<script>
-									document.getElementById("result").innerHTML	= sessionStorage.getItem("username");
-									//
-									</script>
 									<span class="user-level">Logged in as</span>
 									<span class="user-level">Manager</span>									
 								</span>
@@ -42,12 +37,10 @@
 							</a>
 						</li>
 						
-						
 						<li class="nav-item">
 								<a  href="techniciansList">&nbsp;&nbsp;
 								<span class="fas fa-users" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Technician List</span></a>
 						</li>
-						
 					</ul>
 				</div>
 			</div>
