@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.jboss.logging.Logger;
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -183,5 +184,26 @@ public class SiteSurveyController {
               return "redirect:/";
 	 }
 	
+	
+	@RequestMapping(value = "/fetchSiteInformation", method = RequestMethod.GET)
+	@ResponseBody
+	public String fetchsiteinformation(ModelAndView model,HttpServletRequest request){
+		
+		String ticketid=request.getParameter("ticketid");
+		String siteid=request.getParameter("siteid");
+		
+		JSONArray json=new JSONArray();
+		json.add(ticketid);
+		json.add(siteid);
+		
+		return json.toJSONString();
+	}
+	
+	
+	@RequestMapping(value = "/fetchtowerinstallation", method = RequestMethod.GET)
+	public ModelAndView fetchtowerinstallation(ModelAndView model) {
+		model.setViewName("towerInstallation");
+		return model;
+	}
 	
 }
