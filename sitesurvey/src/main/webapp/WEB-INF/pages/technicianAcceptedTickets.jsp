@@ -141,14 +141,25 @@ color: #fff!important;
 					language: {
 					  emptyTable: "No Data Available"
 					},						
-					//columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='View' />"}],	
+					columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' value='Start Survey' />"}],	
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
 						{title: "Site Id" },
 						{title: "Ticket Description" },
+						{title: "Action" },
 			        ]
 			    } );
+			 
+			 $('#technicianAcceptedTickets tbody').on('click', '[id*=surveyBtn]', function () {
+		            data1 =  table1.row($(this).parents('tr')).data();
+		            rowIndex = $(this).parent().index();			          
+		            ticketId=data1[0];	
+		            siteIds=data1[1];
+		          
+		           
+		          
+      	 		});
 			 
 		}
 			});

@@ -337,7 +337,7 @@ function getCount(){
 	</div>
 	</div>
 
-</div>
+
 <!--   Core JS Files   -->
 
 
