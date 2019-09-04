@@ -44,11 +44,13 @@
 			}
 		});
 	
+		
+		
+		
 	</script>
 	<script>
 	var name,role;
 	$(function(){
-
 		if(sessionStorage.getItem("username")==null)
 			{
 			window.location.href = "/sitesurvey/";
@@ -58,12 +60,12 @@
 			name=sessionStorage.getItem("username");
 			   role=sessionStorage.getItem("role");
 			}	
+
 		  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 		  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 		  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
 		  $("#managerSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
 		  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
-
 	  
 		  if(role=="SuperAdmin"){
 		  //	getAdminCount();
@@ -71,6 +73,7 @@
 		  }
 		  else if(role=="Admin"){
 			 // getCount();
+			// alert("INADJD");
 				document.getElementById("open_div_admin").click();	
 	      }
 		  else if(role=="Manager"){
@@ -300,7 +303,7 @@ color: #fff!important;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div_admin" onclick="location.href='${pageContext.request.contextPath}/adminOpenTickets'" style="background-color:#00B1BF;cursor:pointer;">
+								<div class="card-body" id="open_div_admin" onclick="location.href='${pageContext.request.contextPath}/openTickets'" style="background-color:#00B1BF;cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -547,6 +550,9 @@ color: #fff!important;
 		
 		
 		<script>}</script>
+		
+		
+		
 		
 	</div>
 

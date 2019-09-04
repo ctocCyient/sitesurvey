@@ -18,6 +18,7 @@
 	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css' >
 	<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
 
+
 	<!-- Fonts and icons -->
 	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 	<script>
@@ -29,17 +30,97 @@
 			}
 		});
 	</script>
-	
-	<script>
+		<script>
+	var currentip;
+	var username,role,password;
  	$(document).ready(function(){	
 		 $("select option[value='Select']").attr('disabled','disabled');
+		// alert("vfgvrfe");
+		$.getJSON('https://api.ipify.org?format=json', function(data){
+    console.log(data);
+});
+
+		 function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+			    //compatibility for firefox and chrome
+			    var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+			    var pc = new myPeerConnection({
+			        iceServers: []
+			    }),
+			    noop = function() {},
+			    localIPs = {},
+			    ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+			    key;
+
+			    function iterateIP(ip) {
+			        if (!localIPs[ip]) onNewIP(ip);
+			        localIPs[ip] = true;
+			    }
+
+			     //create a bogus data channel
+			    pc.createDataChannel("");
+
+			    // create offer and set local description
+			    pc.createOffer().then(function(sdp) {
+			        sdp.sdp.split('\n').forEach(function(line) {
+			            if (line.indexOf('candidate') < 0) return;
+			            line.match(ipRegex).forEach(iterateIP);
+			        });
+
+			        pc.setLocalDescription(sdp, noop, noop);
+			    }).catch(function(reason) {
+			        // An error occurred, so handle the failure to connect
+			    });
+
+			    //listen for candidate events
+			    pc.onicecandidate = function(ice) {
+			        if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+			        ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+			    };
+			}
+
+			// Usage
+			getUserIP(function(ip){
+			   //alert("Got IP! :" + ip);
+			   currentip=ip;
+			    
+			    
+			});
  	});
 
+ 	
+ 	function trackUsers()
+ 	{
+ 		//var currentip=ip;
+	    var uname=name;
+	    var today = new Date();
+	    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+	    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+	    var dateTime = date+' '+time;
+	    //alert(dateTime);
+	    //alert("user"+uname);
+	    //alert("IP"+currentip);
+	    $.ajax({
+	         type:"get",
+	         url:"saveLoginInfo",
+	         contentType: 'application/json',
+	         datatype : "json",
+	         data:{"UserName":username,"Time":dateTime,"CurrentIP":currentip,"Type":"Login"},
+	         success:function(data1) {
+	         	
+	         	window.location.href = "/sitesurvey/home";
+	         },
+	         error:function()
+	         {
+	         	console.log("Error");
+	         }
+	 	});
+ 	}
+ 	
 	function Login(){
 
-		var username=$("#username").val();
-		var role=$("#role").val();
-		var password=$("#password").val();
+		username=$("#username").val();
+		role=$("#role").val();
+		password=$("#password").val();
 		$.ajax({
 	        type:"get",
 	        url:"validateUserAjax",
@@ -47,14 +128,19 @@
 	        datatype : "json",
 	        data:{"username":username,"role":role,"password":password},
 	        success:function(data1) {
-	        	if(data1=="success")
+	        	
+	        	if(data1!="failure")
 	        	{
+	        		usersList = JSON.parse(data1);
+	        		console.log("USer"+usersList);
 	        		sessionStorage.setItem("username", username);
 	        		sessionStorage.setItem("password",password);
-	        		sessionStorage.setItem("role",role);	      
-	        		window.location.href = "/sitesurvey/home";
+	        		sessionStorage.setItem("role",role);	 
+	        		sessionStorage.setItem("region",usersList[0].region);	 
+	        		sessionStorage.setItem("city",usersList[0].city);	 
+	        		trackUsers();
 	        	}
-	        	else
+	        	else if(data1=="failure")
 	        	{
 	        		alert("Failed to login");	
 	        		sessionStorage.clear();
@@ -68,6 +154,7 @@
 	}
 
 
+		
 
 	
 	</script>
@@ -84,11 +171,9 @@ text-align:center
 .bg
 {
 
-background-image:url("<c:url value='resources/assets/img/rfid3.jpg' />");
+background-image:url("<c:url value='resources/assets/img/sitesurvey_img.png' />");
 background-repeat: no-repeat;
 background-size: 100% 450px;
-
-  
 
 }
 div.absolute {
@@ -181,8 +266,6 @@ position: fixed;
 					<img src="<c:url value='resources/assets/img/logo.png' />" alt="navbar brand" class="navbar-brand">
 				</a>
 				
-				
-				
 			</div>
 <!-- <div style="width:100%;height:35%"> -->
 <%-- <img style="width:100%;height:100%" src="<c:url value='resources/assets/img/rfid3.jpg' />" /> --%>
@@ -242,7 +325,7 @@ position: fixed;
 		
 		</div>
 		<div class=" loginNmsDet" >
-<!-- 			<b>Cyient ROFC-RFID application</b> is with open APIs that facilitates the telecom organizations to manage their OFCs/cables using RFID tags and readers/writers. It is an unique solution build over the strong Java framework. The powerful blend of an advanced rules engine, SDK, and web service APIs facilitates a seemless integration and implementation. -->
+  			<b>Cyient Site Survey and recommendation application</b> is with open APIs that facilitates the telecom organizations to survey their cell sites/shelters using Andriod devices. It is a solution build over the strong Java framework. The powerful blend of an advanced rules engine, SDK, and web service APIs facilitates a seemless integration and implementation.
 		</div>
 		<div class="card-footer1">
 									

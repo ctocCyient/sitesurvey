@@ -14,6 +14,9 @@ import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
+
+import com.cyient.model.Track_Users;
+
 import com.cyient.model.User;
 
 
@@ -32,13 +35,16 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(ticket);
 	}
 	
-	public User getAllUsersOnCriteria(String username,String password,String type) {
+
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllUsersOnCriteria(String username,String password,String type) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
         c.add(Restrictions.eq("username",username));
         c.add(Restrictions.eq("password",password));
 		c.add(Restrictions.eq("role",type));
 		System.out.println(c.list());
-        return (User)c.uniqueResult();
+        return c.list();
 	}
 
 	public void addSite(Site site) {
@@ -187,13 +193,18 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TechnicianTicketInfo> managerOpenTickets(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='InProgress'").list();	
+	public List<TechnicianTicketInfo> managerOpenTickets(String username,String region,String city) {
+		return sessionFactory.getCurrentSession().createQuery("from Ticketing where status='Open' or status='Not Accepted' and region='"+region+"' and city ='"+city+"'").list();	
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> managerClosedTickets(String username) {
 		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='Closed'").list();	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> managerNotAcceptedTickets(String username) {
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='Not Accepted'").list();	
 	}
 
 	@SuppressWarnings("unchecked")
@@ -204,6 +215,11 @@ public class SurveyDAOImpl implements SurveyDAO {
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techAssignedTicketsData(String username) {
 		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='InProgress' and technicianId='"+username+"'").list();
+	}	
+
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> techAcceptedTicketsData(String username) {
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='Accepted' and technicianId='"+username+"'").list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -232,5 +248,38 @@ public class SurveyDAOImpl implements SurveyDAO {
 	@SuppressWarnings("unchecked")
 	public List<Ticketing> getTicketsData(String ticketNum) {
 		return sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum='"+ticketNum+"'").list();
+	}
+
+	public String saveTrackuser(Track_Users trackuser) {
+		sessionFactory.getCurrentSession().saveOrUpdate(trackuser);
+		return "Success";
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getRoles(String userName) {
+		return sessionFactory.getCurrentSession().createQuery("select role from User where username='"+userName+"'").list();
+	}
+	
+	public String saveTechStatus(String ticketId, String techStatus,String techId,String commentsData,String remarksData) {
+		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
+		 Ticketing ticketing = (Ticketing)q1.list().get(0);
+		 
+		 ticketing.setStatus(techStatus);
+		 ticketing.setComments(commentsData);
+		 ticketing.setRemarks(remarksData);
+	
+		 sessionFactory.getCurrentSession().update(ticketing);
+		 
+		 Query q2 = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where ticketNum ='"+ticketId+"' and technicianId='"+techId+"'");
+		 TechnicianTicketInfo technicianTicketInfo = (TechnicianTicketInfo)q2.list().get(0);
+		 
+		 technicianTicketInfo.setStatus(techStatus);
+		 technicianTicketInfo.setComments(commentsData);
+		 technicianTicketInfo.setRemarks(remarksData);
+	
+		 sessionFactory.getCurrentSession().update(technicianTicketInfo);
+		
+		return techStatus;
 	}
 }

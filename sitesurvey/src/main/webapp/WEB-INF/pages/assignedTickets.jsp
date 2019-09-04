@@ -6,10 +6,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <title>Site Survey</title>
 <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no'
 	name='viewport' />
+
 
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />"
 	type="image/x-icon" />
@@ -105,7 +107,6 @@
 		});
 	}
 
-	
 
 		var dataSet=[];
 		 var ticketId;
@@ -123,6 +124,7 @@
                     for(var i=0;i<assignTicketsList.length;i++)
          		   {
                     	dataSet.push([assignTicketsList[i].ticketNum,assignTicketsList[i].siteid,assignTicketsList[i].technicianName,assignTicketsList[i].status]);
+
          			   
          		   }
                    
@@ -143,6 +145,7 @@
 				}
 			});
 		}		
+
 		
 		
 		function getCount() {
@@ -189,6 +192,7 @@
 </style>
 </head>
 <body>
+
 	<script>
 		if (sessionStorage.getItem("username") == null) {
 			//window.location.href = "/sitesurvey/";
@@ -199,7 +203,6 @@
 			role = sessionStorage.getItem("role");
 		}
 	</script>
-
 
 	<div class="wrapper">
 		<!--
@@ -234,12 +237,15 @@
 			<div id="navbar"></div>
 			<!-- End Navbar -->
 		</div>
+
 		<!-- Sidebar -->
+
 		<script>
 			if (role == "SuperAdmin") {
 				document.write('<div id="superAdminSidebar"></div>');
 			}
 		</script>
+
 
 
 <!-- Sidebar -->
@@ -260,13 +266,12 @@
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-
-
+							<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/openTickets'"	style="cursor: pointer;">
 								<div class="row align-items-center">
 									<div class="col-icon">
-										<div class="icon-big text-center bubble-shadow-small"
-											style="background: #f3545d; border-radius: 5px">
+										<div class="icon-big text-center bubble-shadow-small" style="background: #f3545d; border-radius: 5px">
 											<img src="<c:url value='resources/assets/img/open.svg' />">
+
 										</div>
 									</div>
 									<div class="col col-stats ml-3 ml-sm-0">
@@ -277,13 +282,11 @@
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
+							</div>
+						</div>					
 					<div class="col-sm-6 col-md-3">
 						<div class="card card-stats card-round">
-							<div class="card-body"
-								onclick="location.href='${pageContext.request.contextPath}/assignedTickets'"
-								style="background-color: #00B1BF; border-radius: 10px; cursor: pointer;">
+							<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/assignedTickets'"	style="background-color: #00B1BF; border-radius: 10px; cursor: pointer;">
 								<div class="row align-items-center">
 									<div class="col-icon">
 										<div class="icon-big text-center bubble-shadow-small"
@@ -296,6 +299,7 @@
 											<p class="card-category" style="color: #ffffff;">Assigned</p>
 											<h4 class="card-title" style="color: #ffffff;"
 												id="assignedTicketCount"></h4>
+
 										</div>
 									</div>
 								</div>
@@ -369,7 +373,6 @@
 			</div>
 
 		</div>
-	</div>
 	</div>
 	</div>
 

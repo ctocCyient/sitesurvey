@@ -16,7 +16,10 @@
    	{
 		   url = "/sitesurvey/";
 		  $( location ).attr("href", url);
-   	}	
+   	}	 else {
+		s = sessionStorage.getItem("username");
+		role = sessionStorage.getItem("role");
+	}
 	</script>
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/js/validations.js' />"></script>
@@ -53,6 +56,7 @@ color: #fff!important;
 
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
 			  getCount();
 			 tableData();
 			 
@@ -156,6 +160,7 @@ color: #fff!important;
 
 </head>
 <body>
+
 	<div class="wrapper"  >
 		<!--
 			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
@@ -191,10 +196,19 @@ color: #fff!important;
 			<!-- End Navbar -->
 		</div>
 
-		<!-- Sidebar -->
-<div id="superAdminSidebar">
-</div>
-		<!-- End Sidebar -->
+	<script>
+			if (role == "SuperAdmin") {
+				document.write('<div id="superAdminSidebar"></div>');
+			}
+		</script>
+
+
+<!-- Sidebar -->
+		<script type="text/javascript">
+			if (role == "Admin") {
+		 document.write('<div id="adminSidebar"></div>');				
+			}
+		</script>
 
 		<div class="main-panel" >
 			<div class="content">

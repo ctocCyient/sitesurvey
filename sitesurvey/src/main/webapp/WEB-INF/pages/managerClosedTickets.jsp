@@ -17,7 +17,12 @@
    	{
 		   url = "/sitesurvey/";
 		  $( location ).attr("href", url);
-   	}	
+   	}	else {
+		s = sessionStorage.getItem("username");
+		role = sessionStorage.getItem("role");
+		userRegion = sessionStorage.getItem("region");
+		userCity = sessionStorage.getItem("city");
+	}
 	</script>	
 	
 	
@@ -83,7 +88,6 @@ max-width:100%;
 	</script>
 	
 	<script >
-	var s='<%=session.getAttribute("userName").toString()%>';
 	
 		$(document).ready(function() {
 
@@ -104,11 +108,12 @@ max-width:100%;
 	                url:"getManagerTicketsCount",
 	                contentType: 'application/json',
 	                datatype : "json",
-	                data:{"username":s},
+	                data:{"username":s,"region":userRegion,"city":userCity},
 	                success:function(result) {
 	                	var jsonArr = $.parseJSON(result);
-	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets;    
-	                	$('#managerClosedTickets')[0].innerHTML=jsonArr.ClosedTickets;    
+	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets;     
+	                	$('#managerClosedTickets')[0].innerHTML=jsonArr.ClosedTickets;     
+	                	$('#managerNotAcceptedTickets')[0].innerHTML=jsonArr.NotAcceptedTickets;     
 	                    
 	                }
 				});
@@ -218,7 +223,7 @@ max-width:100%;
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
-								<div class="card-body"  onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="cursor:pointer;">
+								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="cursor:pointer;">
 									<div class="row align-items-center" >
 										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -227,8 +232,8 @@ max-width:100%;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category">Open</p>
-												<h4 class="card-title" id="managerOpenTickets"></h4>
+												<p class="card-category" >Open</p>
+												<h4 class="card-title" id="managerOpenTickets" ></h4>
 											</div>
 										</div>
 									</div>
@@ -246,8 +251,27 @@ max-width:100%;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category" style="color:#ffffff;">Closed</p>
-												<h4 class="card-title" id="managerClosedTickets" style="color:#ffffff;"></h4>
+												<p class="card-category"  style="color:#ffffff;">Closed</p>
+												<h4 class="card-title" id="managerClosedTickets"  style="color:#ffffff;"></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerNotAcceptedTickets'" style="cursor:pointer;">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
+											<img src="<c:url value='resources/assets/img/closed.svg' />" >
+											</div>
+										</div>
+										<div class="col col-stats ml-3 ml-sm-0">
+											<div class="numbers">
+												<p class="card-category">Not Accepted</p>
+												<h4 class="card-title" id="managerNotAcceptedTickets"></h4>
 											</div>
 										</div>
 									</div>

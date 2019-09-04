@@ -3,22 +3,18 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>Site Survey</title>
+	<title>RFID</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
-			<script type="text/javascript">
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		   url = "/sitesurvey/";
-		  $( location ).attr("href", url);
-   	}	
-	</script>		<script src="<c:url value='resources/js/validations.js' />"></script>
+	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
+	<script src="<c:url value='resources/js/validations.js' />"></script>
 	
 	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">
 	
@@ -26,7 +22,19 @@
 
 	<!-- Fonts and icons -->
 	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
-		
+					<script type="text/javascript">
+	   if(sessionStorage.getItem("username")==null)
+   	{
+		   url = "/sitesurvey/";
+		  $( location ).attr("href", url);
+   	}	
+	   else {
+			name = sessionStorage.getItem("username");
+			role = sessionStorage.getItem("role");
+			userRegion = sessionStorage.getItem("region");
+			userCity = sessionStorage.getItem("city");
+		}
+	</script>
 		<style type="text/css">
 #openModal {
 	text-align:center;
@@ -63,6 +71,10 @@
 {
 color: #fff!important;
 }
+.totalTickets
+{
+max-width:100%;
+}
 </style>
 	<script>
 		WebFont.load({
@@ -75,46 +87,58 @@ color: #fff!important;
 	</script>
 	
 	<script >
+	var s;
+	
 		$(document).ready(function() {
 
-			if(sessionStorage.getItem("username")=="SuperAdmin")
-			{
-			window.location.href = "/sitesurvey/openTickets";
-			}
-		if(sessionStorage.getItem("username")=="Admin")
-		{
-		window.location.href = "/sitesurvey/adminOpenTickets";
-		}	
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-			  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
-			  getCount();
-			  tableData();	
-			 
+			  $("#managerSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
+			 getManagerCount();
+			  tableData();			
 		
 		});	
 	
 		var dataSet=[];
 		 var ticketId;
+		 
+		 function getManagerCount(){
+			  s=name;
+
+				$.ajax({
+	                type:"get",
+	                url:"getManagerTicketsCount",
+	                contentType: 'application/json',
+	                datatype : "json",
+	                data:{"username":s},
+	                success:function(result) {
+	                	var jsonArr = $.parseJSON(result);
+	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets;     
+	                	$('#managerClosedTickets')[0].innerHTML=jsonArr.ClosedTickets;     
+	                	$('#managerNotAcceptedTickets')[0].innerHTML=jsonArr.NotAcceptedTickets;     
+	                    
+	                }
+				});
+			}
+		 
 		
 		function tableData()
-		{			
+		{					
 			$.ajax({
                 type:"get",
-                url:"getTotalTickets",
+                url:"getManagerNotAcceptedTickets",
                 contentType: 'application/json',
                 datatype : "json",
+                data:{"username":s},
                 success:function(data) {
-                    totalTicketsList = JSON.parse(data);
+                   var notAcceptedTicketsList = JSON.parse(data);
 					
-                    for(var i=0;i<totalTicketsList.length;i++)
+                    for(var i=0;i<notAcceptedTicketsList.length;i++)
          		   {
-                    	dataSet.push([totalTicketsList[i].ticketNum,totalTicketsList[i].siteid,totalTicketsList[i].status]);
+                    	dataSet.push([notAcceptedTicketsList[i].ticketNum,notAcceptedTicketsList[i].siteid,notAcceptedTicketsList[i].technicianName,notAcceptedTicketsList[i].comments]);
          			   
          		   }
-                   
                     
-			 var table1=$('#totalTickets').DataTable({
+			 var table1=$('#managerNotAcceptedTable').DataTable({
 					destroy:true,
 					language: {
 					  emptyTable: "No Data Available"
@@ -123,34 +147,14 @@ color: #fff!important;
 			        columns: [
 						{title: "Ticket Id" },
 						{title: "Site Id" },
-						{title: "Status" },	
+						{title: "Not Accepted By" },
+						{title: "Comments"}
 			        ]
-			    } );
-				
-
+			    });
 		}
 			});
 		}
 		
-function getCount(){
-			
-			$.ajax({
-		        type:"get",
-		        url:"ticketsCount",
-		        contentType: 'application/json',
-		        datatype : "json",
-		        success:function(result) {
-		        	var jsonArr = $.parseJSON(result);
-		        	$('#openTicketCount')[0].innerHTML=jsonArr.OpenTickets;
-		            $('#assignedTicketCount')[0].innerHTML=jsonArr.AssignedTickets;
-	               $('#historyTicketCount')[0].innerHTML=jsonArr.HistoryTickets;
-	               $('#totalTicketCount')[0].innerHTML=jsonArr.TotalTickets;
-		            
-		        }
-			});
-		}
-	
-	
 		
 	</script>
 
@@ -172,22 +176,6 @@ function getCount(){
 </head>
 <body>
 	<div class="wrapper">
-	    <script>
-    if(sessionStorage.getItem("username")==null)
-    	{
-		//window.location.href = "/sitesurvey/";
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-    	}
-    	else
-		{
-		s=sessionStorage.getItem("username");
-		role=sessionStorage.getItem("role");
-		}
-    
-  
-    </script> 
-	 
 		<!--
 			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
 		-->
@@ -218,38 +206,34 @@ function getCount(){
 			</div>
 			<!-- End Navbar -->
 		</div>
+
 		<!-- Sidebar -->
-		<script>
-			if (role == "SuperAdmin") {
-				document.write('<div id="superAdminSidebar"></div>');
-			}
-		</script>
-<!-- Sidebar -->
-		<script type="text/javascript">
-			if (role == "Admin") {
-		 document.write('<div id="adminSidebar"></div>');				
-			}
-		</script>
+<div id="managerSidebar">
+</div>
+		<!-- End Sidebar -->
+
 		<div class="main-panel">
 			<div class="content">
 				<div class="page-inner">
-				<div class="page-header">
+					<div class="page-header">
 						<h4 class="page-title">Dashboard</h4>						
 					</div>
+					
 					<div class="row">
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">	
-							<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/openTickets'"	style="cursor: pointer;">	
-									<div class="row align-items-center">
-										<div class="col-icon">
+						
+					<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round" >
+								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="cursor:pointer;">
+									<div class="row align-items-center" >
+										<div class="col-icon" >
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
 											<img src="<c:url value='resources/assets/img/open.svg' />" >
 											</div>
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category" >Open</p>
-												<h4 class="card-title" id="openTicketCount" ></h4>
+												<p class="card-category">Open</p>
+												<h4 class="card-title" id="managerOpenTickets"></h4>
 											</div>
 										</div>
 									</div>
@@ -258,65 +242,48 @@ function getCount(){
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/assignedTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerClosedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#F98B88;border-radius: 5px">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
 											<img src="<c:url value='resources/assets/img/closed.svg' />" >
 											</div>
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category" >Assigned</p>
-												<h4 class="card-title" id="assignedTicketCount" ></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>						
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/historyTickets'" style="cursor:pointer;">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px;">
-											<img src="<c:url value='resources/assets/img/history.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category" >History</p>
-												<h4 class="card-title"  id="historyTicketCount" ></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>						
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/totalTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
-
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px;">
-											<img src="<c:url value='resources/assets/img/closed.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category" style="color:#ffffff;">Total</p>
-												<h4 class="card-title" style="color:#ffffff;" id="totalTicketCount" ></h4>
+												<p class="card-category">Closed</p>
+												<h4 class="card-title" id="managerClosedTickets"></h4>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+						<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerNotAcceptedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
+											<img src="<c:url value='resources/assets/img/closed.svg' />" >
+											</div>
+										</div>
+										<div class="col col-stats ml-3 ml-sm-0">
+											<div class="numbers">
+												<p class="card-category"  style="color:#ffffff;">Not Accepted</p>
+												<h4 class="card-title" id="managerNotAcceptedTickets"  style="color:#ffffff;"></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					
-						<div class="row">
+						
+					
+					</div>
+					<div class="row">
+
 							<div class="col-md-12">
 							<div class="card">
 								<div class="card-header">
@@ -324,19 +291,20 @@ function getCount(){
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">
-										<table id="totalTickets" style="width:100%" class="display table table-striped table-hover" >
+										<table id="managerNotAcceptedTable" style="width:100%" role="row" class="display table table-striped table-hover"   >
+											
 										</table>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-							
+	
+			</div>
+			
 		</div>
-		</div>
+			
 	</div>
 	</div>
-
 </div>
 <!--   Core JS Files   -->
 

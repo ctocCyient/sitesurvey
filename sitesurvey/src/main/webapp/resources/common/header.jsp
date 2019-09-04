@@ -3,20 +3,97 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
-<head >
+
 <script>
 var userName;
 var pasword;
 var type;
+var currentip;
 $(document).ready(function() {	
 
 	userName = sessionStorage.getItem("username");
 	password = sessionStorage.getItem("password");
 	type = sessionStorage.getItem("role");
 	//alert(userName);
-	//getRoles();
+	getRoles();
+	 function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+		    //compatibility for firefox and chrome
+		    var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+		    var pc = new myPeerConnection({
+		        iceServers: []
+		    }),
+		    noop = function() {},
+		    localIPs = {},
+		    ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+		    key;
+
+		    function iterateIP(ip) {
+		        if (!localIPs[ip]) onNewIP(ip);
+		        localIPs[ip] = true;
+		    }
+
+		     //create a bogus data channel
+		    pc.createDataChannel("");
+
+		    // create offer and set local description
+		    pc.createOffer().then(function(sdp) {
+		        sdp.sdp.split('\n').forEach(function(line) {
+		            if (line.indexOf('candidate') < 0) return;
+		            line.match(ipRegex).forEach(iterateIP);
+		        });
+
+		        pc.setLocalDescription(sdp, noop, noop);
+		    }).catch(function(reason) {
+		        // An error occurred, so handle the failure to connect
+		    });
+
+		    //listen for candidate events
+		    pc.onicecandidate = function(ice) {
+		        if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+		        ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+		    };
+		}
+
+		// Usage
+		getUserIP(function(ip){
+		   //alert("Got IP! :" + ip);
+		   currentip=ip;
+		    
+		    
+		});
 });
+
+
+function trackUsers()
+{
+	//var currentip=ip;
+ var uname=name;
+ var today = new Date();
+ var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+ var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+ var dateTime = date+' '+time;
+ //alert(dateTime);
+ //alert("user"+uname);
+ //alert("IP"+currentip);
+ $.ajax({
+      type:"get",
+      url:"saveLoginInfo",
+      contentType: 'application/json',
+      datatype : "json",
+      data:{"UserName":userName,"Time":dateTime,"CurrentIP":currentip,"Type":"Login"},
+      success:function(data1) {
+      	
+      	window.location.href = "/sitesurvey/home";
+      },
+      error:function()
+      {
+      	console.log("Error");
+      }
+	});
+}
+
 
 function getRoles()
 { 
@@ -52,45 +129,80 @@ function populateRolesDropdown(data,id)
    	 	 catOptions += "<option>" + data[i] + "</option>";
  		}
  		document.getElementById(id).innerHTML = catOptions;
- 		
- 		console.log('type'+type);
- 		if(type=='FeildExecutive')
-			{
-				type="Field Technician";
-			}
+ 	
  		$("#role").val(type);
  		
 }
+var usersList=[];
 function loadDashboard(value){
 	
-		 	var selectedRegion=value;
-		 	
-		 	if(value=='Field Technician')
-			{
-		 		value="FeildExecutive";
-			}
-		 	$("#role").val(value);
+		 	var selectedRole=value;
 		 	
 		 	$.ajax({
 		         type:"get",
-		         url:"validateSelectUser",
+		         url:"validateUserAjax",
 		         contentType: 'application/json',
 		         datatype : "json",
-		         data:{"role":value,"userName":userName,"password":password},
+		         data:{"role":value,"username":userName,"password":password},
 		         success:function(data1) {
-		        	 if(data1=="success"){
-		        	window.location.href="/RFIDAssetTracking/home";
-		        	 }
-		         },
-		         error:function()
-		         {
-		         	console.log("Error");
-		         }
+			        	
+			        	if(data1!="failure")
+			        	{
+			        		usersList = JSON.parse(data1);
+			        		console.log("USer"+usersList);
+			        		sessionStorage.setItem("username", userName);
+			        		sessionStorage.setItem("password",password);
+			        		sessionStorage.setItem("role",selectedRole);	 
+			        		sessionStorage.setItem("region",usersList[0].region);	 
+			        		sessionStorage.setItem("city",usersList[0].city);	 
+			        		trackUsers();
+			        	}
+			        	else if(data1=="failure")
+			        	{
+			        		alert("Failed to login");	
+			        		sessionStorage.clear();
+			        	}
+			        },
+			        error:function()
+			        {
+			        	console.log("Error");
+			        }
 		 	});
 		 
 }
 
+function trackUsersLogout()
+	{
+		//var currentip=ip;
+    var uname=name;
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+    //alert(dateTime);
+    
+    $.ajax({
+         type:"get",
+         url:"saveLoginInfo",
+         contentType: 'application/json',
+         datatype : "json",
+         data:{"UserName":uname,"Time":dateTime,"CurrentIP":currentip,"Type":"Logout"},
+         success:function(data1) {
+         	
+         	window.location.href = "/sitesurvey/";
+         },
+         error:function()
+         {
+         	console.log("Error");
+         }
+ 	});
+	}
+	
+	
+	
+	
 function session_out(){
+	trackUsersLogout();
 	sessionStorage.clear();
 }
 
@@ -125,9 +237,9 @@ function session_out(){
 					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
 						
 						<li class="nav-item dropdown hidden-caret">
-<!-- 						<span> -->
-<!-- 								<select style='font-size:12.5px;' id="role"  name="role" class="sample form-control input-border" onchange="loadDashboard(this.value);" ></select> -->
-<!-- 								</span> -->
+						<span>
+								<select style='font-size:12.5px;' id="role"  name="role" class="sample form-control input-border" onchange="loadDashboard(this.value);" ></select>
+								</span>
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 								<div class="avatar-sm1">								
 									<img src="<c:url value='resources/assets/img/profile.jpg' />"  alt="..." class="avatar-img rounded-circle">
@@ -142,10 +254,10 @@ function session_out(){
 										<h4 id="demo"></h4>
 											
 
-<script>
-document.getElementById("demo").innerHTML = sessionStorage.getItem("username");
-
-</script>
+											<script>
+											document.getElementById("demo").innerHTML = sessionStorage.getItem("username");
+											
+											</script>
 <!-- 											<p class="text-muted">Hello</p> -->
 <!-- 												<a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a> -->
 										</div>

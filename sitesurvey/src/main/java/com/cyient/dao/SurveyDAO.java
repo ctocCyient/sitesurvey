@@ -9,6 +9,7 @@ import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
+import com.cyient.model.Track_Users;
 import com.cyient.model.User;
 
 
@@ -18,13 +19,10 @@ public interface SurveyDAO {
 	public void addUser(User user);
 	
 	@Transactional
-	public User getAllUsersOnCriteria(String username,String password,String type);
+	public List<User> getAllUsersOnCriteria(String username,String password,String type);
 	
 	@Transactional
 	public void addSite(Site site);
-	
-	@Transactional
-	public void addTicket(Ticketing ticket);
 	
 	@Transactional
 	public List<Regions> getRegions();
@@ -65,7 +63,7 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public void addTechnicianIntoUsers(User user);
-	
+
 	@Transactional
 	public List<Ticketing> openTicketsData();
 
@@ -82,7 +80,7 @@ public interface SurveyDAO {
 	public List<Technician> getUnassignedTechniciansData(String region, String city);
 
 	@Transactional
-	public List<TechnicianTicketInfo> managerOpenTickets(String username);
+	public List<TechnicianTicketInfo> managerOpenTickets(String username,String region,String city);
 	
 	@Transactional
 	public List<TechnicianTicketInfo> managerClosedTickets(String username);
@@ -92,6 +90,9 @@ public interface SurveyDAO {
 
 	@Transactional
 	public List<TechnicianTicketInfo> techAssignedTicketsData(String username);
+	
+	@Transactional
+	public List<TechnicianTicketInfo> techAcceptedTicketsData(String username);
 	
 	@Transactional
 	public List<TechnicianTicketInfo> techClosedTicketsData(String username);
@@ -107,5 +108,20 @@ public interface SurveyDAO {
 
 	@Transactional
 	public List<Ticketing> getTicketsData(String ticketNum);
+
+	@Transactional
+	public String saveTrackuser(Track_Users trackuser);
+
+	@Transactional
+	public void addTicket(Ticketing ticket);
+
+	 @Transactional
+	 public List<User> getRoles(String userName);
+	 
+	 @Transactional
+		public String saveTechStatus(String ticketId, String techStatus,String techId, String commentsData, String remarksData);
+
+	 @Transactional
+	public List<TechnicianTicketInfo> managerNotAcceptedTickets(String username);
 
 }

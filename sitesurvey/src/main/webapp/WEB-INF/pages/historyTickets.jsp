@@ -39,6 +39,7 @@
 			}
 		});
 		$(document).ready(function() {
+
 			if(sessionStorage.getItem("username")=="SuperAdmin")
 			{
 			window.location.href = "/sitesurvey/openTickets";
@@ -47,7 +48,6 @@
 		{
 		window.location.href = "/sitesurvey/adminOpenTickets";
 		}	
-		
 		
 			 $("#navbar").load('<c:url value="/resources/common/header.jsp" />');  
 			 $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
@@ -73,6 +73,7 @@
         		   {
 					
                    	dataSet.push([historyTicketsList[i].ticketNum,historyTicketsList[i].siteid,historyTicketsList[i].technicianName]);
+
         			   
         		   }
                   
@@ -142,7 +143,6 @@ color: #fff!important;
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 </head>
 <body>
- 
 	    <script>
     if(sessionStorage.getItem("username")==null)
     	{
@@ -158,9 +158,6 @@ color: #fff!important;
     
   
     </script> 
-	 
-	 
-	 
 	<div class="wrapper">
 		<!--
 			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
@@ -193,7 +190,7 @@ color: #fff!important;
 			<!-- End Navbar -->
 		</div>
 
-		<!-- Sidebar -->
+		
 		<script>
 			if (role == "SuperAdmin") {
 				document.write('<div id="superAdminSidebar"></div>');
@@ -207,11 +204,6 @@ color: #fff!important;
 		 document.write('<div id="adminSidebar"></div>');				
 			}
 		</script>
-
-
-
-
-
 		<div class="main-panel">
 			<div class="content">
 				<div class="page-inner">
@@ -220,7 +212,8 @@ color: #fff!important;
 					</div>
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">							
+							<div class="card card-stats card-round">	
+							<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/openTickets'"	style=" cursor: pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
@@ -316,6 +309,7 @@ color: #fff!important;
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 
 <!--   Core JS Files   -->
