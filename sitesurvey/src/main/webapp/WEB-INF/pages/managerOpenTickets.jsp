@@ -166,8 +166,9 @@ color: #fff!important;
 	                data:{"username":s,"region":userRegion,"city":userCity},
 	                success:function(result) {
 	                	var jsonArr = $.parseJSON(result);
-	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets;    
-	                	$('#managerClosedTickets')[0].innerHTML=jsonArr.ClosedTickets;    
+	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets;     
+	                	$('#managerClosedTickets')[0].innerHTML=jsonArr.ClosedTickets;     
+	                	$('#managerNotAcceptedTickets')[0].innerHTML=jsonArr.NotAcceptedTickets;     
 	                    
 	                }
 				});
@@ -421,7 +422,7 @@ color: #fff!important;
 								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerNotAcceptedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
 											<img src="<c:url value='resources/assets/img/closed.svg' />" >
 											</div>
 										</div>

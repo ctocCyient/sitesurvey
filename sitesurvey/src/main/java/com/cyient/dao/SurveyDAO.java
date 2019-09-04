@@ -121,4 +121,7 @@ public interface SurveyDAO {
 	 @Transactional
 		public String saveTechStatus(String ticketId, String techStatus,String techId, String commentsData, String remarksData);
 
+	 @Transactional
+	public List<TechnicianTicketInfo> managerNotAcceptedTickets(String username);
+
 }

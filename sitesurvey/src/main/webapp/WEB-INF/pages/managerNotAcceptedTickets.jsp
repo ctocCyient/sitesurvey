@@ -93,8 +93,7 @@ max-width:100%;
 
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#managerSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
-						  getManagerCount();
-			  getMangerRejectedCount();
+			 getManagerCount();
 			  tableData();			
 		
 		});	
@@ -107,34 +106,20 @@ max-width:100%;
 
 				$.ajax({
 	                type:"get",
-	                url:"managerTicketsCount",
+	                url:"getManagerTicketsCount",
 	                contentType: 'application/json',
 	                datatype : "json",
 	                data:{"username":s},
 	                success:function(result) {
 	                	var jsonArr = $.parseJSON(result);
-	                	$('#managerTotalTickets')[0].innerHTML=jsonArr[0];                
+	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets;     
+	                	$('#managerClosedTickets')[0].innerHTML=jsonArr.ClosedTickets;     
+	                	$('#managerNotAcceptedTickets')[0].innerHTML=jsonArr.NotAcceptedTickets;     
 	                    
 	                }
 				});
 			}
 		 
-		 function getMangerRejectedCount(){
-			  s=name;
-
-				$.ajax({
-	                type:"get",
-	                url:"managerRejectedCount",
-	                contentType: 'application/json',
-	                datatype : "json",
-	                data:{"username":s},
-	                success:function(result) {
-	                	var jsonArr = $.parseJSON(result);
-	                	$('#managerRejectedTickets')[0].innerHTML=jsonArr[0];                
-	                    
-	                }
-				});
-			}
 		
 		function tableData()
 		{					
@@ -145,15 +130,15 @@ max-width:100%;
                 datatype : "json",
                 data:{"username":s},
                 success:function(data) {
-                    totalTicketsList = JSON.parse(data);
+                   var notAcceptedTicketsList = JSON.parse(data);
 					
-                    for(var i=0;i<totalTicketsList.length;i++)
+                    for(var i=0;i<notAcceptedTicketsList.length;i++)
          		   {
-                    	dataSet.push([totalTicketsList[i].ticketNum,totalTicketsList[i].executiveName,totalTicketsList[i].customer.customerId,totalTicketsList[i].status,totalTicketsList[i].comments]);
+                    	dataSet.push([notAcceptedTicketsList[i].ticketNum,notAcceptedTicketsList[i].siteid,notAcceptedTicketsList[i].technicianName,notAcceptedTicketsList[i].comments]);
          			   
          		   }
                     
-			 var table1=$('#totalTickets').DataTable({
+			 var table1=$('#managerNotAcceptedTable').DataTable({
 					destroy:true,
 					language: {
 					  emptyTable: "No Data Available"
@@ -161,9 +146,8 @@ max-width:100%;
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
-						{title: "Technician Name" },
-						{title: "Customer Id" },
-						{title: "Status" },
+						{title: "Site Id" },
+						{title: "Not Accepted By" },
 						{title: "Comments"}
 			        ]
 			    });
@@ -236,19 +220,58 @@ max-width:100%;
 					</div>
 					
 					<div class="row">
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body " onclick="location.href='/RFIDAssetTracking/managerTotalTickets'" style="cursor:pointer;">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center icon-primary bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
+						
+					<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round" >
+								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="cursor:pointer;">
+									<div class="row align-items-center" >
+										<div class="col-icon" >
+											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
 											<img src="<c:url value='resources/assets/img/open.svg' />" >
 											</div>
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category" >Total</p>
-												<h4 class="card-title" id="managerTotalTickets"></h4>
+												<p class="card-category">Open</p>
+												<h4 class="card-title" id="managerOpenTickets"></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerClosedTickets'" style="cursor:pointer;">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
+											<img src="<c:url value='resources/assets/img/closed.svg' />" >
+											</div>
+										</div>
+										<div class="col col-stats ml-3 ml-sm-0">
+											<div class="numbers">
+												<p class="card-category">Closed</p>
+												<h4 class="card-title" id="managerClosedTickets"></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerNotAcceptedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
+											<img src="<c:url value='resources/assets/img/closed.svg' />" >
+											</div>
+										</div>
+										<div class="col col-stats ml-3 ml-sm-0">
+											<div class="numbers">
+												<p class="card-category"  style="color:#ffffff;">Not Accepted</p>
+												<h4 class="card-title" id="managerNotAcceptedTickets"  style="color:#ffffff;"></h4>
 											</div>
 										</div>
 									</div>
@@ -256,26 +279,7 @@ max-width:100%;
 							</div>
 						</div>
 					
-					
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body " onclick="location.href='/RFIDAssetTracking/managerRejectedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center icon-primary bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/open.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category" style="color:#ffffff;">Not Accepted</p>
-												<h4 class="card-title" id="managerRejectedTickets" style="color:#ffffff;"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						
 					
 					</div>
 					<div class="row">
@@ -287,7 +291,7 @@ max-width:100%;
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">
-										<table id="totalTickets" style="width:100%" role="row" class="display table table-striped table-hover"   >
+										<table id="managerNotAcceptedTable" style="width:100%" role="row" class="display table table-striped table-hover"   >
 											
 										</table>
 									</div>

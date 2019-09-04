@@ -86,10 +86,12 @@ public class ManagerFTController {
 				//List<TechnicianTicketInfo> listOpen = surveyDAO.managerOpenTickets(username);		    
 				List<TechnicianTicketInfo> listOpen =  surveyDAO.managerOpenTickets(username,region,city);   
 			      List<TechnicianTicketInfo> listClosed = surveyDAO.managerClosedTickets(username);
+			      List<TechnicianTicketInfo> listNotAccepted = surveyDAO.managerNotAcceptedTickets(username);
 			     
 				   JSONObject countData=new JSONObject();
 				   countData.put("OpenTickets",listOpen.size());
 				   countData.put("ClosedTickets",listClosed.size());
+				   countData.put("NotAcceptedTickets",listNotAccepted.size());
 				   System.out.println(countData);			   
 			          return countData.toString();
 			}
@@ -108,6 +110,17 @@ public class ManagerFTController {
 			              return openJson.toString();
 		    }
 			
+			@RequestMapping(value="getManagerNotAcceptedTickets", method = RequestMethod.GET)
+		    @ResponseBody
+		    public String getManagerNotAcceptedTickets(ModelAndView model,HttpServletRequest request) {
+				String username=request.getParameter("username");
+				System.out.println("USER"+username);
+				List<TechnicianTicketInfo> listNotAccepted = surveyDAO.managerNotAcceptedTickets(username);
+				  	   Gson gsonBuilder = new GsonBuilder().create();
+		        	   String notAcceptedJson = gsonBuilder.toJson(listNotAccepted);
+			              return notAcceptedJson.toString();
+		    }
+			
 			@RequestMapping(value="getManagerClosedTickets", method = RequestMethod.GET)
 		    @ResponseBody
 		    public String getManagerClosedTickets(ModelAndView model,HttpServletRequest request) {
@@ -118,7 +131,6 @@ public class ManagerFTController {
 		        	   String closedJson = gsonBuilder.toJson(listClosed);
 			              return closedJson.toString();
 		    }
-			
 	
 	    
 	    @RequestMapping(value="getManagerTechnicians", method = RequestMethod.GET)
