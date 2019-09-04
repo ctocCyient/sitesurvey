@@ -6,6 +6,8 @@ import javax.transaction.Transactional;
 
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Site_Generator;
+import com.cyient.model.Site_SMPS;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
@@ -23,6 +25,12 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public void addSite(Site site);
+	
+	@Transactional
+	public void addGenerator(Site_Generator generator);
+	
+	@Transactional
+	public void addSMPS(Site_SMPS smps);
 	
 	@Transactional
 	public void addTicket(Ticketing ticket);

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Site_Generator;
+import com.cyient.model.Site_SMPS;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
@@ -47,6 +49,14 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(site);
 	}
 
+	public void addGenerator(Site_Generator generator){	
+		sessionFactory.getCurrentSession().saveOrUpdate(generator);
+	}
+	
+	public void addSMPS(Site_SMPS smps){
+		sessionFactory.getCurrentSession().saveOrUpdate(smps);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Regions> getRegions() {
 		//return sessionFactory.getCurrentSession().createQuery("from Regions").list();

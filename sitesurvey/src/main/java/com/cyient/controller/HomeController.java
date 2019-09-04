@@ -32,6 +32,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Site_Generator;
+import com.cyient.model.Site_SMPS;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
@@ -84,6 +86,22 @@ public class HomeController {
 		Ticketing ticketing=new Ticketing();
 		model.addObject("Ticketing", ticketing);
 		model.setViewName("createTicket");
+		return model;
+	}
+	
+	@RequestMapping(value="/newGenerator")
+	public ModelAndView newGenerator(ModelAndView model) throws IOException{
+		Site_Generator generator=new Site_Generator();
+		model.addObject("Site_Generator",generator);
+		model.setViewName("addGenerator");
+		return model;
+	}
+	
+	@RequestMapping(value="/newSMPS")
+	public ModelAndView newSMPS(ModelAndView model) throws IOException{
+		Site_SMPS smps=new Site_SMPS();
+		model.addObject("Site_SMPS",smps);
+		model.setViewName("addSMPS");
 		return model;
 	}
 	
@@ -153,7 +171,6 @@ public class HomeController {
 			redirectAttributes.addFlashAttribute("status", status);
 			return new ModelAndView("redirect:/newTicket");
 		}
-	
 	
 	                                                                                                                                                                                                                                                                                   
    @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
@@ -261,7 +278,23 @@ public class HomeController {
 		return new ModelAndView("redirect:/newSite");
 	}
 	
+	@RequestMapping(value="/saveGenerator" , method=RequestMethod.POST)
+	public ModelAndView saveGenerator(@ModelAttribute Site_Generator generator, RedirectAttributes redirectAttributes){
 
+		String status="Generator Added Successfully";
+		surveyDAO.addGenerator(generator);
+		redirectAttributes.addFlashAttribute("status",status);
+		return new ModelAndView("redirect:/newGenerator");
+	}
+	
+	@RequestMapping(value="/saveSMPS" , method=RequestMethod.POST)
+	public ModelAndView saveSMPS(@ModelAttribute Site_SMPS smps,RedirectAttributes redirectAttributes){
+		
+		String status="SMPS Added Successfully";
+		surveyDAO.addSMPS(smps);
+		redirectAttributes.addFlashAttribute("status",status);
+		return new ModelAndView("redirect:/newSMPS");
+	}
 
 	 @RequestMapping(value="/getLastTicketId", method=RequestMethod.GET)
 	 @ResponseBody
@@ -332,18 +365,7 @@ public class HomeController {
 			Gson gsonBuilder = new GsonBuilder().create();
 		    String districtsJson = gsonBuilder.toJson(listWithoutDuplicates);
 			return districtsJson;
-			/*List<Regions> regions = surveyDAO.getDistricts(selectedRegion,selectedState);
-			 Map<String, String> districtsMap = new HashMap<String, String>();
-			 for(Regions region : regions)
-		      {
-				 districtsMap.put(region.getDistrict(),region.getDistrict());
-		      }
-//			  	   Gson gsonBuilder = new GsonBuilder().create();
-//	        	   String districtsJson = gsonBuilder.toJson(listDistricts);
-		              //return districtsJson.toString();
-			 return districtsMap;*/
-
-	    }
+		    }
 	 
 	    @RequestMapping(value="getCities", method = RequestMethod.GET)
 	    @ResponseBody

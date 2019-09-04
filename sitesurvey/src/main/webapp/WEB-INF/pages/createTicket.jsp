@@ -44,7 +44,9 @@
 	
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
-<style>
+
+ 
+ <style>
 
 	label {
     color: #495057!important;
@@ -107,7 +109,7 @@ var jsonData=[];
            	 	 catOptions += "<option>" + data[i] + "</option>";
          		}
          		document.getElementById(id).innerHTML = catOptions;
-         		//$("select option[value='']").attr('disabled','disabled');
+         		$("select option[value='']").attr('disabled','disabled');
 		}
 
 		 function getTicketId()
@@ -175,7 +177,6 @@ var jsonData=[];
 	 	
 	 	function getDistrict(state)
 		 { 
-	 		
 	 		var selectedRegion=$("#region").val();
 			 $.ajax({
 			         type:"get",
@@ -368,7 +369,7 @@ var jsonData=[];
                <br>
                  <form:hidden id="status" value="Open" path="status" name="status" />                  
                  <label for="siteId">Site Id</label>
-				<form:select name="siteIds" id="siteIds" class="form-control input-full siteIds"  multiple="true" path="siteid"></form:select>
+				<form:select name="siteIds" id="siteIds" class="form-control input-full siteIds"  multiple="true" path="siteid" ></form:select>
 				<br>   
 				<br>      
             	<label for="ticketDescription">Ticket Description</label>
