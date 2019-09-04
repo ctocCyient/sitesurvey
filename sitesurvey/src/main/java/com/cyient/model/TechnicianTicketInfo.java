@@ -71,7 +71,13 @@ public class TechnicianTicketInfo implements Serializable {
 	@Column(name="Closed_Time")
 	@Temporal(TemporalType.TIME)
 	private Date closedTime;
-
+	
+	@Column(name="Comments")
+	private String comments;
+	
+	@Column(name="Remarks")
+	private String remarks;
+	
 	public int getId() {
 		return id;
 	}
@@ -200,4 +206,19 @@ public class TechnicianTicketInfo implements Serializable {
 		this.closedTime = closedTime;
 	}
 
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
 }
