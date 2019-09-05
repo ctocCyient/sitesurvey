@@ -166,8 +166,9 @@ color: #fff!important;
 	                data:{"username":s,"region":userRegion,"city":userCity},
 	                success:function(result) {
 	                	var jsonArr = $.parseJSON(result);
-	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets;    
-	                	$('#managerClosedTickets')[0].innerHTML=jsonArr.ClosedTickets;    
+	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets;     
+	                	$('#managerClosedTickets')[0].innerHTML=jsonArr.ClosedTickets;     
+	                	$('#managerNotAcceptedTickets')[0].innerHTML=jsonArr.NotAcceptedTickets;     
 	                    
 	                }
 				});
@@ -197,8 +198,17 @@ color: #fff!important;
 					language: {
 					  emptyTable: "No Data Available"
 					},			
-					columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<button style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;'  id='assignBtn' onclick='on()'>Assign</button>"}],
-			        data: dataSet,
+					//columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<button style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;'  id='assignBtn' onclick='on()'>Assign</button>"}],
+			        columnDefs: [{ "targets": -1, "data": null, render: function (a,b,data,d) {
+						if (data[4] =='Not Accepted') {
+			                return "<input type='button' style=' background-color: #00B1BF;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='assignBtn' onclick='on()' value='Reassign' />";
+			            }
+			            else if (data[4] =='Open') {
+				                return "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='assignBtn' onclick='on()' value='Assign' />";
+				            }
+			            }			            
+			        }],
+					data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
 						{title: "Site Id" },
@@ -401,6 +411,25 @@ color: #fff!important;
 											<div class="numbers">
 												<p class="card-category">Closed</p>
 												<h4 class="card-title" id="managerClosedTickets"></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerNotAcceptedTickets'" style="cursor:pointer;">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
+											<img src="<c:url value='resources/assets/img/closed.svg' />" >
+											</div>
+										</div>
+										<div class="col col-stats ml-3 ml-sm-0">
+											<div class="numbers">
+												<p class="card-category">Not Accepted</p>
+												<h4 class="card-title" id="managerNotAcceptedTickets"></h4>
 											</div>
 										</div>
 									</div>

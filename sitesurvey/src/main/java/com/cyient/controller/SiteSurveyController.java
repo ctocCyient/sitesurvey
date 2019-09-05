@@ -175,8 +175,18 @@ public class SiteSurveyController {
 		model.setViewName("technicianReg");
 		return model;
 	}*/
-
-
+	
+	/*Added for fetching roles in header page */
+	 @RequestMapping(value= "getRoles", method = RequestMethod.GET)
+		@ResponseBody
+		public String getRoles(HttpServletRequest request) {
+		 String username=request.getParameter("userName");
+			List<User> user = surveyDAO.getRoles(username);
+			Gson gsonBuilder = new GsonBuilder().create();
+			String regionJSON = gsonBuilder.toJson(user);
+	 	   	return regionJSON;
+		}
+	 
 	@RequestMapping(value = "/logout")
 	 public String logout(@ModelAttribute User user, HttpSession session,HttpServletRequest request) {
           	  session.removeAttribute("userName");
