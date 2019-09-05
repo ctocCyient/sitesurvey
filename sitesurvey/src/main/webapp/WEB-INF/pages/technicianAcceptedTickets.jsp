@@ -152,7 +152,6 @@ color: #fff!important;
 			    } );
 			 
 			
-			 
 		
 			 $('#technicianAcceptedTickets tbody').on('click', '[id*=surveyBtn]', function () {
 				 window.location.href = "/sitesurvey/accessDetails";
