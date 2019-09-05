@@ -32,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Site_Battery_Bank;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
 import com.cyient.model.Technician;
@@ -103,7 +104,17 @@ public class HomeController {
 		model.addObject("Site_SMPS",smps);
 		model.setViewName("addSMPS");
 		return model;
-	}	
+	}
+	
+	@RequestMapping(value="/newBB")
+	public ModelAndView newBB(ModelAndView model) throws IOException{
+		Site_Battery_Bank BB=new Site_Battery_Bank();
+		model.addObject("Site_Battery_Bank",BB);
+		model.setViewName("addBB");
+		return model;
+	}
+	
+	
 	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
 	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
 		String status="Technician Added Successfully";

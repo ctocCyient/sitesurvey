@@ -44,6 +44,18 @@ public class Site_Battery_Bank implements Serializable {
 	@Column(name="Number_of_batteries")
 	private Integer number_of_batteries;
 	
+	@Column(name="capacity")
+	private Integer capacity;
+	
+	
+	public Integer getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(Integer capacity) {
+		this.capacity = capacity;
+	}
+
 	@Column(name="Number_of_working_Module_rating")
 	private Integer number_of_working_Module_rating;
 	
