@@ -103,8 +103,7 @@ public class HomeController {
 		model.addObject("Site_SMPS",smps);
 		model.setViewName("addSMPS");
 		return model;
-	}
-	
+	}	
 	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
 	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
 		String status="Technician Added Successfully";
