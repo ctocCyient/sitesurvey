@@ -140,14 +140,40 @@ color: #fff!important;
 					language: {
 					  emptyTable: "No Data Available"
 					},						
-					//columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='View' />"}],	
+					columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='View' />"}],	
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
 						{title: "Site Id" },
 						{title: "Ticket Description" },
+						{title: "Action" },
 			        ]
 			    } );
+			 $('#technicianAssignedTickets tbody').on('click', '[id*=viewBtn]', function () {
+				 window.location.href = "/sitesurvey/accessDetails";
+                
+                 //redirectToOther();
+
+         
+
+             });
+			 
+				/*function redirectToOther()
+		        {
+		             console.log("Cust"+customerId);
+		             $.ajax({
+		                  type: "get",
+		                  url: "getCustomerData",
+		                  contentType: 'application/json',
+		                  datatype: "json",
+		                  data:{"customerId":customerId},
+		                  success: function(result) {
+		                      designList = JSON.parse(result);                      
+		                      console.log("Design",designList);
+		                      window.location.href = '/sitesurvey/accessDetails?customerData='+ window.encodeURIComponent(JSON.stringify(designList));                         
+		                  }                     
+		             });
+		        } */
 			 
 		}
 			});

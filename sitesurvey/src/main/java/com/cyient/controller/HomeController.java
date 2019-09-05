@@ -32,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Site_Access;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
@@ -60,7 +61,11 @@ public class HomeController {
 		model.setViewName("openTickets");
 		return model;
 	}
-	
+	 @RequestMapping(value = "/accessDetails")
+		public ModelAndView accessDetails(ModelAndView model) throws IOException {
+			model.setViewName("accessDetails");
+			return model;
+	}
 	@RequestMapping(value = "/assignedTickets")
 	public ModelAndView assignedTickets(ModelAndView model) throws IOException {
 		model.setViewName("assignedTickets");
@@ -252,6 +257,14 @@ public class HomeController {
 		return model;
 	}
 	
+	@RequestMapping(value = "/siteAccess", method = RequestMethod.GET)
+	public ModelAndView newAccess(ModelAndView model) {
+		Site_Access siteaccess = new Site_Access();
+		model.addObject("Site_Access", siteaccess);
+		model.setViewName("accessDetails");
+		return model;
+	}
+	
 	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
 	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
 		String status="Site Added Successfully";
@@ -262,7 +275,15 @@ public class HomeController {
 		return new ModelAndView("redirect:/newSite");
 	}
 	
-
+	@RequestMapping(value = "/saveAccess", method = RequestMethod.POST)
+	public ModelAndView saveAccess(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
+		String status="Added Successfully";
+		/*if (site.getSiteid() !=null) { 
+			surveyDAO.addSite(site);
+		} 
+		redirectAttributes.addFlashAttribute("status", status);*/
+		return new ModelAndView("redirect:/newSite");
+	}
 
 	 @RequestMapping(value="/getLastTicketId", method=RequestMethod.GET)
 	 @ResponseBody
@@ -529,4 +550,5 @@ public class HomeController {
 	    	String user=surveyDAO.getUserName(role,username);
 			return user;
 		}
+	   
 }
