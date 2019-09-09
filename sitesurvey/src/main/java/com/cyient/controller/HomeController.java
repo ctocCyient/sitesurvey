@@ -1,6 +1,8 @@
 package com.cyient.controller;
 
 
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +27,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -278,22 +283,148 @@ public class HomeController {
 		return new ModelAndView("redirect:/newSite");
 	}
 	
+	
 	@RequestMapping(value="/saveGenerator" , method=RequestMethod.POST)
-	public ModelAndView saveGenerator(@ModelAttribute Site_Generator generator, RedirectAttributes redirectAttributes){
+	public ModelAndView saveGenerator(@ModelAttribute("Site_Generator") Site_Generator generator, @RequestParam("file") MultipartFile[] multipart,@RequestParam("submit") String submit,ModelAndView model, RedirectAttributes redirectAttributes) throws IOException{
+		System.out.println("Generator++++++++++");
+		System.out.println("Multipart----------"+multipart);
+		
+		/*String message="";
+		for(int i=0;i<multipart.length;i++)
+		{
+			MultipartFile file=multipart[i];
+			try{
+					System.out.println(file.getContentType()+"----"+file.getClass()+"----"+file.getName());
+				 	byte[] bytes = file.getBytes();
+	                System.out.println("bytes>>>>>"+bytes);
+	                System.out.println(" file name"+file.getOriginalFilename());
+	               
+			}catch(Exception e)
+			{
+				System.out.println(e.toString());
+			}
+			
+		}*/
+		
+		try
+		{
+			generator.setGdphoto(multipart[0].getBytes());
+			generator.setDg_photo_name(multipart[0].getOriginalFilename());
+			generator.setFuellevel_photo(multipart[1].getBytes());
+			generator.setFuel_level_name(multipart[1].getOriginalFilename());
+			generator.setDg_inproper_1(multipart[2].getBytes());
+			generator.setDg_inproper_1_name(multipart[2].getOriginalFilename());
+			generator.setDg_inproper_2(multipart[3].getBytes());
+			generator.setDg_inproper_2_name(multipart[3].getOriginalFilename());
+			generator.setTag_photo(multipart[4].getBytes());
+			generator.setTag_photo_name(multipart[4].getOriginalFilename());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.toString());
+		}
+		String status="Generator Added Successfully";
+		surveyDAO.addGenerator(generator);
+		redirectAttributes.addFlashAttribute("status",status);
+		
+		if(submit.equals("Save & Continue"))
+		{
+			return new ModelAndView("redirect:/newSMPS");
+		}
+		else if(submit.equals("Save") || submit.equals("Add"))
+		{
+			return new ModelAndView("redirect:/newGenerator");
+		}
+		return model;
+	}
+/*	@RequestMapping(value = "/towerinstallation", method = RequestMethod.POST)
+	    public ModelAndView savetowerInstallation(@ModelAttribute("Tower_Installation") Tower_Installation towerinstallation,@RequestParam("file") MultipartFile[] multipart ,ModelAndView model) {
+	        
+	        System.out.println(" tower file name>>>>"+towerinstallation.getSiteid().getSiteid());
+	    //    System.out.println("json>>>>>>>>"+jsonarr);
+	        String message = "";
+	        for (int i = 0; i < multipart.length; i++) {
+	            MultipartFile file = multipart[i];
+	            //String name = names[i];
+	            try {
+	                byte[] bytes = file.getBytes();
+	                System.out.println("bytes>>>>>"+bytes);
+	                System.out.println(" file name"+file.getOriginalFilename());
+	            }catch(Exception e){
+	                
+	            }
+	        }
+	        
+	        return model;
+	    }
+*/
+	
+	/*
+	@RequestMapping(value="/saveGenerator" , method=RequestMethod.POST)
+	public ModelAndView saveGenerator(HttpServletRequest request, final @RequestParam CommonsMultipartFile[] gdphoto ,@ModelAttribute Site_Generator generator, RedirectAttributes redirectAttributes){
 
+		System.out.println("Generator  ++++++++++++++++++++++++");
+	    // Determine If There Is An File Upload. If Yes, Attach It To The Client Email              
+        if ((gdphoto != null) && (gdphoto.length > 0) && (!gdphoto.equals(""))) {
+            for (CommonsMultipartFile aFile : gdphoto) {
+                if(aFile.isEmpty()) {
+                    continue;
+                } else {
+                    System.out.println("Attachment Name?= " + aFile.getOriginalFilename() + "\n");
+                    if (!aFile.getOriginalFilename().equals("")) {
+                    	System.out.println(generator.getAssettagnumber());
+                    	System.out.println(generator.getCapacity());
+                    	generator.setGdphoto(aFile.getBytes());
+                    	
+                        List<Site_Generator> siteGenerator= new ArrayList();
+                        siteGenerator.se
+                        fileUploadObj.setFileDescription(fileDescription);
+                        fileUploadObj.setData(aFile.getBytes());
+ 
+                        // Calling The Db Method To Save The Uploaded File In The Db
+                        FileUploadInDb.fileSaveInDb(fileUploadObj);
+                    }
+                }
+               
+            }
+        } else {
+            // Do Nothing
+        }
+       
+		
 		String status="Generator Added Successfully";
 		surveyDAO.addGenerator(generator);
 		redirectAttributes.addFlashAttribute("status",status);
 		return new ModelAndView("redirect:/newGenerator");
-	}
+	}*/
 	
 	@RequestMapping(value="/saveSMPS" , method=RequestMethod.POST)
-	public ModelAndView saveSMPS(@ModelAttribute Site_SMPS smps,RedirectAttributes redirectAttributes){
+	public ModelAndView saveSMPS(@ModelAttribute Site_SMPS smps, @RequestParam("file") MultipartFile[] multipart ,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,ModelAndView model){
+		
+		try {
+			smps.setObservation_1(multipart[0].getBytes());
+			smps.setObservation_1_Name(multipart[0].getOriginalFilename());
+			smps.setObservation_2(multipart[1].getBytes());
+			smps.setObservation_2_Name(multipart[1].getOriginalFilename());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		String status="SMPS Added Successfully";
 		surveyDAO.addSMPS(smps);
 		redirectAttributes.addFlashAttribute("status",status);
-		return new ModelAndView("redirect:/newSMPS");
+		
+		if(submit.equals("Save"))
+		{
+			return new ModelAndView("redirect:/newSMPS");
+		}
+		else if(submit.equals("Save & Continue"))
+		{
+			return new ModelAndView("redirect:/newSMPS");
+		}
+	
+		return model;
+		
 	}
 
 	 @RequestMapping(value="/getLastTicketId", method=RequestMethod.GET)

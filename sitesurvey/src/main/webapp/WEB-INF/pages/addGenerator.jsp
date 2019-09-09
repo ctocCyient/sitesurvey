@@ -10,6 +10,7 @@
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
@@ -19,6 +20,7 @@
    	{
 		//window.location.href = "/sitesurvey/";
 		//alert(sessionStorage.getItem("username"));
+		
 		   url = "/sitesurvey/";
 		      $( location ).attr("href", url);
    	}
@@ -61,127 +63,10 @@ WebFont.load({
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-
-	//  getRegions();
-		getSiteId();
-		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
+	 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
+	 
 		 $(".isa_success").fadeOut(10000);
 });
-
-function populateDropdown(data,id)
-{
-	var	catOptions="<option value=''>Select</option>";
- 	for (i in data) {
- 		
-   	 	 catOptions += "<option>" + data[i] + "</option>";
- 		}
- 		document.getElementById(id).innerHTML = catOptions;
- 		 $("select option[value='']").attr('disabled','disabled');
-}
-
-
-
-function getState(region)
-{
-	//alert(region)
-	 $.ajax({
-		 	type:"get",
-		 	url:"getStates",
-		 	contentType:'application/json',
-		 	datatype:"json",
-		 	data:{"selectedRegion":region},
-		 	success:function(res){
-		 		//alert(JSON.parse(res))
-		 		console.log(res);
-		 		jsonData=JSON.parse(res);
-		 		populateDropdown(jsonData,"state");
-		 	},
-		 	error:function()
-		 	{
-		 		console.log("Error");	
-		 	}
-	 });
-}
-	
-function getDistrict(state)
-{ 
-	var selectedRegion=$("#regions").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getDistricts",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":state},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"districts");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
-function getCity(district)
-{ 
-	
-	var selectedRegion=$("#regions").val();
-	var selectedState=$("#state").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getCities",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":district},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"city");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
-
-
-	function getSiteId()
-	{
-		var jsonArr1;
-			$.ajax({
-		        type:"get",
-		        url:"getLastSiteId",
-		        contentType: 'application/json',
-		        datatype : "json",
-		        success:function(data) {
-		        	var jsonArr=JSON.parse(data);	
-//		        	alert(jsonArr)
-		        	 if(jsonArr.length==0){
-			        		jsonArr1="IND001";
-			        	}  	
-		        	 else{
-			        	var dataSplit=jsonArr[0].split("D");
-			        	console.log(dataSplit[0]);
-			        	var dataSplitInt=parseInt(dataSplit[1]);
-			        	console.log(dataSplitInt+1);
-			        	dataSplitInt=dataSplitInt+1;
-			        	
-			        	if(dataSplitInt>0&&dataSplitInt<=9)
-			        		jsonArr1="IND00"+dataSplitInt;
-			        	else if(dataSplitInt>9&&dataSplitInt<99)
-			        		jsonArr1="IND0"+dataSplitInt;
-			        	else if(dataSplitInt>99)
-			        		jsonArr1="IND"+dataSplitInt;        	
-	        		}	        	
-		        	$('#siteid').val(jsonArr1);	 
-		        	$('#siteid').attr('readonly', true);
-		        },
-		        error:function()
-		        {
-		        	console.log("Error");
-		        }
-			});
-	}
 
 
 
@@ -238,17 +123,22 @@ label {
     
 			<h3 class="text-center">Add Generator</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
-				<span id="addMsg" style="font-size:12px;margin-left:221px;">Add New</span><br><br>
-			<form:form action="saveGenerator" method="post" modelAttribute="Site_Generator">
+				
+			<form:form action="saveGenerator" method="post" modelAttribute="Site_Generator" enctype = 'multipart/form-data'>
 			<div class="login-form">
+			<span id="addMsg" style="font-size:18px;margin-left:221px;"><b>Add New</b><button type="submit" value="Add" name="submit"><i class="fa fa-plus-square" aria-hidden="true"></i></button></span><br><br>
+			<label for="siteid" class="placeholder">Site Id</label>
+				<form:input id="siteid" path="siteid.siteid" class="form-control input-full filled" />
 			
 				 <br>
 				<label for="Manufacturer" class="placeholder">Manufacturer</label>
 				<form:input id="dgManufacturer" path="dgManufacturer" class="form-control input-full filled" />
+				
 				<br>
 				<label for="date" class="placeholder">Date of Manufacturer/Installation</label>
-				<form:input type="date" id="manufacturedDate" path="manufacturedDate" class="form-control input-full filled" />
+				 <form:input type="date"  placeholder="mm/dd/yyyy" value="" path="manufacturedDate" class="form-control input-full filled" max="9999-12-31"/>
 				<br>
+				
 				<label for="capacity" class="placeholder">Generator Capacity Rating(kVA)</label> 
 				<form:input id="capacity" path="capacity"  name="capacity"  class="form-control input-full filled"  />
 				<br>
@@ -258,17 +148,33 @@ label {
                 <br>
                 
                 <label for="" class="">Photos of Generator Control Unit(GCU)</label>
-               <form:input id="photos" path=""  name=""  class="form-control input-full filled"  />
+               <input type="file" id="GCUPhoto"  name="file"  class="form-control input-full filled"  />
                 <br>
                 
                 <label for="fuellevel" class="fuellevel">Fuel Level at Site(%)</label>
                 	 <form:input id="fuellevel" path="fuellevel"  name="fuellevel"  class="form-control input-full filled"  />
               	<br>
               
-              	<label for="" class="">Photos of Fuel Level Sensor</label>
-               <form:input id="photos" path=""  name=""  class="form-control input-full filled"  />
-                <br>
+           	 	<label for="" class="">Photos of Fuel Level Sensor</label>
+               	<input type="file" id="FLSPhoto"  name="file"  class="form-control input-full filled"  />
+                <br> 
               
+              	<label for="" class="">Photo1 of the site(Which is not in proper condition)</label>
+               	<input type="file" id="photo1"  name="file"  class="form-control input-full filled"  />
+                <br> 
+                
+                <label for="" class="">Photo2 of the site(Which is not in proper condition)</label>
+               	<input type="file" id="photo2"  name="file"  class="form-control input-full filled"  />
+                <br> 
+              
+              	<label for="tagNumber" class="placeholder">Asset Tag Number</label> 
+				<form:input id="assettagnumber" path="assettagnumber"  name="assettagnumber"  class="form-control input-full filled"  />
+				<br>
+				
+				<label for="" class="">Asset Tag Photo</label>
+               	<input type="file" id="photo2"  name="file"  class="form-control input-full filled"  />
+                <br> 
+				
               	<label for="Condition" class="Condition">Condition</label>
               	 <form:select id="generatorCondition" path="generatorCondition"  name="generatorCondition"  class="form-control input-full filled" >
               	 <form:option value="Select">Select</form:option>
@@ -282,12 +188,17 @@ label {
               	 </form:select>
                 <br>
                 
+                <label for="comments" class="placeholder">Comments</label> 
+				<form:input id="comments" path="comments"  name="comments"  class="form-control input-full filled"  />
+				<br>
+                
 				<div class="form-action">
-					<a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>
-					<input type="submit" id="submit" value="Add" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
+					<input type="submit" value="Save" name="submit" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input type="submit" value="Save & Continue" name="submit" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 				</div>
 			</div>
-			</form:form>			
+			</form:form>										
 			
 		</div>
 </div>

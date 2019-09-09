@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 @Table(name = "Site_Generator")
@@ -34,8 +36,8 @@ public class Site_Generator implements Serializable {
 	private String dgManufacturer;
 	
 	@Column(name="Manufacture_Date")
-	@Temporal(TemporalType.DATE)
-	private Date manufacturedDate;
+	@DateTimeFormat(pattern = "yyyy/mm/dd") 
+	private String manufacturedDate;
 	
 	@Column(name="Capacity")
 	private String capacity;
@@ -308,11 +310,11 @@ public class Site_Generator implements Serializable {
 		this.tag_photo_longitude = tag_photo_longitude;
 	}
 
-	public Date getManufacturedDate() {
+	public String getManufacturedDate() {
 		return manufacturedDate;
 	}
 
-	public void setManufacturedDate(Date manufacturedDate) {
+	public void setManufacturedDate(String manufacturedDate) {
 		this.manufacturedDate = manufacturedDate;
 	}
 
