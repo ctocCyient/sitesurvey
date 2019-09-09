@@ -25,14 +25,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cyient.dao.SurveyDAO;
+import com.cyient.model.Battery_Bank_Master;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 import com.cyient.model.Site_Battery_Bank;
+import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
 import com.cyient.model.Technician;
@@ -114,6 +118,13 @@ public class HomeController {
 		return model;
 	}
 	
+	@RequestMapping(value="/newCabinet")
+	public ModelAndView newCabinet(ModelAndView model) throws IOException{
+		Site_Cabinet BB=new Site_Cabinet();
+		model.addObject("Site_Cabinet",BB);
+		model.setViewName("addCabinet");
+		return model;
+	}
 	
 	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
 	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
@@ -307,6 +318,34 @@ public class HomeController {
 		return new ModelAndView("redirect:/newSMPS");
 	}
 
+	@RequestMapping(value="/saveBB" , method=RequestMethod.POST)
+	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
+		System.out.println("save bb calling"+tag_photo);
+		String status="Battery Bank Added Successfully";
+		BB.setTag_photo1(tag_photo[0].getBytes());
+		BB.setTag_photo1(tag_photo[1].getBytes());
+		BB.setTag_photo_2(tag_photo[2].getBytes());
+		BB.setTag_photo1_Name(tag_photo[1].getOriginalFilename());
+		BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());
+		surveyDAO.addBB(BB);
+		redirectAttributes.addFlashAttribute("status",status);
+		return new ModelAndView("redirect:/newBB");
+	}
+	
+	
+	@RequestMapping(value="/saveCabinet" , method=RequestMethod.POST)
+	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
+		String status="Battery Bank Added Successfully";
+		BB.setPhoto_1(tag_photo[0].getBytes());
+		BB.setPhoto_2(tag_photo[1].getBytes());
+		BB.setPhoto_1_Name(tag_photo[0].getOriginalFilename());
+		BB.setPhoto_2_Name(tag_photo[1].getOriginalFilename());
+		surveyDAO.addCabinet(BB);
+		redirectAttributes.addFlashAttribute("status",status);
+		return new ModelAndView("redirect:/newCabinet");
+	}	
+
+	
 	 @RequestMapping(value="/getLastTicketId", method=RequestMethod.GET)
 	 @ResponseBody
 	 public String getLastTicketId(HttpServletRequest request){
@@ -334,6 +373,42 @@ public class HomeController {
 	      System.out.println("RegionsData "+regionsMap);
 	      return regionsMap;
 	   }
+	   
+	   @ModelAttribute("BBManufacturer")	
+	   public Map<String, String> getBBManufacturer() {
+	      Map<String, String> BBMap = new HashMap<String, String>();
+	      List<Battery_Bank_Master> regions = surveyDAO.getBBManufacturer();
+	      int i=0;
+	      for(i=0;i<regions.size();i++){
+	    	  System.out.println(regions.get(i));
+	    	 }
+	      for(Battery_Bank_Master region : regions)
+	      {
+	    	  BBMap.put(region.getManufacturer(), region.getManufacturer());
+	      }
+	      System.out.println("RegionsData "+BBMap);
+	      return BBMap;
+	   }
+	  
+	   
+	   @ModelAttribute("BBType")	
+	   public Map<String, String> getBBType() {
+	      Map<String, String> BBMap = new HashMap<String, String>();
+	      List<Battery_Bank_Master> regions = surveyDAO.getBBManufacturer();
+	      int i=0;
+	      for(i=0;i<regions.size();i++){
+	    	  System.out.println(regions.get(i));
+	    	 }
+	      for(Battery_Bank_Master region : regions)
+	      {
+	    	  BBMap.put(region.getType(), region.getType());
+	      }
+	      System.out.println("RegionsData "+BBMap);
+	      return BBMap;
+	   }
+	   
+	   
+
 
 	 @RequestMapping(value="getStates", method = RequestMethod.GET)
 	    @ResponseBody

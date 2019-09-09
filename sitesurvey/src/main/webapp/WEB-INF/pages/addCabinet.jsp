@@ -248,20 +248,20 @@ label {
 			<br>
 			<br>
 
-			<h3 class="text-center">Add Battery Bank</h3>
+			<h3 class="text-center">Add Cabinet</h3>
 			<span id="msg" style="color: red; font-size: 12px;">*All
 				Fields are Mandatory*</span><br>
 			<br>
-			<form:form action="saveBB" method="post"
-				modelAttribute="Site_Battery_Bank" enctype="multipart/form-data">
+			<form:form action="saveCabinet" method="post"
+				modelAttribute="Site_Cabinet" enctype="multipart/form-data">
 				<div class="login-form">
 
 					<br> <label for="Site ID" class="placeholder">Site ID</label>
 					<form:input id="siteid" path="siteid.siteid"
 						class="form-control input-full filled" value="IND001" />
-					<br> <label for="Manufacturer" class="placeholder">Manufacturer</label>
-					<form:select id="Manufacturer" path="Manufacturer"
-						name="Manufacturer" class="form-control input-full filled">
+					<br> <label for="cabinetManufacturer" class="placeholder">Cabinet Manufacturer</label>
+					<form:select id="cabinetManufacturer" path="cabinetManufacturer"
+						name="cabinetManufacturer" class="form-control input-full filled">
 						<form:option value="Select">Select</form:option>
 						<form:options items="${BBManufacturer}"></form:options>
 					</form:select>
@@ -272,31 +272,13 @@ label {
 						<form:options items="${BBType}"></form:options>
 					</form:select>
 
-
-
-					<br> <label for="date" class="placeholder">Date of
-						Manufacturer/Installation</label> -->
-					<form:input type="date" id="manufacturedDate"
-						path="manufacturedDate" class="form-control input-full filled" />
-					<br> <label for="number_of_batteries" class="placeholder">Number_of_batteries</label>
-					<form:input id="number_of_batteries" path="number_of_batteries"
-						name="number_of_batteries" class="form-control input-full filled" />
-					<br> <label for="number_of_working_Module_rating"
-						class="placeholder">Number of Working modules available</label>
-					<form:input id="number_of_working_Module_rating"
-						path="number_of_working_Module_rating"
-						name="number_of_working_Module_rating"
-						class="form-control input-full filled" />
-					<br> <label for="capacity" class="placeholder">capacity</label>
-					<form:input id="capacity" path="capacity" name="capacity"
-						class="form-control input-full filled" />
-					<br> <label for="overallCondition" class="placeholder">Overall
-						Condition of Battery Bank Equipment</label>
-					<!--<form:input id="overallCondition" path="overallCondition"  name="overallCondition"  class="form-control input-full filled"  />-->
-
-
-					<form:select id="overallCondition" path="overallCondition"
-						name="overallCondition" class="form-control input-full filled">
+					<br> <label for="dimensions" class="placeholder">Dimensions</label>
+					<form:input id="dimensions" path="dimensions"
+						name="dimensions" class="form-control input-full filled" />
+		
+					<br> <label for="cabinetCondition" class="placeholder">Cabinet Condition</label>
+					<form:select id="cabinetCondition" path="cabinetCondition"
+						name="cabinetCondition" class="form-control input-full filled">
 						<form:option value="Select">Select</form:option>
 						<form:option value="Not assessed">Not assessed </form:option>
 						<form:option
@@ -308,32 +290,20 @@ label {
 						<form:option value="Very good - Looks almost new">Very good - Looks almost new</form:option>
 						<form:option value="Not applicable">Not applicable</form:option>
 					</form:select>
-					<br> <label for="tag_observed" class="placeholder">Tag_observed</label>
-					<form:select id="tag_observed" path="tag_observed"
-						name="tag_observed" class="form-control input-full filled">
-						<form:option value="Select">Select</form:option>
-						<form:option value="Yes">Yes</form:option>
-						<form:option value="No">No</form:option>
 
-					</form:select>
 					<br> <label for="comments" class="placeholder">Observation/Comments</label>
 					<form:input id="comments" path="comments" name="comments"
 						class="form-control input-full filled" />
-					<br> <label for="tag_photo" class="placeholder">Tag
-						photo</label>
+					<br> <label for="Photo_1" class="placeholder">photo_1</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo" path="tag_photo" name="tag_photo"
+					<input type="file" id="photo_1" path="photo_1" name="tag_photo"
 						class="form-control input-full filled" /> <br>
 
-					<br> <label for="tag_photo" class="placeholder">Battery Bank Photo 1</label>
+					<br> <label for="photo_2" class="placeholder">photo_2</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo" path="tag_phot01" name="tag_photo"
+					<input type="file" id="photo_2" path="photo_2" name="tag_photo"
 						class="form-control input-full filled" /> <br>
 						
-											<br> <label for="tag_photo" class="placeholder">Battery Bank Photo 2</label>
-					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo" path="tag_photo2" name="tag_photo"
-						class="form-control input-full filled" /> <br>
 
 
 

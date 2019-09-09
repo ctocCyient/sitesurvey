@@ -9,8 +9,11 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.cyient.model.Battery_Bank_Master;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Site_Battery_Bank;
+import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
 import com.cyient.model.Technician;
@@ -69,6 +72,16 @@ public class SurveyDAOImpl implements SurveyDAO {
        	      .list();  
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	public List<Battery_Bank_Master> getBBManufacturer() {
+		//return sessionFactory.getCurrentSession().createQuery("from Regions").list();
+		 return sessionFactory.getCurrentSession().createCriteria(Battery_Bank_Master.class)         	      
+       	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
+       	      .list();  
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public List<Regions> getStates(String region) {		
 		//return sessionFactory.getCurrentSession().createQuery("select distinct state from Regions where region='"+region+"'").list();	        
@@ -292,4 +305,17 @@ public class SurveyDAOImpl implements SurveyDAO {
 		
 		return techStatus;
 	}
+
+	public void addBB(Site_Battery_Bank BB) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().saveOrUpdate(BB);
+	}
+
+	
+
+	public void addCabinet(Site_Cabinet BB) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().saveOrUpdate(BB);	
+	}
+
 }

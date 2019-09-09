@@ -4,8 +4,11 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.cyient.model.Battery_Bank_Master;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Site_Battery_Bank;
+import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
 import com.cyient.model.Technician;
@@ -32,6 +35,9 @@ public interface SurveyDAO {
 	@Transactional
 	public void addSMPS(Site_SMPS smps);
 	
+	@Transactional
+	public void addBB(Site_Battery_Bank BB);
+		
 	@Transactional
 	public List<Regions> getRegions();
 	
@@ -131,5 +137,13 @@ public interface SurveyDAO {
 
 	 @Transactional
 	public List<TechnicianTicketInfo> managerNotAcceptedTickets(String username);
+
+	 @Transactional
+		public List<Battery_Bank_Master> getBBManufacturer();
+		
+		
+		@Transactional
+		public void addCabinet(Site_Cabinet BB);
+
 
 }
