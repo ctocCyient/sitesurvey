@@ -96,12 +96,51 @@ public class Tower_Installation implements Serializable {
 	@Column(name="Tower_Photo4_Name")
 	private String tower_photo4_name;
 	
+
 	@Column(name="Tower_Photo4_Latitude")
 	private String tower_photo4_latitude;
 
 	@Column(name="Tower_Photo4_Longitude")
 	private String tower_photo4_longitude;
+	
+	
+	
+	
+	public byte[] getTower_photo4() {
+		return tower_photo4;
+	}
 
+	public void setTower_photo4(byte[] tower_photo4) {
+		this.tower_photo4 = tower_photo4;
+	}
+
+	public String getTower_photo4_name() {
+		return tower_photo4_name;
+	}
+
+	public void setTower_photo4_name(String tower_photo4_name) {
+		this.tower_photo4_name = tower_photo4_name;
+	}
+
+	public String getTower_photo4_latitude() {
+		return tower_photo4_latitude;
+	}
+
+	public void setTower_photo4_latitude(String tower_photo4_latitude) {
+		this.tower_photo4_latitude = tower_photo4_latitude;
+	}
+
+	public String getTower_photo4_longitude() {
+		return tower_photo4_longitude;
+	}
+
+	public void setTower_photo4_longitude(String tower_photo4_longitude) {
+		this.tower_photo4_longitude = tower_photo4_longitude;
+	}
+
+	@Column(name="OverallCondition")
+	private String overallconditon;
+	
 	public int getId() {
 		return id;
 	}
@@ -278,38 +317,15 @@ public class Tower_Installation implements Serializable {
 		this.tower_photo3_longitude = tower_photo3_longitude;
 	}
 
-	public byte[] getTower_photo4() {
-		return tower_photo4;
+	public String getOverallconditon() {
+		return overallconditon;
 	}
 
-	public void setTower_photo4(byte[] tower_photo4) {
-		this.tower_photo4 = tower_photo4;
+	public void setOverallconditon(String overallconditon) {
+		this.overallconditon = overallconditon;
 	}
 
-	public String getTower_photo4_name() {
-		return tower_photo4_name;
-	}
-
-	public void setTower_photo4_name(String tower_photo4_name) {
-		this.tower_photo4_name = tower_photo4_name;
-	}
-
-	public String getTower_photo4_latitude() {
-		return tower_photo4_latitude;
-	}
-
-	public void setTower_photo4_latitude(String tower_photo4_latitude) {
-		this.tower_photo4_latitude = tower_photo4_latitude;
-	}
-
-	public String getTower_photo4_longitude() {
-		return tower_photo4_longitude;
-	}
-
-	public void setTower_photo4_longitude(String tower_photo4_longitude) {
-		this.tower_photo4_longitude = tower_photo4_longitude;
-	}
-
+	
 		
 
 

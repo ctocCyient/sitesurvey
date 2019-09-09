@@ -10,12 +10,7 @@
 
 	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	
-	<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
 
-	<!-- Fonts and icons -->
-	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>	
-	<script src="<c:url value='resources/js/jquery.min.js' />"></script>	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 			<script type="text/javascript">
 	   if(sessionStorage.getItem("username")==null)
@@ -23,14 +18,63 @@
 		   url = "/sitesurvey/";
 		  $( location ).attr("href", url);
    	}	
-	</script>	
+	</script>
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
-	<script src="<c:url value='resources/js/validations.js' />"></script>	
+	<script src="<c:url value='resources/js/validations.js' />"></script>
+	
 	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">
 	
-	
-	
+	<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
+
+	<!-- Fonts and icons -->
+	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 		
+		
+		<style type="text/css">
+#openModal {
+	text-align:center;
+	margin:auto;
+	width:50%;
+	height:20%;
+	opacity:.95;
+	top:0;
+	bottom:0;
+	right:0;
+	left:0;	
+	position:absolute;
+	background-color:#ffffff;
+	overflow:auto
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-border.btn-assign {
+    color: #6610f2!important;
+    border: 1px solid #6610f2!important;
+    }
+    
+.fa-bars,
+.fa-ellipsis-v
+{
+color: #fff!important;
+}
+
+</style>
+
+    
 	<script>
 		WebFont.load({
 			google: {"families":["Open+Sans:300,400,600,700"]},
@@ -39,21 +83,20 @@
 				sessionStorage.fonts = true;
 			}
 		});
-		 var s=sessionStorage.getItem("username");
-		$(document).ready(function() {
+	</script>
 	
-
+	<script >
+		$(document).ready(function() {
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 			  getCount();
-			 tableData();
-
+			  tableData();			  
+		});	
 		
-
-		});
-		
+	
 		var dataSet=[];
-		 var ticketId;
+		 var custId;
+		 var ticketType;
 		 
 		 function getCount(){
 			 var s=sessionStorage.getItem("username");
@@ -65,85 +108,86 @@
 	                data:{"username":s},
 	                success:function(result) {
 	                	var jsonArr = $.parseJSON(result);
-	                	 $('#assignedTechTickets')[0].innerHTML=jsonArr.AssignedTickets;
-		                  $('#acceptedTechTickets')[0].innerHTML=jsonArr.AcceptedTickets;
-		                  $('#closedTechTickets')[0].innerHTML=jsonArr.ClosedTickets;            
-	                    
+	                  $('#assignedTechTickets')[0].innerHTML=jsonArr.AssignedTickets;
+	                  $('#acceptedTechTickets')[0].innerHTML=jsonArr.AcceptedTickets;
+	                  $('#closedTechTickets')[0].innerHTML=jsonArr.ClosedTickets;
+	                  
 	                }
 				});
 			}
 		
-		
 		function tableData()
-		{			
+		{	
+
+			var s=sessionStorage.getItem("username");
+			
 			$.ajax({
                 type:"get",
-                url:"getTechncianClosedTickets",
+                async: false,
+                url:"getTechnicianAcceptedTickets",
                 contentType: 'application/json',
                 datatype : "json",
-                data:{"username":s},
-                success:function(data) {
-                    closedTicketsList = JSON.parse(data);
-					
-                    for(var i=0;i<closedTicketsList.length;i++)
+                 data:{"username":s},
+                success:function(data1) {
+                    openTicketsList = JSON.parse(data1);                    
+
+                    for(var i=0;i<openTicketsList.length;i++)
          		   {
-                    	dataSet.push([closedTicketsList[i].ticketNum,closedTicketsList[i].siteid,closedTicketsList[i].ticketDescription,closedTicketsList[i].severity]);
-         			   
-         		   }
-                   
-                    
-			 var table1=$('#techClosedTickets').DataTable({
+                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteid,openTicketsList[i].ticketDescription]);
+		 		   }
+                                       
+			 var table1=$('#technicianAcceptedTickets').DataTable({
 					destroy:true,
 					language: {
 					  emptyTable: "No Data Available"
-					},	
-					//columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<button style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn'>View</button>"}],					
+					},						
+					columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='assignBtn' value='Start Survey' />"}],	
 			        data: dataSet,
 			        columns: [
-			        	{title: "Ticket Id" },
+			        	
+						{title: "Ticket Id" },
 						{title: "Site Id" },
-						{title: "Ticket Description" },									
-						{title: "Action" },						
+						{title: "Ticket Description" },
+						{title:"Action"}
 			        ]
 			    } );
 			 
-			 $('#execClosedTickets tbody').on('click', '[id*=viewBtn]', function () {
+			 $('#technicianAcceptedTickets tbody').on('click', '[id*=assignBtn]', function () {
 		            data1 =  table1.row($(this).parents('tr')).data();
-		           
+		            rowIndex = $(this).parent().index();
+					 rowToDelete= table1.row($(this).parents('tr'));
+		            // alert(data1[0] );
 		           ticketId=data1[0];
-		           custId=data1[1];
-		           
-		           
-		           console.log("Cust"+custId);
-		           
-		          // window.location.href = '/RFIDAssetTracking/viewTicketDetails';
-					
-
-					$.ajax({
+		           //alert(ticketId)
+		           siteId=data1[1];
+		           city=data1[5];
+		           $.ajax({
 		                type: "get",
-		                url: "getDetails",
+		                url: "fetchSiteInformation",
 		                contentType: 'application/json',
-		                data :{
-		                	custId,ticketId
-		                  },
-		                datatype: "json",
+		                datatype: "json", 
+						    data:{"ticketid":ticketId,"siteid":siteId},
 		                success: function(result) {
-		                    listData = JSON.parse(result);
-		                   window.location.href = '/RFIDAssetTracking/viewTicketDetails?listDetails='+ window.encodeURIComponent(JSON.stringify(listData)); 
-		                  
+		                	
+		                	jsonarr=JSON.parse(result);
+		                	//alert(jsonarr[0]);
+		    	         	window.location.href = '/sitesurvey/fetchtowerinstallation?jsonarr='+jsonarr;
 
+		                	
+		                	
 		                }
 					
-		       		 }); 
+		       		 });
 			 
           });
-			 }
+			 
+		}
 			});
 		}
-		
-
+	
 	</script>
-		
+
+
 	<!-- CSS Files -->
 
 	
@@ -153,15 +197,11 @@
 	<!-- CSS Just for demo purpose, don't include it in your project -->
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/demo.css' />">
 	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 
-	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<style>
-.fa-bars,
-.fa-ellipsis-v
-{
-color: #fff!important;
-}
-</style>
+
 </head>
 <body>
 	<div class="wrapper">
@@ -190,8 +230,8 @@ color: #fff!important;
 			</div>
 			<!-- End Logo Header -->
 
-<!-- Navbar Header -->
-			<div id="navbar">	
+			<!-- Navbar Header -->
+<div id="navbar">	
 			</div>
 			<!-- End Navbar -->
 		</div>
@@ -219,7 +259,7 @@ color: #fff!important;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category">Assigned</p>
+												<p class="card-category" >Assigned</p>
 												<h4 class="card-title" id="assignedTechTickets"></h4>
 											</div>
 										</div>
@@ -229,7 +269,7 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/technicianAcceptedTickets'" style="cursor:pointer;">
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/technicianAcceptedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small"  style="background:#af91e1;border-radius: 5px">
@@ -238,8 +278,8 @@ color: #fff!important;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category">Accepted</p>
-												<h4 class="card-title" id="acceptedTechTickets"></h4>
+												<p class="card-category" style="color:#ffffff;">Accepted</p>
+												<h4 class="card-title" id="acceptedTechTickets" style="color:#ffffff;"></h4>
 											</div>
 										</div>
 									</div>
@@ -248,7 +288,7 @@ color: #fff!important;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianClosedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianClosedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
@@ -257,8 +297,8 @@ color: #fff!important;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category" style="color:#ffffff;">Closed</p>
-												<h4 class="card-title" id="closedTechTickets" style="color:#ffffff;"></h4>
+												<p class="card-category">Closed</p>
+												<h4 class="card-title" id="closedTechTickets"></h4>
 											</div>
 										</div>
 									</div>
@@ -268,7 +308,10 @@ color: #fff!important;
 						
 					</div>
 
+
+
 					<div class="row">
+
 							<div class="col-md-12">
 							<div class="card">
 								<div class="card-header">
@@ -276,36 +319,29 @@ color: #fff!important;
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">
-										<table id="techClosedTickets" style="width:100%" class="display table table-striped table-hover" >
-
+										<table id="technicianAcceptedTickets" style="width:100%" class="display table table-striped table-hover" >
+											
 										</table>
 									</div>
 								</div>
 							</div>
 						</div>
-	
-	
-
 			</div>
 			
 		</div>
 		
-	
+		
 		
 	</div>
 	</div>
 </div>
+
 <!--   Core JS Files   -->
-
-
-
 <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
 
 <!-- jQuery UI -->
-
-
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' />"></script>
 
@@ -317,30 +353,22 @@ color: #fff!important;
 <script src="<c:url value='resources/assets/js/plugin/moment/moment.min.js' />"></script>
 
 <!-- Chart JS -->
-
 <script src="<c:url value='resources/assets/js/plugin/chart.js/chart.min.js' />"></script>
 
 <!-- jQuery Sparkline -->
-
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
-
 
 <!-- Chart Circle -->
 <script src="<c:url value='resources/assets/js/plugin/chart-circle/circles.min.js' />"></script>
 
-
 <!-- Datatables -->
 <script src="<c:url value='resources/assets/js/plugin/datatables/datatables.min.js' />"></script>
-
 
 <!-- Bootstrap Notify -->
 <script src="<c:url value='resources/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' />"></script>
 
-
 <!-- Bootstrap Toggle -->
 <script src="<c:url value='resources/assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' />"></script>
-
-
 
 <!-- jQuery Vector Maps -->
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/jquery.vmap.min.js' />"></script>
@@ -351,13 +379,11 @@ color: #fff!important;
 <script src="<c:url value='resources/assets/js/plugin/gmaps/gmaps.js' />"></script>
 
 <!-- Sweet Alert -->
-
 <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 <!-- Azzara JS -->
 
 <script src="<c:url value='resources/assets/js/ready.min.js' />"></script>
-
 
 
 </body>

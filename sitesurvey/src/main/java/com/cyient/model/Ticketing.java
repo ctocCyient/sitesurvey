@@ -56,6 +56,12 @@ public class Ticketing implements Serializable {
 	
 	@Column(name="Status")
 	private String status;
+	
+	@Column(name="Comments")
+	private String comments;
+	
+	@Column(name="Remarks")
+	private String remarks;
 
 	public String getTicketNum() {
 		return ticketNum;
@@ -152,4 +158,21 @@ public class Ticketing implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
 }

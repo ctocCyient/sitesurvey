@@ -73,6 +73,7 @@
 		  }
 		  else if(role=="Admin"){
 			 // getCount();
+			// alert("INADJD");
 				document.getElementById("open_div_admin").click();	
 	      }
 		  else if(role=="Manager"){

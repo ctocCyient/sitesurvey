@@ -1,31 +1,37 @@
 package com.cyient.controller;
 
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
-
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.Context;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.jboss.logging.Logger;
 import org.json.simple.JSONArray;
+import org.omg.CORBA.portable.OutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,6 +40,7 @@ import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 import com.cyient.model.Technician;
+import com.cyient.model.Tower_Installation;
 import com.cyient.model.Track_Users;
 import com.cyient.model.User;
 import com.google.gson.Gson;
@@ -52,6 +59,8 @@ public class SiteSurveyController {
 	}
 	@Autowired
 	private SurveyDAO surveyDAO;
+	
+	//ConfigurableApplicationContext con= ConfigurableApplicationContext(SiteSurveyController.class)
 	
 	private Integer Session_counter = 0;	
 	@RequestMapping(value = "/")
@@ -176,8 +185,18 @@ public class SiteSurveyController {
 		model.setViewName("technicianReg");
 		return model;
 	}*/
-
-
+	
+	/*Added for fetching roles in header page */
+	 @RequestMapping(value= "getRoles", method = RequestMethod.GET)
+		@ResponseBody
+		public String getRoles(HttpServletRequest request) {
+		 String username=request.getParameter("userName");
+			List<User> user = surveyDAO.getRoles(username);
+			Gson gsonBuilder = new GsonBuilder().create();
+			String regionJSON = gsonBuilder.toJson(user);
+	 	   	return regionJSON;
+		}
+	 
 	@RequestMapping(value = "/logout")
 	 public String logout(@ModelAttribute User user, HttpSession session,HttpServletRequest request) {
           	  session.removeAttribute("userName");
@@ -202,8 +221,89 @@ public class SiteSurveyController {
 	
 	@RequestMapping(value = "/fetchtowerinstallation", method = RequestMethod.GET)
 	public ModelAndView fetchtowerinstallation(ModelAndView model) {
+		
+		//Tower_Installation ti=
+		
+		Tower_Installation ti=new Tower_Installation();
+		model.addObject("Tower_Installation",ti);
 		model.setViewName("towerInstallation");
 		return model;
 	}
 	
+	@RequestMapping(params = "btn",value = "/towerinstallation",  method = RequestMethod.POST)
+	public ModelAndView savetowerInstallation(@ModelAttribute("Tower_Installation") Tower_Installation towerinstallation,
+			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request) {
+		
+		
+		System.out.println(" tower file name>>>>"+towerinstallation.getSiteid().getSiteid());
+		System.out.print("Overall Condition"+towerinstallation.getOverallconditon());
+		String action= request.getParameter("btn");
+		System.out.println("bts value>>>> "+action);
+	//	System.out.println("json>>>>>>>>"+jsonarr);
+		String message = "";
+		
+		try {
+			System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
+			towerinstallation.setTower_photo1(multipart[0].getBytes());
+			towerinstallation.setTower_photo1_name(multipart[0].getOriginalFilename());
+			towerinstallation.setTower_photo2(multipart[1].getBytes());
+			towerinstallation.setTower_photo2_name(multipart[1].getOriginalFilename());
+			towerinstallation.setTower_photo3(multipart[2].getBytes());
+			towerinstallation.setTower_photo3_name(multipart[2].getOriginalFilename());
+			towerinstallation.setTower_photo4(multipart[3].getBytes());
+			towerinstallation.setTower_photo4_name(multipart[3].getOriginalFilename());
+			Site s = new Site();
+			s.setSiteid("IND001");
+			towerinstallation.setSiteid(s);
+			System.out.println("towerphoto1>>"+towerinstallation.getTower_photo1());
+			Gson gsonBuilder = new GsonBuilder().create();
+            String towerInstallationJson = gsonBuilder.toJson(towerinstallation);
+            //System.out.println(towerInstallationJson);
+              // return execOpenJson.toString()
+					try {    		  
+			            URL url = new URL("http://localhost:8080/SiteSurveyRest/sitesurvey/saveTowerInstallation");
+			            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+
+			            conn.setRequestMethod("POST");
+			            conn.setDoOutput(true);
+			            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+			            wr.writeBytes(towerInstallationJson);
+			            wr.flush();
+			            wr.close();
+			            /*java.io.OutputStream os = conn.getOutputStream();
+
+
+			    		os.write(towerInstallationJson.toString().getBytes());
+			    		os.flush();
+			    		os.close();*/
+			            //conn.setRequestProperty("Accept", "application/json");
+			            if (conn.getResponseCode() != 200) {
+			                throw new RuntimeException("Failed : HTTP Error code : "
+			                        + conn.getResponseCode());
+			            }     
+			            InputStreamReader in = new InputStreamReader(conn.getInputStream());
+			            BufferedReader br = new BufferedReader(in);
+			            conn.disconnect();
+			
+			        } catch (Exception e) {
+			            System.out.println("Exception in NetClientGet:- " + e);
+			        }
+//			String status= surveyDAO.saveTowerInstallation(towerinstallation);
+//			if(status=="True"){
+//				if(action=="Save"){
+//					model.setViewName("redirect:/towerinstallation");
+//				}else if(action=="save & Continue"){
+//					model.setViewName("");
+//				}
+//			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return model;
+	}
 }

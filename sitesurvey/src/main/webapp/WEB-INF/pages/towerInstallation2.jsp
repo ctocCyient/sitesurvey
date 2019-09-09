@@ -3,8 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<% String jsondetails=(String)request.getParameter("jsonarr"); 
-   System.out.println("json>>>>>>>"+jsondetails);%>
+<% String inventoryDetails=(String)request.getParameter("inventoryDetails"); %>
 <% String ticketId=(String)request.getParameter("ticketid"); %>
 <% String ticketType=(String)request.getParameter("ticketType"); %>
 <% String ticketStatus=(String)request.getParameter("ticketStatus"); %>
@@ -69,13 +68,12 @@ var ticketStatus;
 
 
 
-var jsonDetails;
+
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
-	 jsonDetails='<%=jsondetails%>';
-	alert(jsonDetails);
-	$("#siteid")[0].value=jsonDetails;
+	
+	
 	  
 });
 
@@ -140,7 +138,6 @@ $(document).ready(function(){
 				<h3 class="text-center">Tower Audit</h3>
 				<form:form method="post" id="towerInstallationForm" modelAttribute="Tower_Installation" action="towerinstallation" enctype="multipart/form-data"  >
 				
-				<form:input type="hidden" path="siteid.siteid" id="siteid" />
 				<div class="login-form">			
 					<div class="form-group ">
 						<label for="towertype" class="placeholder">Tower Type</label>
@@ -184,49 +181,59 @@ $(document).ready(function(){
 						<form:input id="tirrh" path="noofRRH" class="form-control input-full"  />					
 					</div>
 					
-							<div class="form-group ">
+				<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" >Upload Image </label>
-							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"   id="image1"  name="file"  /> 
-					
-  </div>
+							<form:input type="file"   path="tower_photo1" class="form-control input-border-bottom"   id="image1"  name="file"  /> 
+						<!-- <span> Max Size upload 3 MB</span> -->
+							
+							<!--  -->
+	
+  
+					<span class="isa_failure" id="isa_failure">${errMsg}</span>
+<%-- 					        <form:errors path="fileName" cssClass="error"/>
+ --%>				</div>
  	
 				<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" >Upload Image2 </label>
-							<input type="file" path="tower_photo2"  class="form-control input-border-bottom"   id="image2" name="file"   /> 
-					
-  		</div>
+							<form:input type="file" path="tower_photo2"  class="form-control input-border-bottom"   id="image2" name="file"   /> 
+						<!-- <span> Max Size upload 3 MB</span> -->
+							
+							<!--  -->
+	
+  
+					<span class="isa_failure" id="isa_failure">${errMsg}</span>
+<%-- 					        <form:errors path="fileName" cssClass="error"/>
+ --%>				</div>
  	
 				<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" >Upload Image3 </label>
-							<input type="file"  path="tower_photo3" class="form-control input-border-bottom"   id="image3" name="file"   /> 
-					
-					</div>
-					<div class="form-group ">
-				
-				<label for="Upload Image" class="placeholder" >Upload Image4 </label>
-							<input type="file"  path="tower_photo4" class="form-control input-border-bottom"   id="image4" name="file"   /> 
-					
-					</div>
+							<form:input type="file"  path="tower_photo3" class="form-control input-border-bottom"   id="image3" name="file"   /> 
+						<!-- <span> Max Size upload 3 MB</span> -->
+							
+							<!--  -->
+	
+  
+					<span class="isa_failure" id="isa_failure">${errMsg}</span>
+<%-- 					        <form:errors path="fileName" cssClass="error"/>
+ --%>				</div>
  
- 
-		
  					
 				<div class="form-action" id="new_submit" >
-				 <input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #012169;color: white;">  
+				 <input type="submit"  class="btn btn-rounded btn-login" value="Save" style="background-color: #012169;color: white;">  
 					
  					<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				
  				
-				 <input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">  
+				 <input type="button" class="btn btn-rounded btn-login" value="Save & Continue" style="background-color: #012169;color: white;">  
 					
  					<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				</div>
  
 				</div>
-				</form:form>				
+				</form:form>			
 			</div>
 	</div>
    <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>

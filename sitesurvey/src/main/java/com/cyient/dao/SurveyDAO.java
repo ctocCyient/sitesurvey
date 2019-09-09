@@ -9,6 +9,7 @@ import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
+import com.cyient.model.Tower_Installation;
 import com.cyient.model.Track_Users;
 import com.cyient.model.User;
 
@@ -92,6 +93,9 @@ public interface SurveyDAO {
 	public List<TechnicianTicketInfo> techAssignedTicketsData(String username);
 	
 	@Transactional
+	public List<TechnicianTicketInfo> techAcceptedTicketsData(String username);
+	
+	@Transactional
 	public List<TechnicianTicketInfo> techClosedTicketsData(String username);
 
 	@Transactional
@@ -111,5 +115,13 @@ public interface SurveyDAO {
 
 	@Transactional
 	public void addTicket(Ticketing ticket);
+
+	 @Transactional
+	 public List<User> getRoles(String userName);
+	 
+	 @Transactional
+		public String saveTechStatus(String ticketId, String techStatus,String techId, String commentsData, String remarksData);
+	 @Transactional
+	 public String saveTowerInstallation(Tower_Installation towerinstallation);
 
 }
