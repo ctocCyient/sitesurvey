@@ -74,6 +74,11 @@ $(document).ready(function(){
 		//getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
+		 
+		 $("input").attr("required", "true");
+		 $("select").attr("required", "true");
+         $("select option:contains('Select')").attr("disabled","disabled");
+
 });
 
 function populateDropdown(data,id)
@@ -190,6 +195,46 @@ function getCity(district)
 		        }
 			});
 	}
+	
+	
+	
+    function ValidateFileUpload(id) {
+        var fuData = document.getElementById(id);
+        var FileUploadPath = fuData.value;
+
+//To check if user upload any file
+        if (FileUploadPath == '') {
+            alert("Please upload an image");
+
+        } else {
+            var Extension = FileUploadPath.substring(
+                    FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+
+//The file uploaded is an image
+
+if (Extension == "gif" || Extension == "png" || Extension == "bmp"
+                    || Extension == "jpeg" || Extension == "jpg") {
+
+// To Display
+                if (fuData.files && fuData.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        $('#blah').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(fuData.files[0]);
+                }
+
+            } 
+
+//The file upload is NOT an image
+else {
+                alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+                document.getElementById(id).value="";
+            }
+        }
+    }
 
 
 
@@ -262,14 +307,14 @@ label {
 					<br> <label for="cabinetManufacturer" class="placeholder">Cabinet Manufacturer</label>
 					<form:select id="cabinetManufacturer" path="cabinetManufacturer"
 						name="cabinetManufacturer" class="form-control input-full filled">
-						<form:option value="Select">Select</form:option>
-						<form:options items="${BBManufacturer}"></form:options>
+						<form:option value="">Select</form:option>
+						<form:options items="${CabinetManufacturer}"></form:options>
 					</form:select>
 					<br> <label for="type" class="placeholder">Type</label>
 					<form:select id="type" path="type" name="type"
 						class="form-control input-full filled">
-						<form:option value="Select">Select</form:option>
-						<form:options items="${BBType}"></form:options>
+						<form:option value="">Select</form:option>
+						<form:options items="${CabinetType}"></form:options>
 					</form:select>
 
 					<br> <label for="dimensions" class="placeholder">Dimensions</label>
@@ -279,7 +324,7 @@ label {
 					<br> <label for="cabinetCondition" class="placeholder">Cabinet Condition</label>
 					<form:select id="cabinetCondition" path="cabinetCondition"
 						name="cabinetCondition" class="form-control input-full filled">
-						<form:option value="Select">Select</form:option>
+						<form:option value="">Select</form:option>
 						<form:option value="Not assessed">Not assessed </form:option>
 						<form:option
 							value="very poor- Broken batteries, liquid / gel leackage,building out">very poor- Broken batteries, liquid / gel leackage,building out</form:option>
@@ -297,25 +342,29 @@ label {
 					<br> <label for="Photo_1" class="placeholder">photo_1</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
 					<input type="file" id="photo_1" path="photo_1" name="tag_photo"
-						class="form-control input-full filled" /> <br>
+						class="form-control input-full filled" accept="image/*" onchange="return ValidateFileUpload(this.id)"/> <br>
 
 					<br> <label for="photo_2" class="placeholder">photo_2</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="photo_2" path="photo_2" name="tag_photo"
+					<input type="file" id="photo_2" path="photo_2" name="tag_photo" onchange="return ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 						
 
-
-
-
-
 					<div class="form-action">
-						<a href="home" id="show-signin"
-							class="btn btn-rounded btn-login mr-3"
-							style="background-color: #E4002B; color: white;">Cancel</a> <input
-							type="submit" id="submit" value="Add"
-							class="btn btn-rounded btn-login"
-							style="background-color: #012169; color: white;">
+						
+						<!--  <a href="home" id="show-signin"
+							class="btn btn-danger"
+							style="background-color: #E4002B; color: white;">Cancel</a>-->
+							
+							 <input
+							type="submit" id="submit" value="Save"
+							class="btn btn" style="background-color: #012169; color: white;
+							 ">
+							
+														 <input
+							type="submit" id="submit" value="Save and Continue"
+							class="btn btn" style="background-color: #012169; color: white;
+							 ">
 					</div>
 				</div>
 			</form:form>

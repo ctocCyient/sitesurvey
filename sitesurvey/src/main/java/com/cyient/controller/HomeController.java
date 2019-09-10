@@ -408,7 +408,39 @@ public class HomeController {
 	   }
 	   
 	   
-
+	   @ModelAttribute("CabinetManufacturer")	
+	   public Map<String, String> getCabinetManufacturer() {
+	      Map<String, String> BBMap = new HashMap<String, String>();
+	      List<Site_Cabinet> regions = surveyDAO.getCabinetManufacturer();
+	      int i=0;
+	      for(i=0;i<regions.size();i++){
+	    	  System.out.println(regions.get(i));
+	    	 }
+	      for(Site_Cabinet region : regions)
+	      {
+	    	  BBMap.put(region.getCabinetManufacturer(), region.getCabinetManufacturer());
+	      }
+	      System.out.println("RegionsData "+BBMap);
+	      return BBMap;
+	   }
+	  
+	   
+	   @ModelAttribute("CabinetType")	
+	   public Map<String, String> getCabinetType() {
+	      Map<String, String> BBMap = new HashMap<String, String>();
+	      List<Site_Cabinet> regions = surveyDAO.getCabinetManufacturer();
+	      int i=0;
+	      for(i=0;i<regions.size();i++){
+	    	  System.out.println(regions.get(i));
+	    	 }
+	      for(Site_Cabinet region : regions)
+	      {
+	    	  BBMap.put(region.getType(), region.getType());
+	      }
+	      System.out.println("RegionsData "+BBMap);
+	      return BBMap;
+	   }
+	   
 
 	 @RequestMapping(value="getStates", method = RequestMethod.GET)
 	    @ResponseBody

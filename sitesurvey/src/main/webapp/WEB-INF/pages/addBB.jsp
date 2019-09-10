@@ -74,6 +74,10 @@ $(document).ready(function(){
 		//getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
+		 
+		 $("input").attr("required", "true");
+		 $("select").attr("required", "true");
+         $("select option:contains('Select')").attr("disabled","disabled");
 });
 
 function populateDropdown(data,id)
@@ -191,7 +195,43 @@ function getCity(district)
 			});
 	}
 
+	 function ValidateFileUpload(id) {
+	        var fuData = document.getElementById(id);
+	        var FileUploadPath = fuData.value;
 
+	//To check if user upload any file
+	        if (FileUploadPath == '') {
+	            alert("Please upload an image");
+
+	        } else {
+	            var Extension = FileUploadPath.substring(
+	                    FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+
+	//The file uploaded is an image
+
+	if (Extension == "gif" || Extension == "png" || Extension == "bmp"
+	                    || Extension == "jpeg" || Extension == "jpg") {
+
+	// To Display
+	                if (fuData.files && fuData.files[0]) {
+	                    var reader = new FileReader();
+
+	                    reader.onload = function(e) {
+	                        $('#blah').attr('src', e.target.result);
+	                    }
+
+	                    reader.readAsDataURL(fuData.files[0]);
+	                }
+
+	            } 
+
+	//The file upload is NOT an image
+	else {
+	                alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+	                document.getElementById(id).value="";
+	            }
+	        }
+	    }
 
 </script>
 <style>
@@ -297,7 +337,7 @@ label {
 
 					<form:select id="overallCondition" path="overallCondition"
 						name="overallCondition" class="form-control input-full filled">
-						<form:option value="Select">Select</form:option>
+						<form:option value="">Select</form:option>
 						<form:option value="Not assessed">Not assessed </form:option>
 						<form:option
 							value="very poor- Broken batteries, liquid / gel leackage,building out">very poor- Broken batteries, liquid / gel leackage,building out</form:option>
@@ -311,7 +351,7 @@ label {
 					<br> <label for="tag_observed" class="placeholder">Tag_observed</label>
 					<form:select id="tag_observed" path="tag_observed"
 						name="tag_observed" class="form-control input-full filled">
-						<form:option value="Select">Select</form:option>
+						<form:option value="">Select</form:option>
 						<form:option value="Yes">Yes</form:option>
 						<form:option value="No">No</form:option>
 
@@ -322,17 +362,17 @@ label {
 					<br> <label for="tag_photo" class="placeholder">Tag
 						photo</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo" path="tag_photo" name="tag_photo"
+					<input type="file" id="tag_photo" path="tag_photo" name="tag_photo" onchange="return ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 
 					<br> <label for="tag_photo" class="placeholder">Battery Bank Photo 1</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo" path="tag_phot01" name="tag_photo"
+					<input type="file" id="tag_photo" path="tag_phot01" name="tag_photo" onchange="return ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 						
 											<br> <label for="tag_photo" class="placeholder">Battery Bank Photo 2</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo" path="tag_photo2" name="tag_photo"
+					<input type="file" id="tag_photo" path="tag_photo2" name="tag_photo" onchange="return ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 
 

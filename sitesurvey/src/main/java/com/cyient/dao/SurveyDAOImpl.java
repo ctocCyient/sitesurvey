@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.cyient.model.Battery_Bank_Master;
+import com.cyient.model.Cabinet_Master;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 import com.cyient.model.Site_Battery_Bank;
@@ -80,6 +81,26 @@ public class SurveyDAOImpl implements SurveyDAO {
        	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
        	      .list();  
 	}
+	
+	
+
+	@SuppressWarnings("unchecked")
+	public List<Site_Cabinet> getCabinetManufacturer() {
+		//return sessionFactory.getCurrentSession().createQuery("from Regions").list();
+		 return sessionFactory.getCurrentSession().createCriteria(Cabinet_Master.class)         	      
+       	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
+       	      .list();  
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	@SuppressWarnings("unchecked")
