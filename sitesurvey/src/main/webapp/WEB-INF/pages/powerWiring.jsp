@@ -310,9 +310,9 @@ label {
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
   <span class="isa_success" style="color:green;font-size:14px;">${status}</span>
-			<h3 class="text-center">Site Access</h3>
+			<h3 class="text-center">Power Wiring</h3>
 			
-			<form:form method="post" action="saveAccess"  id="siteAccess" modelAttribute="Site_Access" enctype="multipart/form-data" >
+			<form:form method="post" action="saveWiring"  id="siteWiring" modelAttribute="Site_Wiring" enctype="multipart/form-data" >
 			<div class="login-form">	
 
 					                
@@ -324,33 +324,19 @@ label {
 	                         
 	            	</div>
             	</div>
-          		  <div id="exchangeExistDiv" >
-					<div class="form-group">
-					<label for="accesstype" class="placeholder">Access Type</label>
-	                <form:select id="accesstype"  path="accessType" name="accesstype" class="form-control input-border ">
-	                <form:option value="" >Select</form:option>
-	                <form:option value="Road">Road</form:option>
-	                <form:option value="FootPath">Foot Path</form:option>
-	                <form:option value="Stairway">Stairway</form:option>
-	                <form:option value="Other">Other</form:option>
-	                </form:select>	
-	                <!-- <span id="accesstypespan" style="color:red">*Please Select Access Type*</span>-->
-	                                      
-	            	</div>
-            	</div>
-				
+          		
 
 				  <div id="exchangeExistDiv" >
 					<div class="form-group">
-					<label for="condition" class="placeholder">Road Condition</label>
-	                <form:select id="condition"  path="roadCondition" name="condition" class="form-control input-border " >
+					<label for="condition" class="placeholder">Condition</label>
+	                <form:select id="wiringCondition"  path="wiringCondition" name="wiringCondition" class="form-control input-border " >
 	                <form:option  value="" >Select</form:option>
-	                <form:option value="Notassessed">Not assessed(Note why not assessed in observation)</form:option>
-	                <form:option value="VeryPoor">Very Poor(very difficult to access, waterlogged, significant obstacles/tripping hazard etc.)</form:option>
-	                <form:option value="Poor">Poor(Access with difficulty)</form:option>
-	                <form:option value="Fair"> Fair(e.g. Mud road access, phisical constructions to accessing site)</form:option>
-	                <form:option value="Good">Good(Paved road)</form:option>
-	                <form:option value="VeryGood">Very good(Tarred or concrete road)</form:option>
+	                <form:option value="Notassessed">Not assessed</form:option>
+	                <form:option value="VeryPoor">Very Poor(Safety risk, major fault risk, poor operation)</form:option>
+	                <form:option value="Poor">Poor</form:option>
+	                <form:option value="Fair"> Fair(Wiring on routes and in boxes/DBboarads needs work through is operational)</form:option>
+	                <form:option value="Good">Good</form:option>
+	                <form:option value="VeryGood">Very good</form:option>
 	                <form:option value="Notapplicable">Not applicable</form:option>
 	                </form:select>	  
 	                 <!--<span id="roadcondspan" style="color:red">*Please Select Road Condition*</span> -->            
@@ -368,7 +354,7 @@ label {
                 <div id="exchangeExistDiv">
 					<div class="form-group">
 					<label for="photo1up" class="placeholder">Upload Image1(Photo 1) </label>
-	                <input type="file" id="photo1up" name="file" accept="image/*" class="form-control input-border" />	
+	                <input type="file" id="site_photo1" name="file" accept="image/*" class="form-control input-border" />	
 	                <!--<span id="image1sspan" style="color:red">*Please Upload Image*</span> -->         
 	            	</div>
 	            
@@ -376,7 +362,7 @@ label {
 				 <div id="exchangeExistDiv">
 					<div class="form-group">
 					<label for="photo2up" class="placeholder">Upload Image2(Photo 2) </label>
-	                <input type="file" id="photo2up" name="file" accept="image/*" class="form-control input-border" />	
+	                <input type="file" id="site_photo1" name="file" accept="image/*" class="form-control input-border" />	
 	                <!--<span id="image2sspan" style="color:red">*Please Upload Image*</span> -->              
 	            	</div>
 	            
@@ -385,7 +371,7 @@ label {
                  
 				<div class="form-action" id="typeDiv">	
 				    <input type="submit" id="submit" name="clickBtn" value="Save" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-					<input  type="submit" id="submit1" name="clickBtn" value="Save & Continue" class="btn btn-rounded btn-login" onclick="redirectToOther();" style="background-color: #012169;color: white;">
+					<input  type="submit" id="submit1" name="clickBtn" value="Save & Continue" class="btn btn-rounded btn-login"  style="background-color: #012169;color: white;">
 					
 				</div>
 			</div>

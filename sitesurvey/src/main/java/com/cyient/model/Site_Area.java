@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -23,12 +24,15 @@ public class Site_Area implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	
 	@ManyToOne
 	@JoinColumn(name="siteID")
 	private Site siteid;
-		
+	
+	
 	@Column(name="Site_Condition")
 	private String siteCondition;
+	
 	
 	@Column(name="Comments")
 	private String comments;
@@ -38,7 +42,7 @@ public class Site_Area implements Serializable {
 	
 	@Column(name="Photo_inproper_name")
 	private String photo_inproper_name;	
-
+    
 	@Column(name="Photo_inproper_Latitude")
 	private String photo_inproper_latitude;
 
@@ -53,6 +57,7 @@ public class Site_Area implements Serializable {
 		this.id = id;
 	}
 
+
 	public Site getSiteid() {
 		return siteid;
 	}
@@ -60,6 +65,7 @@ public class Site_Area implements Serializable {
 	public void setSiteid(Site siteid) {
 		this.siteid = siteid;
 	}
+
 
 	public String getSiteCondition() {
 		return siteCondition;

@@ -32,7 +32,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
-import com.cyient.model.Site_Access;
 
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
@@ -64,11 +63,7 @@ public class HomeController {
 		model.setViewName("openTickets");
 		return model;
 	}
-	 @RequestMapping(value = "/accessDetails")
-		public ModelAndView accessDetails(ModelAndView model) throws IOException {
-			model.setViewName("accessDetails");
-			return model;
-	}
+
 	@RequestMapping(value = "/assignedTickets")
 	public ModelAndView assignedTickets(ModelAndView model) throws IOException {
 		model.setViewName("assignedTickets");
@@ -274,13 +269,7 @@ public class HomeController {
 		return model;
 	}
 	
-	@RequestMapping(value = "/siteAccess", method = RequestMethod.GET)
-	public ModelAndView newAccess(ModelAndView model) {
-		Site_Access siteaccess = new Site_Access();
-		model.addObject("Site_Access", siteaccess);
-		model.setViewName("accessDetails");
-		return model;
-	}
+	
 	
 	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
 	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
@@ -292,16 +281,6 @@ public class HomeController {
 		return new ModelAndView("redirect:/newSite");
 	}
 	
-
-	@RequestMapping(value = "/saveAccess", method = RequestMethod.POST)
-	public ModelAndView saveAccess(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
-		String status="Added Successfully";
-		/*if (site.getSiteid() !=null) { 
-			surveyDAO.addSite(site);
-		} 
-		redirectAttributes.addFlashAttribute("status", status);*/
-		return new ModelAndView("redirect:/newSite");
-	}
 
 	@RequestMapping(value="/saveGenerator" , method=RequestMethod.POST)
 	public ModelAndView saveGenerator(@ModelAttribute Site_Generator generator, RedirectAttributes redirectAttributes){

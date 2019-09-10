@@ -11,8 +11,11 @@ import org.springframework.stereotype.Repository;
 
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Site_Access;
+import com.cyient.model.Site_Area;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
+import com.cyient.model.Site_Wiring;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
@@ -48,7 +51,15 @@ public class SurveyDAOImpl implements SurveyDAO {
 		System.out.println(c.list());
         return c.list();
 	}
-
+	public void addSiteAccess(Site_Access siteacc) {
+		sessionFactory.getCurrentSession().saveOrUpdate(siteacc);
+	}
+	public void addSiteArea(Site_Area sitearea) {
+		sessionFactory.getCurrentSession().saveOrUpdate(sitearea);
+	}
+	public void addSitePowering(Site_Wiring sitewiring) {
+		sessionFactory.getCurrentSession().saveOrUpdate(sitewiring);
+	}
 	public void addSite(Site site) {
 		sessionFactory.getCurrentSession().saveOrUpdate(site);
 	}

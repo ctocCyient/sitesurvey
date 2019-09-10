@@ -18,11 +18,6 @@
     border: 1px solid #ebecec;
 }
 
-.error {
-	color: #ff0000;
-	font-style: italic;
-	font-weight: bold;
-}
 </style>
 <head>
 
@@ -32,14 +27,18 @@
 <title>Site Survey</title>
 
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<script src="<c:url value='resources/js/jquery.min.js' />"></script>
+	
+</head>
+<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/js/validations.js' />"></script>
+	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
+<link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
+	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 	
 	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">	
-</head>
-<!--	<script type="text/javascript">
+	<!--<script type="text/javascript">
 	role=sessionStorage.getItem("role");
 	   if(sessionStorage.getItem("username")==null)
    	{
@@ -65,9 +64,7 @@
 		
 
      
-<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
-<link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
-	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
+
 
 <script type="text/javascript">
 
@@ -83,79 +80,23 @@ WebFont.load({
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-	  //document.getElementById("accesstypespan").style.display = "none";
-	  //document.getElementById("roadcondspan").style.display = "none";
-	  //document.getElementById("commntsspan").style.display = "none";
-	  //document.getElementById("image1sspan").style.display = "none";
-	  //document.getElementById("image2sspan").style.display = "none";
+
 	//  getRegions();
 		//getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
 		 $("input").attr("required", "true");
-		
+			
 		 $("select").attr("required","true");
 		 $("select option:contains('Select')").attr("disabled","disabled");
-		
 });
+
 
 function redirectToOther()
 {
-	window.location.href = "/sitesurvey/siteArea";
+	window.location.href = "/sitesurvey/siteWiring";
 } 
 
-/*function validate(){
-	var accesstype=document.getElementById("accesstype").value;
-	var roadcond=document.getElementById("condition").value;
-	alert(roadcond);
-	var commnts=document.getElementById("obsrvcommnts").value;
-	 
-	var image1=document.getElementById("photo1up").value;
-	var image2=document.getElementById("photo2up").value;
-	
-	if(accesstype ==="Select"){
-		 document.getElementById("accesstypespan").style.display = "block";
-		 return false;
-   }
-	else{
-		 document.getElementById("accesstypespan").style.display = "none";
-		 
-	}
-	
-	if(roadcond ==="Select"){
-		 document.getElementById("roadcondspan").style.display = "block";
-		 return false;
-  }
-	else{
-		 document.getElementById("roadcondspan").style.display = "none";
-		 
-	}
-
-	if(commnts ===""){
-		 document.getElementById("commntsspan").style.display = "block";
-		 return false;
- }
-	else{
-		 document.getElementById("commntsspan").style.display = "none";
-		 
-	}
-	if(image1 ===""){
-		 document.getElementById("image1span").style.display = "block";
-		 return false;
-}
-	else{
-		 document.getElementById("image1sspan").style.display = "none";
-		 
-	}
-	if(image2 ===""){
-		 document.getElementById("image2span").style.display = "block";
-		 return false;
- }
-	else{
-		 document.getElementById("image2sspan").style.display = "none";
-		 
-	}
-}*/
 
 
 </script>
@@ -297,95 +238,60 @@ label {
 
 			<!-- Navbar Header -->
 			<div  id="navbar">	
-			
 			</div>
 			<!-- End Navbar -->
 		</div>
 
 		<!-- Sidebar -->
-<div id="execSidebar">
+<div id="superAdminSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-  <span class="isa_success" style="color:green;font-size:14px;">${status}</span>
-			<h3 class="text-center">Site Access</h3>
+            <span class="isa_success" style="color:green;font-size:14px;">${status}</span>
+			<h3 class="text-center">Site Area</h3>
 			
-			<form:form method="post" action="saveAccess"  id="siteAccess" modelAttribute="Site_Access" enctype="multipart/form-data" >
+			<form:form method="post" action="saveArea" modelAttribute="Site_Area" id="siteArea"  enctype="multipart/form-data">
 			<div class="login-form">	
-
-					                
-	          <div id="exchangeExistDiv">
-	          <form:hidden path="id"/>
+			<form:hidden path="id"/>
 					<div class="form-group">
 					<label for="siteid" class="placeholder">Site ID</label>
-	                <form:input id="siteid" path="siteid.siteid" name="siteid" class="form-control input-border "  />	
-	                         
+	                <form:input id="siteid" path="siteid.siteid" name="siteid" class="form-control input-border" />	                
 	            	</div>
-            	</div>
-          		  <div id="exchangeExistDiv" >
+ 
+            	
 					<div class="form-group">
-					<label for="accesstype" class="placeholder">Access Type</label>
-	                <form:select id="accesstype"  path="accessType" name="accesstype" class="form-control input-border ">
-	                <form:option value="" >Select</form:option>
-	                <form:option value="Road">Road</form:option>
-	                <form:option value="FootPath">Foot Path</form:option>
-	                <form:option value="Stairway">Stairway</form:option>
-	                <form:option value="Other">Other</form:option>
-	                </form:select>	
-	                <!-- <span id="accesstypespan" style="color:red">*Please Select Access Type*</span>-->
-	                                      
+					<label for="siteCondition">Condition Of The Site</label>
+	                <form:select id="siteCondition" path="siteCondition" name="siteCondition" class="form-control">
+	                <form:option value="">Select</form:option>
+	                <form:option value="Not assessed">Not assessed (Note why not assessed in observation)</form:option>
+	                <form:option value="Very Poor">Very Poor (Can't walk around inside the site - waterlogged etc.)</form:option>
+	                <form:option value="Poor">Poor (Can walk around with difficulty - weeds overgrowing etc.)</form:option>
+	                <form:option value="Fair"> Fair (No issues inside and surrounding site)</form:option>
+	                <form:option value="Good">Good (Well kept)</form:option>
+	                <form:option value="Very Good">Very good (Well kept with no issues at all)</form:option>
+	                <form:option value="Not applicable">Not applicable</form:option>
+	                </form:select>	                
 	            	</div>
-            	</div>
 				
-
-				  <div id="exchangeExistDiv" >
-					<div class="form-group">
-					<label for="condition" class="placeholder">Road Condition</label>
-	                <form:select id="condition"  path="roadCondition" name="condition" class="form-control input-border " >
-	                <form:option  value="" >Select</form:option>
-	                <form:option value="Notassessed">Not assessed(Note why not assessed in observation)</form:option>
-	                <form:option value="VeryPoor">Very Poor(very difficult to access, waterlogged, significant obstacles/tripping hazard etc.)</form:option>
-	                <form:option value="Poor">Poor(Access with difficulty)</form:option>
-	                <form:option value="Fair"> Fair(e.g. Mud road access, phisical constructions to accessing site)</form:option>
-	                <form:option value="Good">Good(Paved road)</form:option>
-	                <form:option value="VeryGood">Very good(Tarred or concrete road)</form:option>
-	                <form:option value="Notapplicable">Not applicable</form:option>
-	                </form:select>	  
-	                 <!--<span id="roadcondspan" style="color:red">*Please Select Road Condition*</span> -->            
-	            	</div>
-            	</div>
-				
-				<div id="exchangeExistDiv">
+			
 					<div class="form-group">
 					<label for="obsrvcommnts" class="placeholder">Observations/Comments</label>
-	                <form:input id="obsrvcommnts" path="comments" name="obsrvcommnts" class="form-control input-border " />	   
-	                <!-- <span id="commntsspan" style="color:red">*Please Enter Comments*</span>-->                  
+	                <form:input id="obsrvcommnts" path="comments" name="obsrvcommnts" class="form-control input-border"/>	                
 	            	</div>
-            	</div>
                 
-                <div id="exchangeExistDiv">
 					<div class="form-group">
 					<label for="photo1up" class="placeholder">Upload Image1(Photo 1) </label>
-	                <input type="file" id="photo1up" name="file" accept="image/*" class="form-control input-border" />	
-	                <!--<span id="image1sspan" style="color:red">*Please Upload Image*</span> -->         
-	            	</div>
+	                <input type="file" id="photo1up" name="file" accept="image/*"  class="form-control input-border"/>	                
 	            
-            	</div>
-				 <div id="exchangeExistDiv">
-					<div class="form-group">
-					<label for="photo2up" class="placeholder">Upload Image2(Photo 2) </label>
-	                <input type="file" id="photo2up" name="file" accept="image/*" class="form-control input-border" />	
-	                <!--<span id="image2sspan" style="color:red">*Please Upload Image*</span> -->              
-	            	</div>
 	            
             	</div>
 				
                  
 				<div class="form-action" id="typeDiv">	
-				    <input type="submit" id="submit" name="clickBtn" value="Save" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-					<input  type="submit" id="submit1" name="clickBtn" value="Save & Continue" class="btn btn-rounded btn-login" onclick="redirectToOther();" style="background-color: #012169;color: white;">
+				    <input type="submit" id="submit" name="clickBtn" value="Save"  class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
+					<input  type="submit" id="submit1" name="clickBtn" value="Save & Continue" onclick="redirectToOther();" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 					
 				</div>
 			</div>
