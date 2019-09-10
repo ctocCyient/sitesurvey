@@ -10,6 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -25,47 +30,62 @@ public class Tower_Installation implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="siteID")
 	private Site siteid;
-		
+	
+	@NotNull
 	@Column(name="Tower_Type")
 	private String towerType;
 	
+	@NotEmpty
 	@Column(name="Observation_Notes")
 	private String observationNotes;
 	
+	
+	@NotEmpty
 	@Column(name="Virtual_Inspection")
 	private String virtualInspection;
 	
+	@NotEmpty
 	@Column(name="Virtual_Inspection_2")
 	private String virtualInspection2;
 	
+	@NotEmpty
 	@Column(name="Comments")
 	private String comments;
+	
+	
 	
 	@Column(name="RF_Antenna_Num")
 	private int noofRFAntennas;
 	
+	
 	@Column(name="MW_Antenna_Num")
 	private int noofMWAntenna;
+	
 	
 	@Column(name="RRH_Num")
 	private int noofRRH;
 	
+	//@NotEmpty
 	@Column(name="Tower_Photo1", unique = false, nullable = false, length = 16777215)
 	private byte[] tower_photo1;
 	
+	//@NotEmpty
 	@Column(name="Tower_Photo1_Name")
 	private String tower_photo1_name;
 	
-
+	
 	@Column(name="Tower_Photo1_Latitude")
 	private String tower_photo1_latitude;
 
+	
 	@Column(name="Tower_Photo1_Longitude")
 	private String tower_photo1_longitude;
 	
+	//@NotEmpty
 	@Column(name="Tower_Photo2", unique = false, nullable = false, length = 16777215)
 	private byte[] tower_photo2;
 	
+	//@NotEmpty
 	@Column(name="Tower_Photo2_Name")
 	private String tower_photo2_name;
 	
@@ -77,9 +97,11 @@ public class Tower_Installation implements Serializable {
 	private String tower_photo2_longitude;
 	
 	
+	//@NotEmpty
 	@Column(name="Tower_Photo3", unique = false, nullable = false, length = 16777215)
 	private byte[] tower_photo3;
 	
+	//@NotEmpty
 	@Column(name="Tower_Photo3_Name")
 	private String tower_photo3_name;
 	
@@ -90,9 +112,11 @@ public class Tower_Installation implements Serializable {
 	@Column(name="Tower_Photo3_Longitude")
 	private String tower_photo3_longitude;
 	
+	//@NotEmpty
 	@Column(name="Tower_Photo4", unique = false, nullable = false, length = 16777215)
 	private byte[] tower_photo4;
-	
+
+	//@NotEmpty
 	@Column(name="Tower_Photo4_Name")
 	private String tower_photo4_name;
 	
@@ -138,6 +162,7 @@ public class Tower_Installation implements Serializable {
 		this.tower_photo4_longitude = tower_photo4_longitude;
 	}
 
+	@NotEmpty
 	@Column(name="OverallCondition")
 	private String overallconditon;
 	

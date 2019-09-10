@@ -3,11 +3,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<% String jsondetails=(String)request.getParameter("jsonarr"); 
+<% String jsondetails=(String)request.getParameter("ticketDetails"); 
    System.out.println("json>>>>>>>"+jsondetails);%>
-<% String ticketId=(String)request.getParameter("ticketid"); %>
-<% String ticketType=(String)request.getParameter("ticketType"); %>
-<% String ticketStatus=(String)request.getParameter("ticketStatus"); %>
 
 <!DOCTYPE html >
 <html lang="en">
@@ -75,11 +72,12 @@ $(document).ready(function(){
 	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
 	
-	var ticketDetails=JSON.stringify(jsonDetails);
+	var ticketDetails=JSON.parse(jsonDetails);
 	//alert(ticketDetails);
-	$("#siteid")[0].value=jsonDetails.split(",")[1];
-	$("#json")[0].value=ticketDetails;
+	$("#siteid")[0].value=ticketDetails.split(",")[1];
+	//alert(ticketDetails.split(",")[1]);
 	  
+	
 });
 
 
@@ -172,126 +170,63 @@ else {
 		
 	<div class="wrapper wrapper-login">
 	  <div class="container container-login animated fadeIn">
-	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${succMsg}</span></div>	<br><br>
-				<h3 class="text-center">Tower Audit</h3>
-				<form:form method="post" id="towerInstallationForm" modelAttribute="Tower_Installation" action="towerinstallation" enctype="multipart/form-data"   >
+	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${suuccMsg}</span></div>	<br><br>
+				<h3 class="text-center">Security</h3>
+				<form:form method="post" id="securityform" modelAttribute="Site_Security" action="sitesecurity" enctype="multipart/form-data"   >
 				
-				<form:input type="hidden" path="siteid.siteid" id="siteid" />
-				<form:input type="hidden"  path="" id="json" name="json" />
-				<div class="login-form">			
-					<div class="form-group ">
-						<label for="towertype" class="placeholder">Tower Type</label>
-						<form:select id="towertype" path="towerType"  name="towerType"  class="form-control input-full filled" >
-		                <form:option value="Select">Select</form:option>
-		                <form:option value="GBT">GBT</form:option>
-		                <form:option value="GBM">GBM</form:option>
-		                <form:option value="Monopole">Monopole</form:option>
-		                <form:option value="RTT">RTT</form:option>
-		                <form:option value="RTP">RTP</form:option>
-		                <form:option value="OTHER">Others-Camouflaged,ETC</form:option>
-		                </form:select>			
-					</div>
-					<div class="form-group ">
-						<label for="obnotes" class="placeholder">Observation Notes- Structures corrision,Plinth,cracking/spalling,
-							<br>previous upgrade(metal jackets) or extension to top of structure
+				
+				<form:input type="hidden" path="siteid.siteid" id="siteid" />	
+				
+				<div class="form-group ">
+						<label for="obnotes" class="placeholder">Observation / Comment - Presence of fence,locks,alarm system, other security.
+				
 						</label>
-						<form:input id="obnotes" path="observationNotes" class="form-control input-full"  />				
-						<form:errors path="observationNotes" cssClass="error" />	
+						
+						<form:input id="obnotes" path="observations" class="form-control input-full"  />				
+						<form:errors path="observations" cssClass="error" />	
 					</div>
-					<div class="form-group ">
-						<label for="visualinspection1" class="placeholder"> Visual inspection:Any subsidence and/or undermining the foundation
-						</label>
-						<form:input id="visualinspection1" path="virtualInspection" class="form-control input-full"  />	
-						<form:errors path="virtualInspection" cssClass="error" />				
-					</div>browse
-					<div class="form-group ">
-						<label for="visualinspection2" class="placeholder">Visual inspection:Bent,twisted,cracked or missing members </label>
-						<form:input id="visualinspection2" path="virtualInspection2" class="form-control input-full"  />
-						<form:errors path="virtualInspection2" cssClass="error" />					
-					</div>
-					<div class="form-group ">
-						<label for="towercondition" class="placeholder">Overall tower condition </label>
-						<form:select id="towercondition" path="overallconditon"  name="overallconditon"  class="form-control input-full filled" >
+				<div class="form-group ">
+						<label for="securitycondition" class="placeholder">What is the overall security Condition? </label>
+						<form:select id="securitycondition" path="securityCondition"  name="overallconditon"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Not assessed">Not assessed (Note why not assessed in observation)</form:option>
-		                <form:option value="Very Poor">very poor- multiple members missing heavily corroded, foundation erroded,may collapse etc</form:option>
-		                <form:option value="Poor">Poor A few members missing, foundation eroded</form:option>
-		                <form:option value="Fair">Fair (Working without any major issues)</form:option>
-		                <form:option value="Good">Fair - Foundation eroded but no member is missing</form:option>
-		                <form:option value="Very Good">Very good (Looks as good as new)</form:option>
+		                <form:option value="Very Poor">very poor- Fencing,locks,alarm system are non existent/broken</form:option>
+		                <form:option value="Poor">Poor - Fencing,locks,alarm system are in place, need significant work</form:option>
+		                <form:option value="Fair"> Fair - Fencing,locks,alarm systems, need light maintenance</form:option>
+		                <form:option value="Good">Good - Fencing, locks, alarm systems good condition</form:option>
+		                <form:option value="Very Good">Very good - Fencing locks, alarm systems good new condition</form:option>
 		                <form:option value="Not Applicable">Not Applicable</form:option>
 		                </form:select>
-								<form:errors path="overallconditon" cssClass="error" />
+								<form:errors path="securityCondition" cssClass="error" />
 										
 					</div>
-					<div class="form-group ">
-						<label for="ticomments" class="placeholder">Comments on available space for additional antennae </label>
-						<form:input id="ticomments" path="comments" class="form-control input-full"  />	
-						<form:errors path="comments" cssClass="error" />				
-					</div>
-					
-					<div class="form-group ">
-						<label for="tirfantennae" class="placeholder">Number of RF antennae </label>
-						<form:input id="tirfantennae" path="noofRFAntennas" class="form-control input-full"  />			
-						<form:errors path="noofRFAntennas" cssClass="error" />		
-					</div>
-					<div class="form-group ">
-						<label for="timwantennae" class="placeholder">Number of MW antennae </label>
-						<form:input id="timwantennae" path="noofMWAntenna" class="form-control input-full"  />	
-						<form:errors path="noofMWAntenna" cssClass="error" />				
-					</div>
-					
-					<div class="form-group ">
-						<label for="tirrh" class="placeholder">Number of RRH(Remote Radio Head)</label>
-						<form:input id="tirrh" path="noofRRH" class="form-control input-full"  />			
-						<form:errors path="noofRRH" cssClass="error" />		
-					</div>
-					
-							<div class="form-group ">
-				
+						
+				<div class="form-group ">
 				<label for="Upload Image" class="placeholder" >Upload Image </label>
-							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);"  /> 
-					<span class="isa_failure" id="image0">${errMsg}</span>
-  </div>
- 	
-				<div class="form-group ">
-				
+				<input type="file"   path="security_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);"  /> 
+				<span class="isa_failure" id="image0">${errMsg}</span>
+  				</div>
+ 				<div class="form-group ">
 				<label for="Upload Image" class="placeholder" >Upload Image2 </label>
-							<input type="file" path="tower_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="return ValidateImage('img2');"/> 
+				<input type="file" path="security_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="return ValidateImage('img2');"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
-  		</div>
- 	
-				<div class="form-group ">
-				
-				<label for="Upload Image" class="placeholder" >Upload Image3 </label>
-							<input type="file"  path="tower_photo3" class="form-control input-border-bottom" id="img3"   name="file" onchange="return ValidateImage('img3');"  /> 
-					<span class="isa_failure" id="image2">${errMsg}</span>
-					</div>
-					<div class="form-group ">
-				
-				<label for="Upload Image" class="placeholder" >Upload Image4 </label>
-							<input type="file"  path="tower_photo4" class="form-control input-border-bottom" id="img4"   name="file"  onchange="return ValidateImage('img4');"  /> 
-					<span class="isa_failure" id="image3">${errMsg}</span>
-					</div>
- 
- 
-		
- 					
-				<div class="form-action" id="new_submit" >
-				 <input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #012169;color: white;">  
+  				</div>
+  				
+ 						<div class="form-action" id="new_submit" >
+				 		<input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #012169;color: white;">  
 					
- 					<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
+ 						<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				
  				
-				 <input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">  
+				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">  
 					
- 					<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
- 				</div>
- 
+ 							<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
+ 							</div>
+ 				</form:form>	
 				</div>
-				</form:form>				
+							
 			</div>
-	</div>
+	
    <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 	<script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
