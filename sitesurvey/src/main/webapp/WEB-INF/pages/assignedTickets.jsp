@@ -70,7 +70,6 @@
 						tableData();
 
 					});
-	
 	var dataSet=[];
 		 var ticketId;
 		
@@ -86,7 +85,8 @@
 					
                     for(var i=0;i<assignTicketsList.length;i++)
          		   {
-                    	dataSet.push([assignTicketsList[i].ticketNum,assignTicketsList[i].siteids,assignTicketsList[i].technicianName]);
+	dataSet.push([assignTicketsList[i].ticketNum,assignTicketsList[i].siteids,assignTicketsList[i].technicianName]);
+
 
          			   
          		   }
@@ -102,6 +102,7 @@
 						{title: "Ticket Id" },
 						{title: "Site Id" },
 						{title: "Technician Name" }			
+
 			        ]
 			    });			 
 				}

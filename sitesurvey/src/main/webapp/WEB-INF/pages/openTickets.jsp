@@ -103,6 +103,7 @@ color: #fff!important;
          		   {
                     	arr.push(openTicketsList[i].ticketNum);
                     	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids,openTicketsList[i].status,openTicketsList[i].region,openTicketsList[i].city]);
+
          			   
          		   }
                     console.log(_.uniq(arr));

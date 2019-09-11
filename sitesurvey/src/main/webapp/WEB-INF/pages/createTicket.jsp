@@ -46,7 +46,6 @@
 	
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
-
  
  <style>
 
@@ -376,6 +375,7 @@ var jsonData=[];
                  <form:hidden id="status" value="Open" path="status" name="status" />                  
                  <label for="siteId">Site Id</label>
 				<form:select name="siteIds" id="siteIds" class="form-control input-full siteIds"  multiple="true" path="siteid" ></form:select>
+
 				<br>   
 				<br>      
             	<label for="ticketDescription">Ticket Description</label>

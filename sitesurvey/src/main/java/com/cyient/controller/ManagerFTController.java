@@ -79,13 +79,15 @@ public class ManagerFTController {
 			return model;
 		}
 		
-		 @RequestMapping(value="getManagerTicketsCount", method = RequestMethod.GET)
+		 @SuppressWarnings({ "unchecked", "rawtypes" })
+		@RequestMapping(value="getManagerTicketsCount", method = RequestMethod.GET)
 			@ResponseBody
 			public String  managerTicketsCount(ModelAndView model,HttpServletRequest request) {
 			 String username=request.getParameter("username");
 			 String region=request.getParameter("region");
 				String city=request.getParameter("city");
 				//List<TechnicianTicketInfo> listOpen = surveyDAO.managerOpenTickets(username);		    
+
 				List<Ticketing> listOpen =  surveyDAO.managerOpenTickets(username,region,city);   
 				Set ticketSet = new HashSet<Object>();
 				 listOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));
@@ -95,6 +97,7 @@ public class ManagerFTController {
 			      List<TechnicianTicketInfo> listNotAccepted = surveyDAO.managerNotAcceptedTickets(username);
 			      Set ticketSet2 = new HashSet<Object>();
 					listNotAccepted.removeIf(p -> !ticketSet2.add(p.getTicketNum()));
+
 			     
 				   JSONObject countData=new JSONObject();
 				   countData.put("OpenTickets",listOpen.size());
@@ -113,10 +116,12 @@ public class ManagerFTController {
 				String city=request.getParameter("city");
 				
 				System.out.println("USER"+username);
+
 				List<Ticketing> listOpen = surveyDAO.managerOpenTickets(username,region,city);
 				Set ticketSet = new HashSet<Object>();
 				 listOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));
 				 //listOpen.forEach(dept->System.out.println(dept.getId() +" : "+dept.getSiteids()));
+
 				  	   Gson gsonBuilder = new GsonBuilder().create();
 		        	   String openJson = gsonBuilder.toJson(listOpen);
 			              return openJson.toString();
@@ -127,9 +132,11 @@ public class ManagerFTController {
 		    public String getManagerNotAcceptedTickets(ModelAndView model,HttpServletRequest request) {
 				String username=request.getParameter("username");
 				System.out.println("USER"+username);
+
 				List<TechnicianTicketInfo> listNotAccepted = surveyDAO.managerNotAcceptedTickets(username);
 				Set ticketSet = new HashSet<Object>();
 				listNotAccepted.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+
 				  	   Gson gsonBuilder = new GsonBuilder().create();
 		        	   String notAcceptedJson = gsonBuilder.toJson(listNotAccepted);
 			              return notAcceptedJson.toString();
@@ -189,6 +196,7 @@ public class ManagerFTController {
 	              return techOpenJson.toString();
     }
 	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="getTechnicianAcceptedTickets", method = RequestMethod.GET)
     @ResponseBody
@@ -198,6 +206,7 @@ public class ManagerFTController {
 		List<TechnicianTicketInfo> listTechAccept = surveyDAO.techAcceptedTicketsData(username);	
 		Set ticketSet = new HashSet<Object>();
 		listTechAccept.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+
         	   Gson gsonBuilder = new GsonBuilder().create();
         	   String techAcceptJson = gsonBuilder.toJson(listTechAccept);
         	   System.out.println(techAcceptJson);
@@ -223,6 +232,7 @@ public class ManagerFTController {
 		@ResponseBody
 		public String  techTicketsCount(ModelAndView model,HttpServletRequest request) {
 		 String username=request.getParameter("username");
+
 			List<TechnicianTicketInfo> listAssigned = surveyDAO.techAssignedTicketsData(username);		   
 			Set ticketSet = new HashSet<Object>();
 			listAssigned.removeIf(p -> !ticketSet.add(p.getTicketNum()));
@@ -232,6 +242,7 @@ public class ManagerFTController {
 		      List<TechnicianTicketInfo> listClosed = surveyDAO.techClosedTicketsData(username);
 		      Set ticketSet2 = new HashSet<Object>();
 		      listClosed.removeIf(p -> !ticketSet2.add(p.getTicketNum()));
+
 		     
 			   JSONObject countData=new JSONObject();
 			   countData.put("AssignedTickets",listAssigned.size());
@@ -253,8 +264,4 @@ public class ManagerFTController {
 			String status = surveyDAO.saveTechStatus(ticketId,techStatus,exeId,commentsData,remarksData);
 			  	  return status;
 	    }
-	 
-	 
-	 
-		
 }

@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 @Table(name = "Site_Battery_Bank")
@@ -38,12 +40,24 @@ public class Site_Battery_Bank implements Serializable {
 	private String type;
 	
 	@Column(name="Manufacture_Date")
-	@Temporal(TemporalType.DATE)
-	private Date manufacturedDate;
+	@DateTimeFormat(pattern = "yyyy/mm/dd")	
+	private String manufacturedDate;
 	
 	@Column(name="Number_of_batteries")
 	private Integer number_of_batteries;
 	
+	@Column(name="capacity")
+	private Integer capacity;
+	
+	
+	public Integer getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(Integer capacity) {
+		this.capacity = capacity;
+	}
+
 	@Column(name="Number_of_working_Module_rating")
 	private Integer number_of_working_Module_rating;
 	
@@ -55,6 +69,13 @@ public class Site_Battery_Bank implements Serializable {
 	
 	@Column(name="Tag_observed")
 	private String tag_observed;
+	
+	@Column(name="Tag_photo", unique = false, nullable = false, length = 16777215)
+	private String tag_photo;
+	
+	@Column(name="Tag_photo_Name")
+	private String tag_photo_Name;
+	
 
 	@Column(name="Tag_photo1", unique = false, nullable = false, length = 16777215)
 	private byte[] tag_photo1;
@@ -112,11 +133,11 @@ public class Site_Battery_Bank implements Serializable {
 		this.type = type;
 	}
 
-	public Date getManufacturedDate() {
+	public String getManufacturedDate() {
 		return manufacturedDate;
 	}
 
-	public void setManufacturedDate(Date manufacturedDate) {
+	public void setManufacturedDate(String manufacturedDate) {
 		this.manufacturedDate = manufacturedDate;
 	}
 

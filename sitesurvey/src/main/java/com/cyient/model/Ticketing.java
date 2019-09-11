@@ -72,6 +72,7 @@ public class Ticketing implements Serializable {
 	@Column(name="Remarks")
 	private String remarks;
 
+
 	public int getId() {
 		return id;
 	}

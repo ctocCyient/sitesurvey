@@ -20,8 +20,6 @@
 	
 	<link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
 
-
-
 				<script type="text/javascript">
 	   if(sessionStorage.getItem("username")==null)
    	{
@@ -200,13 +198,13 @@ color: #fff!important;
  					for(var i=0;i<openTicketsList.length;i++)
          		   {
  						dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids,openTicketsList[i].ticketDescription]);
+
          		   }
                                        
 			 var table1=$('#technicianAssignedTickets').DataTable({
 					destroy:true,
 					language: {
 					  emptyTable: "No Data Available"
-
 					},
 					columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<input type='button' id='accepted' value='Yes'  style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 14px;  margin: 4px 2px;  cursor: pointer;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='rejected'  style=' background-color: 	#E4002B;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 14px;  margin: 4px 2px;  cursor: pointer;' value='No'>"}],	
 			        data: dataSet,
@@ -217,8 +215,6 @@ color: #fff!important;
 						{title: "Accept", width:"180px"}
 			        ]
 			    } );
-
-		
 			 
 			 $('#technicianAssignedTickets tbody').on('click', '[id*=accepted]', function () {
 		            data1 =  table1.row($(this).parents('tr')).data();
