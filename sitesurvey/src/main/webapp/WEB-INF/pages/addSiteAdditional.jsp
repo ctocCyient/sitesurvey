@@ -71,13 +71,12 @@ $(document).ready(function(){
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
-	
-	var ticketDetails=JSON.parse(jsonDetails);
+	alert(jsonDetails)
+	var ticketDetails=JSON.parse(JSON.stringify(jsonDetails));
 	//alert(ticketDetails);
 	$("#siteid")[0].value=ticketDetails.split(",")[1];
 	//alert(ticketDetails.split(",")[1]);
 	  $("#json")[0].value=ticketDetails;
-	 
 	
 });
 
@@ -171,46 +170,37 @@ else {
 		
 	<div class="wrapper wrapper-login">
 	  <div class="container container-login animated fadeIn">
-	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${succMsg}</span></div>	<br><br>
-				<h3 class="text-center">Security</h3>
-				<form:form method="post" id="securityform" modelAttribute="Site_Security" action="sitesecurity" enctype="multipart/form-data"   >
-				
-				<form:input type="hidden"  path="" id="json" name="json" />
-				<form:input type="hidden" path="siteid.siteid" id="siteid" />	
-				
+	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
+				<h3 class="text-center">Additional Details</h3>
+				<form:form method="post" id="additionalNotes" modelAttribute="Site_Additional_Notes" action="additionalNotes" enctype="multipart/form-data">
+				<input type="hidden"   id="json" name="json" />
 				<div class="form-group ">
-						<label for="obnotes" class="placeholder">Observation / Comment - Presence of fence,locks,alarm system, other security.
+						<label for="siteid" class="placeholder">Site ID
 				
 						</label>
-						
-						<form:input id="obnotes" path="observations" class="form-control input-full"  />				
+						 
+						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full"  />				
+						<form:errors path="siteid.siteid" cssClass="error" />	
+					</div>
+								
+					<div class="form-group ">
+						<label for="observations" class="observations">Observations</label>
+						<form:input  id="observations" path="observations" class="form-control input-full"  />				
 						<form:errors path="observations" cssClass="error" />	
 					</div>
-				<div class="form-group ">
-						<label for="securitycondition" class="placeholder">What is the overall security Condition? </label>
-						<form:select id="securitycondition" path="securityCondition"  name="overallconditon"  class="form-control input-full filled" >
-		                <form:option value="Select">Select</form:option>
-		                <form:option value="Not assessed">Not assessed (Note why not assessed in observation)</form:option>
-		                <form:option value="Very Poor">very poor- Fencing,locks,alarm system are non existent/broken</form:option>
-		                <form:option value="Poor">Poor - Fencing,locks,alarm system are in place, need significant work</form:option>
-		                <form:option value="Fair"> Fair - Fencing,locks,alarm systems, need light maintenance</form:option>
-		                <form:option value="Good">Good - Fencing, locks, alarm systems good condition</form:option>
-		                <form:option value="Very Good">Very good - Fencing locks, alarm systems good new condition</form:option>
-		                <form:option value="Not Applicable">Not Applicable</form:option>
-		                </form:select>
-								<form:errors path="securityCondition" cssClass="error" />
-										
-					</div>
 						
+				
 				<div class="form-group ">
-				<label for="Upload Image" class="placeholder" >Upload Image </label>
-				<input type="file"   path="security_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);"  /> 
-				<span class="isa_failure" id="image0">${errMsg}</span>
-  				</div>
- 				<div class="form-group ">
-				<label for="Upload Image" class="placeholder" >Upload Image2 </label>
-				<input type="file" path="security_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="return ValidateImage('img2');"/> 
+				<label for="site_photo2" class="placeholder" >site_photo1</label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="return ValidateImage('img1');"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
+  				</div>
+  				
+  				
+				<div class="form-group ">
+				<label for="site_photo1" class="placeholder" >site_photo2</label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="return ValidateImage('img2');"/> 
+					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
   				
  						<div class="form-action" id="new_submit" >
@@ -223,9 +213,11 @@ else {
 					
  							<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  							</div>
+ 						
  				</form:form>	
 				</div>
-							
+				
+						
 			</div>
 	
    <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>

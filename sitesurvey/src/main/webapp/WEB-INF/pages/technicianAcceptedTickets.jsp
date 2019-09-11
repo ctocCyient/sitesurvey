@@ -230,14 +230,16 @@ color: #fff!important;
 		            data1 =  table1.row($(this).parents('tr')).data();
 		            //data3=table1.row($(this).parents('tr'));
 		            console.log('fsaf'+data1);
-		            
+						var e = document.getElementById("jsonStatusList");
+						var result = e.options[e.selectedIndex].text;
+						//alert("res"+result);
 		          
 		              
 		            rowIndex = $(this).parent().index();			          
 		            ticketId=data1[0];	
 		            //debugger;
 		            
-		            siteIds="IND005";
+		            siteIds=result
 		            console.log("site"+siteIds);
 		            
 		            // window.location.href = '/sitesurvey/siteDetails?ticketId='+ticketId+'&siteId='+siteIds;

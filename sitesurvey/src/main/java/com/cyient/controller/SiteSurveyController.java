@@ -44,6 +44,7 @@ import com.cyient.dao.SurveyDAO;
 
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Site_Additional_Notes;
 import com.cyient.model.Site_Safety;
 import com.cyient.model.Site_Security;
 import com.cyient.model.Technician;
@@ -375,7 +376,7 @@ public class SiteSurveyController {
 			BindingResult bir,
 			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
 		 String json=(String) request.getParameter("json");
-
+		 System.out.println("json site security>>>>>>>>>"+json);
 		System.out.println("siteid>>>>"+sitesecurity.getSiteid().getSiteid());
 		System.out.println("observations"+sitesecurity.getObservations());
 		String action= request.getParameter("btn");
@@ -452,16 +453,205 @@ public class SiteSurveyController {
 	public ModelAndView fetchsitesafety(ModelAndView model) {
 		
 		//Tower_Installation ti=
-		
+		System.out.println();
 		Site_Safety ss= new Site_Safety();	
 		model.addObject("Site_Safety",ss);
 		model.setViewName("addsafety");
 		return model;
 	}
 	
+	@RequestMapping(params = "btn",value = "/sitesafety",  method = RequestMethod.POST)
+	public ModelAndView savesitesafety(@Valid @ModelAttribute("Site_Safety") Site_Safety sitesafety,
+			BindingResult bir,
+			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
+		 String json=(String) request.getParameter("json");
+		 System.out.println("json site safety>>>>>>>>>"+json);
+		System.out.println("siteid>>>>"+sitesafety.getSiteid().getSiteid());
+		System.out.println("observations"+sitesafety.getObservations());
+		String action= request.getParameter("btn");
+		try{
+			System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
+			sitesafety.setSafety_photo1(multipart[0].getBytes());
+			sitesafety.setSafety_photo1_name(multipart[0].getOriginalFilename());
+			
+			sitesafety.setSafety_photo2(multipart[1].getBytes());
+			sitesafety.setSafety_photo2_name(multipart[1].getOriginalFilename());
+			
+			
+			sitesafety.setSafety_photo3(multipart[1].getBytes());
+			sitesafety.setSafety_photo3_name(multipart[1].getOriginalFilename());
+			
+			sitesafety.setSafety_photo4(multipart[1].getBytes());
+			sitesafety.setSafety_photo4_name(multipart[1].getOriginalFilename());
+			
+			sitesafety.setSafety_photo5(multipart[1].getBytes());
+			sitesafety.setSafety_photo5_name(multipart[1].getOriginalFilename());
+			
+			sitesafety.setSafety_photo6(multipart[1].getBytes());
+			sitesafety.setSafety_photo6_name(multipart[1].getOriginalFilename());
+			
+			sitesafety.setSafety_photo7(multipart[1].getBytes());
+			sitesafety.setSafety_photo7_name(multipart[1].getOriginalFilename());
+			
+			
+			
+			
+			
+			
+			
+			Gson gsonBuilder = new GsonBuilder().create();
+            String sitesafetyJson = gsonBuilder.toJson(sitesafety);
+            URL url = new URL("http://localhost:8080/SiteSurveyRest/sitesurvey/saveSiteSafety");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+            wr.writeBytes(sitesafetyJson);
+            wr.flush();
+            wr.close();
+            /*java.io.OutputStream os = conn.getOutputStream();
+
+
+    		os.write(towerInstallationJson.toString().getBytes());
+    		os.flush();
+    		os.close();*/
+            //conn.setRequestProperty("Accept", "application/json");
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP Error code : "
+                        + conn.getResponseCode());
+            }     
+            InputStreamReader in = new InputStreamReader(conn.getInputStream());
+            StringBuilder stringBuilder= new StringBuilder();
+            BufferedReader br = new BufferedReader(in);
+            String response = null;
+            while ((response = br.readLine()) != null) {
+                stringBuilder.append(response + "\n");
+            }
+            System.out.println("status>>>"+stringBuilder);
+            br.close();
+            
+            conn.disconnect();
+            String s1=stringBuilder.toString().trim();
+            System.out.println("s1>>>>"+s1);
+            String s2="Saved";
+            System.out.println(s1.equals(s2));
+            if(s1.equalsIgnoreCase("Saved")){
+            	if(action.equalsIgnoreCase("Save")){
+            		redirectAttributes.addFlashAttribute("succMsg","Details Saved Successfully");
+            		model.setViewName("redirect:/gotosafety");
+            		return model;
+            		
+            	}else if(action.equalsIgnoreCase("Save & Continue")){
+            		redirectAttributes.addFlashAttribute("succMsg","Details Saved Successfully");
+            		
+            		model.addObject("ticketDetails",json);
+            		
+            		model.setViewName("redirect:/gotoAdditional");
+            		
+            		return model;
+               	}
+            }
+		}catch(Exception e){
+			
+		}
+		
+		return model;
+	}
+	
+	@RequestMapping(value = "/gotoAdditional", method = RequestMethod.GET)
+	public ModelAndView fetchsiteAddtional(ModelAndView model) {
+		
+		//Tower_Installation ti=
+		System.out.println();
+		Site_Additional_Notes sa= new Site_Additional_Notes();	
+		model.addObject("Site_Additional_Notes",sa);
+		model.setViewName("addSiteAdditional");
+		return model;
+	}
 	
 	
-	
+	@RequestMapping(params = "btn",value = "/additionalNotes",  method = RequestMethod.POST)
+	public ModelAndView savesitesafety(@Valid @ModelAttribute("Site_Additional_Notes") Site_Additional_Notes siteaddtional,
+			BindingResult bir,
+			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
+		 String json=(String) request.getParameter("json");
+		 System.out.println("json site safety>>>>>>>>>"+json);
+		System.out.println("siteid>>>>"+siteaddtional.getSiteid().getSiteid());
+		System.out.println("observations"+siteaddtional.getObservations());
+		String action= request.getParameter("btn");
+		try{
+			System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
+			siteaddtional.setSite_photo1(multipart[0].getBytes());
+			siteaddtional.setSite_photo1_name(multipart[0].getOriginalFilename());
+			
+			siteaddtional.setSite_photo2(multipart[1].getBytes());
+			siteaddtional.setSite_photo2_name(multipart[1].getOriginalFilename());
+			
+			
+					
+			Gson gsonBuilder = new GsonBuilder().create();
+            String siteAdditionalJson = gsonBuilder.toJson(siteaddtional);
+            URL url = new URL("http://localhost:8080/SiteSurveyRest/sitesurvey/saveSiteAddition");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+            wr.writeBytes(siteAdditionalJson);
+            wr.flush();
+            wr.close();
+            /*java.io.OutputStream os = conn.getOutputStream();
+
+
+    		os.write(towerInstallationJson.toString().getBytes());
+    		os.flush();
+    		os.close();*/
+            //conn.setRequestProperty("Accept", "application/json");
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP Error code : "
+                        + conn.getResponseCode());
+            }     
+            InputStreamReader in = new InputStreamReader(conn.getInputStream());
+            StringBuilder stringBuilder= new StringBuilder();
+            BufferedReader br = new BufferedReader(in);
+            String response = null;
+            while ((response = br.readLine()) != null) {
+                stringBuilder.append(response + "\n");
+            }
+            System.out.println("status>>>"+stringBuilder);
+            br.close();
+            
+            conn.disconnect();
+            String s1=stringBuilder.toString().trim();
+            System.out.println("s1>>>>"+s1);
+            String s2="Saved";
+            System.out.println(s1.equals(s2));
+            if(s1.equalsIgnoreCase("Saved")){
+            	if(action.equalsIgnoreCase("Save")){
+            		redirectAttributes.addFlashAttribute("succMsg","Details Saved Successfully");
+            		model.setViewName("redirect:/gotoAdditional");
+            		return model;
+            		
+            	}else if(action.equalsIgnoreCase("Save & Continue")){
+            		redirectAttributes.addFlashAttribute("succMsg","Details Saved Successfully");
+            		
+            		model.addObject("ticketDetails",json);
+            		
+            		model.setViewName("redirect:/home");
+            		
+            		return model;
+               	}
+            }
+		}catch(Exception e){
+			
+		}
+		
+		return model;
+	}
+
 	
 	
 }
