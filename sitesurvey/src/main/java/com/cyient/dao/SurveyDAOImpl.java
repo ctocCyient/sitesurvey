@@ -23,7 +23,7 @@ import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
-
+import com.cyient.model.Tower_Installation;
 import com.cyient.model.Track_Users;
 
 import com.cyient.model.User;
@@ -348,7 +348,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 		return techStatus;
 	}
 
-
 	@SuppressWarnings("unchecked")
 	public List<Site> getSiteDetails(String siteId) {
 		return sessionFactory.getCurrentSession().createQuery("from Site where siteid='"+siteId+"'").list();
@@ -367,4 +366,9 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(BB);	
 	}
 
+
+	public String saveTowerInstallation(Tower_Installation towerinstallation) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

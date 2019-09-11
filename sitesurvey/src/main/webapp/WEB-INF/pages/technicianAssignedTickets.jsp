@@ -210,6 +210,9 @@ color: #fff!important;
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },
+						{title: "Site Id" },
+						{title: "Ticket Description" },
+						{title: "Status"},
 						{title: "Site Id" },	
 						{title: "Ticket Description" },	
 						{title: "Accept", width:"180px"}

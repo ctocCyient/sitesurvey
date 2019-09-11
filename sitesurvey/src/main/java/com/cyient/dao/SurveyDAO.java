@@ -18,6 +18,7 @@ import com.cyient.model.Site_Wiring;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
+import com.cyient.model.Tower_Installation;
 import com.cyient.model.Track_Users;
 import com.cyient.model.User;
 
@@ -152,12 +153,15 @@ public interface SurveyDAO {
 	public List<Site> getSiteDetails(String siteId);
 
 	 @Transactional
-		public List<Battery_Bank_Master> getBBManufacturer();
+	 public List<Battery_Bank_Master> getBBManufacturer();
 		
 		@Transactional
 		public List<Site_Cabinet> getCabinetManufacturer(); 
 		
 		@Transactional
 		public void addCabinet(Site_Cabinet BB);
+		
+	 @Transactional
+	 public String saveTowerInstallation(Tower_Installation towerinstallation);
 
 }

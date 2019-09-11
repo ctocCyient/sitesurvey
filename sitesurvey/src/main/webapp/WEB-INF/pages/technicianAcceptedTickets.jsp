@@ -181,6 +181,7 @@ color: #fff!important;
 						  
 						},{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' value='Start Survey' />"}],
 							
+
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },	
@@ -266,6 +267,35 @@ color: #fff!important;
 		       		 }); 
       	 		});
 
+			 
+			 $('#technicianAcceptedTickets tbody').on('click', '[id*=assignBtn]', function () {
+		            data1 =  table1.row($(this).parents('tr')).data();
+		            rowIndex = $(this).parent().index();
+					 rowToDelete= table1.row($(this).parents('tr'));
+		            // alert(data1[0] );
+		           ticketId=data1[0];
+		           //alert(ticketId)
+		           siteId=data1[1];
+		           city=data1[5];
+		           $.ajax({
+		                type: "get",
+		                url: "fetchSiteInformation",
+		                contentType: 'application/json',
+		                datatype: "json", 
+						    data:{"ticketid":ticketId,"siteid":siteId},
+		                success: function(result) {
+		                	
+		                	jsonarr=JSON.parse(result);
+		                	//alert(jsonarr[0]);
+		    	         	window.location.href = '/sitesurvey/fetchtowerinstallation?jsonarr='+jsonarr;
+
+		                	
+		                	
+		                }
+					
+		       		 });
+			 
+          });
 			 
 		}
 			});
