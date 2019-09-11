@@ -46,7 +46,8 @@
 	
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
-<style>
+ 
+ <style>
 
 	label {
     color: #495057!important;
@@ -79,6 +80,7 @@ color: #fff!important;
 			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
 			  getTicketId();
 			  dateFun();
+			 
 			  $("#region,#state,#district,#city,#siteid,#ticketDescription").attr('required','');
 			   $(".isa_success").fadeOut(10000);
 			   $('.siteIds').select2();
@@ -109,7 +111,7 @@ var jsonData=[];
            	 	 catOptions += "<option>" + data[i] + "</option>";
          		}
          		document.getElementById(id).innerHTML = catOptions;
-         		//$("select option[value='']").attr('disabled','disabled');
+         		$("select option[value='']").attr('disabled','disabled');
 		}
 
 		 function getTicketId()
@@ -147,6 +149,8 @@ var jsonData=[];
 					});
 			}
 
+		
+
 		 function getState(region)
 		 {
 			
@@ -177,7 +181,6 @@ var jsonData=[];
 	 	
 	 	function getDistrict(state)
 		 { 
-	 		
 	 		var selectedRegion=$("#region").val();
 			 $.ajax({
 			         type:"get",
@@ -348,7 +351,7 @@ var jsonData=[];
 					<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
         <form:form action="saveCreatedTicket" method="post" modelAttribute="Ticketing" onsubmit="return validateTicketForm();">
         <div class="login-form">
-        
+        <form:hidden path="id"/>
       			<label for="ticketId" class="placeholder">Ticket ID</label>
                 <form:input id="ticketId" path="ticketNum" name="ticketId" class="form-control input-solid"  readonly="true"/>
          		<br>  
@@ -371,7 +374,8 @@ var jsonData=[];
                <br>
                  <form:hidden id="status" value="Open" path="status" name="status" />                  
                  <label for="siteId">Site Id</label>
-				<form:select name="siteIds" id="siteIds" class="form-control input-full siteIds"  multiple="true" path="siteid"></form:select>
+				<form:select name="siteIds" id="siteIds" class="form-control input-full siteIds"  multiple="true" path="siteid" ></form:select>
+
 				<br>   
 				<br>      
             	<label for="ticketDescription">Ticket Description</label>

@@ -9,8 +9,17 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.cyient.model.Battery_Bank_Master;
+import com.cyient.model.Cabinet_Master;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+import com.cyient.model.Site_Access;
+import com.cyient.model.Site_Area;
+import com.cyient.model.Site_Generator;
+import com.cyient.model.Site_SMPS;
+import com.cyient.model.Site_Wiring;
+import com.cyient.model.Site_Battery_Bank;
+import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
@@ -33,6 +42,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public void addTicket(Ticketing ticket){
 		
 		sessionFactory.getCurrentSession().saveOrUpdate(ticket);
+		System.out.println("ADDEDDDDSDGF");
 	}
 	
 
@@ -46,11 +56,27 @@ public class SurveyDAOImpl implements SurveyDAO {
 		System.out.println(c.list());
         return c.list();
 	}
-
+	public void addSiteAccess(Site_Access siteacc) {
+		sessionFactory.getCurrentSession().saveOrUpdate(siteacc);
+	}
+	public void addSiteArea(Site_Area sitearea) {
+		sessionFactory.getCurrentSession().saveOrUpdate(sitearea);
+	}
+	public void addSitePowering(Site_Wiring sitewiring) {
+		sessionFactory.getCurrentSession().saveOrUpdate(sitewiring);
+	}
 	public void addSite(Site site) {
 		sessionFactory.getCurrentSession().saveOrUpdate(site);
 	}
 
+	public void addGenerator(Site_Generator generator){	
+		sessionFactory.getCurrentSession().saveOrUpdate(generator);
+	}
+	
+	public void addSMPS(Site_SMPS smps){
+		sessionFactory.getCurrentSession().saveOrUpdate(smps);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Regions> getRegions() {
 		//return sessionFactory.getCurrentSession().createQuery("from Regions").list();
@@ -59,6 +85,36 @@ public class SurveyDAOImpl implements SurveyDAO {
        	      .list();  
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	public List<Battery_Bank_Master> getBBManufacturer() {
+		//return sessionFactory.getCurrentSession().createQuery("from Regions").list();
+		 return sessionFactory.getCurrentSession().createCriteria(Battery_Bank_Master.class)         	      
+       	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
+       	      .list();  
+	}
+	
+	
+
+	@SuppressWarnings("unchecked")
+	public List<Site_Cabinet> getCabinetManufacturer() {
+		//return sessionFactory.getCurrentSession().createQuery("from Regions").list();
+		 return sessionFactory.getCurrentSession().createCriteria(Cabinet_Master.class)         	      
+       	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
+       	      .list();  
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@SuppressWarnings("unchecked")
 	public List<Regions> getStates(String region) {		
 		//return sessionFactory.getCurrentSession().createQuery("select distinct state from Regions where region='"+region+"'").list();	        
@@ -164,7 +220,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public void addTechnicianIntoUsers(User technician){
 		sessionFactory.getCurrentSession().saveOrUpdate(technician);
 	}
-
 	
 	@SuppressWarnings("unchecked")
 	public List<Ticketing> openTicketsData() {
@@ -173,7 +228,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> assignedTicketsData() {
-		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='InProgress'").list();
+		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='Assigned'").list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -193,13 +248,18 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<TechnicianTicketInfo> managerOpenTickets(String username,String region,String city) {
+	public List<Ticketing> managerOpenTickets(String username,String region,String city) {
 		return sessionFactory.getCurrentSession().createQuery("from Ticketing where status='Open' or status='Not Accepted' and region='"+region+"' and city ='"+city+"'").list();	
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> managerClosedTickets(String username) {
 		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='Closed'").list();	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> managerNotAcceptedTickets(String username) {
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='Not Accepted'").list();	
 	}
 
 	@SuppressWarnings("unchecked")
@@ -209,7 +269,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techAssignedTicketsData(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='InProgress' and technicianId='"+username+"'").list();
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='Assigned' and technicianId='"+username+"'").list();
 	}	
 
 	@SuppressWarnings("unchecked")
@@ -228,10 +288,14 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 
 	
-	public String updateTicketingStatus(String ticketId) {
-		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
-		 Ticketing ticketing = (Ticketing)q1.list().get(0);		 
-		 ticketing.setStatus("InProgress");	
+	public String updateTicketingStatus(String ticketId,String siteId) {
+		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"' and siteid='"+siteId+"'");
+		
+		// System.out.println("Tcoetknknf123"+(Ticketing)q1.list().get(0));
+		 
+		 Ticketing ticketing = (Ticketing)q1.list().get(0);		
+		// System.out.println("ticketId"+ticketing.getId());
+		 ticketing.setStatus("Assigned");	
 		 sessionFactory.getCurrentSession().update(ticketing);		
 		return "Assigned";
 	}
@@ -258,25 +322,50 @@ public class SurveyDAOImpl implements SurveyDAO {
 	
 	public String saveTechStatus(String ticketId, String techStatus,String techId,String commentsData,String remarksData) {
 		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
-		 Ticketing ticketing = (Ticketing)q1.list().get(0);
+		 for(int i=0;i<q1.list().size();i++){
+			 Ticketing ticketing = (Ticketing)q1.list().get(i);
+			 
+			 ticketing.setStatus(techStatus);
+			 ticketing.setComments(commentsData);
+			 ticketing.setRemarks(remarksData);
+		
+			 sessionFactory.getCurrentSession().update(ticketing);
 		 
-		 ticketing.setStatus(techStatus);
-		 ticketing.setComments(commentsData);
-		 ticketing.setRemarks(remarksData);
-	
-		 sessionFactory.getCurrentSession().update(ticketing);
+		 }
+		
 		 
 		 Query q2 = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where ticketNum ='"+ticketId+"' and technicianId='"+techId+"'");
-		 TechnicianTicketInfo technicianTicketInfo = (TechnicianTicketInfo)q2.list().get(0);
+		 
+		 for(int i=0;i<q2.list().size();i++){
+		 TechnicianTicketInfo technicianTicketInfo = (TechnicianTicketInfo)q2.list().get(i);
 		 
 		 technicianTicketInfo.setStatus(techStatus);
 		 technicianTicketInfo.setComments(commentsData);
 		 technicianTicketInfo.setRemarks(remarksData);
 	
 		 sessionFactory.getCurrentSession().update(technicianTicketInfo);
-		
+		 }
 		return techStatus;
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Site> getSiteDetails(String siteId) {
+		return sessionFactory.getCurrentSession().createQuery("from Site where siteid='"+siteId+"'").list();
+
+	}
+
+	public void addBB(Site_Battery_Bank BB) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().saveOrUpdate(BB);
+	}
+
+	
+
+	public void addCabinet(Site_Cabinet BB) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().saveOrUpdate(BB);	
+	}
+
 
 	public String saveTowerInstallation(Tower_Installation towerinstallation) {
 		// TODO Auto-generated method stub

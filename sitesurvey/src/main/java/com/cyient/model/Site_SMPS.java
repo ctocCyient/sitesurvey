@@ -14,13 +14,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 @Table(name = "Site_SMPS")
 public class Site_SMPS implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,8 +38,8 @@ public class Site_SMPS implements Serializable {
 	private String model;
 	
 	@Column(name="Manufactured_Date")
-	@Temporal(TemporalType.DATE)
-	private Date manufacturedDate;
+	@DateTimeFormat(pattern = "yyyy/mm/dd") 
+	private String manufacturedDate;
 	
 	@Column(name="Module_rating")
 	private int module_rating;
@@ -100,11 +101,11 @@ public class Site_SMPS implements Serializable {
 		this.model = model;
 	}
 
-	public Date getManufacturedDate() {
+	public String getManufacturedDate() {
 		return manufacturedDate;
 	}
 
-	public void setManufacturedDate(Date manufacturedDate) {
+	public void setManufacturedDate(String manufacturedDate) {
 		this.manufacturedDate = manufacturedDate;
 	}
 

@@ -13,6 +13,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -30,16 +37,20 @@ public class Site_Generator implements Serializable {
 	@JoinColumn(name="siteID")
 	private Site siteid;
 	
+	@Pattern(regexp = "^[a-zA-Z]" , message="Only Alphabets")
 	@Column(name="DGManufacturer")
 	private String dgManufacturer;
 	
 	@Column(name="Manufacture_Date")
-	@Temporal(TemporalType.DATE)
-	private Date manufacturedDate;
+	@DateTimeFormat(pattern = "yyyy/mm/dd") 
+	private String manufacturedDate;
 	
+	@NotNull @Min(10) @Max(20)
+	@Pattern(regexp="^[0-9]" , message="Only Numbers")
 	@Column(name="Capacity")
 	private String capacity;
 	
+	@NotNull @Min(1) @Max(100)
 	@Column(name="DGrunhours")
 	private int DGrunhours ;
 	
@@ -308,11 +319,11 @@ public class Site_Generator implements Serializable {
 		this.tag_photo_longitude = tag_photo_longitude;
 	}
 
-	public Date getManufacturedDate() {
+	public String getManufacturedDate() {
 		return manufacturedDate;
 	}
 
-	public void setManufacturedDate(Date manufacturedDate) {
+	public void setManufacturedDate(String manufacturedDate) {
 		this.manufacturedDate = manufacturedDate;
 	}
 

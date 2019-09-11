@@ -4,15 +4,23 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.cyient.model.Battery_Bank_Master;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+
+import com.cyient.model.Site_Access;
+import com.cyient.model.Site_Area;
+import com.cyient.model.Site_Battery_Bank;
+import com.cyient.model.Site_Cabinet;
+import com.cyient.model.Site_Generator;
+import com.cyient.model.Site_SMPS;
+import com.cyient.model.Site_Wiring;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
 import com.cyient.model.Tower_Installation;
 import com.cyient.model.Track_Users;
 import com.cyient.model.User;
-
 
 public interface SurveyDAO {
 	
@@ -24,7 +32,23 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public void addSite(Site site);
+
+	@Transactional
+	public void addGenerator(Site_Generator generator);
 	
+	@Transactional
+	public void addSiteAccess(Site_Access siteacc);
+	
+	@Transactional
+	public void addSiteArea(Site_Area sitearea);
+	
+	@Transactional
+	public void addSitePowering(Site_Wiring powerwire);
+		
+	@Transactional
+	public void addSMPS(Site_SMPS smps);
+
+	public void addBB(Site_Battery_Bank BB);
 	@Transactional
 	public List<Regions> getRegions();
 	
@@ -81,7 +105,7 @@ public interface SurveyDAO {
 	public List<Technician> getUnassignedTechniciansData(String region, String city);
 
 	@Transactional
-	public List<TechnicianTicketInfo> managerOpenTickets(String username,String region,String city);
+	public List<Ticketing> managerOpenTickets(String username,String region,String city);
 	
 	@Transactional
 	public List<TechnicianTicketInfo> managerClosedTickets(String username);
@@ -102,7 +126,7 @@ public interface SurveyDAO {
 	public String assignTechnician(TechnicianTicketInfo technicianTicket);
 
 	@Transactional
-	public String updateTicketingStatus(String ticketId);
+	public String updateTicketingStatus(String ticketId, String siteId);
 
 	@Transactional
 	public Technician getTechniciansData(String technicianId);
@@ -116,11 +140,27 @@ public interface SurveyDAO {
 	@Transactional
 	public void addTicket(Ticketing ticket);
 
+	@Transactional
+	public List<User> getRoles(String userName);
+	
+	@Transactional
+	public String saveTechStatus(String ticketId, String techStatus,String techId, String commentsData, String remarksData);
+
+	@Transactional
+	public List<TechnicianTicketInfo> managerNotAcceptedTickets(String username);
+
+	@Transactional
+	public List<Site> getSiteDetails(String siteId);
+
 	 @Transactional
-	 public List<User> getRoles(String userName);
-	 
-	 @Transactional
-		public String saveTechStatus(String ticketId, String techStatus,String techId, String commentsData, String remarksData);
+	 public List<Battery_Bank_Master> getBBManufacturer();
+		
+	@Transactional
+	public List<Site_Cabinet> getCabinetManufacturer(); 
+		
+	@Transactional
+	public void addCabinet(Site_Cabinet BB);
+		
 	 @Transactional
 	 public String saveTowerInstallation(Tower_Installation towerinstallation);
 

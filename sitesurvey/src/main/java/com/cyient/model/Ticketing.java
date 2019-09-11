@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -17,6 +19,10 @@ public class Ticketing implements Serializable {
 	private static final long serialVersionUID = -3465813074586302847L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="Id")
+	private int id;
+	
 	@Column(name="Ticket_Num")
 	private String ticketNum;
 
@@ -32,7 +38,10 @@ public class Ticketing implements Serializable {
 	@Column(name="City")
 	private String city;	
 	
-	@Column(name="siteID",length=16777215)
+	@Column(name="siteIds",length=16777215)
+	private String siteids;
+	
+	@Column(name="siteID")
 	private String siteid;
 	
 	@Column(name="Ticket_Description")
@@ -62,6 +71,23 @@ public class Ticketing implements Serializable {
 	
 	@Column(name="Remarks")
 	private String remarks;
+
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getSiteids() {
+		return siteids;
+	}
+
+	public void setSiteids(String siteids) {
+		this.siteids = siteids;
+	}
 
 	public String getTicketNum() {
 		return ticketNum;
