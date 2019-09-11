@@ -155,11 +155,11 @@ public interface SurveyDAO {
 	 @Transactional
 	 public List<Battery_Bank_Master> getBBManufacturer();
 		
-		@Transactional
-		public List<Site_Cabinet> getCabinetManufacturer(); 
+	@Transactional
+	public List<Site_Cabinet> getCabinetManufacturer(); 
 		
-		@Transactional
-		public void addCabinet(Site_Cabinet BB);
+	@Transactional
+	public void addCabinet(Site_Cabinet BB);
 		
 	 @Transactional
 	 public String saveTowerInstallation(Tower_Installation towerinstallation);
