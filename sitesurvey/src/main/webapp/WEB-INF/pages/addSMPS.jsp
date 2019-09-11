@@ -61,7 +61,7 @@ WebFont.load({
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-
+	  $("#addSMPS :input").attr("required", '');
 	//  getRegions();
 		getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
@@ -238,7 +238,7 @@ label {
     
 			<h3 class="text-center">Add SMPS</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
-			<form:form action="saveSMPS" method="post" modelAttribute="Site_SMPS">
+			<form:form action="saveSMPS" id="addSMPS" method="post" modelAttribute="Site_SMPS" enctype="Multipart/form-data">
 			<div class="login-form">
 			
 				
@@ -252,7 +252,7 @@ label {
 				<br>
 				
 				<label for="date" class="placeholder">Date of Manufacturer/Installation</label>
-				<form:input type="date" id="manufacturedDate" path="manufacturedDate" class="form-control input-full filled"     />
+				 <form:input type="date"  placeholder="mm/dd/yyyy" value="" path="manufacturedDate" class="form-control input-full filled" max="9999-12-31"/>
 				<br>
 				
 				<label for="module_rating" class="module_rating">Modules Rating(kW)</label>
@@ -271,21 +271,18 @@ label {
               	 <form:input id="comments" path="comments"  name="comments"  class="form-control input-full filled"  />
                 <br>
                               
-                <label for="" class="">Photos of Generator Control Unit(GCU)</label>
-               <form:input id="photos" path=""  name=""  class="form-control input-full filled"  />
+                <label for="" class="">Photo1 : GPS Accuracy of Photo</label>
+               <input type="file" id="photos"  name="file"  class="form-control input-full filled"  />
                 <br>
                                
-              	<label for="" class="">Photos of Fuel Level Sensor</label>
-               <form:input id="photos" path=""  name=""  class="form-control input-full filled"  />
-                <br>
-                
-                <label for="Condition" class="Condition">Condition</label>
-              	 <form:input id="Condition" path="Condition"  name="Condition"  class="form-control input-full filled"  />
+              	<label for="" class="">Photo 2 : GPS Accuracy of Photo</label>
+               <input type="file"  id="photos"  name="file"  class="form-control input-full filled"  />
                 <br>
                               
 				<div class="form-action">
-					<a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>
-					<input type="submit" id="submit" value="Add" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
+					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 				</div>
 			</div>
 			</form:form>			
