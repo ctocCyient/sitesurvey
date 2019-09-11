@@ -294,12 +294,12 @@ public class SiteSurveyController {
 			            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			            conn.setRequestProperty("Content-Type", "application/json; utf-8");
 
-			            conn.setRequestMethod("POST");
-			            conn.setDoOutput(true);
+			          conn.setRequestMethod("POST");
+			           conn.setDoOutput(true);
 			            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
 			            wr.writeBytes(towerInstallationJson);
 			            wr.flush();
-			            wr.close();
+							wr.close();
 			            /*java.io.OutputStream os = conn.getOutputStream();
 
 
@@ -374,7 +374,7 @@ public class SiteSurveyController {
 	public ModelAndView savesitesecurity(@Valid @ModelAttribute("Site_Security") Site_Security sitesecurity,
 			BindingResult bir,
 			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
-		
+		 String json=(String) request.getParameter("json");
 
 		System.out.println("siteid>>>>"+sitesecurity.getSiteid().getSiteid());
 		System.out.println("observations"+sitesecurity.getObservations());
@@ -432,9 +432,9 @@ public class SiteSurveyController {
             	}else if(action.equalsIgnoreCase("Save & Continue")){
             		redirectAttributes.addFlashAttribute("succMsg","Details Saved Successfully");
             		
+            		model.addObject("ticketDetails",json);
             		
-            		
-            		model.setViewName("redirect:/gotositesecurity");
+            		model.setViewName("redirect:/gotosafety");
             		
             		return model;
                	}
@@ -454,8 +454,8 @@ public class SiteSurveyController {
 		//Tower_Installation ti=
 		
 		Site_Safety ss= new Site_Safety();	
-		model.addObject("Site_Security",ss);
-		model.setViewName("gotositesecurity");
+		model.addObject("Site_Safety",ss);
+		model.setViewName("addsafety");
 		return model;
 	}
 	
