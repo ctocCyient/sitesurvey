@@ -206,6 +206,7 @@ color: #fff!important;
 					destroy:true,
 					language: {
 					  emptyTable: "No Data Available"
+
 					},
 					columnDefs: [{ "targets": -1, "data": null, "defaultContent": "<input type='button' id='accepted' value='Yes'  style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 14px;  margin: 4px 2px;  cursor: pointer;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='rejected'  style=' background-color: 	#E4002B;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 14px;  margin: 4px 2px;  cursor: pointer;' value='No'>"}],	
 			        data: dataSet,
@@ -216,7 +217,7 @@ color: #fff!important;
 						{title: "Accept", width:"180px"}
 			        ]
 			    } );
-			 
+
 		
 			 
 			 $('#technicianAssignedTickets tbody').on('click', '[id*=accepted]', function () {

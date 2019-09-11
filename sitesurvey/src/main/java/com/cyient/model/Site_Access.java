@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -17,27 +19,33 @@ import javax.persistence.Table;
 public class Site_Access implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
-
+    
 	@Id
 	@Column(name="Id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	
 	@ManyToOne
 	@JoinColumn(name="siteID")
 	private Site siteid;
-		
+	
+	
 	@Column(name="Access_Type")
 	private String accessType;
+	
 	
 	@Column(name="Road_Condition")
 	private String roadCondition;
 	
+	
 	@Column(name="Comments")
 	private String comments;
 	
+	
 	@Column(name="Photo_way", unique = false, nullable = false, length = 16777215)
 	private byte[] photo_way;
+	
 	
 	@Column(name="Photo_way_name")
 	private String photo_way_name;	
@@ -47,6 +55,7 @@ public class Site_Access implements Serializable {
 
 	@Column(name="Longitude")
 	private String longitude;
+	
 	
 	@Column(name="Photo_way2", unique = false, nullable = false, length = 16777215)
 	private byte[] photo_way2;
@@ -132,6 +141,38 @@ public class Site_Access implements Serializable {
 
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
+	}
+
+	public byte[] getPhoto_way2() {
+		return photo_way2;
+	}
+
+	public void setPhoto_way2(byte[] photo_way2) {
+		this.photo_way2 = photo_way2;
+	}
+
+	public String getPhoto_way_name2() {
+		return photo_way_name2;
+	}
+
+	public void setPhoto_way_name2(String photo_way_name2) {
+		this.photo_way_name2 = photo_way_name2;
+	}
+
+	public String getLatitude2() {
+		return latitude2;
+	}
+
+	public void setLatitude2(String latitude2) {
+		this.latitude2 = latitude2;
+	}
+
+	public String getLongitude2() {
+		return longitude2;
+	}
+
+	public void setLongitude2(String longitude2) {
+		this.longitude2 = longitude2;
 	}
 
 }

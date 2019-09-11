@@ -35,6 +35,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
+
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
 import com.cyient.model.Technician;
@@ -65,7 +66,7 @@ public class HomeController {
 		model.setViewName("openTickets");
 		return model;
 	}
-	
+
 	@RequestMapping(value = "/assignedTickets")
 	public ModelAndView assignedTickets(ModelAndView model) throws IOException {
 		model.setViewName("assignedTickets");
@@ -301,6 +302,8 @@ public class HomeController {
 		return model;
 	}
 	
+	
+	
 	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
 	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
 		String status="Site Added Successfully";
@@ -311,6 +314,7 @@ public class HomeController {
 		return new ModelAndView("redirect:/newSite");
 	}
 	
+
 	@RequestMapping(value="/saveGenerator" , method=RequestMethod.POST)
 	public ModelAndView saveGenerator(@ModelAttribute Site_Generator generator, RedirectAttributes redirectAttributes){
 
@@ -609,4 +613,5 @@ public class HomeController {
 	    	String user=surveyDAO.getUserName(role,username);
 			return user;
 		}
+	   
 }

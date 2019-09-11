@@ -190,7 +190,7 @@ color: #fff!important;
 						
 			        ]
 			    } );
-			 
+
 			 
 // 			 $('#technicianAcceptedTickets select[id=jsonStatusList]').on('change', function () {   
 // 	             var attvalue = $(this).children(":selected").attr("id");
@@ -265,6 +265,7 @@ color: #fff!important;
 		                }					
 		       		 }); 
       	 		});
+
 			 
 		}
 			});
