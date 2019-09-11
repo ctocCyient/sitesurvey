@@ -30,7 +30,8 @@
 
 	<!-- Fonts and icons -->
 	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
-		
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js' />"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore.js' />"></script>
 <style type="text/css">
 
 .fa-bars,
@@ -84,6 +85,7 @@ color: #fff!important;
 		}
 	
 		var dataSet=[];
+		var arr=[];
 		 var ticketId;
 		  var region,city;
 		 var rowIndex,table1,rowToDelete;
@@ -97,12 +99,13 @@ color: #fff!important;
                 datatype : "json",
                 success:function(data) {
                     openTicketsList = JSON.parse(data);
-					
                     for(var i=0;i<openTicketsList.length;i++)
          		   {
-                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteid,openTicketsList[i].status,openTicketsList[i].region,openTicketsList[i].city]);
+                    	arr.push(openTicketsList[i].ticketNum);
+                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids,openTicketsList[i].status,openTicketsList[i].region,openTicketsList[i].city]);
          			   
          		   }
+                    console.log(_.uniq(arr));
                    
                     
 			  table1=$('#openTickets').DataTable({

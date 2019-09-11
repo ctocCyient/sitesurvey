@@ -3,10 +3,13 @@ package com.cyient.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
@@ -166,7 +169,26 @@ public class HomeController {
 	 @RequestMapping(value = "/saveCreatedTicket", method = RequestMethod.POST)
 		public ModelAndView saveTicket(@ModelAttribute Ticketing ticket,RedirectAttributes redirectAttributes) {
 		
-		 	surveyDAO.addTicket(ticket);
+
+		  List<String> siteList = Arrays.asList(ticket.getSiteid().split(","));
+		
+		 for(int i=0;i<siteList.size();i++){
+			 Ticketing ticketing=new Ticketing();
+			 ticketing.setTicketNum(ticket.getTicketNum());
+			 ticketing.setRegion(ticket.getRegion());
+			 ticketing.setState(ticket.getState());
+			 ticketing.setDistrict(ticket.getDistrict());
+			 ticketing.setCity(ticket.getCity());
+			 ticketing.setSiteid(siteList.get(i));
+			 ticketing.setOpenDate(ticket.getOpenDate());
+			 ticketing.setOpenTime(ticket.getOpenTime());
+			 ticketing.setSiteids(ticket.getSiteid());
+			 ticketing.setStatus("Open");
+			 ticketing.setTicketDescription(ticket.getTicketDescription());
+			 surveyDAO.addTicket(ticketing);
+		 }
+		 
+		 	
 			String status="Ticket Created Successfully";
 			redirectAttributes.addFlashAttribute("status", status);
 			return new ModelAndView("redirect:/newTicket");
@@ -193,39 +215,50 @@ public class HomeController {
     	 String selectedTechnicianId=request.getParameter("technicianId");
     	 
     	 final Technician technicianData = surveyDAO.getTechniciansData(selectedTechnicianId);
+    	 
     	 System.out.println("technicians: "+technicianData);
     	
     	 String selectedTicketNum=request.getParameter("ticketId");
     	 
     	 List<Ticketing> ticketData = surveyDAO.getTicketsData(selectedTicketNum);
     	 
-    	 TechnicianTicketInfo technicianTicket=new  TechnicianTicketInfo();
+//    	 System.out.println("Ticket1"+ticketData.get(0).getId());
+//    	 System.out.println("Ticket2"+ticketData.get(1).getId());
+//    	 System.out.println("Ticket3"+ticketData.get(2).getId());
     	 
-    	 technicianTicket.setTechnicianId(technicianData.getTechnicianId());
-    	 technicianTicket.setTechnicianName(technicianData.getTechnicianName());
-    	 technicianTicket.setRegion(technicianData.getRegion());
-    	 technicianTicket.setState(technicianData.getState());
-    	 technicianTicket.setDistrict(technicianData.getDistrict());
-    	 technicianTicket.setManager(technicianData.getManager());
-    	 technicianTicket.setCity(technicianData.getCity());
-    	 technicianTicket.setStatus("InProgress");
     	
     	 
     	 String ticketId = null;
+    	 String status=null;
+    	 String statusUpdate=null;
+    
 		for(Ticketing ticket : ticketData)
 	      {
+			TechnicianTicketInfo technicianTicket=new TechnicianTicketInfo();
+	    	 
+	    	 technicianTicket.setTechnicianId(technicianData.getTechnicianId());
+	    	 technicianTicket.setTechnicianName(technicianData.getTechnicianName());
+	    	 technicianTicket.setRegion(technicianData.getRegion());
+	    	 technicianTicket.setState(technicianData.getState());
+	    	 technicianTicket.setDistrict(technicianData.getDistrict());
+	    	 technicianTicket.setManager(technicianData.getManager());
+	    	 technicianTicket.setCity(technicianData.getCity());
+	    	 technicianTicket.setStatus("Assigned");
+	    	 
+    	 
     		 ticketId=ticket.getTicketNum();
         	 technicianTicket.setTicketNum(ticket.getTicketNum());
         	 technicianTicket.setSiteid(ticket.getSiteid());  
+        	 technicianTicket.setSiteids(ticket.getSiteids());  
         	 technicianTicket.setOpenDate(ticket.getOpenDate());
         	 technicianTicket.setOpenTime(ticket.getOpenTime());  
         	 technicianTicket.setTicketDescription(ticket.getTicketDescription());    
+        	 
+        	  status= surveyDAO.assignTechnician(technicianTicket);
+        	  statusUpdate =surveyDAO.updateTicketingStatus(ticketId,ticket.getSiteid());
 	      }
-    	
-    	 if (technicianTicket.getSiteid() != null) { 
-			String status=surveyDAO.assignTechnician(technicianTicket);
-			String StatusUpdate=surveyDAO.updateTicketingStatus(ticketId);
-			if(status.equalsIgnoreCase("Assigned")&&StatusUpdate.equalsIgnoreCase("Assigned"))
+    	// if (technicianTicket.getSiteid() != null) { 			
+			if(status.equalsIgnoreCase("Assigned")&&statusUpdate.equalsIgnoreCase("Assigned"))
 			{
 				mailSender.send(new MimeMessagePreparator() {
 			      	  public void prepare(MimeMessage mimeMessage) throws MessagingException {
@@ -236,8 +269,8 @@ public class HomeController {
 			      	    
 			      	  }
 			      	});
+//			}
 			}
-    	 }
     	
     	return "Assigned";		
 	}
@@ -312,15 +345,15 @@ public class HomeController {
 	   public Map<String, String> getRegions() {
 	      Map<String, String> regionsMap = new HashMap<String, String>();
 	      List<Regions> regions = surveyDAO.getRegions();
-	      int i=0;
-	      for(i=0;i<regions.size();i++){
-	    	  System.out.println(regions.get(i));
-	    	 }
+	  
+//	      for(int i=0;i<regions.size();i++){
+//	    	 // System.out.println(regions.get(i));
+//	    	 }
 	      for(Regions region : regions)
 	      {
 	    	  regionsMap.put(region.getRegion(), region.getRegion());
 	      }
-	      System.out.println("RegionsData "+regionsMap);
+	     // System.out.println("RegionsData "+regionsMap);
 	      return regionsMap;
 	   }
 
@@ -342,7 +375,7 @@ public class HomeController {
 		      List<Object> listWithoutDuplicates = listStates.stream().distinct().collect(Collectors.toList());
 		      Gson gsonBuilder = new GsonBuilder().create();
 	          String statesJson = gsonBuilder.toJson(listWithoutDuplicates);
-	          System.out.println("StatesJSON"+statesJson);
+	          //System.out.println("StatesJSON"+statesJson);
 	          return statesJson;
     	  // return statesMap;
 
@@ -403,13 +436,22 @@ public class HomeController {
 	    
 		
 	    
-	    @RequestMapping("ticketsCount")
+	    @SuppressWarnings("unchecked")
+		@RequestMapping("ticketsCount")
 	    @ResponseBody
 	    public String  ticketsCountData(ModelAndView model) {
-			List<Ticketing> listOpen = surveyDAO.openTicketsData();		              
+			List<Ticketing> listOpen = surveyDAO.openTicketsData();		
+		    Set ticketSet = new HashSet<Object>();
+			 listOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));
 		    List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+		    Set ticketSet1 = new HashSet<Object>();
+			listAssigned.removeIf(p -> !ticketSet1.add(p.getTicketNum()));
 		      List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
+		      Set ticketSet2 = new HashSet<Object>();
+		      listHistory.removeIf(p -> !ticketSet2.add(p.getTicketNum()));
 		      List<Ticketing> listTotal =surveyDAO.getAllTicketsData();
+		      Set ticketSet3 = new HashSet<Object>();
+		      listTotal.removeIf(p -> !ticketSet3.add(p.getTicketNum()));
 		     
 			   JSONObject countData=new JSONObject();
 			   countData.put("OpenTickets",listOpen.size());
@@ -420,28 +462,43 @@ public class HomeController {
 		          return countData.toString();
 	    }
 	 
-	    @RequestMapping("getOpenTickets")
+	    @SuppressWarnings("unchecked")
+		@RequestMapping("getOpenTickets")
 	    @ResponseBody
 	    public String  getOpenTicketsData(ModelAndView model) {
-			List<Ticketing> listOpen = surveyDAO.openTicketsData();			
+			List<Ticketing> listOpen = surveyDAO.openTicketsData();	
+			
+		    Set openSet = new HashSet<Object>();
+
+	        // directly removing the elements from list if already existed in set
+		    listOpen.removeIf(p -> !openSet.add(p.getTicketNum()));
+
+	     //   listOpen.forEach(dept->System.out.println(dept.getId() +" : "+dept.getSiteid()+"::"+dept.getSiteids()));
+				
 			Gson gsonBuilder = new GsonBuilder().create();
 			String openJson = gsonBuilder.toJson(listOpen);
     	   	return openJson.toString();
 	    }
 		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping("getAssignedTickets")
 	    @ResponseBody
 	    public String  getAssignedTicketsData(ModelAndView model) {
 			List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+			Set ticketSet = new HashSet<Object>();
+			listAssigned.removeIf(p -> !ticketSet.add(p.getTicketNum()));
 			Gson gsonBuilder = new GsonBuilder().create();
 			String closedJson = gsonBuilder.toJson(listAssigned);
     	   	return closedJson.toString();
 	    }
 		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping("getHistoryTickets")
 	    @ResponseBody
 	    public String  getHistoryTicketsData(ModelAndView model) {
 			List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
+			Set ticketSet = new HashSet<Object>();
+			listHistory.removeIf(p -> !ticketSet.add(p.getTicketNum()));
 	  	    Gson gsonBuilder = new GsonBuilder().create();
     	    String historyJson = gsonBuilder.toJson(listHistory);
               return historyJson.toString();
@@ -497,6 +554,8 @@ public class HomeController {
 		@ResponseBody
 		public String  getTotalTicketsData(ModelAndView model) {
 			List<Ticketing> listTotal = surveyDAO.getAllTicketsData();
+			  Set ticketSet = new HashSet<Object>();
+		      listTotal.removeIf(p -> !ticketSet.add(p.getTicketNum()));
 		     Gson gsonBuilder = new GsonBuilder().create();
 			 String totalJson = gsonBuilder.toJson(listTotal);
 		     return totalJson.toString();

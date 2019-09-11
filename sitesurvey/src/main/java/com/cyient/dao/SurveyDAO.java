@@ -88,7 +88,7 @@ public interface SurveyDAO {
 	public List<Technician> getUnassignedTechniciansData(String region, String city);
 
 	@Transactional
-	public List<TechnicianTicketInfo> managerOpenTickets(String username,String region,String city);
+	public List<Ticketing> managerOpenTickets(String username,String region,String city);
 	
 	@Transactional
 	public List<TechnicianTicketInfo> managerClosedTickets(String username);
@@ -109,7 +109,7 @@ public interface SurveyDAO {
 	public String assignTechnician(TechnicianTicketInfo technicianTicket);
 
 	@Transactional
-	public String updateTicketingStatus(String ticketId);
+	public String updateTicketingStatus(String ticketId, String siteId);
 
 	@Transactional
 	public Technician getTechniciansData(String technicianId);
@@ -123,13 +123,15 @@ public interface SurveyDAO {
 	@Transactional
 	public void addTicket(Ticketing ticket);
 
-	 @Transactional
-	 public List<User> getRoles(String userName);
-	 
-	 @Transactional
-		public String saveTechStatus(String ticketId, String techStatus,String techId, String commentsData, String remarksData);
+	@Transactional
+	public List<User> getRoles(String userName);
+	
+	@Transactional
+	public String saveTechStatus(String ticketId, String techStatus,String techId, String commentsData, String remarksData);
 
-	 @Transactional
+	@Transactional
 	public List<TechnicianTicketInfo> managerNotAcceptedTickets(String username);
 
+	@Transactional
+	public List<Site> getSiteDetails(String siteId);
 }

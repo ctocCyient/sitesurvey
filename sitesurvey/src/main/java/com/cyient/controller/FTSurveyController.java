@@ -5,9 +5,11 @@ package com.cyient.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
@@ -53,6 +55,19 @@ public class FTSurveyController {
 
 	@Autowired
 	private SurveyDAO surveyDAO;
+	
+	 Gson gsonBuilder = new GsonBuilder().create();
+	 
+	 
+	 @RequestMapping(value="getSiteDetails", method = RequestMethod.GET)
+	    @ResponseBody
+	    public String  getSiteDetails(HttpServletRequest request) {
+			String siteId=request.getParameter("siteId");
+			System.out.println("SITE"+siteId);
+			List<Site> siteDetails = surveyDAO.getSiteDetails(siteId);	
+	        String siteDetailsJson = gsonBuilder.toJson(siteDetails);
+		    return siteDetailsJson.toString();
+	    }
 		
 	 @RequestMapping(value = "/siteDetails")
 		public ModelAndView siteDetails(ModelAndView model) throws IOException {

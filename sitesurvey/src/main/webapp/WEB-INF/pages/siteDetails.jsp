@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<% String ticketDetails=(String)request.getParameter("ticketDetails"); %>
 <!DOCTYPE html >
 <html lang="en">
 
@@ -13,28 +13,7 @@
 
 <title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<script type="text/javascript">
-	role=sessionStorage.getItem("role");
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		//window.location.href = "/sitesurvey/";
-		//alert(sessionStorage.getItem("username"));
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-   	}
-	   else if(role=="Admin" || role=="SuperAdmin")
-		   {
-		   
-		   }
-	   else
-		   {
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-		   }
-
-</script>
-
-<script src="<c:url value='resources/js/jquery.min.js' />"></script>
+	<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/js/validations.js' />"></script>
@@ -46,6 +25,20 @@
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
+	<script type="text/javascript">
+	role=sessionStorage.getItem("role");
+	   if(sessionStorage.getItem("username")==null)
+   	{
+		//window.location.href = "/sitesurvey/";
+		//alert(sessionStorage.getItem("username"));
+		   url = "/sitesurvey/";
+		      $( location ).attr("href", url);
+   	}
+	
+
+</script>
+
+
 
 <script type="text/javascript">
 
@@ -64,6 +57,8 @@ $(document).ready(function(){
 
 		
 		 $(".isa_success").fadeOut(10000);
+		 var siteDetails=<%=ticketDetails%>;
+		 console.log("siet"+siteDetails);
 });
 
 </script>
@@ -142,7 +137,8 @@ label {
                        
 				<div class="form-action">
 					<input type="submit" id="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-					<input type="submit" id="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+<!-- 					<input type="submit" id="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;"> -->
+<a href="surveyTeamPPE" class="btn btn-rounded btn-login" >Next</a>
 				</div>
 			</div>
 			</form:form>			

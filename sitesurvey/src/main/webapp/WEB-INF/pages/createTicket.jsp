@@ -81,6 +81,7 @@ color: #fff!important;
 			  $("#adminSidebar").load('<c:url value="/resources/common/adminSidebar.jsp" />'); 
 			  getTicketId();
 			  dateFun();
+			 
 			  $("#region,#state,#district,#city,#siteid,#ticketDescription").attr('required','');
 			   $(".isa_success").fadeOut(10000);
 			   $('.siteIds').select2();
@@ -148,6 +149,8 @@ var jsonData=[];
 				        }
 					});
 			}
+
+		
 
 		 function getState(region)
 		 {
@@ -349,7 +352,7 @@ var jsonData=[];
 					<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
         <form:form action="saveCreatedTicket" method="post" modelAttribute="Ticketing" onsubmit="return validateTicketForm();">
         <div class="login-form">
-        
+        <form:hidden path="id"/>
       			<label for="ticketId" class="placeholder">Ticket ID</label>
                 <form:input id="ticketId" path="ticketNum" name="ticketId" class="form-control input-solid"  readonly="true"/>
          		<br>  

@@ -199,7 +199,7 @@ color: #fff!important;
                     console.log(openTicketsList[0]);					
  					for(var i=0;i<openTicketsList.length;i++)
          		   {
- 						dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteid,openTicketsList[i].ticketDescription]);
+ 						dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids,openTicketsList[i].ticketDescription]);
          		   }
                                        
 			 var table1=$('#technicianAssignedTickets').DataTable({

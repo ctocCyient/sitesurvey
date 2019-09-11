@@ -32,7 +32,10 @@ public class TechnicianTicketInfo implements Serializable {
 	@Column(name="Ticket_Num")
 	private String ticketNum;
 	
-	@Column(name="siteID",length=16777215)
+	@Column(name="siteIds",length=16777215)
+	private String siteids;
+	
+	@Column(name="siteID")
 	private String siteid;
 	
 	@Column(name="Region")
@@ -100,6 +103,14 @@ public class TechnicianTicketInfo implements Serializable {
 
 	public void setTechnicianName(String technicianName) {
 		this.technicianName = technicianName;
+	}
+
+	public String getSiteids() {
+		return siteids;
+	}
+
+	public void setSiteids(String siteids) {
+		this.siteids = siteids;
 	}
 
 	public String getTicketNum() {
