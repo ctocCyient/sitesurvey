@@ -61,7 +61,7 @@ WebFont.load({
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-
+	  $("#addSMPS :input").attr("required", '');
 	//  getRegions();
 		getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
@@ -238,7 +238,7 @@ label {
     
 			<h3 class="text-center">Add SMPS</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
-			<form:form action="saveSMPS" method="post" modelAttribute="Site_SMPS" enctype="Multipart/form-data">
+			<form:form action="saveSMPS" id="addSMPS" method="post" modelAttribute="Site_SMPS" enctype="Multipart/form-data">
 			<div class="login-form">
 			
 				

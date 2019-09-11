@@ -63,8 +63,7 @@ WebFont.load({
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-	 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
-	 
+	  $("#addGenerator :input").attr("required", '');
 		 $(".isa_success").fadeOut(10000);
 });
 
@@ -81,6 +80,13 @@ label {
     color: #495057!important;
     font-size: 13px!important;
 }
+
+.error {
+	color: #ff0000;
+	font-style: italic;
+	font-weight: bold;
+}
+
 </style>
 <body  class="login">
 
@@ -124,36 +130,43 @@ label {
 			<h3 class="text-center">Add Generator</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				
-			<form:form action="saveGenerator" method="post" modelAttribute="Site_Generator" enctype = 'multipart/form-data'>
+			<form:form action="saveGenerator" id="addGenerator"  method="post" modelAttribute="Site_Generator" enctype = 'multipart/form-data' >
 			<div class="login-form">
 			<span id="addMsg" style="font-size:18px;margin-left:221px;"><b>Add New</b><button type="submit" value="Add" name="submit"><i class="fa fa-plus-square" aria-hidden="true"></i></button></span><br><br>
 			<label for="siteid" class="placeholder">Site Id</label>
 				<form:input id="siteid" path="siteid.siteid" class="form-control input-full filled" />
+				<form:errors path="siteid.siteid" cssClass="error"/>
 			
 				 <br>
 				<label for="Manufacturer" class="placeholder">Manufacturer</label>
 				<form:input id="dgManufacturer" path="dgManufacturer" class="form-control input-full filled" />
+				<form:errors path="dgManufacturer" cssClass="error"/>
 				
 				<br>
 				<label for="date" class="placeholder">Date of Manufacturer/Installation</label>
-				 <form:input type="date"  placeholder="mm/dd/yyyy" value="" path="manufacturedDate" class="form-control input-full filled" max="9999-12-31"/>
+				 <form:input id="date" type="date"  placeholder="mm/dd/yyyy" value="" path="manufacturedDate" class="form-control input-full filled" max="9999-12-31"/>
+				 <form:errors path="manufacturedDate" cssClass="error"/>
 				<br>
 				
 				<label for="capacity" class="placeholder">Generator Capacity Rating(kVA)</label> 
 				<form:input id="capacity" path="capacity"  name="capacity"  class="form-control input-full filled"  />
+				<form:errors path="capacity" cssClass="error"/>
 				<br>
                
 				<label for="DGrunhours" class="DGrunhours">DG Run hours(hrs)</label>
                <form:input id="DGrunhours" path="DGrunhours"  name="DGrunhours"  class="form-control input-full filled"  />
+               <form:errors  path="DGrunhours" cssClass="error" />
+               
                 <br>
-                
+                <span class="isa_failure" style="color:red">${errMsg}</span>
                 <label for="" class="">Photos of Generator Control Unit(GCU)</label>
-               <input type="file" id="GCUPhoto"  name="file"  class="form-control input-full filled"  />
+               <form:input type="file" id="GCUPhoto"  name="file"  class="form-control input-full filled" path="gdphoto"/>
+               <span class="isa_failure" style="color:red">${errMsg}</span>
                 <br>
                 
                 <label for="fuellevel" class="fuellevel">Fuel Level at Site(%)</label>
                 	 <form:input id="fuellevel" path="fuellevel"  name="fuellevel"  class="form-control input-full filled"  />
-              	<br>
+               	<br>
               
            	 	<label for="" class="">Photos of Fuel Level Sensor</label>
                	<input type="file" id="FLSPhoto"  name="file"  class="form-control input-full filled"  />
@@ -172,7 +185,7 @@ label {
 				<br>
 				
 				<label for="" class="">Asset Tag Photo</label>
-               	<input type="file" id="photo2"  name="file"  class="form-control input-full filled"  />
+               	<input type="file" id="tagPhoto"  name="file"  class="form-control input-full filled"  />
                 <br> 
 				
               	<label for="Condition" class="Condition">Condition</label>
@@ -187,6 +200,7 @@ label {
               	 <form:option value="Not Applicable">Not Applicable</form:option>
               	 </form:select>
                 <br>
+              
                 
                 <label for="comments" class="placeholder">Comments</label> 
 				<form:input id="comments" path="comments"  name="comments"  class="form-control input-full filled"  />
