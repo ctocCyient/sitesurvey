@@ -290,13 +290,11 @@ label {
 			<div align="center">
 				<span class="isa_success" style="color: #35B234; font-size: 20px">${status}</span>
 			</div>
-			<br>
-			<br>
+			<br> <br>
 
 			<h3 class="text-center">Add Cabinet</h3>
 			<span id="msg" style="color: red; font-size: 12px;">*All
-				Fields are Mandatory*</span><br>
-			<br>
+				Fields are Mandatory*</span><br> <br>
 			<form:form action="saveCabinet" method="post"
 				modelAttribute="Site_Cabinet" enctype="multipart/form-data">
 				<div class="login-form">
@@ -304,7 +302,8 @@ label {
 					<br> <label for="Site ID" class="placeholder">Site ID</label>
 					<form:input id="siteid" path="siteid.siteid"
 						class="form-control input-full filled" value="IND001" />
-					<br> <label for="cabinetManufacturer" class="placeholder">Cabinet Manufacturer</label>
+					<br> <label for="cabinetManufacturer" class="placeholder">Cabinet
+						Manufacturer</label>
 					<form:select id="cabinetManufacturer" path="cabinetManufacturer"
 						name="cabinetManufacturer" class="form-control input-full filled">
 						<form:option value="">Select</form:option>
@@ -318,10 +317,11 @@ label {
 					</form:select>
 
 					<br> <label for="dimensions" class="placeholder">Dimensions</label>
-					<form:input id="dimensions" path="dimensions"
-						name="dimensions" class="form-control input-full filled" />
-		
-					<br> <label for="cabinetCondition" class="placeholder">Cabinet Condition</label>
+					<form:input id="dimensions" path="dimensions" name="dimensions"
+						class="form-control input-full filled" />
+
+					<br> <label for="cabinetCondition" class="placeholder">Cabinet
+						Condition</label>
 					<form:select id="cabinetCondition" path="cabinetCondition"
 						name="cabinetCondition" class="form-control input-full filled">
 						<form:option value="">Select</form:option>
@@ -342,29 +342,25 @@ label {
 					<br> <label for="Photo_1" class="placeholder">photo_1</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
 					<input type="file" id="photo_1" path="photo_1" name="tag_photo"
-						class="form-control input-full filled" accept="image/*" onchange="return ValidateFileUpload(this.id)"/> <br>
-
-					<br> <label for="photo_2" class="placeholder">photo_2</label>
+						class="form-control input-full filled" accept="image/*"
+						onchange="return ValidateFileUpload(this.id)" /> <br> <br>
+					<label for="photo_2" class="placeholder">photo_2</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="photo_2" path="photo_2" name="tag_photo" onchange="return ValidateFileUpload(this.id)" accept="image/*"
+					<input type="file" id="photo_2" path="photo_2" name="tag_photo"
+						onchange="return ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
-						
+
 
 					<div class="form-action">
-						
+
 						<!--  <a href="home" id="show-signin"
 							class="btn btn-danger"
 							style="background-color: #E4002B; color: white;">Cancel</a>-->
-							
-							 <input
-							type="submit" id="submit" value="Save"
-							class="btn btn" style="background-color: #012169; color: white;
-							 ">
-							
-														 <input
+
+						<input type="submit" id="submit" value="Save" class="btn btn"
+							style="background-color: #012169; color: white;"> <input
 							type="submit" id="submit" value="Save and Continue"
-							class="btn btn" style="background-color: #012169; color: white;
-							 ">
+							class="btn btn" style="background-color: #012169; color: white;">
 					</div>
 				</div>
 			</form:form>
