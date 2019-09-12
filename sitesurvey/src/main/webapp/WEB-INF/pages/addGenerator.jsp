@@ -66,7 +66,9 @@ $(document).ready(function(){
 
 function getGeneratorDetails()
 {
-	var siteId=$("#siteId").val();
+	//var siteId=$("#siteId").val();
+	siteId='IND005';
+	$("#siteId").val(siteId);
 	 $.ajax({
          type: "get",
          url: "getGeneratorDetails",
@@ -81,6 +83,7 @@ function getGeneratorDetails()
             }
             else
             {
+            	$("#id").val(jsonData[0].id);
             	$("#dgManufacturer").val(jsonData[0].dgManufacturer);
             	$("#date").val(jsonData[0].manufacturedDate);
             	$("#capacity").val(jsonData[0].capacity);
@@ -89,6 +92,7 @@ function getGeneratorDetails()
             	$("#assettagnumber").val(jsonData[0].assettagnumber);
             	$("#generatorCondition").val(jsonData[0].generatorCondition);
             	$("#comments").val(jsonData[0].comments);
+            	
             }
          }					
 		 }); 
@@ -160,9 +164,9 @@ label {
 			<form:form action="saveGenerator" id="addGenerator"  method="post" modelAttribute="Site_Generator" enctype = 'multipart/form-data' >
 			<div class="login-form">
 			<!-- <span id="addMsg" style="font-size:18px;margin-left:221px;"><b>Add New</b><button type="submit" value="Add" name="submit"><i class="fa fa-plus-square" aria-hidden="true"></i></button></span><br><br>-->
-			 <form:hidden path="id"/>
+			 <form:hidden path="id" id="id"/>
 			<label for="siteid" class="placeholder">Site Id</label>
-				<form:input id="siteid" path="siteid.siteid" name="siteId" class="form-control input-full filled" />
+				<form:input id="siteId" path="siteid.siteid" name="siteId" class="form-control input-full filled" />
 				<form:errors path="siteid.siteid" cssClass="error"/>
 			
 				 <br>
@@ -189,7 +193,7 @@ label {
                 <br>
                 <span class="isa_failure" style="color:red">${errMsg}</span>
                 <label for="" class="">Photos of Generator Control Unit(GCU)</label>
-               <input type="file" id="GCUPhoto"  name="file"  class="form-control input-full filled" />
+               <input type="file" id="GCUPhoto"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)"/>
                 <br>
                 
                 <label for="fuellevel" class="fuellevel">Fuel Level at Site(%)</label>
@@ -197,15 +201,15 @@ label {
                	<br>
               
            	 	<label for="" class="">Photos of Fuel Level Sensor</label>
-               	<input type="file" id="FLSPhoto"  name="file"  class="form-control input-full filled"  />
+               	<input type="file" id="FLSPhoto"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)" />
                 <br> 
               
               	<label for="" class="">Photo1 of the site(Which is not in proper condition)</label>
-               	<input type="file" id="photo1"  name="file"  class="form-control input-full filled"  />
+               	<input type="file" id="photo1"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)" />
                 <br> 
                 
                 <label for="" class="">Photo2 of the site(Which is not in proper condition)</label>
-               	<input type="file" id="photo2"  name="file"  class="form-control input-full filled"  />
+               	<input type="file" id="photo2"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br> 
               
               	<label for="tagNumber" class="placeholder">Asset Tag Number</label>

@@ -100,6 +100,7 @@ function getSMPSDetails(siteID)
           	}
           	else
           	{
+          		$("#id").val(jsonData[0].id);
           		$("#Manufacturer").val(jsonData[0].Manufacturer);
           		$("#model").val(jsonData[0].model);
           		$("#manufacturerDate").val(jsonData[0].manufacturedDate);
@@ -111,7 +112,6 @@ function getSMPSDetails(siteID)
           	}
          }					
 		 }); 
-	
 	
 }
 	
@@ -171,7 +171,7 @@ label {
 			<form:form action="saveSMPS" id="addSMPS" method="post" modelAttribute="Site_SMPS" enctype="Multipart/form-data">
 			<div class="login-form">
 				 <br>
-				 <form:hidden path="id"/>
+				 <form:hidden path="id" id="id"/>
 				<label for="siteId" class=siteId>Site Id</label>
 				<form:input id="siteId" path="siteid.siteid" class="form-control input-full filled" readonly="true"/>
 				<br>

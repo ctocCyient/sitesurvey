@@ -46,6 +46,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Battery_Bank_Master;
+import com.cyient.model.Cabinet_Master;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 
@@ -72,6 +73,9 @@ public class HomeController {
 	
 	@Autowired
 	private SurveyDAO surveyDAO;
+	
+	
+	Gson gson = new Gson();
 	
 	@Autowired
 	private JavaMailSender mailSender;
@@ -349,7 +353,6 @@ public class HomeController {
 	@RequestMapping(value="/saveGenerator" , method=RequestMethod.POST)
 	public ModelAndView saveGenerator(@Valid @ModelAttribute("Site_Generator") Site_Generator generator , BindingResult br , ModelAndView model, @RequestParam("file") MultipartFile[] multipart,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,HttpServletRequest request) throws IOException{
-
 		
 		System.out.println(generator.getSiteid().getSiteid());
 		String siteId=generator.getSiteid().getSiteid();
@@ -407,7 +410,9 @@ public class HomeController {
 	@RequestMapping(value="/saveSMPS" , method=RequestMethod.POST)
 	public ModelAndView saveSMPS(@ModelAttribute("Site_SMPS") Site_SMPS smps, @RequestParam("file") MultipartFile[] multipart ,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,ModelAndView model){
 		
+		int id=smps.getId();
 		try {
+			
 			smps.setObservation_1(multipart[0].getBytes());
 			smps.setObservation_1_Name(multipart[0].getOriginalFilename());
 			smps.setObservation_2(multipart[1].getBytes());
@@ -415,9 +420,10 @@ public class HomeController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		String status="SMPS Added Successfully";
+
 		surveyDAO.addSMPS(smps);
+		String status="SMPS Added Successfully";
+		
 		redirectAttributes.addFlashAttribute("status",status);
 
 		if(submit.equals("Save"))
@@ -455,8 +461,8 @@ public class HomeController {
 		return siteGeneratorJson.toString();
 	}
 
-	@RequestMapping(value="/saveBB" , method=RequestMethod.POST)
-	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
+	@RequestMapping(value="/saveBB", method=RequestMethod.POST)
+	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
 		System.out.println("save bb calling"+tag_photo);
 		String status="Battery Bank Added Successfully";
 		BB.setTag_photo1(tag_photo[0].getBytes());
@@ -464,24 +470,74 @@ public class HomeController {
 		BB.setTag_photo_2(tag_photo[2].getBytes());
 		BB.setTag_photo1_Name(tag_photo[1].getOriginalFilename());
 		BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());
-		surveyDAO.addBB(BB);
+		surveyDAO.addBB(updatetype,BB);
 		redirectAttributes.addFlashAttribute("status",status);
-		return new ModelAndView("redirect:/newBB");
+		
+		if(submit.equals("Save"))
+		  {
+			return new ModelAndView("redirect:/newBB");		 
+			}
+		  else if(submit.equals("Save & Continue"))
+		  {
+			  return new ModelAndView("redirect:/newCabinet");		 
+		}
+		  else
+		  {
+			  return new ModelAndView("redirect:/");		 
+		  }
+
 	}
 	
 	
+
+	
 	@RequestMapping(value="/saveCabinet" , method=RequestMethod.POST)
-	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
+	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
 		String status="Battery Bank Added Successfully";
 		BB.setPhoto_1(tag_photo[0].getBytes());
 		BB.setPhoto_2(tag_photo[1].getBytes());
 		BB.setPhoto_1_Name(tag_photo[0].getOriginalFilename());
 		BB.setPhoto_2_Name(tag_photo[1].getOriginalFilename());
-		surveyDAO.addCabinet(BB);
+		surveyDAO.addCabinet(updatetype,BB);
 		redirectAttributes.addFlashAttribute("status",status);
-		return new ModelAndView("redirect:/newCabinet");
+		
+		if(submit.equals("Save"))
+		  {
+			return new ModelAndView("redirect:/newCabinet");
+			}
+		  else if(submit.equals("Save & Continue"))
+		  {
+				return new ModelAndView("redirect:/newCabinet");
+		}
+		  else
+		  {
+			  return new ModelAndView("redirect:/");		 
+		  }
 	}	
 
+	
+	@RequestMapping(value="/getBBData",method=RequestMethod.GET)
+	 @ResponseBody
+	public String getBB(HttpServletRequest request)
+	{
+		List <Site_Battery_Bank> obj = surveyDAO.getBB(request.getParameter("siteid"));
+		String siteSMPSJson=gson.toJson(obj);
+		return siteSMPSJson.toString();
+
+	}	
+	
+	@RequestMapping(value="/getCabinetData",method=RequestMethod.GET)
+	 @ResponseBody
+	public String getCabinetData(HttpServletRequest request)
+	{
+		List <Site_Cabinet> obj = surveyDAO.getCabinet(request.getParameter("siteid"));
+		String siteSMPSJson=gson.toJson(obj);
+		return siteSMPSJson.toString();
+
+	}		
+	
+	
+	
 	
 	 @RequestMapping(value="/getLastTicketId", method=RequestMethod.GET)
 	 @ResponseBody
@@ -548,12 +604,12 @@ public class HomeController {
 	   @ModelAttribute("CabinetManufacturer")	
 	   public Map<String, String> getCabinetManufacturer() {
 	      Map<String, String> BBMap = new HashMap<String, String>();
-	      List<Site_Cabinet> regions = surveyDAO.getCabinetManufacturer();
+	      List<Cabinet_Master> regions = surveyDAO.getCabinetManufacturer();
 	      int i=0;
 	      for(i=0;i<regions.size();i++){
 	    	  System.out.println(regions.get(i));
 	    	 }
-	      for(Site_Cabinet region : regions)
+	      for(Cabinet_Master region : regions)
 	      {
 	    	  BBMap.put(region.getCabinetManufacturer(), region.getCabinetManufacturer());
 	      }
@@ -565,12 +621,12 @@ public class HomeController {
 	   @ModelAttribute("CabinetType")	
 	   public Map<String, String> getCabinetType() {
 	      Map<String, String> BBMap = new HashMap<String, String>();
-	      List<Site_Cabinet> regions = surveyDAO.getCabinetManufacturer();
+	      List<Cabinet_Master> regions = surveyDAO.getCabinetManufacturer();
 	      int i=0;
 	      for(i=0;i<regions.size();i++){
 	    	  System.out.println(regions.get(i));
 	    	 }
-	      for(Site_Cabinet region : regions)
+	      for(Cabinet_Master region : regions)
 	      {
 	    	  BBMap.put(region.getType(), region.getType());
 	      }

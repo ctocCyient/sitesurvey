@@ -74,7 +74,7 @@ $(document).ready(function(){
 		//getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
-		 
+		 getCabinet();
 		 $("input").attr("required", "true");
 		 $("select").attr("required", "true");
          $("select option:contains('Select')").attr("disabled","disabled");
@@ -198,46 +198,53 @@ function getCity(district)
 	
 	
 	
-    function ValidateFileUpload(id) {
-        var fuData = document.getElementById(id);
-        var FileUploadPath = fuData.value;
-
-//To check if user upload any file
-        if (FileUploadPath == '') {
-            alert("Please upload an image");
-
-        } else {
-            var Extension = FileUploadPath.substring(
-                    FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-
-//The file uploaded is an image
-
-if (Extension == "gif" || Extension == "png" || Extension == "bmp"
-                    || Extension == "jpeg" || Extension == "jpg") {
-
-// To Display
-                if (fuData.files && fuData.files[0]) {
-                    var reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        $('#blah').attr('src', e.target.result);
-                    }
-
-                    reader.readAsDataURL(fuData.files[0]);
-                }
-
-            } 
-
-//The file upload is NOT an image
-else {
-                alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
-                document.getElementById(id).value="";
-            }
-        }
-    }
 
 
-
+	 
+	 
+	 function getCabinet()
+	 {
+	 	 $.ajax({
+	 		 	type:"get",
+	 		 	url:"getCabinetData",
+	 		 	contentType:'application/json',
+	 		 	datatype:"json",
+	 		 	data:{"siteid":"IND001"},
+	 		 	success:function(res){
+	 	         	jsonData = JSON.parse(res)[0];
+	 	         	if(JSON.parse(res).length==0)
+	 	         		{
+		 	         	document.getElementById("updatetype").value="New;"+"1";
+	 	         		}
+	 		 		//alert(jsonData.id)	
+	 		 		else
+	 		 			{
+	 	         	document.getElementById("siteid").value=jsonData.siteid.siteid;
+	 	         	document.getElementById("cabinetManufacturer").value=jsonData.cabinetManufacturer;
+	 	         	document.getElementById("type").value=jsonData.type;
+	 	         	document.getElementById("dimensions").value=jsonData.dimensions;
+	 	         	document.getElementById("cabinetCondition").value=jsonData.cabinetCondition;
+ 	 	         	document.getElementById("comments").value=jsonData.comments;
+	 	         	document.getElementById("updatetype").value="Existing;"+jsonData.id;	 	         	
+	 		 			}
+	 		 	},
+	 		 	error:function()
+	 		 	{
+	 		 		console.log("Error");	
+	 		 	}
+	 	 });
+	 }	
+	 
+	 
+	 
+	 function isNumber(evt) {
+		    evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		}
 </script>
 <style>
 .fa-bars, .fa-ellipsis-v {
@@ -259,6 +266,7 @@ label {
 				src="<c:url value='resources/assets/img/logo.png' />"
 				alt="navbar brand" class="navbar-brand">
 			</a>
+			
 			<button class="navbar-toggler sidenav-toggler ml-auto" type="button"
 				data-toggle="collapse" data-target="collapse" aria-expanded="false"
 				aria-label="Toggle navigation">
@@ -298,6 +306,8 @@ label {
 			<form:form action="saveCabinet" method="post"
 				modelAttribute="Site_Cabinet" enctype="multipart/form-data">
 				<div class="login-form">
+							<input type="hidden" id="updatetype" name="updatetype"/>
+				
 
 					<br> <label for="Site ID" class="placeholder">Site ID</label>
 					<form:input id="siteid" path="siteid.siteid"
@@ -317,7 +327,7 @@ label {
 					</form:select>
 
 					<br> <label for="dimensions" class="placeholder">Dimensions</label>
-					<form:input id="dimensions" path="dimensions" name="dimensions"
+					<form:input id="dimensions" path="dimensions" name="dimensions" onkeypress="return isNumber(event)"
 						class="form-control input-full filled" />
 
 					<br> <label for="cabinetCondition" class="placeholder">Cabinet
@@ -337,7 +347,7 @@ label {
 					</form:select>
 
 					<br> <label for="comments" class="placeholder">Observation/Comments</label>
-					<form:input id="comments" path="comments" name="comments"
+					<form:input id="comments" path="comments" name="comments" onkeypress="return isCharacters(event)" 
 						class="form-control input-full filled" />
 					<br> <label for="Photo_1" class="placeholder">photo_1</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
@@ -357,9 +367,9 @@ label {
 							class="btn btn-danger"
 							style="background-color: #E4002B; color: white;">Cancel</a>-->
 
-						<input type="submit" id="submit" value="Save" class="btn btn"
+						<input type="submit" id="submit" value="Save" class="btn btn" name="submit"
 							style="background-color: #012169; color: white;"> <input
-							type="submit" id="submit" value="Save and Continue"
+							type="submit" id="submit" value="Save & Continue" name="submit"
 							class="btn btn" style="background-color: #012169; color: white;">
 					</div>
 				</div>
