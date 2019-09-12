@@ -48,7 +48,10 @@ public interface SurveyDAO {
 	@Transactional
 	public void addSMPS(Site_SMPS smps);
 
-	public void addBB(Site_Battery_Bank BB);
+	
+	@Transactional
+	public void addBB(String updatetype,Site_Battery_Bank BB);
+	
 	@Transactional
 	public List<Regions> getRegions();
 	
@@ -163,5 +166,9 @@ public interface SurveyDAO {
 		
 	 @Transactional
 	 public String saveTowerInstallation(Tower_Installation towerinstallation);
+	
+	 @Transactional
+	 public List<Site_Battery_Bank> getBB(String Siteid);
+
 
 }

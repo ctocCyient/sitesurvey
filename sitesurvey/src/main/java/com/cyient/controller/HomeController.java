@@ -70,6 +70,9 @@ public class HomeController {
 	@Autowired
 	private SurveyDAO surveyDAO;
 	
+	
+	Gson gson = new Gson();
+	
 	@Autowired
 	private JavaMailSender mailSender;
 	
@@ -491,8 +494,8 @@ public class HomeController {
 	}
 	
 
-	@RequestMapping(value="/saveBB" , method=RequestMethod.POST)
-	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
+	@RequestMapping(value="/saveBB", method=RequestMethod.POST)
+	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
 		System.out.println("save bb calling"+tag_photo);
 		String status="Battery Bank Added Successfully";
 		BB.setTag_photo1(tag_photo[0].getBytes());
@@ -500,14 +503,38 @@ public class HomeController {
 		BB.setTag_photo_2(tag_photo[2].getBytes());
 		BB.setTag_photo1_Name(tag_photo[1].getOriginalFilename());
 		BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());
-		surveyDAO.addBB(BB);
+		surveyDAO.addBB(updatetype,BB);
 		redirectAttributes.addFlashAttribute("status",status);
-		return new ModelAndView("redirect:/newBB");
+		
+		if(submit.equals("Save"))
+		  {
+			return new ModelAndView("redirect:/newBB");		 
+			}
+		  else if(submit.equals("Save & Continue"))
+		  {
+			  return new ModelAndView("redirect:/newCabinet");		 
+		}
+		  else
+		  {
+			  return new ModelAndView("redirect:/");		 
+		  }
+
 	}
 	
 	
+	@RequestMapping(value="/getBBData",method=RequestMethod.GET)
+	 @ResponseBody
+	public String getBB(HttpServletRequest request)
+	{
+		System.out.println(surveyDAO.getBB(request.getParameter("siteid")));
+		List <Site_Battery_Bank> obj = surveyDAO.getBB(request.getParameter("siteid"));
+		String siteSMPSJson=gson.toJson(obj);
+		return siteSMPSJson.toString();
+
+	}
+	
 	@RequestMapping(value="/saveCabinet" , method=RequestMethod.POST)
-	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
+	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
 		String status="Battery Bank Added Successfully";
 		BB.setPhoto_1(tag_photo[0].getBytes());
 		BB.setPhoto_2(tag_photo[1].getBytes());
@@ -515,7 +542,19 @@ public class HomeController {
 		BB.setPhoto_2_Name(tag_photo[1].getOriginalFilename());
 		surveyDAO.addCabinet(BB);
 		redirectAttributes.addFlashAttribute("status",status);
-		return new ModelAndView("redirect:/newCabinet");
+		
+		if(submit.equals("Save"))
+		  {
+			return new ModelAndView("redirect:/newCabinet");
+			}
+		  else if(submit.equals("Save & Continue"))
+		  {
+				return new ModelAndView("redirect:/newCabinet");
+		}
+		  else
+		  {
+			  return new ModelAndView("redirect:/");		 
+		  }
 	}	
 
 	

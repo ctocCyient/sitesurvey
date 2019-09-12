@@ -230,13 +230,22 @@ if (Extension == "gif" || Extension == "png" || Extension == "bmp"
 
 //The file upload is NOT an image
 else {
-                alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+	imagewarn();
                 document.getElementById(id).value="";
             }
         }
     }
 
-
+	 function imagewarn() {
+		 swal("Invalid Image Format", {
+				icon : "error",
+				buttons: {        			
+					confirm: {
+						className : 'btn btn-danger'
+					}
+				},
+			});
+	 }
 
 </script>
 <style>
@@ -357,9 +366,9 @@ label {
 							class="btn btn-danger"
 							style="background-color: #E4002B; color: white;">Cancel</a>-->
 
-						<input type="submit" id="submit" value="Save" class="btn btn"
+						<input type="submit" id="submit" value="Save" class="btn btn" name="submit"
 							style="background-color: #012169; color: white;"> <input
-							type="submit" id="submit" value="Save and Continue"
+							type="submit" id="submit" value="Save & Continue" name="submit"
 							class="btn btn" style="background-color: #012169; color: white;">
 					</div>
 				</div>

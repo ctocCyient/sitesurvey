@@ -354,18 +354,33 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	}
 
-	public void addBB(Site_Battery_Bank BB) {
+	public void addBB(String updatetype,Site_Battery_Bank BB) {
 		// TODO Auto-generated method stub
+		if(updatetype.split(";")[0]=="Existing")
+		{		
+		BB.setId(Integer.parseInt(updatetype.split(";")[1]));
 		sessionFactory.getCurrentSession().saveOrUpdate(BB);
+		}
+		else
+		{
+			sessionFactory.getCurrentSession().saveOrUpdate(BB);
+		}
 	}
-
-	
 
 	public void addCabinet(Site_Cabinet BB) {
 		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().saveOrUpdate(BB);	
 	}
 
+	public List<Site_Battery_Bank> getBB(String Siteid) {
+		// TODO Auto-generated method stub
+		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site_Battery_Bank.class);
+		Site s = new Site();
+		s.setSiteid(Siteid);
+        c.add(Restrictions.eq("siteid",s));
+		List<Site_Battery_Bank> userlist = c.list();
+		return 	userlist;
+	}
 
 	public String saveTowerInstallation(Tower_Installation towerinstallation) {
 		// TODO Auto-generated method stub
