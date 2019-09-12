@@ -179,5 +179,8 @@ public interface SurveyDAO {
 		public String storeSitesecurity(Site_Safety sf);
 		@Transactional
 		public String storeSiteAdditional(Site_Additional_Notes sa);
+		
+		@Transactional
+		public List<Tower_Installation> fetchTowerDetails(String siteid);
 
 }

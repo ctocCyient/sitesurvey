@@ -78,10 +78,48 @@ $(document).ready(function(){
 	
 	var ticketDetails=JSON.stringify(jsonDetails);
 	//alert(ticketDetails);
+	var sid=jsonDetails.split(",")[1];
 	$("#siteid")[0].value=jsonDetails.split(",")[1];
 	$("#json")[0].value=ticketDetails;
-	  
+	getTowerInstallationDetails(sid);  
+	
 });
+
+function getTowerInstallationDetails(sid){
+	
+    $.ajax({
+        type: "get",
+        url: "getTowerDetails",
+        contentType: 'application/json',
+		    data:{"siteid":sid},
+        success: function(result) {
+        	alert(result)
+        	
+       towerjsonData=JSON.parse(result);
+        console.log("json"+towerjsonData);
+        if(towerjsonData.length!=0){
+        	
+        	$("#tid")[0].value=towerjsonData[0].id;
+        	$("#towertype")[0].value=towerjsonData[0].towerType;
+        	$("#obnotes")[0].value=towerjsonData[0].observationNotes;
+        	$("#visualinspection1")[0].value=towerjsonData[0].virtualInspection;
+        	$("#visualinspection2")[0].value=towerjsonData[0].virtualInspection2;
+        	$("#towercondition")[0].value=towerjsonData[0].overallconditon;
+        	$("#ticomments")[0].value=towerjsonData[0].comments;
+        	$("#tirfantennae")[0].value=towerjsonData[0].noofRFAntennas;
+        	$("#timwantennae")[0].value=towerjsonData[0].noofMWAntenna;
+        	$("#tirrh")[0].value=towerjsonData[0].noofRRH;
+        	
+        	
+        	
+        }
+        
+        	
+        	
+        }
+	
+		 });
+}
 
 
  function ValidateImage(id){
@@ -197,6 +235,7 @@ else {
 				<h3 class="text-center">Tower Audit</h3>
 				<form:form method="post" id="towerInstallationForm" modelAttribute="Tower_Installation" action="towerinstallation" enctype="multipart/form-data"   >
 				
+				<form:input type="hidden" path="id" id="tid" />
 				<form:input type="hidden" path="siteid.siteid" id="siteid" />
 				<form:input type="hidden"  path="" id="json" name="json" />
 				<div class="login-form">			

@@ -654,7 +654,22 @@ public class SiteSurveyController {
 		
 		return model;
 	}
-
+	@RequestMapping(value = "/getTowerDetails", method = RequestMethod.GET)
+	@ResponseBody
+	public String fetchTowerDetails(ModelAndView model,HttpServletRequest request){
+		
+		String siteid=request.getParameter("siteid");
+		System.out.println("sid>>>>>>>>>>>>>>>>>."+siteid);
+		List<Tower_Installation> list=surveyDAO.fetchTowerDetails(siteid);
+			
+		System.out.println("list>>>>>>>>>>>>>>."+list.get(0).getId());
+		Gson gsonBuilder = new GsonBuilder().create();
+        String towerDetailsJson = gsonBuilder.toJson(list);
+		
+		return towerDetailsJson.toString();
+	}
+	
+	
 	
 	
 }

@@ -401,4 +401,11 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(sa);
 		return "Saved";
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Tower_Installation> fetchTowerDetails(String siteid) {
+		// TODO Auto-generated method stub
+		return sessionFactory.getCurrentSession().createQuery("from Tower_Installation  where siteid ='"+siteid+"'").list();
+	}
 }
