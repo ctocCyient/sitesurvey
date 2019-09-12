@@ -75,11 +75,7 @@ $(document).ready(function(){
 	 jsonDetails='<%=jsondetails%>';
 	alert(jsonDetails)
 	var ticketDetails=JSON.parse(JSON.stringify(jsonDetails));
-<<<<<<< HEAD
-	//alert(ticketDetails);
-=======
-	alert(ticketDetails);
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
+
 	$("#siteid")[0].value=ticketDetails.split(",")[1];
 	//alert(ticketDetails.split(",")[1]);
 	  $("#json")[0].value=ticketDetails;
@@ -178,21 +174,14 @@ else {
 	  <div class="container container-login animated fadeIn">
 	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
 				<h3 class="text-center">Safety</h3>
-<<<<<<< HEAD
+
 				<form:form method="post" id="safetyform" modelAttribute="Site_Safety" action="sitesafety" enctype="multipart/form-data">
-=======
-				<form:form method="post" id="additionalNotes" modelAttribute="Site_Additional_Notes" action="additionalNotes" enctype="multipart/form-data">
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 				<form:input type="hidden"  path="" id="json" name="json" />
 				<div class="form-group ">
 						<label for="siteid" class="placeholder">Site ID
 				
 						</label>
 						 
-<<<<<<< HEAD
-						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full" readonly="true"  />				
-						<form:errors path="siteid.siteid" cssClass="error" />	
-=======
 						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full"  />				
 						<form:errors path="siteid.siteid" cssClass="error" />	
 					</div>
@@ -201,9 +190,9 @@ else {
 						<label for="observations" class="observations">Observations</label>
 						<form:input  id="observations" path="observations" class="form-control input-full"  />				
 						<form:errors path="observations" cssClass="error" />	
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
+
 					</div>
-<<<<<<< HEAD
+
 				<div class="form-group ">
 						<label for="extinguishersAvailability" class="placeholder">Are Fire extinguishers available (Non expired)? </label>
 						<form:select id="securitycondition" path="extinguishersAvailability"  name="overallconditon"  class="form-control input-full filled" >
@@ -222,12 +211,9 @@ else {
 						<form:input type="date" id="edate" path="extinguishersDueDate" class="form-control input-full"  />				
 						<form:errors path="extinguishersDueDate" cssClass="error" />	
 					</div>
-=======
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 						
 				
 				<div class="form-group ">
-<<<<<<< HEAD
 				<label for="Upload Image" class="placeholder" >Upload Image </label>
 				<input type="file"   path="safety_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
@@ -275,18 +261,7 @@ else {
  				<div class="form-group ">
 				<label for="Upload Image" class="placeholder" >Upload Image2 </label>
 				<input type="file" path="safety_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="return ValidateImage('img2');"/> 
-=======
-				<label for="site_photo2" class="placeholder" >site_photo1</label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="return ValidateImage('img1');"/> 
-					<span class="isa_failure" id="image1">${errMsg}</span>
-  				</div>
-  				
-  				
-				<div class="form-group ">
-				<label for="site_photo1" class="placeholder" >site_photo2</label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="return ValidateImage('img2');"/> 
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
-					<span class="isa_failure" id="image2">${errMsg}</span>
+				<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
   				
   				<div class="form-group ">

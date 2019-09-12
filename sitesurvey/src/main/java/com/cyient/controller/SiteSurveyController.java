@@ -664,8 +664,6 @@ public class SiteSurveyController {
 	}
 	
 	
-=======
->>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 	
 	
 }
