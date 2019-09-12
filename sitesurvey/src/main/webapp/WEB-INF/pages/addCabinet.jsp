@@ -237,14 +237,7 @@ function getCity(district)
 	 
 	 
 	 
-	 function isNumber(evt) {
-		    evt = (evt) ? evt : window.event;
-		    var charCode = (evt.which) ? evt.which : evt.keyCode;
-		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-		        return false;
-		    }
-		    return true;
-		}
+
 </script>
 <style>
 .fa-bars, .fa-ellipsis-v {
@@ -351,27 +344,21 @@ label {
 						class="form-control input-full filled" />
 					<br> <label for="Photo_1" class="placeholder">photo_1</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="photo_1" path="photo_1" name="tag_photo"
+					<input type="file" id="photo_1" name="tag_photo"
 						class="form-control input-full filled" accept="image/*"
-						onchange="return ValidateFileUpload(this.id)" /> <br> <br>
+						onchange="ValidateFileUpload(this.id)" /> <br> <br>
 					<label for="photo_2" class="placeholder">photo_2</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="photo_2" path="photo_2" name="tag_photo"
-						onchange="return ValidateFileUpload(this.id)" accept="image/*"
+					<input type="file" id="photo_2" name="tag_photo"
+						onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 
 
-					<div class="form-action">
-
-						<!--  <a href="home" id="show-signin"
-							class="btn btn-danger"
-							style="background-color: #E4002B; color: white;">Cancel</a>-->
-
-						<input type="submit" id="submit" value="Save" class="btn btn" name="submit"
-							style="background-color: #012169; color: white;"> <input
-							type="submit" id="submit" value="Save & Continue" name="submit"
-							class="btn btn" style="background-color: #012169; color: white;">
-					</div>
+<div class="form-action">
+					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
+					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+				</div>
 				</div>
 			</form:form>
 

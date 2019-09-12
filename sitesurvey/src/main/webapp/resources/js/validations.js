@@ -102,6 +102,7 @@ function isNumber(evt) {
 	}
 	
 	function ValidateFileUpload(id) {
+		
         var fuData = document.getElementById(id);
         var FileUploadPath = fuData.value;
 
@@ -133,20 +134,17 @@ if (Extension == "gif" || Extension == "png" || Extension == "bmp"
 
 //The file upload is NOT an image
 else {
-	imagewarn();
+	swal("Invalid Image Format", {
+		icon : "error",
+		buttons: {        			
+			confirm: {
+				className : 'btn btn-danger'
+			}
+		},
+	});
                 document.getElementById(id).value="";
             }
         }
     }
 
  
- function imagewarn() {
-	 swal("Invalid Image Format", {
-			icon : "error",
-			buttons: {        			
-				confirm: {
-					className : 'btn btn-danger'
-				}
-			},
-		});
- }
