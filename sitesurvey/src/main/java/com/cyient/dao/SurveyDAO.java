@@ -9,11 +9,14 @@ import com.cyient.model.Regions;
 import com.cyient.model.Site;
 
 import com.cyient.model.Site_Access;
+import com.cyient.model.Site_Additional_Notes;
 import com.cyient.model.Site_Area;
 import com.cyient.model.Site_Battery_Bank;
 import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
+import com.cyient.model.Site_Safety;
+import com.cyient.model.Site_Security;
 import com.cyient.model.Site_Wiring;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
@@ -161,7 +164,20 @@ public interface SurveyDAO {
 	@Transactional
 	public void addCabinet(Site_Cabinet BB);
 		
-	 @Transactional
-	 public String saveTowerInstallation(Tower_Installation towerinstallation);
+	// @Transactional
+//	 public String saveTowerInstallation(Tower_Installation towerinstallation);
+	 
+		@Transactional
+		public String saveTowerInstallation(Tower_Installation tower);
+
+		@Transactional
+		public List<Ticketing> getCustomerlist();
+
+		@Transactional
+		public String storeSitesecurity(Site_Security ss);
+		@Transactional
+		public String storeSitesecurity(Site_Safety sf);
+		@Transactional
+		public String storeSiteAdditional(Site_Additional_Notes sa);
 
 }

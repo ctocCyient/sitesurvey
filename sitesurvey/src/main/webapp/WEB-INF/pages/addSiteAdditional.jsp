@@ -68,6 +68,9 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
+	
+	//$("#additionalNotes : input").attr("required",'');
+	 $("#additionalNotes :input").attr("required", '');
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
@@ -108,6 +111,7 @@ else {
           }
       }
   }
+
 
 </script>
 <style>
@@ -172,14 +176,14 @@ else {
 	  <div class="container container-login animated fadeIn">
 	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
 				<h3 class="text-center">Additional Details</h3>
-				<form:form method="post" id="additionalNotes" modelAttribute="Site_Additional_Notes" action="additionalNotes" enctype="multipart/form-data">
+				<form:form method="post" id="additionalNotes" modelAttribute="Site_Additional_Notes" action="additionalNotes" enctype="multipart/form-data" onsubmit="return ValiidateForm()">
 				<input type="hidden"   id="json" name="json" />
 				<div class="form-group ">
 						<label for="siteid" class="placeholder">Site ID
 				
 						</label>
 						 
-						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full"  />				
+						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full"  readonly="true" />				
 						<form:errors path="siteid.siteid" cssClass="error" />	
 					</div>
 								
@@ -191,14 +195,14 @@ else {
 						
 				
 				<div class="form-group ">
-				<label for="site_photo2" class="placeholder" >site_photo1</label>
+				<label for="site_photo2" class="placeholder" >Site Photo1</label>
 				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="return ValidateImage('img1');"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
   				</div>
   				
   				
 				<div class="form-group ">
-				<label for="site_photo1" class="placeholder" >site_photo2</label>
+				<label for="site_photo1" class="placeholder" >Site Photo2</label>
 				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="return ValidateImage('img2');"/> 
 					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>

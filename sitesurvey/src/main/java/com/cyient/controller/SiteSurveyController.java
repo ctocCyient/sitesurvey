@@ -28,6 +28,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -286,7 +287,9 @@ public class SiteSurveyController {
 		//	//s.setSiteid("IND001");
 			//towerinstallation.setSiteid(s);
 			System.out.println("towerphoto1>>"+towerinstallation.getTower_photo1());
-			Gson gsonBuilder = new GsonBuilder().create();
+			String status=surveyDAO.saveTowerInstallation(towerinstallation);
+			
+			/*Gson gsonBuilder = new GsonBuilder().create();
             String towerInstallationJson = gsonBuilder.toJson(towerinstallation);
             //System.out.println(towerInstallationJson);
               // return execOpenJson.toString()
@@ -301,12 +304,12 @@ public class SiteSurveyController {
 			            wr.writeBytes(towerInstallationJson);
 			            wr.flush();
 							wr.close();
-			            /*java.io.OutputStream os = conn.getOutputStream();
+			            java.io.OutputStream os = conn.getOutputStream();
 
 
 			    		os.write(towerInstallationJson.toString().getBytes());
 			    		os.flush();
-			    		os.close();*/
+			    		os.close();
 			            //conn.setRequestProperty("Accept", "application/json");
 			            if (conn.getResponseCode() != 200) {
 			                throw new RuntimeException("Failed : HTTP Error code : "
@@ -326,9 +329,11 @@ public class SiteSurveyController {
 			            String s1=stringBuilder.toString().trim();
 			            System.out.println("s1>>>>"+s1);
 			            String s2="Saved";
-			            System.out.println(s1.equals(s2));
+			            System.out.println(s1.equals(s2));*/
+			
+						
 			            System.out.println(action.equalsIgnoreCase("Save & Continue"));
-			            if(s1.equalsIgnoreCase("Saved")){
+			            if(status.equalsIgnoreCase("Saved")){
 			            	if(action.equalsIgnoreCase("Save")){
 			            		redirectAttributes.addFlashAttribute("succMsg","Details Saved Successfully");
 			            		model.setViewName("redirect:/fetchtowerinstallation");
@@ -349,13 +354,6 @@ public class SiteSurveyController {
 			            System.out.println("Exception in NetClientGet:- " + e);
 			        }
 
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
 		return model;
 	}
 }
@@ -386,7 +384,10 @@ public class SiteSurveyController {
 			sitesecurity.setSecurity_photo1_name(multipart[0].getOriginalFilename());
 			sitesecurity.setTower_photo2(multipart[1].getBytes());
 			sitesecurity.setTower_photo2_name(multipart[1].getOriginalFilename());
-			Gson gsonBuilder = new GsonBuilder().create();
+			
+			String status=surveyDAO.storeSitesecurity(sitesecurity);
+			
+/*			Gson gsonBuilder = new GsonBuilder().create();
             String sitesecurityJson = gsonBuilder.toJson(sitesecurity);
             URL url = new URL("http://localhost:8080/SiteSurveyRest/sitesurvey/saveSiteSecurity");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -403,7 +404,7 @@ public class SiteSurveyController {
 
     		os.write(towerInstallationJson.toString().getBytes());
     		os.flush();
-    		os.close();*/
+    		os.close();
             //conn.setRequestProperty("Accept", "application/json");
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP Error code : "
@@ -423,8 +424,8 @@ public class SiteSurveyController {
             String s1=stringBuilder.toString().trim();
             System.out.println("s1>>>>"+s1);
             String s2="Saved";
-            System.out.println(s1.equals(s2));
-            if(s1.equalsIgnoreCase("Saved")){
+            System.out.println(s1.equals(s2));*/
+            if(status.equalsIgnoreCase("Saved")){
             	if(action.equalsIgnoreCase("Save")){
             		redirectAttributes.addFlashAttribute("succMsg","Details Saved Successfully");
             		model.setViewName("redirect:/gotositesecurity");
@@ -495,11 +496,11 @@ public class SiteSurveyController {
 			
 			
 			
+			String status=surveyDAO.storeSitesecurity(sitesafety);
+		
 			
 			
-			
-			
-			Gson gsonBuilder = new GsonBuilder().create();
+		/*	Gson gsonBuilder = new GsonBuilder().create();
             String sitesafetyJson = gsonBuilder.toJson(sitesafety);
             URL url = new URL("http://localhost:8080/SiteSurveyRest/sitesurvey/saveSiteSafety");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -511,12 +512,12 @@ public class SiteSurveyController {
             wr.writeBytes(sitesafetyJson);
             wr.flush();
             wr.close();
-            /*java.io.OutputStream os = conn.getOutputStream();
+            java.io.OutputStream os = conn.getOutputStream();
 
 
     		os.write(towerInstallationJson.toString().getBytes());
     		os.flush();
-    		os.close();*/
+    		os.close();
             //conn.setRequestProperty("Accept", "application/json");
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP Error code : "
@@ -536,8 +537,8 @@ public class SiteSurveyController {
             String s1=stringBuilder.toString().trim();
             System.out.println("s1>>>>"+s1);
             String s2="Saved";
-            System.out.println(s1.equals(s2));
-            if(s1.equalsIgnoreCase("Saved")){
+            System.out.println(s1.equals(s2));*/
+            if(status.equalsIgnoreCase("Saved")){
             	if(action.equalsIgnoreCase("Save")){
             		redirectAttributes.addFlashAttribute("succMsg","Details Saved Successfully");
             		model.setViewName("redirect:/gotosafety");
@@ -572,6 +573,7 @@ public class SiteSurveyController {
 	}
 	
 	
+	@SuppressWarnings("null")
 	@RequestMapping(params = "btn",value = "/additionalNotes",  method = RequestMethod.POST)
 	public ModelAndView savesitesafety(@Valid @ModelAttribute("Site_Additional_Notes") Site_Additional_Notes siteaddtional,
 			BindingResult bir,
@@ -589,9 +591,9 @@ public class SiteSurveyController {
 			siteaddtional.setSite_photo2(multipart[1].getBytes());
 			siteaddtional.setSite_photo2_name(multipart[1].getOriginalFilename());
 			
-			
+			String status=surveyDAO.storeSiteAdditional(siteaddtional);
 					
-			Gson gsonBuilder = new GsonBuilder().create();
+			/*Gson gsonBuilder = new GsonBuilder().create();
             String siteAdditionalJson = gsonBuilder.toJson(siteaddtional);
             URL url = new URL("http://localhost:8080/SiteSurveyRest/sitesurvey/saveSiteAddition");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -603,12 +605,12 @@ public class SiteSurveyController {
             wr.writeBytes(siteAdditionalJson);
             wr.flush();
             wr.close();
-            /*java.io.OutputStream os = conn.getOutputStream();
+            java.io.OutputStream os = conn.getOutputStream();
 
 
     		os.write(towerInstallationJson.toString().getBytes());
     		os.flush();
-    		os.close();*/
+    		os.close();
             //conn.setRequestProperty("Accept", "application/json");
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP Error code : "
@@ -628,8 +630,8 @@ public class SiteSurveyController {
             String s1=stringBuilder.toString().trim();
             System.out.println("s1>>>>"+s1);
             String s2="Saved";
-            System.out.println(s1.equals(s2));
-            if(s1.equalsIgnoreCase("Saved")){
+            System.out.println(s1.equals(s2));*/
+            if(status.equalsIgnoreCase("Saved")){
             	if(action.equalsIgnoreCase("Save")){
             		redirectAttributes.addFlashAttribute("succMsg","Details Saved Successfully");
             		model.setViewName("redirect:/gotoAdditional");
@@ -638,8 +640,9 @@ public class SiteSurveyController {
             	}else if(action.equalsIgnoreCase("Save & Continue")){
             		redirectAttributes.addFlashAttribute("succMsg","Details Saved Successfully");
             		
+            		Model m=null;
             		model.addObject("ticketDetails",json);
-            		
+            		//m.addAttribute("ticketDetails",json);
             		model.setViewName("redirect:/home");
             		
             		return model;

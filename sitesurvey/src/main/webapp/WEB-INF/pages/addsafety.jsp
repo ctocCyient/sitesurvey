@@ -68,6 +68,8 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
+	
+	 $("#safetyform :input").attr("required", '');
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
@@ -172,14 +174,14 @@ else {
 	  <div class="container container-login animated fadeIn">
 	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
 				<h3 class="text-center">Safety</h3>
-				<form:form method="post" id="securityform" modelAttribute="Site_Safety" action="sitesafety" enctype="multipart/form-data">
+				<form:form method="post" id="safetyform" modelAttribute="Site_Safety" action="sitesafety" enctype="multipart/form-data">
 				<form:input type="hidden"  path="" id="json" name="json" />
 				<div class="form-group ">
 						<label for="siteid" class="placeholder">Site ID
 				
 						</label>
 						 
-						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full"  />				
+						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full" readonly="true"  />				
 						<form:errors path="siteid.siteid" cssClass="error" />	
 					</div>
 				<div class="form-group ">

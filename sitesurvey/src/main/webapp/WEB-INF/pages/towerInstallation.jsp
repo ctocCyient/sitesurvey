@@ -71,6 +71,7 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
+	 $("#towerInstallationForm :input").attr("required", '');
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
