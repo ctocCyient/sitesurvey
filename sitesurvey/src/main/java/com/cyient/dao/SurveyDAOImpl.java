@@ -14,9 +14,12 @@ import com.cyient.model.Cabinet_Master;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 import com.cyient.model.Site_Access;
+import com.cyient.model.Site_Additional_Notes;
 import com.cyient.model.Site_Area;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
+import com.cyient.model.Site_Safety;
+import com.cyient.model.Site_Security;
 import com.cyient.model.Site_Wiring;
 import com.cyient.model.Site_Battery_Bank;
 import com.cyient.model.Site_Cabinet;
@@ -389,10 +392,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 		return 	userlist;
 	}
 
-	public String saveTowerInstallation(Tower_Installation towerinstallation) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Site_SMPS> getSMPSDetails(String siteId)
@@ -406,4 +405,41 @@ public class SurveyDAOImpl implements SurveyDAO {
 		return sessionFactory.getCurrentSession().createQuery("from Site_Generator where siteid='"+siteId+"'").list();
 	}
 	
+
+	public String saveTowerInstallation(Tower_Installation tower) {
+		sessionFactory.getCurrentSession().saveOrUpdate(tower);
+			return "Saved";	
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Ticketing> getCustomerlist() {
+		return sessionFactory.getCurrentSession().createQuery("from Ticketing").list();
+	}
+
+	public String storeSitesecurity(Site_Security ss) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().saveOrUpdate(ss);
+		return "Saved";
+	}
+
+	public String storeSiteSafety(Site_Safety sf) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().saveOrUpdate(sf);
+		return "Saved";
+		}
+
+	public String storeSiteAdditional(Site_Additional_Notes sa) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().saveOrUpdate(sa);
+		return "Saved";
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Site_Safety> getSafetyDetails(String siteId){
+		
+		return sessionFactory.getCurrentSession().createQuery("from Site_Safety where siteid='"+siteId+"'").list();
+	}
+
+	
+
 }

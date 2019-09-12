@@ -71,6 +71,7 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
+	 $("#towerInstallationForm :input").attr("required", '');
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
@@ -83,7 +84,7 @@ $(document).ready(function(){
 });
 
 
-function ValidateImage(id){
+ function ValidateImage(id){
 		  var fuData = document.getElementById(id);
       var FileUploadPath = fuData.value;
 //To check if user upload any file
@@ -109,7 +110,27 @@ else {
              document.getElementById(id).value="";
           }
       }
-  }
+  } 
+  
+  
+/*   
+  function ValidateImage(id){
+	  alert(id);
+	  if( document.getElementById(id).files.length == 0 ){
+	        console.log("no files selected");
+	        $("#isa_failure")[0].innerHTML=" Please upload the image";  
+	    }
+
+		//var formData = new FormData();
+	    //formData.append('file', browse.files[0]);    
+	    var fileType = id.files[0]['type'];
+	    alert("filetype"+fileType)
+	    var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+	    if ($.inArray(fileType, validImageTypes) < 0) {
+	     // invalid file type code goes here.
+	    $("#isa_failure")[0].innerHTML=" Uploaded file Must be Image format";    
+		 }
+  } */
 
 </script>
 <style>
@@ -250,7 +271,7 @@ else {
 							<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" >Upload Image </label>
-							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);"  /> 
+							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);" required /> 
 					<span class="isa_failure" id="image0">${errMsg}</span>
   </div>
  	

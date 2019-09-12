@@ -3,6 +3,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%String siteId=request.getParameter("siteId"); %>
+
 <!DOCTYPE html >
 <html lang="en">
 
@@ -59,21 +61,20 @@ $(document).ready(function(){
 	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	  $("#addGenerator :input").attr("required", '');
 		 $(".isa_success").fadeOut(10000);
-		getGeneratorDetails();
-		 
+		 var siteID='<%=siteId%>';
+		 $("#siteId").val(siteID);
+		getGeneratorDetails(siteID);
 });
 
 
-function getGeneratorDetails()
+function getGeneratorDetails(siteID)
 {
-	//var siteId=$("#siteId").val();
-	siteId='IND005';
-	$("#siteId").val(siteId);
+
 	 $.ajax({
          type: "get",
          url: "getGeneratorDetails",
          contentType: 'application/json',
-         data:{"siteId":siteId},
+         data:{"siteId":siteID},
          datatype: "json",
          success: function(result) {
             jsonData = JSON.parse(result);
@@ -89,7 +90,7 @@ function getGeneratorDetails()
             	$("#capacity").val(jsonData[0].capacity);
             	$("#DGrunhours").val(jsonData[0].DGrunhours);
             	$("#fuellevel").val(jsonData[0].fuellevel);
-            	$("#assettagnumber").val(jsonData[0].assettagnumber);
+               	$("[name=assettagnumber]").val([jsonData[0].assettagnumber]);
             	$("#generatorCondition").val(jsonData[0].generatorCondition);
             	$("#comments").val(jsonData[0].comments);
             	
@@ -214,12 +215,12 @@ label {
               
               	<label for="tagNumber" class="placeholder">Asset Tag Number</label>
 				<!--<form:input id="assettagnumber" path="assettagnumber"  name="assettagnumber"  class="form-control input-full filled"  />-->
-				 <form:radiobutton path="assettagnumber" value="Yes"/> Yes 
-        		 <form:radiobutton path="assettagnumber" value="No"/>  No
+				 <form:radiobutton path="assettagnumber" name="assettagnumber" value="Yes"/> Yes 
+        		 <form:radiobutton path="assettagnumber" name="assettagnumber" value="No"/>  No
 				<br>
 				<br>
 				<label for="" class="">Asset Tag Photo</label>
-               	<input type="file" id="tagPhoto"  name="file"  class="form-control input-full filled"  />
+               	<input type="file" id="tagPhoto"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br> 
 				
               	<label for="Condition" class="Condition">Condition</label>

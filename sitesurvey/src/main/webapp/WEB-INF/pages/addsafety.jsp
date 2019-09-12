@@ -68,46 +68,55 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
+	
+	 $("#safetyform :input").attr("required", '');
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
 	alert(jsonDetails)
 	var ticketDetails=JSON.parse(JSON.stringify(jsonDetails));
-	alert(ticketDetails);
-	$("#siteid")[0].value=ticketDetails.split(",")[1];
-	//alert(ticketDetails.split(",")[1]);
+	var siteId=ticketDetails.split(",")[1];
+	$("#siteid")[0].value=siteId;
 	  $("#json")[0].value=ticketDetails;
+	  getSafetyDetails(siteId);
 	
 });
 
 
-function ValidateImage(id){
-		  var fuData = document.getElementById(id);
-      var FileUploadPath = fuData.value;
-//To check if user upload any file
-      if (FileUploadPath == '') {
-          alert("Please upload an image");
-     } else {
-          var Extension = FileUploadPath.substring(
-                  FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-//The file uploaded is an image
-if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
-//To Display
-              if (fuData.files && fuData.files[0]) {
-                 var reader = new FileReader();
-                 reader.onload = function(e) {
-                     // $('#blah').attr('src', e.target.result);
-                  }
-                 reader.readAsDataURL(fuData.files[0]);
-              }
-         }
-//The file upload is NOT an image
-else {
-             alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
-             document.getElementById(id).value="";
-          }
-      }
-  }
+function getSafetyDetails(siteId)
+{
+
+	 $.ajax({
+         type: "get",
+         url: "getSafetyDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#id").val(jsonData[0].id);
+            	$("#securitycondition").val(jsonData[0].extinguishersAvailability);
+            	$("#edate").val(jsonData[0].extinguishersDueDate);
+            	$("#aviationlight").val(jsonData[0].aviationlight);
+            	$("#arrestor").val(jsonData[0].arrestor);
+            	$("#rttloc").val(jsonData[0].rtt_rtp_locations);
+               	$("#stairs").val(jsonData[0].stairsLaddersCondition);
+            	$("#climbdevice").val(jsonData[0].safeClimbDevice);
+            	$("#anticlimbdevice").val(jsonData[0].antiClimbProtection);
+            	$("#fireclear").val(jsonData[0].siteFireClear);
+            	$("#oilspill").val(jsonData[0].oilSpillsDG);
+            	$("#safetysignage").val(jsonData[0].safetySignage);
+            	$("#obv").val(jsonData[0].observations);
+            	
+            }
+         }					
+		 }); 
+}
 
 </script>
 <style>
@@ -172,36 +181,197 @@ else {
 	  <div class="container container-login animated fadeIn">
 	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
 				<h3 class="text-center">Safety</h3>
-				<form:form method="post" id="additionalNotes" modelAttribute="Site_Additional_Notes" action="additionalNotes" enctype="multipart/form-data">
+				<form:form method="post" id="safetyform" modelAttribute="Site_Safety" action="sitesafety" enctype="multipart/form-data">
 				<form:input type="hidden"  path="" id="json" name="json" />
 				<div class="form-group ">
 						<label for="siteid" class="placeholder">Site ID
 				
 						</label>
 						 
-						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full"  />				
+						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full" readonly="true"  />				
 						<form:errors path="siteid.siteid" cssClass="error" />	
 					</div>
-								
+				<div class="form-group ">
+						<label for="extinguishersAvailability" class="placeholder">Are Fire extinguishers available (Non expired)? </label>
+						<form:select id="securitycondition" path="extinguishersAvailability"  name="overallconditon"  class="form-control input-full filled" >
+		                <form:option value="Select">Select</form:option>
+		                <form:option value="Yes">Yes</form:option>
+		                <form:option value="No">No</form:option>
+		                <form:option value="Unknown">Unknown</form:option>
+		                
+		                </form:select>
+								<form:errors path="extinguishersAvailability" cssClass="error" />
+										
+					</div>
+					
 					<div class="form-group ">
-						<label for="observations" class="observations">Observations</label>
-						<form:input  id="observations" path="observations" class="form-control input-full"  />				
-						<form:errors path="observations" cssClass="error" />	
+						<label for="edate" class="placeholder">When are fire extinguishers due for a service?</label>
+						<form:input type="date" id="edate" path="extinguishersDueDate" class="form-control input-full"  />				
+						<form:errors path="extinguishersDueDate" cssClass="error" />	
 					</div>
 						
-				
 				<div class="form-group ">
-				<label for="site_photo2" class="placeholder" >site_photo1</label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="return ValidateImage('img1');"/> 
-					<span class="isa_failure" id="image1">${errMsg}</span>
+				<label for="Upload Image" class="placeholder" >Upload Image </label>
+				<input type="file"   path="safety_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);"  /> 
+				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
   				
+  				<div class="form-group ">
+						<label for="aviationlight" class="placeholder">Does the tower have a aviation lights?</label>
+						<form:select id="aviationlight" path="aviationLights"  name="aviationlight"  class="form-control input-full filled" >
+		                <form:option value="Select">Select</form:option>
+		                <form:option value="Yes">Yes</form:option>
+		                <form:option value="No">No</form:option>
+		                <form:option value="Unknown">Unknown</form:option>
+		                
+		                </form:select>
+								<form:errors path="aviationLights" cssClass="error" />
+										
+					</div>
+					<div class="form-group ">
+						<label for="arrestor" class="placeholder">Is the lighting arrestor spike and connection to tower or earthing available?</label>
+						<form:select id="arrestor" path="lightningArrestor"  name="arrestor"  class="form-control input-full filled" >
+		                <form:option value="Select">Select</form:option>
+		                <form:option value="Yes">Yes</form:option>
+		                <form:option value="No">No</form:option>
+		                <form:option value="Unknown">Unknown</form:option>
+		                
+		                </form:select>
+								<form:errors path="lightningArrestor" cssClass="error" />
+										
+					</div>
+					<div class="form-group ">
+						<label for="rttloc" class="placeholder">For RTT/RTP loactions,are protection rails or parapet walls available</label>
+						<form:select id="rttloc" path="rtt_rtp_locations"  name="rttloc"  class="form-control input-full filled" >
+		                <form:option value="Select">Select</form:option>
+		                <form:option value="Yes">Yes</form:option>
+		                <form:option value="No">No</form:option>
+		                <form:option value="Unknown">Unknown</form:option>
+		                
+		                </form:select>
+								<form:errors path="rtt_rtp_locations" cssClass="error" />
+										
+					</div>
   				
-				<div class="form-group ">
-				<label for="site_photo1" class="placeholder" >site_photo2</label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="return ValidateImage('img2');"/> 
+  				
+  				
+ 				<div class="form-group ">
+				<label for="Upload Image" class="placeholder" >Upload Image2 </label>
+				<input type="file" path="safety_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="return ValidateImage('img2');"/> 
 					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
+  				
+  				<div class="form-group ">
+						<label for="stairs" class="placeholder">Stairs or ladders-are they in good condition with no missing rungs etc?</label>
+						<form:select id="stairs" path="stairsLaddersCondition"  name="stairs"  class="form-control input-full filled" >
+		                <form:option value="Select">Select</form:option>
+		                <form:option value="Yes">Yes</form:option>
+		                <form:option value="No">No</form:option>
+		                <form:option value="Not Applicable">Not Applicable</form:option>
+		                
+		                </form:select>
+								<form:errors path="stairsLaddersCondition" cssClass="error" />
+										
+					</div>
+					
+					<div class="form-group ">
+						<label for="Upload Image" class="placeholder" >Upload Image3 </label>
+						<input type="file" path="safety_photo3"  class="form-control input-border-bottom"  id="img3"  name="file"  onchange="return ValidateImage('img2');"/> 
+						<span class="isa_failure" id="image3">${errMsg}</span>
+  					</div>
+					
+					
+					<div class="form-group ">
+						<label for="climbdevice" class="placeholder">Is there safe climb device installed on ladder ? (Typically a cable or rail)</label>
+						<form:select id="climbdevice" path="safeClimbDevice"  name="climbdevice"  class="form-control input-full filled" >
+		                <form:option value="Select">Select</form:option>
+		                <form:option value="Yes">Yes</form:option>
+		                <form:option value="No">No</form:option>
+		                
+		                
+		                </form:select>
+								<form:errors path="safeClimbDevice" cssClass="error" />
+										
+					</div><div class="form-group ">
+						<label for="anticlimbdevice" class="placeholder">Is the anti climb protection in place?</label>
+						<form:select id="anticlimbdevice" path="antiClimbProtection"  name="anticlimbdevice"  class="form-control input-full filled" >
+		                <form:option value="Select">Select</form:option>
+		                <form:option value="Yes">Yes</form:option>
+		                <form:option value="No">No</form:option>
+		                
+		                
+		                </form:select>
+								<form:errors path="antiClimbProtection" cssClass="error" />
+										
+					</div>
+						<div class="form-group ">
+						<label for="fireclear" class="placeholder">Is the site clear of fire hazard rubble, installation material, released old equipment etc.?</label>
+						<form:select id="fireclear" path="siteFireClear"  name="fireclear"  class="form-control input-full filled" >
+		                <form:option value="Select">Select</form:option>
+		                <form:option value="Yes">Yes</form:option>
+		                <form:option value="No">No</form:option>
+		                
+		                
+		                </form:select>
+								<form:errors path="siteFireClear" cssClass="error" />
+										
+					</div>
+					<div class="form-group ">
+						<label for="Upload Image" class="placeholder" >Upload Image4 </label>
+						<input type="file" path="safety_photo4"  class="form-control input-border-bottom"  id="img4"  name="file"  onchange="return ValidateImage('img2');"/> 
+						<span class="isa_failure" id="image4">${errMsg}</span>
+  					</div>
+  					
+						<div class="form-group ">
+						<label for="oilspill" class="placeholder">Are there oil spills in the DG area (Diesel + Engine oil etc. )?</label>
+						<form:select id="oilspill" path="oilSpillsDG"  name="oilspill"  class="form-control input-full filled" >
+		                <form:option value="Select">Select</form:option>
+		                <form:option value="Yes">Yes</form:option>
+		                <form:option value="No">No</form:option>
+		                
+		                
+		                </form:select>
+								<form:errors path="oilSpillsDG" cssClass="error" />
+										
+					</div>
+					
+					<div class="form-group ">
+						<label for="safetysignage" class="placeholder">Are safety and Hazard signage available?</label>
+						<form:select id="safetysignage" path="safetySignage"  name="safetysignage"  class="form-control input-full filled" >
+		                <form:option value="Select">Select</form:option>
+		                <form:option value="Yes">Yes</form:option>
+		                <form:option value="No">No</form:option>
+		                
+		                
+		                </form:select>
+								<form:errors path="safetySignage" cssClass="error" />
+										
+					</div>
+					<div class="form-group ">
+						<label for="Upload Image" class="placeholder" >Upload Image5 </label>
+						<input type="file" path="safety_photo5"  class="form-control input-border-bottom"  id="img5"  name="file"  onchange="return ValidateImage('img2');"/> 
+						<span class="isa_failure" id="image5">${errMsg}</span>
+  					</div>
+					<div class="form-group ">
+						<label for="siteid" class="placeholder">Observations
+				
+						</label>
+						 
+						<form:input type="text" id="obv" path="observations" class="form-control input-full"  />				
+						<form:errors path="observations" cssClass="error" />	
+					</div>
+  				
+  					<div class="form-group ">
+						<label for="Upload Image" class="placeholder" >Upload Image6 </label>
+						<input type="file" path="safety_photo6"  class="form-control input-border-bottom"  id="img6"  name="file"  onchange="return ValidateImage('img2');"/> 
+						<span class="isa_failure" id="image6">${errMsg}</span>
+  					</div>
+  					<div class="form-group ">
+						<label for="Upload Image" class="placeholder" >Upload Image5 </label>
+						<input type="file" path="safety_photo6"  class="form-control input-border-bottom"  id="img6"  name="file"  onchange="return ValidateImage('img2');"/> 
+						<span class="isa_failure" id="image6">${errMsg}</span>
+  					</div>
+  				
   				
  						<div class="form-action" id="new_submit" >
 				 		<input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #012169;color: white;">  

@@ -230,14 +230,17 @@ color: #fff!important;
 		            data1 =  table1.row($(this).parents('tr')).data();
 		            //data3=table1.row($(this).parents('tr'));
 		            console.log('fsaf'+data1);
-		            
-		          
+		            var row=table1.row($(this).parents('tr'))[0][0];
+						var e = document.getElementsByName("jsonStatusList")[row].value;
+						//var result = e.options[e.selectedIndex].text;
+						//alert("res"+result);
+		          		alert(e);
 		              
 		            rowIndex = $(this).parent().index();			          
 		            ticketId=data1[0];	
 		            //debugger;
 		            
-		            siteIds="IND005";
+		            siteIds=e;
 		            console.log("site"+siteIds);
 		            
 		            // window.location.href = '/sitesurvey/siteDetails?ticketId='+ticketId+'&siteId='+siteIds;

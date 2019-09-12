@@ -178,11 +178,11 @@ label {
 				<form:hidden id="ticketId" path=""/>
 				 <br>
 				<label for="Manufacturer" class="placeholder">Manufacturer</label>
-				<form:input id="Manufacturer" path="Manufacturer" class="form-control input-full filled" />
+				<form:input id="Manufacturer" path="Manufacturer" class="form-control input-full filled" onkeypress="return isCharacters(event);"/>
 				<br>
 				
 				<label for="model" class="placeholder">Model(Rack Capacity kW)</label> 
-				<form:input id="model" path="model"  name="model"  class="form-control input-full filled"  />
+				<form:input id="model" path="model"  name="model"  class="form-control input-full filled" onkeypress="return isNumber(event)"  />
 				<br>
 				
 				<label for="date" class="placeholder">Date of Manufacturer/Installation</label>
@@ -190,11 +190,11 @@ label {
 				<br>
 				
 				<label for="module_rating" class="module_rating">Modules Rating(kW)</label>
-               <form:input id="module_rating" path="module_rating"  name="module_rating"  class="form-control input-full filled"  />
+               <form:input id="module_rating" path="module_rating"  name="module_rating"  class="form-control input-full filled"  onkeypress="return isNumber(event)" />
                 <br>
                 
                  <label for="fuellevel" class="fuellevel">Number of Working modules available</label>
-                	 <form:input id="workingModules" path="number_of_working_Module_rating"  name="number_of_working_Module_rating"  class="form-control input-full filled"  />
+                	 <form:input id="workingModules" path="number_of_working_Module_rating"  name="number_of_working_Module_rating"  class="form-control input-full filled" onkeypress="return isNumber(event)"  />
               	<br>
               	
               	<label for="smpsCondition" class="smpsCondition">Overall Condition of SMPS Equipment</label>
@@ -206,11 +206,11 @@ label {
                 <br>
                               
                 <label for="" class="">Photo1 : GPS Accuracy of Photo</label>
-               <input type="file" id="photos"  name="file"  class="form-control input-full filled"  />
+               <input type="file" id="photos"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br>
                                
               	<label for="" class="">Photo 2 : GPS Accuracy of Photo</label>
-               <input type="file"  id="photos"  name="file"  class="form-control input-full filled"  />
+               <input type="file"  id="photos"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br>
                               
 				<div class="form-action">
