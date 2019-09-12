@@ -242,13 +242,6 @@ public class SiteSurveyController {
 		return model;
 	}
 	
-
-	
-	
-	
-	
-	
-	
 	@RequestMapping(params = "btn",value = "/towerinstallation",  method = RequestMethod.POST)
 	public ModelAndView savetowerInstallation(@Valid @ModelAttribute("Tower_Installation") Tower_Installation towerinstallation,
 			BindingResult bir,
@@ -458,10 +451,6 @@ public class SiteSurveyController {
 		model.setViewName("gotositesecurity");
 		return model;
 	}
-	
-	
-	
-	
 	
 	
 }

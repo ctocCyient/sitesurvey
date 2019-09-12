@@ -104,17 +104,6 @@ public class SurveyDAOImpl implements SurveyDAO {
        	      .list();  
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@SuppressWarnings("unchecked")
 	public List<Regions> getStates(String region) {		
 		//return sessionFactory.getCurrentSession().createQuery("select distinct state from Regions where region='"+region+"'").list();	        
@@ -324,7 +313,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
 		 for(int i=0;i<q1.list().size();i++){
 			 Ticketing ticketing = (Ticketing)q1.list().get(i);
-			 
 			 ticketing.setStatus(techStatus);
 			 ticketing.setComments(commentsData);
 			 ticketing.setRemarks(remarksData);
@@ -371,4 +359,17 @@ public class SurveyDAOImpl implements SurveyDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Site_SMPS> getSMPSDetails(String siteId)
+	{
+		return sessionFactory.getCurrentSession().createQuery("from Site_SMPS where siteid='"+siteId+"'").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Site_Generator> getGeneratorDetails(String siteId)
+	{
+		return sessionFactory.getCurrentSession().createQuery("from Site_Generator where siteid='"+siteId+"'").list();
+	}
+	
 }

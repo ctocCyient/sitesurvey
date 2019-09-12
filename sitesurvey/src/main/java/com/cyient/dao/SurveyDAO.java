@@ -164,4 +164,9 @@ public interface SurveyDAO {
 	 @Transactional
 	 public String saveTowerInstallation(Tower_Installation towerinstallation);
 
+	 @Transactional
+	 public List<Site_SMPS> getSMPSDetails(String siteId);
+	 
+	 @Transactional
+	 public List<Site_Generator> getGeneratorDetails(String siteId);
 }
