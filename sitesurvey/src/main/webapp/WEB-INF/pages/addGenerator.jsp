@@ -16,23 +16,16 @@
 <title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<script type="text/javascript">
-	role=sessionStorage.getItem("role");
+	
 	   if(sessionStorage.getItem("username")==null)
    	{
-		//window.location.href = "/sitesurvey/";
-		//alert(sessionStorage.getItem("username"));
-		
 		   url = "/sitesurvey/";
 		      $( location ).attr("href", url);
    	}
-	   else if(role=="Admin" | role=="SuperAdmin")
-		   {
-		   
-		   }
+	 
 	   else
 		   {
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
+		   role=sessionStorage.getItem("role");
 		   }
 
 </script>
@@ -63,11 +56,47 @@ WebFont.load({
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	  $("#addGenerator :input").attr("required", '');
 		 $(".isa_success").fadeOut(10000);
+		getGeneratorDetails();
+		 
 });
 
+
+function getGeneratorDetails()
+{
+	//var siteId=$("#siteId").val();
+	siteId='IND005';
+	$("#siteId").val(siteId);
+	 $.ajax({
+         type: "get",
+         url: "getGeneratorDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#id").val(jsonData[0].id);
+            	$("#dgManufacturer").val(jsonData[0].dgManufacturer);
+            	$("#date").val(jsonData[0].manufacturedDate);
+            	$("#capacity").val(jsonData[0].capacity);
+            	$("#DGrunhours").val(jsonData[0].DGrunhours);
+            	$("#fuellevel").val(jsonData[0].fuellevel);
+            	$("#assettagnumber").val(jsonData[0].assettagnumber);
+            	$("#generatorCondition").val(jsonData[0].generatorCondition);
+            	$("#comments").val(jsonData[0].comments);
+            	
+            }
+         }					
+		 }); 
+}
 
 
 </script>
@@ -120,27 +149,30 @@ label {
 		</div>
 
 		<!-- Sidebar -->
-<div id="superAdminSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
+		
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
     <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
     
-			<h3 class="text-center">Add Generator</h3>
+			<h3 class="text-center">Add Generator</h3>${siteId}
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				
 			<form:form action="saveGenerator" id="addGenerator"  method="post" modelAttribute="Site_Generator" enctype = 'multipart/form-data' >
 			<div class="login-form">
-			<span id="addMsg" style="font-size:18px;margin-left:221px;"><b>Add New</b><button type="submit" value="Add" name="submit"><i class="fa fa-plus-square" aria-hidden="true"></i></button></span><br><br>
+			<!-- <span id="addMsg" style="font-size:18px;margin-left:221px;"><b>Add New</b><button type="submit" value="Add" name="submit"><i class="fa fa-plus-square" aria-hidden="true"></i></button></span><br><br>-->
+			 <form:hidden path="id" id="id"/>
 			<label for="siteid" class="placeholder">Site Id</label>
-				<form:input id="siteid" path="siteid.siteid" class="form-control input-full filled" />
+				<form:input id="siteId" path="siteid.siteid" name="siteId" class="form-control input-full filled" />
 				<form:errors path="siteid.siteid" cssClass="error"/>
 			
 				 <br>
+				<form:hidden path="" id="ticketId" name="ticketId" />
 				<label for="Manufacturer" class="placeholder">Manufacturer</label>
-				<form:input id="dgManufacturer" path="dgManufacturer" class="form-control input-full filled" />
+				<form:input id="dgManufacturer" path="dgManufacturer" class="form-control input-full filled" onkeypress="return isCharacters(event);"/>
 				<form:errors path="dgManufacturer" cssClass="error"/>
 				
 				<br>
@@ -150,41 +182,42 @@ label {
 				<br>
 				
 				<label for="capacity" class="placeholder">Generator Capacity Rating(kVA)</label> 
-				<form:input id="capacity" path="capacity"  name="capacity"  class="form-control input-full filled"  />
+				<form:input id="capacity" path="capacity"  name="capacity"  class="form-control input-full filled" onkeypress="return isNumber(event)" />
 				<form:errors path="capacity" cssClass="error"/>
 				<br>
                
 				<label for="DGrunhours" class="DGrunhours">DG Run hours(hrs)</label>
-               <form:input id="DGrunhours" path="DGrunhours"  name="DGrunhours"  class="form-control input-full filled"  />
+               <form:input id="DGrunhours" path="DGrunhours"  name="DGrunhours"  class="form-control input-full filled"  onkeypress="return isNumber(event)"/>
                <form:errors  path="DGrunhours" cssClass="error" />
                
                 <br>
                 <span class="isa_failure" style="color:red">${errMsg}</span>
                 <label for="" class="">Photos of Generator Control Unit(GCU)</label>
-               <form:input type="file" id="GCUPhoto"  name="file"  class="form-control input-full filled" path="gdphoto"/>
-               <span class="isa_failure" style="color:red">${errMsg}</span>
+               <input type="file" id="GCUPhoto"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)"/>
                 <br>
                 
                 <label for="fuellevel" class="fuellevel">Fuel Level at Site(%)</label>
-                	 <form:input id="fuellevel" path="fuellevel"  name="fuellevel"  class="form-control input-full filled"  />
+                	 <form:input id="fuellevel" path="fuellevel"  name="fuellevel"  class="form-control input-full filled"  onkeypress="return isNumber(event)"/>
                	<br>
               
            	 	<label for="" class="">Photos of Fuel Level Sensor</label>
-               	<input type="file" id="FLSPhoto"  name="file"  class="form-control input-full filled"  />
+               	<input type="file" id="FLSPhoto"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)" />
                 <br> 
               
               	<label for="" class="">Photo1 of the site(Which is not in proper condition)</label>
-               	<input type="file" id="photo1"  name="file"  class="form-control input-full filled"  />
+               	<input type="file" id="photo1"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)" />
                 <br> 
                 
                 <label for="" class="">Photo2 of the site(Which is not in proper condition)</label>
-               	<input type="file" id="photo2"  name="file"  class="form-control input-full filled"  />
+               	<input type="file" id="photo2"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br> 
               
-              	<label for="tagNumber" class="placeholder">Asset Tag Number</label> 
-				<form:input id="assettagnumber" path="assettagnumber"  name="assettagnumber"  class="form-control input-full filled"  />
+              	<label for="tagNumber" class="placeholder">Asset Tag Number</label>
+				<!--<form:input id="assettagnumber" path="assettagnumber"  name="assettagnumber"  class="form-control input-full filled"  />-->
+				 <form:radiobutton path="assettagnumber" value="Yes"/> Yes 
+        		 <form:radiobutton path="assettagnumber" value="No"/>  No
 				<br>
-				
+				<br>
 				<label for="" class="">Asset Tag Photo</label>
                	<input type="file" id="tagPhoto"  name="file"  class="form-control input-full filled"  />
                 <br> 
@@ -201,7 +234,6 @@ label {
               	 <form:option value="Not Applicable">Not Applicable</form:option>
               	 </form:select>
                 <br>
-              
                 
                 <label for="comments" class="placeholder">Comments</label> 
 				<form:input id="comments" path="comments"  name="comments"  class="form-control input-full filled"  />

@@ -28,7 +28,6 @@ public class Site_Generator implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -37,20 +36,16 @@ public class Site_Generator implements Serializable {
 	@JoinColumn(name="siteID")
 	private Site siteid;
 	
-	@Pattern(regexp = "^[a-zA-Z]" , message="Only Alphabets")
 	@Column(name="DGManufacturer")
 	private String dgManufacturer;
 	
 	@Column(name="Manufacture_Date")
 	@DateTimeFormat(pattern = "yyyy/mm/dd") 
 	private String manufacturedDate;
-	
-	@NotNull @Min(10) @Max(20)
-	@Pattern(regexp="^[0-9]" , message="Only Numbers")
+
 	@Column(name="Capacity")
 	private String capacity;
 	
-	@NotNull @Min(1) @Max(100)
 	@Column(name="DGrunhours")
 	private int DGrunhours ;
 	

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.cyient.model.Battery_Bank_Master;
+import com.cyient.model.Cabinet_Master;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 
@@ -50,8 +51,10 @@ public interface SurveyDAO {
 		
 	@Transactional
 	public void addSMPS(Site_SMPS smps);
-
-	public void addBB(Site_Battery_Bank BB);
+	
+	@Transactional
+	public void addBB(String updatetype,Site_Battery_Bank BB);
+	
 	@Transactional
 	public List<Regions> getRegions();
 	
@@ -159,13 +162,11 @@ public interface SurveyDAO {
 	 public List<Battery_Bank_Master> getBBManufacturer();
 		
 	@Transactional
-	public List<Site_Cabinet> getCabinetManufacturer(); 
+	public List<Cabinet_Master> getCabinetManufacturer(); 
 		
 	@Transactional
-	public void addCabinet(Site_Cabinet BB);
+	public void addCabinet(String updatetype,Site_Cabinet BB);
 		
-	// @Transactional
-//	 public String saveTowerInstallation(Tower_Installation towerinstallation);
 	 
 		@Transactional
 		public String saveTowerInstallation(Tower_Installation tower);
@@ -183,4 +184,15 @@ public interface SurveyDAO {
 		@Transactional
 		public List<Tower_Installation> fetchTowerDetails(String siteid);
 
+	 @Transactional
+	 public List<Site_SMPS> getSMPSDetails(String siteId);
+	 
+	 @Transactional
+	 public List<Site_Generator> getGeneratorDetails(String siteId);
+	
+	 @Transactional
+	 public List<Site_Battery_Bank> getBB(String Siteid);
+
+	 @Transactional
+	 public List<Site_Cabinet> getCabinet(String Siteid);
 }

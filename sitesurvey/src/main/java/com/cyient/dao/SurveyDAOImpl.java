@@ -80,6 +80,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(smps);
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	public List<Regions> getRegions() {
 		//return sessionFactory.getCurrentSession().createQuery("from Regions").list();
@@ -100,23 +101,12 @@ public class SurveyDAOImpl implements SurveyDAO {
 	
 
 	@SuppressWarnings("unchecked")
-	public List<Site_Cabinet> getCabinetManufacturer() {
+	public List<Cabinet_Master> getCabinetManufacturer() {
 		//return sessionFactory.getCurrentSession().createQuery("from Regions").list();
 		 return sessionFactory.getCurrentSession().createCriteria(Cabinet_Master.class)         	      
        	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
        	      .list();  
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	@SuppressWarnings("unchecked")
 	public List<Regions> getStates(String region) {		
@@ -327,7 +317,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
 		 for(int i=0;i<q1.list().size();i++){
 			 Ticketing ticketing = (Ticketing)q1.list().get(i);
-			 
 			 ticketing.setStatus(techStatus);
 			 ticketing.setComments(commentsData);
 			 ticketing.setRemarks(remarksData);
@@ -357,22 +346,56 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	}
 
-	public void addBB(Site_Battery_Bank BB) {
+	public void addBB(String updatetype,Site_Battery_Bank BB) {
 		// TODO Auto-generated method stub
+		if(updatetype.split(";")[0]=="Existing")
+		{		
+		BB.setId(Integer.parseInt(updatetype.split(";")[1]));
 		sessionFactory.getCurrentSession().saveOrUpdate(BB);
+		}
+		else
+		{
+			sessionFactory.getCurrentSession().saveOrUpdate(BB);
+		}
 	}
 
-	
-
-	public void addCabinet(Site_Cabinet BB) {
+	public void addCabinet(String updatetype,Site_Cabinet BB) {
 		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().saveOrUpdate(BB);	
+		if(updatetype.split(";")[0]=="Existing")
+		{		
+		BB.setId(Integer.parseInt(updatetype.split(";")[1]));
+		sessionFactory.getCurrentSession().saveOrUpdate(BB);
+		}
+		else
+		{
+			sessionFactory.getCurrentSession().saveOrUpdate(BB);
+		}
 	}
 
+	public List<Site_Battery_Bank> getBB(String Siteid) {
+		// TODO Auto-generated method stub
+		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site_Battery_Bank.class);
+		Site s = new Site();
+		s.setSiteid(Siteid);
+        c.add(Restrictions.eq("siteid",s));
+		List<Site_Battery_Bank> userlist = c.list();
+		return 	userlist;
+	}
+	
+	public List<Site_Cabinet> getCabinet(String Siteid) {
+		// TODO Auto-generated method stub
+		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site_Cabinet.class);
+		Site s = new Site();
+		s.setSiteid(Siteid);
+        c.add(Restrictions.eq("siteid",s));
+		List<Site_Cabinet> userlist = c.list();
+		return 	userlist;
+	}
 
 	/*public String saveTowerInstallation(Tower_Installation towerinstallation) {
 		// TODO Auto-generated method stub
 		return null;
+<<<<<<< HEAD
 	}*/
 	public String saveTowerInstallation(Tower_Installation tower) {
 		sessionFactory.getCurrentSession().saveOrUpdate(tower);
@@ -408,4 +431,17 @@ public class SurveyDAOImpl implements SurveyDAO {
 		// TODO Auto-generated method stub
 		return sessionFactory.getCurrentSession().createQuery("from Tower_Installation  where siteid ='"+siteid+"'").list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Site_SMPS> getSMPSDetails(String siteId)
+	{
+		return sessionFactory.getCurrentSession().createQuery("from Site_SMPS where siteid='"+siteId+"'").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Site_Generator> getGeneratorDetails(String siteId)
+	{
+		return sessionFactory.getCurrentSession().createQuery("from Site_Generator where siteid='"+siteId+"'").list();
+	}
+
 }

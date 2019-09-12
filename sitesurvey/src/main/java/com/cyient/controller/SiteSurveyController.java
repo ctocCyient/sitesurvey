@@ -244,13 +244,6 @@ public class SiteSurveyController {
 		return model;
 	}
 	
-
-	
-	
-	
-	
-	
-	
 	@RequestMapping(params = "btn",value = "/towerinstallation",  method = RequestMethod.POST)
 	public ModelAndView savetowerInstallation(@Valid @ModelAttribute("Tower_Installation") Tower_Installation towerinstallation,
 			BindingResult bir,
@@ -571,6 +564,7 @@ public class SiteSurveyController {
 		model.setViewName("addSiteAdditional");
 		return model;
 	}
+<<<<<<< HEAD
 	
 	
 	@SuppressWarnings("null")
@@ -670,6 +664,8 @@ public class SiteSurveyController {
 	}
 	
 	
+=======
+>>>>>>> branch 'Neeraja' of https://github.com/ctocCyient/sitesurvey.git
 	
 	
 }

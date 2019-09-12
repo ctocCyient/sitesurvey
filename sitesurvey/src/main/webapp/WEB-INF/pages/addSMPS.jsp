@@ -2,7 +2,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+ <%String siteId=request.getParameter("siteId");
+	String ticketId=request.getParameter("ticketId"); %>
 <!DOCTYPE html >
 <html lang="en">
 
@@ -62,13 +63,15 @@ $(document).ready(function(){
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 	  $("#addSMPS :input").attr("required", '');
-	//  getRegions();
-		getSiteId();
-		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
-		 $(".isa_success").fadeOut(10000);
+	  var siteID='<%=siteId%>';
+	  var ticketId='<%=ticketId%>;'
+	$("#siteId").val(siteID);
+	$("#ticketId").val(ticketId);
+	$(".isa_success").fadeOut(10000);
+	getSMPSDetails(siteID);
 });
 
-function populateDropdown(data,id)
+/* function populateDropdown(data,id)
 {
 	var	catOptions="<option value=''>Select</option>";
  	for (i in data) {
@@ -77,114 +80,41 @@ function populateDropdown(data,id)
  		}
  		document.getElementById(id).innerHTML = catOptions;
  		 $("select option[value='']").attr('disabled','disabled');
-}
+} */
 
-
-
-function getState(region)
+function getSMPSDetails(siteID)
 {
-	//alert(region)
+	var siteID=siteID;
+	
 	 $.ajax({
-		 	type:"get",
-		 	url:"getStates",
-		 	contentType:'application/json',
-		 	datatype:"json",
-		 	data:{"selectedRegion":region},
-		 	success:function(res){
-		 		//alert(JSON.parse(res))
-		 		console.log(res);
-		 		jsonData=JSON.parse(res);
-		 		populateDropdown(jsonData,"state");
-		 	},
-		 	error:function()
-		 	{
-		 		console.log("Error");	
-		 	}
-	 });
+         type: "get",
+         url: "getSMPSDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteID},
+         datatype: "json",
+         success: function(result) {
+             jsonData = JSON.parse(result);
+          	if(jsonData.length==0)
+          	{
+          		
+          	}
+          	else
+          	{
+          		$("#id").val(jsonData[0].id);
+          		$("#Manufacturer").val(jsonData[0].Manufacturer);
+          		$("#model").val(jsonData[0].model);
+          		$("#manufacturerDate").val(jsonData[0].manufacturedDate);
+          		$("#module_rating").val(jsonData[0].module_rating);
+          		$("#workingModules").val(jsonData[0].number_of_working_Module_rating);
+          		$("#smpsCondition").val(jsonData[0].smpsCondition);
+          		$("#comments").val(jsonData[0].comments);
+          		
+          	}
+         }					
+		 }); 
+	
 }
 	
-function getDistrict(state)
-{ 
-	var selectedRegion=$("#regions").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getDistricts",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":state},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"districts");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
-function getCity(district)
-{ 
-	
-	var selectedRegion=$("#regions").val();
-	var selectedState=$("#state").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getCities",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":district},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"city");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
-
-
-	function getSiteId()
-	{
-		var jsonArr1;
-			$.ajax({
-		        type:"get",
-		        url:"getLastSiteId",
-		        contentType: 'application/json',
-		        datatype : "json",
-		        success:function(data) {
-		        	var jsonArr=JSON.parse(data);	
-//		        	alert(jsonArr)
-		        	 if(jsonArr.length==0){
-			        		jsonArr1="IND001";
-			        	}  	
-		        	 else{
-			        	var dataSplit=jsonArr[0].split("D");
-			        	console.log(dataSplit[0]);
-			        	var dataSplitInt=parseInt(dataSplit[1]);
-			        	console.log(dataSplitInt+1);
-			        	dataSplitInt=dataSplitInt+1;
-			        	
-			        	if(dataSplitInt>0&&dataSplitInt<=9)
-			        		jsonArr1="IND00"+dataSplitInt;
-			        	else if(dataSplitInt>9&&dataSplitInt<99)
-			        		jsonArr1="IND0"+dataSplitInt;
-			        	else if(dataSplitInt>99)
-			        		jsonArr1="IND"+dataSplitInt;        	
-	        		}	        	
-		        	$('#siteid').val(jsonArr1);	 
-		        	$('#siteid').attr('readonly', true);
-		        },
-		        error:function()
-		        {
-		        	console.log("Error");
-		        }
-			});
-	}
-
-
-
 </script>
 <style>
 .fa-bars,
@@ -240,8 +170,12 @@ label {
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 			<form:form action="saveSMPS" id="addSMPS" method="post" modelAttribute="Site_SMPS" enctype="Multipart/form-data">
 			<div class="login-form">
-			
-				
+				 <br>
+				 <form:hidden path="id" id="id"/>
+				<label for="siteId" class=siteId>Site Id</label>
+				<form:input id="siteId" path="siteid.siteid" class="form-control input-full filled" readonly="true"/>
+				<br>
+				<form:hidden id="ticketId" path=""/>
 				 <br>
 				<label for="Manufacturer" class="placeholder">Manufacturer</label>
 				<form:input id="Manufacturer" path="Manufacturer" class="form-control input-full filled" />
@@ -252,7 +186,7 @@ label {
 				<br>
 				
 				<label for="date" class="placeholder">Date of Manufacturer/Installation</label>
-				 <form:input type="date"  placeholder="mm/dd/yyyy" value="" path="manufacturedDate" class="form-control input-full filled" max="9999-12-31"/>
+				 <form:input type="date" id="manufacturerDate" placeholder="mm/dd/yyyy" value="" path="manufacturedDate" class="form-control input-full filled" max="9999-12-31"/>
 				<br>
 				
 				<label for="module_rating" class="module_rating">Modules Rating(kW)</label>
@@ -260,7 +194,7 @@ label {
                 <br>
                 
                  <label for="fuellevel" class="fuellevel">Number of Working modules available</label>
-                	 <form:input id="number_of_working_Module_rating" path="number_of_working_Module_rating"  name="number_of_working_Module_rating"  class="form-control input-full filled"  />
+                	 <form:input id="workingModules" path="number_of_working_Module_rating"  name="number_of_working_Module_rating"  class="form-control input-full filled"  />
               	<br>
               	
               	<label for="smpsCondition" class="smpsCondition">Overall Condition of SMPS Equipment</label>
