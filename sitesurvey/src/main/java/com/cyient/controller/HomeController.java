@@ -43,6 +43,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Battery_Bank_Master;
+import com.cyient.model.Cabinet_Master;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 
@@ -522,25 +523,16 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value="/getBBData",method=RequestMethod.GET)
-	 @ResponseBody
-	public String getBB(HttpServletRequest request)
-	{
-		System.out.println(surveyDAO.getBB(request.getParameter("siteid")));
-		List <Site_Battery_Bank> obj = surveyDAO.getBB(request.getParameter("siteid"));
-		String siteSMPSJson=gson.toJson(obj);
-		return siteSMPSJson.toString();
 
-	}
 	
 	@RequestMapping(value="/saveCabinet" , method=RequestMethod.POST)
-	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
+	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
 		String status="Battery Bank Added Successfully";
 		BB.setPhoto_1(tag_photo[0].getBytes());
 		BB.setPhoto_2(tag_photo[1].getBytes());
 		BB.setPhoto_1_Name(tag_photo[0].getOriginalFilename());
 		BB.setPhoto_2_Name(tag_photo[1].getOriginalFilename());
-		surveyDAO.addCabinet(BB);
+		surveyDAO.addCabinet(updatetype,BB);
 		redirectAttributes.addFlashAttribute("status",status);
 		
 		if(submit.equals("Save"))
@@ -557,6 +549,29 @@ public class HomeController {
 		  }
 	}	
 
+	
+	@RequestMapping(value="/getBBData",method=RequestMethod.GET)
+	 @ResponseBody
+	public String getBB(HttpServletRequest request)
+	{
+		List <Site_Battery_Bank> obj = surveyDAO.getBB(request.getParameter("siteid"));
+		String siteSMPSJson=gson.toJson(obj);
+		return siteSMPSJson.toString();
+
+	}	
+	
+	@RequestMapping(value="/getCabinetData",method=RequestMethod.GET)
+	 @ResponseBody
+	public String getCabinetData(HttpServletRequest request)
+	{
+		List <Site_Cabinet> obj = surveyDAO.getCabinet(request.getParameter("siteid"));
+		String siteSMPSJson=gson.toJson(obj);
+		return siteSMPSJson.toString();
+
+	}		
+	
+	
+	
 	
 	 @RequestMapping(value="/getLastTicketId", method=RequestMethod.GET)
 	 @ResponseBody
@@ -623,12 +638,12 @@ public class HomeController {
 	   @ModelAttribute("CabinetManufacturer")	
 	   public Map<String, String> getCabinetManufacturer() {
 	      Map<String, String> BBMap = new HashMap<String, String>();
-	      List<Site_Cabinet> regions = surveyDAO.getCabinetManufacturer();
+	      List<Cabinet_Master> regions = surveyDAO.getCabinetManufacturer();
 	      int i=0;
 	      for(i=0;i<regions.size();i++){
 	    	  System.out.println(regions.get(i));
 	    	 }
-	      for(Site_Cabinet region : regions)
+	      for(Cabinet_Master region : regions)
 	      {
 	    	  BBMap.put(region.getCabinetManufacturer(), region.getCabinetManufacturer());
 	      }
@@ -640,12 +655,12 @@ public class HomeController {
 	   @ModelAttribute("CabinetType")	
 	   public Map<String, String> getCabinetType() {
 	      Map<String, String> BBMap = new HashMap<String, String>();
-	      List<Site_Cabinet> regions = surveyDAO.getCabinetManufacturer();
+	      List<Cabinet_Master> regions = surveyDAO.getCabinetManufacturer();
 	      int i=0;
 	      for(i=0;i<regions.size();i++){
 	    	  System.out.println(regions.get(i));
 	    	 }
-	      for(Site_Cabinet region : regions)
+	      for(Cabinet_Master region : regions)
 	      {
 	    	  BBMap.put(region.getType(), region.getType());
 	      }

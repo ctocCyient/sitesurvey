@@ -97,7 +97,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	
 
 	@SuppressWarnings("unchecked")
-	public List<Site_Cabinet> getCabinetManufacturer() {
+	public List<Cabinet_Master> getCabinetManufacturer() {
 		//return sessionFactory.getCurrentSession().createQuery("from Regions").list();
 		 return sessionFactory.getCurrentSession().createCriteria(Cabinet_Master.class)         	      
        	      .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)  
@@ -367,9 +367,17 @@ public class SurveyDAOImpl implements SurveyDAO {
 		}
 	}
 
-	public void addCabinet(Site_Cabinet BB) {
+	public void addCabinet(String updatetype,Site_Cabinet BB) {
 		// TODO Auto-generated method stub
-		sessionFactory.getCurrentSession().saveOrUpdate(BB);	
+		if(updatetype.split(";")[0]=="Existing")
+		{		
+		BB.setId(Integer.parseInt(updatetype.split(";")[1]));
+		sessionFactory.getCurrentSession().saveOrUpdate(BB);
+		}
+		else
+		{
+			sessionFactory.getCurrentSession().saveOrUpdate(BB);
+		}
 	}
 
 	public List<Site_Battery_Bank> getBB(String Siteid) {
@@ -379,6 +387,16 @@ public class SurveyDAOImpl implements SurveyDAO {
 		s.setSiteid(Siteid);
         c.add(Restrictions.eq("siteid",s));
 		List<Site_Battery_Bank> userlist = c.list();
+		return 	userlist;
+	}
+	
+	public List<Site_Cabinet> getCabinet(String Siteid) {
+		// TODO Auto-generated method stub
+		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site_Cabinet.class);
+		Site s = new Site();
+		s.setSiteid(Siteid);
+        c.add(Restrictions.eq("siteid",s));
+		List<Site_Cabinet> userlist = c.list();
 		return 	userlist;
 	}
 

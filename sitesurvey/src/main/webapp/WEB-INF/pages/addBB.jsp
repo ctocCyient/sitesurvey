@@ -78,6 +78,7 @@ $(document).ready(function(){
 		 $("input").attr("required", "true");
 		 $("select").attr("required", "true");
          $("select option:contains('Select')").attr("disabled","disabled");
+         imagewarn();
 });
 
 function populateDropdown(data,id)
@@ -126,7 +127,7 @@ function getBB()
 	         	jsonData = JSON.parse(res)[0];
 	         	if(JSON.parse(res).length==0)
 	         		{
-	         		
+	 	         	document.getElementById("updatetype").value="New;"+"1";
 	         		}
 		 		//alert(jsonData.id)	
 		 		else
@@ -232,55 +233,7 @@ function getCity(district)
 			});
 	}
 
-	 function ValidateFileUpload(id) {
-	        var fuData = document.getElementById(id);
-	        var FileUploadPath = fuData.value;
-
-	//To check if user upload any file
-	        if (FileUploadPath == '') {
-	            alert("Please upload an image");
-
-	        } else {
-	            var Extension = FileUploadPath.substring(
-	                    FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-
-	//The file uploaded is an image
-
-	if (Extension == "gif" || Extension == "png" || Extension == "bmp"
-	                    || Extension == "jpeg" || Extension == "jpg") {
-
-	// To Display
-	                if (fuData.files && fuData.files[0]) {
-	                    var reader = new FileReader();
-
-	                    reader.onload = function(e) {
-	                        $('#blah').attr('src', e.target.result);
-	                    }
-
-	                    reader.readAsDataURL(fuData.files[0]);
-	                }
-
-	            } 
-
-	//The file upload is NOT an image
-	else {
-		imagewarn();
-	                document.getElementById(id).value="";
-	            }
-	        }
-	    }
-
 	 
-	 function imagewarn() {
-		 swal("Invalid Image Format", {
-				icon : "error",
-				buttons: {        			
-					confirm: {
-						className : 'btn btn-danger'
-					}
-				},
-			});
-	 }
 </script>
 <style>
 .fa-bars, .fa-ellipsis-v {
