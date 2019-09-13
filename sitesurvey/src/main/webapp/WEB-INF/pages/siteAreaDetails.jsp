@@ -38,26 +38,9 @@
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 	
 	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">	
-	<!--
-	role=sessionStorage.getItem("role");
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		//window.location.href = "/sitesurvey/";
-		//alert(sessionStorage.getItem("username"));
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-   	}
-	   else if(role=="Admin" | role=="SuperAdmin")
-		   {
-		   
-		   }
-	   else
-		   {
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-		   }-->
+	
 <script type="text/javascript">	   
-role=sessionStorage.getItem("role");
+
 	   if(sessionStorage.getItem("username")==null)
    	{
 		//window.location.href = "/sitesurvey/";
@@ -68,7 +51,7 @@ role=sessionStorage.getItem("role");
 	   else
 	   {
 	   role=sessionStorage.getItem("role");
-	   siteId=sessionStorage.getItem("site");
+	   siteId=sessionStorage.getItem("siteId");
 	
 	   }
 </script>
@@ -92,7 +75,7 @@ WebFont.load({
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 
 	//  getRegions();
 		//getSiteId();
@@ -100,7 +83,7 @@ $(document).ready(function(){
 		 $(".isa_success").fadeOut(10000);
 		 $("input").attr("required", "true");
 		 $("#siteArea :input").attr("required",'');
-		 
+		 getSiteAreaDetails(siteId);
 		 $("select").attr("required","true");
 		 $("select option:contains('Select')").attr("disabled","disabled");
 		 document.getElementById("image1spanMSG").style.display = "none";
@@ -152,6 +135,35 @@ else {
         }
     }
 }
+
+
+function getSiteAreaDetails(siteId)
+{
+
+	 $.ajax({
+         type: "get",
+         url: "getSiteAreaDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            console.log("fasf"+JSON.stringify(jsonData));
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#id").val(jsonData[0].id);
+            	$("#siteCondition").val(jsonData[0].siteCondition);
+            	
+            	$("#obsrvcommnts").val(jsonData[0].comments);
+         }
+         }					
+		 }); 
+}
+
 
 </script>
 <style>
@@ -297,13 +309,13 @@ label {
 		</div>
 
 		<!-- Sidebar -->
-<div id="superAdminSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-            <span class="isa_success" style="color:green;font-size:14px;">${status}</span>
+<%--             <span class="isa_success" style="color:green;font-size:14px;">${status}</span> --%>
 			<h3 class="text-center">Site Area</h3>
 			<span id="image1span" style="color:red">*Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. *</span>
 			<span id="image1spanMSG" style="color:red">*Please Upload an Image*</span>
@@ -311,13 +323,13 @@ label {
 			<div class="login-form">	
 			<form:hidden path="id"/>
 					<div class="form-group">
-					<label for="siteid" class="placeholder">Site ID</label>
+					<label for="siteid" class="placeholder"><b>Site ID</b></label>
 	                <form:input id="siteid" path="siteid.siteid" name="siteid" class="form-control input-border" />	                
 	            	</div>
  
             	
 					<div class="form-group">
-					<label for="siteCondition">Condition Of The Site</label>
+					<label for="siteCondition"><b>Condition Of The Site</b></label>
 	                <form:select id="siteCondition" path="siteCondition" name="siteCondition" class="form-control">
 	                <form:option value="">Select</form:option>
 	                <form:option value="Not assessed">Not assessed (Note why not assessed in observation)</form:option>
@@ -332,12 +344,12 @@ label {
 				
 			
 					<div class="form-group">
-					<label for="obsrvcommnts" class="placeholder">Observations/Comments</label>
+					<label for="obsrvcommnts" class="placeholder"><b>Observations/Comments</b></label>
 	                <form:input id="obsrvcommnts" path="comments" name="obsrvcommnts" class="form-control input-border"/>	                
 	            	</div>
                 
 					<div class="form-group">
-					<label for="photo1up" class="placeholder">Upload Image1(Photo 1) </label>
+					<label for="photo1up" class="placeholder"><b>Photo 1</b></label>
 	                <input type="file" id="photo1up" name="file" accept="image/*"  onchange="return ValidateFileUpload(this.id)"  class="form-control input-border"/>	                
 	            
 	            

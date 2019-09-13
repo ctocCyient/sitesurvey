@@ -3,6 +3,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% String ticketDetails=(String)request.getParameter("ticketDetails"); %>
+<% String status=(String)request.getAttribute("status"); %>
+<% String btnClick=(String)request.getAttribute("btnClick"); %>
 <!DOCTYPE html >
 <html lang="en">
 
@@ -27,6 +29,8 @@
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 	<script type="text/javascript">
 	role=sessionStorage.getItem("role");
+	siteId=sessionStorage.getItem("siteId");
+	ticketId=sessionStorage.getItem("ticketId");
 	   if(sessionStorage.getItem("username")==null)
    	{
 		//window.location.href = "/sitesurvey/";
@@ -35,7 +39,6 @@
 		      $( location ).attr("href", url);
    	}
 	
-
 </script>
 
 
@@ -56,9 +59,46 @@ $(document).ready(function(){
 	 $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 
 		
-		 $(".isa_success").fadeOut(10000);
+		// $(".isa_success").fadeOut(10000);
 		 var siteDetails=<%=ticketDetails%>;
-		 console.log("siet"+siteDetails);
+<%-- 		 var status='<%=status%>'; --%>
+<%-- 		 var btnClick='<%=btnClick%>'; --%>
+		
+		 console.log("site"+JSON.stringify(siteDetails));
+		 if(siteDetails!=null){
+			 $('#siteId,#latitude,#longitude,#state').attr('readonly','readonly');
+// 			 $('#state').val(siteDetails[0].state);
+			  $("#state")[0].value=siteDetails[0].state;
+			  $("#siteId")[0].value=siteDetails[0].siteid;			  
+			  $("#latitude")[0].value=siteDetails[0].latitude;
+			  $("#longitude")[0].value=siteDetails[0].longitude;
+		 }
+		 
+// 		 if(status=='Saved')
+// 		{
+// 			 	var nextUrl;
+// 			  if(btnClick=="Save"){
+// 				  nextUrl="/sitesurvey/home";
+// 			  }
+// 			  else if(btnClick=="Save & Continue"){
+// 				  nextUrl="/sitesurvey/surveyTeamPPE";
+// 			  }
+// 			  swal({
+// 					//title: 'Are you sure?',
+// 					text: "Details Saved Successfully",
+// 					type: 'info',
+// 					buttons:{
+// 						confirm: {
+// 							text : 'Ok',
+// 							className : 'btn btn-success'
+// 						}
+// 					}
+// 				}).then((Delete) => {
+// 					if (Delete) {
+// 						window.location.href = nextUrl;
+// 					} 
+// 				});
+// 			}
 });
 
 </script>
@@ -110,7 +150,7 @@ label {
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-    <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
+  
     
 			<h3 class="text-center">Site Details</h3>
 				
@@ -118,12 +158,12 @@ label {
 			<div class="login-form">
 			
 				 <br>
-				 	<label for="state" class="state">State</label>
-              	 <form:select id="state" path="state"  name="state"  class="form-control input-full filled" >
-              	 <form:option value="Select">Select</form:option>
-              	 <form:option value="Not assessed">Not assessed</form:option>
-              	
-              	 </form:select>
+<!-- 				 	<label for="state" class="state">State</label> -->
+<%--               	 <form:select id="state" path="state"  name="state"  class="form-control input-full filled" > --%>
+<%--               	<form:options items = "${statesList}" />              	 --%>
+<%--               	 </form:select> --%>
+				<label for="state" class="placeholder">State</label>
+				<form:input id="state" path="state" class="form-control input-full filled" />
               	 <br>
 				<label for="siteId" class="placeholder">Site Id</label>
 				<form:input id="siteId" path="siteid" class="form-control input-full filled" />
@@ -136,9 +176,10 @@ label {
 				<br>
                        
 				<div class="form-action">
-					<input type="submit" id="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-<!-- 					<input type="submit" id="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;"> -->
-<a href="surveyTeamPPE" class="btn btn-rounded btn-login" >Next</a>
+				
+<!-- 					<input type="submit" id="clickBtn" value="Save" class="btn btn-rounded btn-login" name="clickBtn" style="background-color: #E4002B;color: white;"> -->
+<!--  					<input type="submit" id="clickBtn1" value="Save & Continue" class="btn btn-rounded btn-login" name="clickBtn" style="background-color: #012169;color: white;">  -->
+					<a href="surveyTeamPPE" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">Next</a> 
 				</div>
 			</div>
 			</form:form>			
@@ -170,6 +211,9 @@ label {
 <script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
 
 
+<!-- Sweet Alert -->
+
+<script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 <!-- jQuery Sparkline -->
 

@@ -5,7 +5,10 @@
 
 <% String jsondetails=(String)request.getParameter("ticketDetails"); 
    System.out.println("json>>>>>>>"+jsondetails);%>
+<% String status=(String)request.getAttribute("status"); %>
 
+<% String btnClick=(String)request.getAttribute("btnClick"); 
+  System.out.println("btnclck>>>>>>>"+btnClick);%> 
 <!DOCTYPE html >
 <html lang="en">
 
@@ -32,7 +35,22 @@
 	<script src="${jqueryJs}"></script>
     <script src="${jqueryuiJs}"></script>
     <script src="${validationsJs}"></script>
-     
+      <script type="text/javascript">
+	
+   if(sessionStorage.getItem("username")==null) 
+   	{ 
+		   url = "/sitesurvey/"; 
+		      $( location ).attr("href", url);
+  	}
+  
+ 	   else 
+ 		   { 
+ 		  role=sessionStorage.getItem("role"); 
+ 			siteId=sessionStorage.getItem("siteId");
+ 			ticketId=sessionStorage.getItem("ticketId");
+		   } 
+
+ </script> 
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
@@ -68,20 +86,79 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
+	var status='<%=status%>';
+
+	var btnClick='<%=btnClick%>';
+	//alert(status);
+	 if(status=='Saved')
+
+     {
+                         
+              swal({
+                         //title: 'Are you sure?',
+                         text: "Details Saved and Ticket Closed Succesfully",
+                         type: 'info',
+                         buttons:{
+                                confirm: {
+                                       text : 'Ok',
+                                       className : 'btn btn-success'
+                                }
+                         }
+                  }).then((Delete) => {
+                         if (Delete) {
+                                window.location.href = "/sitesurvey/home";
+                         }
+                  });
+            }
 	
+	
+	$("select option[value='Select']").attr('disabled','disabled');
 	//$("#additionalNotes : input").attr("required",'');
 	 $("#additionalNotes :input").attr("required", '');
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
+	$("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
-	alert(jsonDetails)
+	//alert(jsonDetails)
 	var ticketDetails=JSON.parse(JSON.stringify(jsonDetails));
 	//alert(ticketDetails);
-	$("#siteid")[0].value=ticketDetails.split(",")[1];
+	//$("#siteid")[0].value=ticketDetails.split(",")[1];
 	//alert(ticketDetails.split(",")[1]);
 	  $("#json")[0].value=ticketDetails;
 	
+		$("#siteid")[0].value=siteId;
+		  $("#json")[0].value=ticketDetails;
+		  //alert(siteId);
+		  getSiteAdditionalDetails(siteId);
+	
 });
+
+function getSiteAdditionalDetails(siteId){
+	
+	 $.ajax({
+         type: "get",
+         url: "getSiteAdditionalDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            console.log("jsonDa"+jsonData);
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#siteaddid").val(jsonData[0].id);
+            	$("#observations").val(jsonData[0].observations);
+            	$("#site_photo1").val(jsonData[0].site_photo1_name);
+            	//$("#securitycondition").val(jsonData[0].securityCondition);
+            	
+            	
+            }
+         }					
+		 }); 
+}
 
 
 function ValidateImage(id){
@@ -168,18 +245,20 @@ else {
 		</div>
 
 		<!-- Sidebar -->
-<div id="execSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 	<div class="wrapper wrapper-login">
 	  <div class="container container-login animated fadeIn">
-	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
+	 
 				<h3 class="text-center">Additional Details</h3>
+				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				<form:form method="post" id="additionalNotes" modelAttribute="Site_Additional_Notes" action="additionalNotes" enctype="multipart/form-data" onsubmit="return ValiidateForm()">
+				<form:input type="hidden" path="id" id="siteaddid" />
 				<input type="hidden"   id="json" name="json" />
 				<div class="form-group ">
-						<label for="siteid" class="placeholder">Site ID
+						<label for="siteid" class="placeholder"><b>Site Id</b>
 				
 						</label>
 						 
@@ -188,32 +267,32 @@ else {
 					</div>
 								
 					<div class="form-group ">
-						<label for="observations" class="observations">Observations</label>
+						<label for="observations" class="observations"><b>Observations</b></label>
 						<form:input  id="observations" path="observations" class="form-control input-full"  />				
 						<form:errors path="observations" cssClass="error" />	
 					</div>
 						
 				
 				<div class="form-group ">
-				<label for="site_photo2" class="placeholder" >Site Photo1</label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="return ValidateImage('img1');"/> 
+				<label for="site_photo2" class="placeholder" ><b>Photo 1 </b></label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
   				</div>
   				
   				
 				<div class="form-group ">
-				<label for="site_photo1" class="placeholder" >Site Photo2</label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="return ValidateImage('img2');"/> 
+				<label for="site_photo1" class="placeholder" ><b>Photo 2 </b></label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
   				
  						<div class="form-action" id="new_submit" >
-				 		<input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #012169;color: white;">  
+				 		<input type="submit"  class="btn btn-rounded btn-login" value="Finish Survey" name="btn" style="background-color: #012169;color: white;">  
 					
  						<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				
  				
-				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">  
+<!-- 				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">   -->
 					
  							<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  							</div>
@@ -249,7 +328,9 @@ else {
 <script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
 
 
+<!-- Sweet Alert -->
 
+<script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 <!-- jQuery Sparkline -->
 
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>

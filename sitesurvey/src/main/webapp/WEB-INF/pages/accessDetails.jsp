@@ -51,8 +51,8 @@
 	   else
 		   {
 		   role=sessionStorage.getItem("role");
-		   siteId=sessionStorage.getItem("site");
-		
+		   siteId=sessionStorage.getItem("siteId");
+		ticketId=sessionStorage.getItem("ticketId");
 		   }
 
 </script>
@@ -80,6 +80,7 @@ $(document).ready(function(){
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	  $("#siteAccess :input").attr("required",'');
+	  getSiteAccessDetails(siteId);
 	  //document.getElementById("accesstypespan").style.display = "none";
 	  //document.getElementById("roadcondspan").style.display = "none";
 	  //document.getElementById("commntsspan").style.display = "none";
@@ -88,7 +89,10 @@ $(document).ready(function(){
 	//  getRegions();
 		//getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
-		 $(".isa_success").fadeOut(10000);
+
+		// $(".isa_success").fadeOut(10000);
+		 $("input").attr("required", "true");
+		// $(".isa_success").fadeOut(10000);
 		 //$("input").attr("required", "true");
 		document.getElementById('siteIdInpt').value=siteId;
 		$('#siteIdInpt').prop('readonly', true);
@@ -98,6 +102,33 @@ $(document).ready(function(){
 		 document.getElementById("image1span").style.display = "none";
 		 
 });
+
+function getSiteAccessDetails(siteId)
+{
+
+	 $.ajax({
+         type: "get",
+         url: "getSiteAccessDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            console.log("fasf"+JSON.stringify(jsonData));
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#id").val(jsonData[0].id);
+            	$("#accesstype").val(jsonData[0].accessType);
+            	$("#condition").val(jsonData[0].roadCondition);
+            	$("#obsrvcommnts").val(jsonData[0].comments);
+         }
+         }					
+		 }); 
+}
 
 function redirectToOther()
 {
@@ -246,7 +277,7 @@ label {
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-  <span class="isa_success" style="color:green;font-size:14px;">${status}</span>
+
 			<h3 class="text-center">Site Access</h3>
 			<span id="image1span" style="color:red">*Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. *</span>
 			<span id="image1spanMSG" style="color:red">*Please Upload an Image*</span>
@@ -257,14 +288,14 @@ label {
 	          <div id="exchangeExistDiv">
 	          <form:hidden path="id"/>
 					<div class="form-group">
-					<label for="siteid" class="placeholder">Site ID</label>
+					<label for="siteid" class="placeholder"><b>Site ID</b></label>
 	                <form:input id="siteIdInpt" path="siteid.siteid" name="siteIdInpt"  class="form-control input-border "  />	
 	                         
 	            	</div>
             	</div>
           		  <div id="exchangeExistDiv" >
 					<div class="form-group">
-					<label for="accesstype" class="placeholder">Access Type</label>
+					<label for="accesstype" class="placeholder"><b>Access Type</b></label>
 	                <form:select id="accesstype"  path="accessType" name="accesstype" class="form-control input-border ">
 	                <form:option value="" >Select</form:option>
 	                <form:option value="Road">Road</form:option>
@@ -280,7 +311,7 @@ label {
 
 				  <div id="exchangeExistDiv" >
 					<div class="form-group">
-					<label for="condition" class="placeholder">Road Condition</label>
+					<label for="condition" class="placeholder"><b>Road Condition</b></label>
 	                <form:select id="condition"  path="roadCondition" name="condition" class="form-control input-border " >
 	                <form:option  value="" >Select</form:option>
 	                <form:option value="Notassessed">Not assessed(Note why not assessed in observation)</form:option>
@@ -297,7 +328,7 @@ label {
 				
 				<div id="exchangeExistDiv">
 					<div class="form-group">
-					<label for="obsrvcommnts" class="placeholder">Observations/Comments</label>
+					<label for="obsrvcommnts" class="placeholder"><b>Observations/Comments</b></label>
 	                <form:input id="obsrvcommnts" path="comments" name="obsrvcommnts" class="form-control input-border " />	   
 	                <!-- <span id="commntsspan" style="color:red">*Please Enter Comments*</span>-->                  
 	            	</div>
@@ -305,7 +336,7 @@ label {
                 
                 <div id="exchangeExistDiv">
 					<div class="form-group">
-					<label for="photo1up" class="placeholder">Upload Image1(Photo 1) </label>
+					<label for="photo1up" class="placeholder"><b>Photo 1</b></label>
 	                <input type="file" id="photo1up" name="file" accept="image/*" onchange="return ValidateFileUpload(this.id)" class="form-control input-border" />	
 	                <!--<span id="image1sspan" style="color:red">*Please Upload Image*</span> -->         
 	            	</div>
@@ -313,7 +344,7 @@ label {
             	</div>
 				 <div id="exchangeExistDiv">
 					<div class="form-group">
-					<label for="photo2up" class="placeholder">Upload Image2(Photo 2) </label>
+					<label for="photo2up" class="placeholder"><b>Photo 2</b></label>
 	                <input type="file" id="photo2up" name="file" accept="image/*" onchange="return ValidateFileUpload(this.id)" class="form-control input-border" />	
 	                <!--<span id="image2sspan" style="color:red">*Please Upload Image*</span> -->              
 	            	</div>

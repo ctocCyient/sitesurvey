@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 @Table(name = "Site_Safety")
@@ -33,8 +35,8 @@ public class Site_Safety implements Serializable {
 	private String extinguishersAvailability;
 	
 	 @Column(name="Extinguishers_Due_Date")
-	 @Temporal(TemporalType.DATE)
-	private Date extinguishersDueDate;
+	 @DateTimeFormat(pattern = "yyyy/mm/dd") 
+	private String extinguishersDueDate;
 	
 	@Column(name="Safety_Photo1", unique = false, nullable = false, length = 16777215)
 	private byte[] safety_photo1;
@@ -175,11 +177,11 @@ public class Site_Safety implements Serializable {
 		this.extinguishersAvailability = extinguishersAvailability;
 	}
 
-	public Date getExtinguishersDueDate() {
+	public String getExtinguishersDueDate() {
 		return extinguishersDueDate;
 	}
 
-	public void setExtinguishersDueDate(Date extinguishersDueDate) {
+	public void setExtinguishersDueDate(String extinguishersDueDate) {
 		this.extinguishersDueDate = extinguishersDueDate;
 	}
 
