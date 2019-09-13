@@ -10,6 +10,7 @@ import com.cyient.model.Regions;
 import com.cyient.model.Site;
 
 import com.cyient.model.Site_Access;
+import com.cyient.model.Site_Additional_Notes;
 import com.cyient.model.Site_Area;
 import com.cyient.model.Site_Battery_Bank;
 import com.cyient.model.Site_Cabinet;
@@ -17,6 +18,8 @@ import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
 import com.cyient.model.Site_Wiring;
 import com.cyient.model.Survey_Team_PPE;
+import com.cyient.model.Site_Safety;
+import com.cyient.model.Site_Security;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
@@ -49,7 +52,6 @@ public interface SurveyDAO {
 		
 	@Transactional
 	public void addSMPS(Site_SMPS smps);
-
 	
 	@Transactional
 	public void addBB(String updatetype,Site_Battery_Bank BB);
@@ -165,10 +167,25 @@ public interface SurveyDAO {
 		
 	@Transactional
 	public void addCabinet(String updatetype,Site_Cabinet BB);
-		
-	 @Transactional
-	 public String saveTowerInstallation(Tower_Installation towerinstallation);
+	
+	@Transactional
+	public String saveTowerInstallation(Tower_Installation tower);
 
+	@Transactional
+	public List<Ticketing> getCustomerlist();
+
+	@Transactional
+	public String storeSitesecurity(Site_Security ss);
+	
+	@Transactional
+	public String storeSiteSafety(Site_Safety sf);
+	
+	@Transactional
+	public String storeSiteAdditional(Site_Additional_Notes sa);
+	
+	@Transactional
+	public List<Tower_Installation> fetchTowerDetails(String siteid);
+		
 	 @Transactional
 	public void updateSiteDetails(String state,String siteId,String lati,String longi);
 
@@ -178,6 +195,12 @@ public interface SurveyDAO {
 	 @Transactional
 	public List<Survey_Team_PPE> getSurveyTeamDetails(String selectedSiteId);
 
+	 @Transactional
+	 public List<Site_SMPS> getSMPSDetails(String siteId);
+	 
+	 @Transactional
+	 public List<Site_Generator> getGeneratorDetails(String siteId);
+	 
 	 @Transactional
 	 public List<Site_Battery_Bank> getBB(String Siteid);
 
@@ -189,4 +212,13 @@ public interface SurveyDAO {
 
 	 @Transactional
 	public String updateSiteStatus(String siteId,String ticketId);
+
+	@Transactional
+	public List<Site_Safety> getSafetyDetails(String siteId);
+	
+	@Transactional
+	public List<Site_Safety> getSecurityDetails(String siteId);
+	
+	@Transactional
+	public List<Site_Safety> getSiteAddDetails(String siteId);
 }

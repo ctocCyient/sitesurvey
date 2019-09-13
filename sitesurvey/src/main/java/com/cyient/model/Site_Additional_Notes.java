@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 
 @Entity
@@ -27,6 +28,7 @@ public class Site_Additional_Notes implements Serializable {
 	@JoinColumn(name="siteID")
 	private Site siteid;
 		
+	@NotEmpty
 	@Column(name="Observations")
 	private String observations;
 	

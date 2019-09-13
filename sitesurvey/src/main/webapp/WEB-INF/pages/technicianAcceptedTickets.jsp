@@ -172,7 +172,7 @@ color: #fff!important;
 								
 					               return data1;
 					            }  
-						  
+
 						},
 				        {
 			                "targets": [ 3 ],
@@ -194,6 +194,7 @@ color: #fff!important;
 // 				            }			            
 // 				        }
 						],
+
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },	
@@ -239,7 +240,7 @@ color: #fff!important;
 // 			    });
 			 
 			 $('#technicianAcceptedTickets tbody').on('click', '[name*=surveyBtn]', function () {
-			
+
 		            data2 =  table1.row($(this).parents('tr')).data();
 		            ticketId=data2[0];
 		            
@@ -248,10 +249,7 @@ color: #fff!important;
 		           
 		            rowIndex = $(this).parent().index();			          
 		           
-		       
-		            
-		          
-		            
+		  
 		            // window.location.href = '/sitesurvey/siteDetails?ticketId='+ticketId+'&siteId='+siteIds;
 			      //alert("asfaf"+siteIds+"fasfasf");
 // 		         	$.get("getSiteDetails", {
