@@ -174,7 +174,6 @@ function getSurveyTeamPPEDetails()
 </style>
 
 <body  class="login">
-
     <div class="main-header" style="background-color: #00B1BF;">
 			<!-- Logo Header -->
 			<div class="logo-header">
