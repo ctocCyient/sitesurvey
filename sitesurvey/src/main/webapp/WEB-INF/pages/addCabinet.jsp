@@ -125,110 +125,7 @@ function populateDropdown(data,id)
 
 
 
-function getState(region)
-{
-	//alert(region)
-	 $.ajax({
-		 	type:"get",
-		 	url:"getStates",
-		 	contentType:'application/json',
-		 	datatype:"json",
-		 	data:{"selectedRegion":region},
-		 	success:function(res){
-		 		//alert(JSON.parse(res))
-		 		console.log(res);
-		 		jsonData=JSON.parse(res);
-		 		populateDropdown(jsonData,"state");
-		 	},
-		 	error:function()
-		 	{
-		 		console.log("Error");	
-		 	}
-	 });
-}
-	
-function getDistrict(state)
-{ 
-	var selectedRegion=$("#regions").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getDistricts",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":state},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"districts");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
-function getCity(district)
-{ 
-	
-	var selectedRegion=$("#regions").val();
-	var selectedState=$("#state").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getCities",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":district},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"city");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
 
-
-	function getSiteId()
-	{
-		var jsonArr1;
-			$.ajax({
-		        type:"get",
-		        url:"getLastSiteId",
-		        contentType: 'application/json',
-		        datatype : "json",
-		        success:function(data) {
-		        	var jsonArr=JSON.parse(data);	
-//		        	alert(jsonArr)
-		        	 if(jsonArr.length==0){
-			        		jsonArr1="IND001";
-			        	}  	
-		        	 else{
-			        	var dataSplit=jsonArr[0].split("D");
-			        	console.log(dataSplit[0]);
-			        	var dataSplitInt=parseInt(dataSplit[1]);
-			        	console.log(dataSplitInt+1);
-			        	dataSplitInt=dataSplitInt+1;
-			        	
-			        	if(dataSplitInt>0&&dataSplitInt<=9)
-			        		jsonArr1="IND00"+dataSplitInt;
-			        	else if(dataSplitInt>9&&dataSplitInt<99)
-			        		jsonArr1="IND0"+dataSplitInt;
-			        	else if(dataSplitInt>99)
-			        		jsonArr1="IND"+dataSplitInt;        	
-	        		}	        	
-		        	$('#siteid').val(jsonArr1);	 
-		        	$('#siteid').attr('readonly', true);
-		        },
-		        error:function()
-		        {
-		        	console.log("Error");
-		        }
-			});
-	}
-	
-	
-	
 
 
 	 
@@ -248,6 +145,10 @@ function getCity(district)
 	 	         	if(JSON.parse(res).length==0)
 	 	         		{
 		 	         	document.getElementById("updatetype").value="New;"+"1";
+			 	           $('#photo_1_checkbox').prop('checked', false);
+				 	          $('#photo_2_checkbox').prop('checked', false);
+				 	         	$("#photo_1").removeAttr("disabled");     
+				 	         	$("#photo_2").removeAttr("disabled");     
 	 	         		}
 	 		 		//alert(jsonData.id)	
 	 		 		else

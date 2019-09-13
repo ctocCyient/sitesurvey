@@ -486,7 +486,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/saveBB", method = RequestMethod.POST)
-	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException {
+	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "photos") MultipartFile[] tag_photo) throws IOException {
 		System.out.println("save bb calling" + tag_photo);
 		String status = "Battery Bank Added Successfully";
 		Site_Battery_Bank obj = new Site_Battery_Bank();
@@ -545,6 +545,7 @@ public class HomeController {
 		}
 
 	}
+
 
 	@RequestMapping(value = "/saveCabinet", method = RequestMethod.POST)
 	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB, @RequestParam("updatetype") String updatetype,

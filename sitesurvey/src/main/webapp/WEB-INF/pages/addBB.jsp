@@ -302,15 +302,15 @@ label {
 						class="form-control input-full filled" />
 					<br> <label for="tag_photo1" class="placeholder">Tag
 						photo</label><input id="photo_1_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
-					<input type="file" id="tag_photo1"  name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
+					<input type="file" id="tag_photo1"  name="photos" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 
 					<br> <label for="tag_photo1" class="placeholder">Battery Bank Photo 1</label><input id="photo_2_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
-					<input type="file" id="tag_photo2"  name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
+					<input type="file" id="tag_photo2"  name="photos" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 						
 											<br> <label for="tag_photo_2" class="placeholder">Battery Bank Photo 2</label><input id="photo_3_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
-					<input type="file" id="tag_photo3"  name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
+					<input type="file" id="tag_photo3"  name="photos" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 
 

@@ -44,22 +44,13 @@ public class Site_Battery_Bank implements Serializable {
 	private String manufacturedDate;
 	
 	@Column(name="Number_of_batteries")
-	private Integer number_of_batteries;
+	private int number_of_batteries;
 	
 	@Column(name="capacity")
-	private Integer capacity;
+	private int capacity;
 	
-	
-	public Integer getCapacity() {
-		return capacity;
-	}
-
-	public void setCapacity(Integer capacity) {
-		this.capacity = capacity;
-	}
-
 	@Column(name="Number_of_working_Module_rating")
-	private Integer number_of_working_Module_rating;
+	private int number_of_working_Module_rating;
 	
 	@Column(name="Overall_Condition")
 	private String overallCondition;
@@ -73,26 +64,9 @@ public class Site_Battery_Bank implements Serializable {
 	@Column(name="Tag_photo", unique = false, nullable = false, length = 16777215)
 	private byte[] tag_photo;
 	
-	public byte[] getTag_photo() {
-		return tag_photo;
-	}
-
-	public void setTag_photo(byte[] tag_photo) {
-		this.tag_photo = tag_photo;
-	}
-
 	@Column(name="Tag_photo_Name")
 	private String tag_photo_Name;
 	
-
-	public String getTag_photo_Name() {
-		return tag_photo_Name;
-	}
-
-	public void setTag_photo_Name(String tag_photo_Name) {
-		this.tag_photo_Name = tag_photo_Name;
-	}
-
 	@Column(name="Tag_photo1", unique = false, nullable = false, length = 16777215)
 	private byte[] tag_photo1;
 	
@@ -157,22 +131,29 @@ public class Site_Battery_Bank implements Serializable {
 		this.manufacturedDate = manufacturedDate;
 	}
 
-	public Integer getNumber_of_batteries() {
+	public int getNumber_of_batteries() {
 		return number_of_batteries;
 	}
 
-	public void setNumber_of_batteries(Integer number_of_batteries) {
+	public void setNumber_of_batteries(int number_of_batteries) {
 		this.number_of_batteries = number_of_batteries;
 	}
 
-	public Integer getNumber_of_working_Module_rating() {
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+
+	public int getNumber_of_working_Module_rating() {
 		return number_of_working_Module_rating;
 	}
 
-	public void setNumber_of_working_Module_rating(Integer number_of_working_Module_rating) {
+	public void setNumber_of_working_Module_rating(int number_of_working_Module_rating) {
 		this.number_of_working_Module_rating = number_of_working_Module_rating;
 	}
-
 
 	public String getOverallCondition() {
 		return overallCondition;
@@ -196,6 +177,22 @@ public class Site_Battery_Bank implements Serializable {
 
 	public void setTag_observed(String tag_observed) {
 		this.tag_observed = tag_observed;
+	}
+
+	public byte[] getTag_photo() {
+		return tag_photo;
+	}
+
+	public void setTag_photo(byte[] tag_photo) {
+		this.tag_photo = tag_photo;
+	}
+
+	public String getTag_photo_Name() {
+		return tag_photo_Name;
+	}
+
+	public void setTag_photo_Name(String tag_photo_Name) {
+		this.tag_photo_Name = tag_photo_Name;
 	}
 
 	public byte[] getTag_photo1() {
