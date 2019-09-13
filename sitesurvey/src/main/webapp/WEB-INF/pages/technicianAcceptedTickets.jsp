@@ -237,9 +237,6 @@ color: #fff!important;
 		           var e= document.getElementsByName('jsonStatusList')[d].value;
 		           sessionStorage.setItem("site", e);
 		           
-		           
-		            
-		           
 		            //data3=table1.row($(this).parents('tr'));
 		            console.log('fsaf'+data1);
 		            var row=table1.row($(this).parents('tr'))[0][0];

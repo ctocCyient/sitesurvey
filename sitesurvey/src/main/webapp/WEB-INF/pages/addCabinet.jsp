@@ -20,6 +20,8 @@
 
 <script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/js/validations.js' />"></script>
+<script src="<c:url value='resources/js/base64js.min.js' />"></script>
+
 
 <link rel="stylesheet"
 	href="<c:url value='resources/css/jquery-ui.css' />">
@@ -70,16 +72,45 @@ $(document).ready(function(){
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 
-	//  getRegions();
-		//getSiteId();
-		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
 		 getCabinet();
 		 $("input").attr("required", "true");
 		 $("select").attr("required", "true");
          $("select option:contains('Select')").attr("disabled","disabled");
+         $('#photo_1_checkbox').prop('checked', true);
+         $('#photo_2_checkbox').prop('checked', true);
+    	 $("#photo_1_checkbox").removeAttr("required");                    	 
+    	 $("#photo_2_checkbox").removeAttr("required");                    	 
+    	 $("#photo_1").attr("disabled","disabled");
+    	 $("#photo_2").attr("disabled","disabled");
 
+
+                 
+         $('#photo_1_checkbox').change(function() {       	 
+             if(this.checked) {
+            	 $("#photo_1").attr("disabled","disabled");
+             }
+             else
+            	 {
+            	 $("#photo_1").removeAttr("disabled");                    	 
+            	 }        
+         });
+         
+         
+         $('#photo_2_checkbox').change(function() {       	 
+                 if(this.checked) {
+                	 $("#photo_2").attr("disabled","disabled");
+
+                 }
+                 else
+                	 {
+                	 $("#photo_2").removeAttr("disabled");                    	 
+                	 }        
+             });
 });
+
+
+
 
 function populateDropdown(data,id)
 {
@@ -201,7 +232,8 @@ function getCity(district)
 
 
 	 
-	 
+	 jsonLen = 0;
+	 Unqid = 0;
 	 function getCabinet()
 	 {
 	 	 $.ajax({
@@ -212,6 +244,7 @@ function getCity(district)
 	 		 	data:{"siteid":"IND001"},
 	 		 	success:function(res){
 	 	         	jsonData = JSON.parse(res)[0];
+	 	         	jsonLen=JSON.parse(res).length;
 	 	         	if(JSON.parse(res).length==0)
 	 	         		{
 		 	         	document.getElementById("updatetype").value="New;"+"1";
@@ -220,12 +253,24 @@ function getCity(district)
 	 		 		else
 	 		 			{
 	 	         	document.getElementById("siteid").value=jsonData.siteid.siteid;
+	 	         	Unqid = jsonData.id;
 	 	         	document.getElementById("cabinetManufacturer").value=jsonData.cabinetManufacturer;
 	 	         	document.getElementById("type").value=jsonData.type;
 	 	         	document.getElementById("dimensions").value=jsonData.dimensions;
 	 	         	document.getElementById("cabinetCondition").value=jsonData.cabinetCondition;
  	 	         	document.getElementById("comments").value=jsonData.comments;
-	 	         	document.getElementById("updatetype").value="Existing;"+jsonData.id;	 	         	
+	 	         	document.getElementById("updatetype").value="Existing;"+jsonData.id;
+ 	 	         	//document.getElementById("photo_1").value='data:image/jpeg;base64,' + base64;
+
+	 	         	
+	 	         	//document.getElementById("ItemPreview").src = "data:image/png;base64," + jsonData.photo_1;
+	 	         	
+var base64 = base64js.fromByteArray(jsonData.photo_1);
+//console.log(base64);
+//$("#ItemPreview").attr('src', 'data:image/jpeg;base64,' + base64);
+
+
+
 	 		 			}
 	 		 	},
 	 		 	error:function()
@@ -235,8 +280,22 @@ function getCity(district)
 	 	 });
 	 }	
 	 
-	 
-	 
+
+function submit_logic()
+{
+	var updatetype= $('#updatetype').val();
+	$('#updatetype').val(" ");
+	filestate = ";"+$('#photo_1_checkbox').prop('checked')+";"+$('#photo_2_checkbox').prop('checked');
+	if(jsonLen==0)
+		{
+		$('#updatetype').val("New;1"+filestate);		
+		}
+	else
+		{
+		$('#updatetype').val("Existing;"+Unqid+filestate);		
+		}
+	//alert($('#updatetype').val());
+}
 
 </script>
 <style>
@@ -287,6 +346,7 @@ label {
 	<!-- End Sidebar -->
 
 	<div class="wrapper wrapper-login">
+	
 		<div class="container container-login animated fadeIn">
 			<div align="center">
 				<span class="isa_success" style="color: #35B234; font-size: 20px">${status}</span>
@@ -302,7 +362,7 @@ label {
 							<input type="hidden" id="updatetype" name="updatetype"/>
 				
 
-					<br> <label for="Site ID" class="placeholder">Site ID</label>
+					<br><label for="Site ID" class="placeholder"> <b>Site ID</b></label>
 					<form:input id="siteid" path="siteid.siteid"
 						class="form-control input-full filled" value="IND001" />
 					<br> <label for="cabinetManufacturer" class="placeholder">Cabinet
@@ -342,28 +402,48 @@ label {
 					<br> <label for="comments" class="placeholder">Observation/Comments</label>
 					<form:input id="comments" path="comments" name="comments" onkeypress="return isCharacters(event)" 
 						class="form-control input-full filled" />
-					<br> <label for="Photo_1" class="placeholder">photo_1</label>
+					<br> <label for="Photo_1" class="placeholder" style="float:left">photo_1</label><input id="photo_1_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
 					<input type="file" id="photo_1" name="tag_photo"
 						class="form-control input-full filled" accept="image/*"
 						onchange="ValidateFileUpload(this.id)" /> <br> <br>
-					<label for="photo_2" class="placeholder">photo_2</label>
+					<label for="photo_2" class="placeholder">photo_2</label><input id="photo_2_checkbox" type="checkbox" style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
 					<input type="file" id="photo_2" name="tag_photo"
 						onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
+						
+						<img id="ItemPreview" src="" />
+
+
+
+						
 
 
 <div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
-					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
 				</div>
 				</div>
 			</form:form>
 
 		</div>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<script
 		src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 	<script
