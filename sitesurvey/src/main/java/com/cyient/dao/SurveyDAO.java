@@ -183,4 +183,10 @@ public interface SurveyDAO {
 
 	 @Transactional
 	 public List<Site_Cabinet> getCabinet(String Siteid);
+
+	 @Transactional
+	public List<TechnicianTicketInfo> managerAssignedTickets(String username);
+
+	 @Transactional
+	public String updateSiteStatus(String siteId,String ticketId);
 }

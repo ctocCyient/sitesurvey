@@ -122,10 +122,7 @@ function getRoles()
 function populateRolesDropdown(data,id)
 {
 	var	catOptions="";
- 	for (i in data) {
-			if(data[i]=='FeildExecutive')
-			
- 			data[i]="Field Technician";
+ 	for (i in data) {			
    	 	 catOptions += "<option>" + data[i] + "</option>";
  		}
  		document.getElementById(id).innerHTML = catOptions;

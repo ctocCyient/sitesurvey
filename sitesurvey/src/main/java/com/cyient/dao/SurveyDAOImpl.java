@@ -229,7 +229,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> assignedTicketsData() {
-		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='Assigned'").list();
+		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='Assigned' or status='Accepted' or status='InProgress'").list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -275,7 +275,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techAcceptedTicketsData(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='Accepted' and technicianId='"+username+"'").list();
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where technicianId='"+username+"' and (status='Accepted' or status='InProgress')").list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -430,5 +430,38 @@ public class SurveyDAOImpl implements SurveyDAO {
 	@Override
 	public List<Survey_Team_PPE> getSurveyTeamDetails(String selectedSiteId) {
 		return sessionFactory.getCurrentSession().createQuery("from Survey_Team_PPE where siteid='"+selectedSiteId+"'").list();		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TechnicianTicketInfo> managerAssignedTickets(String username) {
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and (status='Assigned' or status='Accepted' or status='InProgress')").list();	
+	}
+
+	@Override
+	public String updateSiteStatus(String siteId,String ticketId) {
+
+		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where siteid ='"+siteId+"' and ticketNum='"+ticketId+"'");
+
+		
+		 for(int i=0;i<q1.list().size();i++){
+			 Ticketing ticket = (Ticketing)q1.list().get(i);
+				ticket.setSiteFlag("false");
+				ticket.setStatus("InProgress");
+	
+				sessionFactory.getCurrentSession().update(ticket);
+		 }
+		 
+		 Query q2 = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where siteid ='"+siteId+"' and ticketNum='"+ticketId+"'");
+
+		
+		 for(int i=0;i<q2.list().size();i++){
+			 TechnicianTicketInfo ticketInfo = (TechnicianTicketInfo)q2.list().get(i);
+				ticketInfo.setSiteFlag("false");
+				ticketInfo.setStatus("InProgress");
+	
+				sessionFactory.getCurrentSession().update(ticketInfo);
+		 }
+		return "Updated";
 	}	
 }

@@ -66,8 +66,8 @@ public class Ticketing implements Serializable {
 	@Column(name="Status")
 	private String status;
 	
-	@Column(name="Site_Status")
-	private String siteStatus;
+	@Column(name="Site_Flag")
+	private String siteFlag;
 	
 	@Column(name="Comments")
 	private String comments;
@@ -120,12 +120,12 @@ public class Ticketing implements Serializable {
 		return district;
 	}
 
-	public String getSiteStatus() {
-		return siteStatus;
+	public String getSiteFlag() {
+		return siteFlag;
 	}
 
-	public void setSiteStatus(String siteStatus) {
-		this.siteStatus = siteStatus;
+	public void setSiteFlag(String siteFlag) {
+		this.siteFlag = siteFlag;
 	}
 
 	public void setDistrict(String district) {

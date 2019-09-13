@@ -218,6 +218,7 @@ public class HomeController {
 			 ticketing.setOpenTime(ticket.getOpenTime());
 			 ticketing.setSiteids(ticket.getSiteid());
 			 ticketing.setStatus("Open");
+			 ticketing.setSiteFlag("-1");
 			 ticketing.setTicketDescription(ticket.getTicketDescription());
 			 surveyDAO.addTicket(ticketing);
 		 }
@@ -278,6 +279,7 @@ public class HomeController {
 	    	 technicianTicket.setManager(technicianData.getManager());
 	    	 technicianTicket.setCity(technicianData.getCity());
 	    	 technicianTicket.setStatus("Assigned");
+	    	 technicianTicket.setStatus("-1");
 	    	 
     	 
     		 ticketId=ticket.getTicketNum();

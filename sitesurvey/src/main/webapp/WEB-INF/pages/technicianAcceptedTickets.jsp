@@ -140,7 +140,7 @@ color: #fff!important;
                     for(var i=0;i<openTicketsList.length;i++)
          		   {
                     	times.push(openTicketsList[i].siteids.split(','));
-                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids.split(','),openTicketsList[i].ticketDescription]);
+                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids.split(','),openTicketsList[i].ticketDescription,openTicketsList[i].siteFlag]);
 		 		   }
                        
                    
@@ -173,15 +173,34 @@ color: #fff!important;
 					               return data1;
 					            }  
 						  
-						},{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' name='surveyBtn' value='Start Survey' />"}],
-							
-
+						},
+				        {
+			                "targets": [ 3 ],
+			                "visible": false,
+			                "searchable": false
+			            },
+						{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' name='surveyBtn' value='Start Survey' />"},
+// 						{ "targets": -1, "data": null, render: function (a,b,data,d) {
+// 							console.log("data"+data);
+// 							if (data[3] =='-1') {
+// 				                return "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Start Survey' />";
+// 				            }
+// 				            else if (data[3] =='false') {
+// 					                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Resume Survey' />";
+// 					            }
+// 				            else if (data[3] =='true') {
+// 				                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='Finished Survey' />";
+// 				            }
+// 				            }			            
+// 				        }
+						],
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },	
 						{title: "Site Id" },
-						{title: "Ticket Description" },						
-						{title: "Action" ,width:"100px" },
+						{title: "Ticket Description" },	
+						{title: "Site Status" },	
+						{title: "Action" ,width:"280px" },
 						
 			        ]
 			    } );

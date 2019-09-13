@@ -81,8 +81,8 @@ public class TechnicianTicketInfo implements Serializable {
 	@Column(name="Remarks")
 	private String remarks;
 	
-	@Column(name="Site_Status")
-	private String siteStatus;
+	@Column(name="Site_Flag")
+	private String siteFlag;
 	
 	public int getId() {
 		return id;
@@ -92,12 +92,12 @@ public class TechnicianTicketInfo implements Serializable {
 		this.id = id;
 	}
 
-	public String getSiteStatus() {
-		return siteStatus;
+	public String getSiteFlag() {
+		return siteFlag;
 	}
 
-	public void setSiteStatus(String siteStatus) {
-		this.siteStatus = siteStatus;
+	public void setSiteFlag(String siteFlag) {
+		this.siteFlag = siteFlag;
 	}
 
 	public String getTechnicianId() {

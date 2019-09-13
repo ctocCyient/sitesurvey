@@ -72,8 +72,10 @@ public class FTSurveyController {
 	    @ResponseBody
 	    public String  getSiteDetails(HttpServletRequest request) {
 			String siteId=request.getParameter("siteId");
+			String ticketId=request.getParameter("ticketId");
 			System.out.println("SITE"+siteId);
-			List<Site> siteDetails = surveyDAO.getSiteDetails(siteId);	
+			String siteStatus=surveyDAO.updateSiteStatus(siteId,ticketId);
+			List<Site> siteDetails = surveyDAO.getSiteDetails(siteId);				
 	        String siteDetailsJson = gsonBuilder.toJson(siteDetails);
 		    return siteDetailsJson.toString();
 	    }
