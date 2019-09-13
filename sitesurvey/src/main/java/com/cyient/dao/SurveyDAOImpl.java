@@ -226,6 +226,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public List<TechnicianTicketInfo> assignedTicketsData() {
 		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='Assigned'").list();
 	}
+	
+	
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> historyTicketsData() {
@@ -394,7 +396,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		List<Site_Cabinet> userlist = c.list();
 		return 	userlist;
 	}
-
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<Site_SMPS> getSMPSDetails(String siteId)
@@ -407,6 +409,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	{
 		return sessionFactory.getCurrentSession().createQuery("from Site_Generator where siteid='"+siteId+"'").list();
 	}
+	
 	
 
 	public String saveTowerInstallation(Tower_Installation tower) {
@@ -445,4 +448,23 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	
 
+	@SuppressWarnings("unchecked")
+	
+	public List<Site_Access> getSiteAccDetails(String siteId) {
+		// TODO Auto-generated method stub
+		return sessionFactory.getCurrentSession().createQuery("from Site_Access where siteid='"+siteId+"'").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Site_Area> getSiteArDetails(String siteId) {
+		// TODO Auto-generated method stub
+		return sessionFactory.getCurrentSession().createQuery("from Site_Area where siteid='"+siteId+"'").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Site_Wiring> getPowerWiringDetails(String siteId) {
+		// TODO Auto-generated method stub
+		return sessionFactory.getCurrentSession().createQuery("from Site_Wiring where siteid='"+siteId+"'").list();
+	}
+	
 }

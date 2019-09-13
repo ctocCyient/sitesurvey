@@ -104,7 +104,8 @@ public interface SurveyDAO {
 
 	@Transactional
 	public List<TechnicianTicketInfo> assignedTicketsData();
-
+	
+	
 	@Transactional
 	public List<TechnicianTicketInfo> historyTicketsData();
 
@@ -177,7 +178,16 @@ public interface SurveyDAO {
 	 
 	 @Transactional
 	 public List<Site_Generator> getGeneratorDetails(String siteId);
-	
+	 
+	 @Transactional
+	 public List<Site_Access>  getSiteAccDetails(String siteId);
+	 
+	 @Transactional
+	 public List<Site_Wiring> getPowerWiringDetails(String siteId);
+	 
+	 @Transactional
+	 public List<Site_Area> getSiteArDetails(String siteId);
+	 
 	 @Transactional
 	 public List<Site_Battery_Bank> getBB(String Siteid);
 

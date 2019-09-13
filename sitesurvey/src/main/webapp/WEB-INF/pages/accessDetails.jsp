@@ -80,6 +80,7 @@ $(document).ready(function(){
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	  $("#siteAccess :input").attr("required",'');
+	  getSiteAccessDetails(siteId);
 	  //document.getElementById("accesstypespan").style.display = "none";
 	  //document.getElementById("roadcondspan").style.display = "none";
 	  //document.getElementById("commntsspan").style.display = "none";
@@ -98,6 +99,33 @@ $(document).ready(function(){
 		 document.getElementById("image1span").style.display = "none";
 		 
 });
+
+function getSiteAccessDetails(siteId)
+{
+
+	 $.ajax({
+         type: "get",
+         url: "getSiteAccessDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            console.log("fasf"+JSON.stringify(jsonData));
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#id").val(jsonData[0].id);
+            	$("#accesstype").val(jsonData[0].accessType);
+            	$("#condition").val(jsonData[0].roadCondition);
+            	$("#obsrvcommnts").val(jsonData[0].comments);
+         }
+         }					
+		 }); 
+}
 
 function redirectToOther()
 {
