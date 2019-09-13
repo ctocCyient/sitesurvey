@@ -6,10 +6,10 @@
 <% String jsondetails=(String)request.getParameter("jsonarr"); 
    System.out.println("json>>>>>>>"+jsondetails);%>
 <% String ticketId=(String)request.getParameter("ticketid"); %>
-<% String status=(String)request.getAttribute("status");
-System.out.println("sdgsdsdh>>>>>>>"+status);%>
-<% String btnClick=(String)request.getAttribute("btnClick"); 
-  System.out.println("btnclck>>>>>>>"+btnClick);%>
+<%-- <% String status=(String)request.getAttribute("status"); --%>
+<%-- System.out.println("sdgsdsdh>>>>>>>"+status);%> --%>
+<%-- <% String btnClick=(String)request.getAttribute("btnClick");  --%>
+<%--   System.out.println("btnclck>>>>>>>"+btnClick);%> --%>
 
 <!DOCTYPE html >
 <html lang="en">
@@ -91,36 +91,36 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
-	var status='<%=status%>';
+<%-- 	var status='<%=status%>'; --%>
 
-	var btnClick='<%=btnClick%>';
-	//alert(status);
-	 if(status=='Saved')
+<%-- 	var btnClick='<%=btnClick%>'; --%>
+// 	//alert(status);
+// 	 if(status=='Saved')
 
-     {
-                  var nextUrl;
-              if(btnClick=="Save"){
-                    nextUrl="/sitesurvey/home";
-              }
-              else if(btnClick=="Save & Continue"){
-                    nextUrl="/sitesurvey/gotositesecurity";
-              }
-              swal({
-                         //title: 'Are you sure?',
-                         text: "Details Saved Successfully",
-                         type: 'info',
-                         buttons:{
-                                confirm: {
-                                       text : 'Ok',
-                                       className : 'btn btn-success'
-                                }
-                         }
-                  }).then((Delete) => {
-                         if (Delete) {
-                                window.location.href = nextUrl;
-                         }
-                  });
-            }
+//      {
+//                   var nextUrl;
+//               if(btnClick=="Save"){
+//                     nextUrl="/sitesurvey/home";
+//               }
+//               else if(btnClick=="Save & Continue"){
+//                     nextUrl="/sitesurvey/gotositesecurity";
+//               }
+//               swal({
+//                          //title: 'Are you sure?',
+//                          text: "Details Saved Successfully",
+//                          type: 'info',
+//                          buttons:{
+//                                 confirm: {
+//                                        text : 'Ok',
+//                                        className : 'btn btn-success'
+//                                 }
+//                          }
+//                   }).then((Delete) => {
+//                          if (Delete) {
+//                                 window.location.href = nextUrl;
+//                          }
+//                   });
+//             }
 	
 	
 	$("select option[value='Select']").attr('disabled','disabled');
@@ -284,7 +284,7 @@ else {
 		
 	<div class="wrapper wrapper-login">
 	  <div class="container container-login animated fadeIn">
-	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${succMsg}</span></div>	<br><br>
+<%-- 	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${succMsg}</span></div>	<br><br> --%>
 				<h3 class="text-center">Tower Audit</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				<form:form method="post" id="towerInstallationForm" modelAttribute="Tower_Installation" action="towerinstallation" enctype="multipart/form-data"   >
@@ -396,7 +396,7 @@ else {
 		
  					
 				<div class="form-action" id="new_submit" >
-				 <input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #012169;color: white;">  
+				 <input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #E4002B;color: white;">  
 					
  					<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				

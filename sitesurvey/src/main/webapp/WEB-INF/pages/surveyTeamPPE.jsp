@@ -136,6 +136,7 @@ function getSurveyTeamPPEDetails()
         	var surveyTeamDetails= JSON.parse(result);    
            if(surveyTeamDetails.length!=0)
         	{        	   
+        		$("#ppeId")[0].value=surveyTeamDetails[0].id;
  			  	$("#ppe").val(surveyTeamDetails[0].ppe);
  			  	$("#technicianName")[0].value=surveyTeamDetails[0].technicianName;
  			 	$("#rigger_Name")[0].value=surveyTeamDetails[0].rigger_Name;
@@ -216,7 +217,7 @@ function getSurveyTeamPPEDetails()
 				
 			<form:form action="saveSurveyPPE" method="post" modelAttribute="SurveyTeamPPE"  enctype = 'multipart/form-data' >
 			<div class="login-form">
-			<form:hidden path="id"/>
+			<form:hidden path="id" id="ppeId"/>
 				<label for=siteid class="placeholder"><b>Site Id</b></label>
 					<form:input id="siteid" path="siteid.siteid"  name="siteid"  class="form-control input-full filled"  />
 				 <br>

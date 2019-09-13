@@ -428,8 +428,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 
 	@Override
-	public void addSiteSurveyPPE(Survey_Team_PPE surveyTeamPPPE) {
-		sessionFactory.getCurrentSession().saveOrUpdate(surveyTeamPPPE);			
+	public void addSiteSurveyPPE(Survey_Team_PPE surveyTeamPPE) {
+		sessionFactory.getCurrentSession().saveOrUpdate(surveyTeamPPE);			
 	}
 
 	@SuppressWarnings("unchecked")

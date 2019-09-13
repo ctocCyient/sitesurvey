@@ -426,7 +426,7 @@ public class HomeController {
 
 		if(submit.equals("Save"))
 		{
-			return new ModelAndView("redirect:/newSMPS");
+			return new ModelAndView("redirect:/home");
 		}
 		else if(submit.equals("Save & Continue"))
 		{
@@ -510,7 +510,7 @@ public class HomeController {
 		surveyDAO.addBB(updatetype, BB);
 		redirectAttributes.addFlashAttribute("status", status);
 		if (submit.equals("Save")) {
-			return new ModelAndView("redirect:/newBB");
+			return new ModelAndView("redirect:/home");
 		} else if (submit.equals("Save & Continue")) {
 			return new ModelAndView("redirect:/newCabinet");
 		} else {
@@ -567,9 +567,9 @@ System.out.println(updatetype.split(";")[0]=="New");
 		redirectAttributes.addFlashAttribute("status", status);
 
 		if (submit.equals("Save")) {
-			return new ModelAndView("redirect:/newCabinet");
+			return new ModelAndView("redirect:/home");
 		} else if (submit.equals("Save & Continue")) {
-			return new ModelAndView("redirect:/newCabinet");
+			return new ModelAndView("redirect:/fetchtowerinstallation");
 		} else {
 			return new ModelAndView("redirect:/");
 		}

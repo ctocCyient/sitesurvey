@@ -65,9 +65,9 @@ WebFont.load({
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 
-		 $(".isa_success").fadeOut(10000);
+		// $(".isa_success").fadeOut(10000);
 		 getCabinet();
 		 $("input").attr("required", "true");
 		 $("select").attr("required", "true");
@@ -239,16 +239,16 @@ label {
 	</div>
 
 	<!-- Sidebar -->
-	<div id="superAdminSidebar"></div>
+	<div id="technicianSidebar"></div>
 	<!-- End Sidebar -->
 
 	<div class="wrapper wrapper-login">
 	
 		<div class="container container-login animated fadeIn">
-			<div align="center">
-				<span class="isa_success" style="color: #35B234; font-size: 20px">${status}</span>
-			</div>
-			<br> <br>
+<!-- 			<div align="center"> -->
+<%-- 				<span class="isa_success" style="color: #35B234; font-size: 20px">${status}</span> --%>
+<!-- 			</div> -->
+<!-- 			<br> <br> -->
 
 			<h3 class="text-center">Add Cabinet</h3>
 			<span id="msg" style="color: red; font-size: 12px;">*All
@@ -262,26 +262,26 @@ label {
 					<br><label for="Site ID" class="placeholder"> <b>Site ID</b></label>
 					<form:input id="siteid" path="siteid.siteid" readonly="true"
 						class="form-control input-full filled"  />
-					<br> <label for="cabinetManufacturer" class="placeholder">Cabinet
-						Manufacturer</label>
+					<br> <label for="cabinetManufacturer" class="placeholder"><b>Cabinet
+						Manufacturer</b></label>
 					<form:select id="cabinetManufacturer" path="cabinetManufacturer"
 						name="cabinetManufacturer" class="form-control input-full filled">
 						<form:option value="">Select</form:option>
 						<form:options items="${CabinetManufacturer}"></form:options>
 					</form:select>
-					<br> <label for="type" class="placeholder">Type</label>
+					<br> <label for="type" class="placeholder"><b>Type</b></label>
 					<form:select id="type" path="type" name="type"
 						class="form-control input-full filled">
 						<form:option value="">Select</form:option>
 						<form:options items="${CabinetType}"></form:options>
 					</form:select>
 
-					<br> <label for="dimensions" class="placeholder">Dimensions</label>
+					<br> <label for="dimensions" class="placeholder"><b>Dimensions</b></label>
 					<form:input id="dimensions" path="dimensions" name="dimensions" onkeypress="return isNumber(event)"
 						class="form-control input-full filled" />
 
-					<br> <label for="cabinetCondition" class="placeholder">Cabinet
-						Condition</label>
+					<br> <label for="cabinetCondition" class="placeholder"><b>Cabinet
+						Condition</b></label>
 					<form:select id="cabinetCondition" path="cabinetCondition"
 						name="cabinetCondition" class="form-control input-full filled">
 						<form:option value="">Select</form:option>
@@ -296,15 +296,15 @@ label {
 						<form:option value="Not applicable">Not applicable</form:option>
 					</form:select>
 
-					<br> <label for="comments" class="placeholder">Observation/Comments</label>
+					<br> <label for="comments" class="placeholder"><b>Observation/Comments</b></label>
 					<form:input id="comments" path="comments" name="comments" onkeypress="return isCharacters(event)" 
 						class="form-control input-full filled" />
-					<br> <label for="Photo_1" class="placeholder" style="float:left">photo_1</label><input id="photo_1_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
+					<br> <label for="Photo_1" class="placeholder" style="float:left"><b>photo 1</b></label><input id="photo_1_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
 					<input type="file" id="photo_1" name="tag_photo"
 						class="form-control input-full filled" accept="image/*"
 						onchange="ValidateFileUpload(this.id)" /> <br> <br>
-					<label for="photo_2" class="placeholder">photo_2</label><input id="photo_2_checkbox" type="checkbox" style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
+					<label for="photo_2" class="placeholder"><b>photo 2</b></label><input id="photo_2_checkbox" type="checkbox" style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
 					<input type="file" id="photo_2" name="tag_photo"
 						onchange="ValidateFileUpload(this.id)" accept="image/*"
@@ -319,7 +319,7 @@ label {
 
 <div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #E4002B;color: white;">
 					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
 				</div>
 				</div>

@@ -281,36 +281,7 @@ color: #fff!important;
       	 		});
 
 			 
-			 $('#technicianAcceptedTickets tbody').on('click', '[id*=assignBtn]', function () {
-		            data1 =  table1.row($(this).parents('tr')).data();
-		            
-		            rowIndex = $(this).parent().index();
-					 rowToDelete= table1.row($(this).parents('tr'));
-		            // alert(data1[0] );
-		           ticketId=data1[0];
-		           //alert(ticketId)
-		           siteId=data1[1];
-		           city=data1[5];
-		           $.ajax({
-		                type: "get",
-		                url: "fetchSiteInformation",
-		                contentType: 'application/json',
-		                datatype: "json", 
-						    data:{"ticketid":ticketId,"siteid":siteId},
-		                success: function(result) {
-		                	alert("Usha"+result);
-		                	jsonarr=JSON.parse(result);
-		                	
-		                	//alert(jsonarr[0]);
-		    	         	window.location.href = '/sitesurvey/fetchtowerinstallation?jsonarr='+jsonarr;
-
-		                	
-		                	
-		                }
-					
-		       		 });
-			 
-          });
+			
 			 
 		}
 			});

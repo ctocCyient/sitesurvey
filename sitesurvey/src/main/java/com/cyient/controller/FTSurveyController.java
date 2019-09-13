@@ -314,7 +314,7 @@ public class FTSurveyController {
 			surveyDAO.addSiteAccess(siteacc);
 			redirectAttributes.addFlashAttribute("status",status);
 			if(clickBtn.equals("Save")){
-			return "redirect:/siteAccess";
+			return "redirect:/home";
 			}
 			else{
 				return "redirect:/siteArea";
@@ -345,7 +345,7 @@ public class FTSurveyController {
 			surveyDAO.addSiteArea(sitearea);
 			redirectAttributes.addFlashAttribute("status",status);
 			if(clickBtn.equals("Save")){
-		return new ModelAndView("redirect:/siteArea");
+				return new ModelAndView("redirect:/home");
 			}
 			else{
 				return new ModelAndView("redirect:/siteWiring");

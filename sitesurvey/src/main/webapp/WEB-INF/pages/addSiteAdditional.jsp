@@ -8,7 +8,7 @@
 <% String status=(String)request.getAttribute("status"); %>
 
 <% String btnClick=(String)request.getAttribute("btnClick"); 
-  System.out.println("btnclck>>>>>>>"+btnClick);%>
+  System.out.println("btnclck>>>>>>>"+btnClick);%> 
 <!DOCTYPE html >
 <html lang="en">
 
