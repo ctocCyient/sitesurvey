@@ -486,19 +486,56 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/saveBB", method = RequestMethod.POST)
-	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB, @RequestParam("updatetype") String updatetype,
-			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,
-			@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException {
+	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException {
 		System.out.println("save bb calling" + tag_photo);
 		String status = "Battery Bank Added Successfully";
-		BB.setTag_photo1(tag_photo[0].getBytes());
-		BB.setTag_photo1(tag_photo[1].getBytes());
-		BB.setTag_photo_2(tag_photo[2].getBytes());
-		BB.setTag_photo1_Name(tag_photo[1].getOriginalFilename());
-		BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());
+		Site_Battery_Bank obj = new Site_Battery_Bank();
+
+		//update type condition check
+		if(updatetype.split(";")[0].contains("New"))
+		{
+			
+		}
+		else
+		{
+			obj= surveyDAO.getBB(BB.getSiteid().getSiteid()).get(0);
+		}
+		
+		// saggrigation of files
+		if(updatetype.split(";")[2].contains("false"))
+		{
+		BB.setTag_photo(tag_photo[0].getBytes());
+		BB.setTag_photo_Name(tag_photo[0].getOriginalFilename());
+		}
+		else
+		{
+			BB.setTag_photo(obj.getTag_photo());
+			BB.setTag_photo_Name(obj.getTag_photo_Name());
+		}
+		
+		if(updatetype.split(";")[3].contains("false"))
+		{
+			BB.setTag_photo1(tag_photo[1].getBytes());
+			BB.setTag_photo1_Name(tag_photo[1].getOriginalFilename());
+		}
+		else
+		{
+			BB.setTag_photo1(obj.getTag_photo1());
+			BB.setTag_photo1_Name(obj.getTag_photo1_Name());
+		}
+		
+		if(updatetype.split(";")[4].contains("false"))
+		{
+			BB.setTag_photo_2(tag_photo[2].getBytes());
+			BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());
+		}
+		else
+		{
+			BB.setTag_photo_2(obj.getTag_photo_2());
+			BB.setTag_photo2_Name(obj.getTag_photo2_Name());
+		}
 		surveyDAO.addBB(updatetype, BB);
 		redirectAttributes.addFlashAttribute("status", status);
-
 		if (submit.equals("Save")) {
 			return new ModelAndView("redirect:/newBB");
 		} else if (submit.equals("Save & Continue")) {

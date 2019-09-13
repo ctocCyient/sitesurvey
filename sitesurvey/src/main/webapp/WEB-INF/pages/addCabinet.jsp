@@ -72,9 +72,6 @@ $(document).ready(function(){
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 
-	//  getRegions();
-		//getSiteId();
-		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
 		 getCabinet();
 		 $("input").attr("required", "true");

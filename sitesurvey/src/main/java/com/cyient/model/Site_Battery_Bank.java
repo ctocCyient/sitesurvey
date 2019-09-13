@@ -71,11 +71,27 @@ public class Site_Battery_Bank implements Serializable {
 	private String tag_observed;
 	
 	@Column(name="Tag_photo", unique = false, nullable = false, length = 16777215)
-	private String tag_photo;
+	private byte[] tag_photo;
 	
+	public byte[] getTag_photo() {
+		return tag_photo;
+	}
+
+	public void setTag_photo(byte[] tag_photo) {
+		this.tag_photo = tag_photo;
+	}
+
 	@Column(name="Tag_photo_Name")
 	private String tag_photo_Name;
 	
+
+	public String getTag_photo_Name() {
+		return tag_photo_Name;
+	}
+
+	public void setTag_photo_Name(String tag_photo_Name) {
+		this.tag_photo_Name = tag_photo_Name;
+	}
 
 	@Column(name="Tag_photo1", unique = false, nullable = false, length = 16777215)
 	private byte[] tag_photo1;

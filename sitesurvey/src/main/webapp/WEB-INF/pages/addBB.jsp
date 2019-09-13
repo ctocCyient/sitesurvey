@@ -78,7 +78,49 @@ $(document).ready(function(){
 		 $("input").attr("required", "true");
 		 $("select").attr("required", "true");
          $("select option:contains('Select')").attr("disabled","disabled");
-         imagewarn();
+         $('#photo_1_checkbox').prop('checked', true);
+         $('#photo_2_checkbox').prop('checked', true);
+         $('#photo_3_checkbox').prop('checked', true);
+    	 $("#photo_1_checkbox").removeAttr("required");                    	 
+    	 $("#photo_2_checkbox").removeAttr("required");    
+    	 $("#photo_3_checkbox").removeAttr("required");                    	 
+    	 $("#tag_photo1").attr("disabled","disabled");
+    	 $("#tag_photo2").attr("disabled","disabled");
+    	 $("#tag_photo3").attr("disabled","disabled");
+
+    	 $('#photo_1_checkbox').change(function() {       	 
+             if(this.checked) {
+            	 $("#tag_photo1").attr("disabled","disabled");
+             }
+             else
+            	 {
+            	 $("#tag_photo1").removeAttr("disabled");                    	 
+            	 }        
+         });
+         
+         
+         $('#photo_2_checkbox').change(function() {       	 
+                 if(this.checked) {
+                	 $("#tag_photo2").attr("disabled","disabled");
+
+                 }
+                 else
+                	 {
+                	 $("#tag_photo2").removeAttr("disabled");                    	 
+                	 }        
+             });
+         
+         $('#photo_3_checkbox').change(function() {       	 
+             if(this.checked) {
+            	 $("#tag_photo3").attr("disabled","disabled");
+
+             }
+             else
+            	 {
+            	 $("#tag_photo3").removeAttr("disabled");                    	 
+            	 }        
+         });
+    	 
 });
 
 function populateDropdown(data,id)
@@ -94,27 +136,8 @@ function populateDropdown(data,id)
 
 
 
-function getState(region)
-{
-	//alert(region)
-	 $.ajax({
-		 	type:"get",
-		 	url:"getStates",
-		 	contentType:'application/json',
-		 	datatype:"json",
-		 	data:{"selectedRegion":region},
-		 	success:function(res){
-		 		//alert(JSON.parse(res))
-		 		console.log(res);
-		 		jsonData=JSON.parse(res);
-		 		populateDropdown(jsonData,"state");
-		 	},
-		 	error:function()
-		 	{
-		 		console.log("Error");	
-		 	}
-	 });
-}
+jsonLen = 0;
+Unqid = 0;
 function getBB()
 {
 	 $.ajax({
@@ -125,6 +148,7 @@ function getBB()
 		 	data:{"siteid":"IND001"},
 		 	success:function(res){
 	         	jsonData = JSON.parse(res)[0];
+ 	         	jsonLen=JSON.parse(res).length;
 	         	if(JSON.parse(res).length==0)
 	         		{
 	 	         	document.getElementById("updatetype").value="New;"+"1";
@@ -132,6 +156,7 @@ function getBB()
 		 		//alert(jsonData.id)	
 		 		else
 		 			{
+	 	         	Unqid = jsonData.id;
 	         	document.getElementById("siteid").value=jsonData.siteid.siteid;
 	         	document.getElementById("Manufacturer").value=jsonData.Manufacturer;
 	         	document.getElementById("type").value=jsonData.type;
@@ -152,87 +177,21 @@ function getBB()
 	 });
 }	
 
-
-function getDistrict(state)
-{ 
-	var selectedRegion=$("#regions").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getDistricts",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":state},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"districts");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
-function getCity(district)
-{ 
-	
-	var selectedRegion=$("#regions").val();
-	var selectedState=$("#state").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getCities",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":district},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"city");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
-
-
-	function getSiteId()
+	function submit_logic()
 	{
-		var jsonArr1;
-			$.ajax({
-		        type:"get",
-		        url:"getLastSiteId",
-		        contentType: 'application/json',
-		        datatype : "json",
-		        success:function(data) {
-		        	var jsonArr=JSON.parse(data);	
-//		        	alert(jsonArr)
-		        	 if(jsonArr.length==0){
-			        		jsonArr1="IND001";
-			        	}  	
-		        	 else{
-			        	var dataSplit=jsonArr[0].split("D");
-			        	console.log(dataSplit[0]);
-			        	var dataSplitInt=parseInt(dataSplit[1]);
-			        	console.log(dataSplitInt+1);
-			        	dataSplitInt=dataSplitInt+1;
-			        	
-			        	if(dataSplitInt>0&&dataSplitInt<=9)
-			        		jsonArr1="IND00"+dataSplitInt;
-			        	else if(dataSplitInt>9&&dataSplitInt<99)
-			        		jsonArr1="IND0"+dataSplitInt;
-			        	else if(dataSplitInt>99)
-			        		jsonArr1="IND"+dataSplitInt;        	
-	        		}	        	
-		        	$('#siteid').val(jsonArr1);	 
-		        	$('#siteid').attr('readonly', true);
-		        },
-		        error:function()
-		        {
-		        	console.log("Error");
-		        }
-			});
-	}
-
+		var updatetype= $('#updatetype').val();
+		$('#updatetype').val(" ");
+		filestate = ";"+$('#photo_1_checkbox').prop('checked')+";"+$('#photo_2_checkbox').prop('checked')+";"+$('#photo_3_checkbox').prop('checked');
+		if(jsonLen==0)
+			{
+			$('#updatetype').val("New;1"+filestate);		
+			}
+		else
+			{
+			$('#updatetype').val("Existing;"+Unqid+filestate);		
+			}
+		alert($('#updatetype').val());
+	}	
 	 
 </script>
 <style>
@@ -317,8 +276,8 @@ label {
 
 					<br> <label for="date" class="placeholder">Date of
 						Manufacturer/Installation</label> 
-					<form:input type="date" id="manufacturedDate"
-						path="manufacturedDate" class="form-control input-full filled" />
+					<!--<form:input type="date" id="manufacturedDate"
+						path="manufacturedDate" class="form-control input-full filled" />-->
 					<br> <label for="number_of_batteries" class="placeholder">Number_of_batteries</label>
 					<form:input id="number_of_batteries" path="number_of_batteries" onkeypress="return isNumber(event)"
 						name="number_of_batteries" class="form-control input-full filled" />
@@ -358,32 +317,28 @@ label {
 
 					</form:select>
 					<br> <label for="comments" class="placeholder">Observation/Comments</label>
-					<form:input id="comments" path="comments" name="comments" onkeypress="return isCharacters(event)" 
+					<form:input id="comments" path="comments" name="comments" onkeypress="return isCharacters(event)"  
 						class="form-control input-full filled" />
-					<br> <label for="tag_photo" class="placeholder">Tag
-						photo</label>
-					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo1" path="tag_photo" name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
+					<br> <label for="tag_photo1" class="placeholder">Tag
+						photo</label><input id="photo_1_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
+					<input type="file" id="tag_photo1"  name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 
-					<br> <label for="tag_photo" class="placeholder">Battery Bank Photo 1</label>
-					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo2" path="tag_phot01" name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
+					<br> <label for="tag_photo1" class="placeholder">Battery Bank Photo 1</label><input id="photo_2_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
+					<input type="file" id="tag_photo2"  name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 						
-											<br> <label for="tag_photo" class="placeholder">Battery Bank Photo 2</label>
-					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo3" path="tag_photo2" name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
+											<br> <label for="tag_photo_2" class="placeholder">Battery Bank Photo 2</label><input id="photo_3_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
+					<input type="file" id="tag_photo3"  name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
-
 
 
 
 
 <div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
-					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
 				</div>
 				</div>
 			</form:form>
