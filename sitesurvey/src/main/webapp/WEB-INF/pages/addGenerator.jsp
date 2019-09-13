@@ -60,6 +60,7 @@ $(document).ready(function(){
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	  $("#addGenerator :input").attr("required", '');
+	  $("select option[value='Select']").attr('disabled','disabled');
 		 $(".isa_success").fadeOut(10000);
 		 var siteID='<%=siteId%>';
 		 $("#siteId").val(siteID);
