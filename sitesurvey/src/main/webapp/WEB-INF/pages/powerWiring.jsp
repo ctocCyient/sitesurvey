@@ -91,7 +91,7 @@ $(document).ready(function(){
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
 		 $("input").attr("required", "true");
-		
+		 getSiteWiringDetails(siteId);
 		 $("select").attr("required","true");
 		 $("select option:contains('Select')").attr("disabled","disabled");
 		 document.getElementById("image1spanMSG").style.display = "none";
@@ -145,6 +145,32 @@ else {
 }
 
 
+
+function getSiteWiringDetails(siteId)
+{
+
+	 $.ajax({
+         type: "get",
+         url: "getSiteWiringDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            console.log("fasf"+JSON.stringify(jsonData));
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#id").val(jsonData[0].id);
+            	$("#wiringCondition").val(jsonData[0].wiringCondition);
+            	$("#obsrvcommnts").val(jsonData[0].comments);
+         }
+         }					
+		 }); 
+}
 /*function validate(){
 	var accesstype=document.getElementById("accesstype").value;
 	var roadcond=document.getElementById("condition").value;

@@ -100,7 +100,7 @@ $(document).ready(function(){
 		 $(".isa_success").fadeOut(10000);
 		 $("input").attr("required", "true");
 		 $("#siteArea :input").attr("required",'');
-		 
+		 getSiteAreaDetails(siteId);
 		 $("select").attr("required","true");
 		 $("select option:contains('Select')").attr("disabled","disabled");
 		 document.getElementById("image1spanMSG").style.display = "none";
@@ -152,6 +152,35 @@ else {
         }
     }
 }
+
+
+function getSiteAreaDetails(siteId)
+{
+
+	 $.ajax({
+         type: "get",
+         url: "getSiteAreaDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            console.log("fasf"+JSON.stringify(jsonData));
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#id").val(jsonData[0].id);
+            	$("#siteCondition").val(jsonData[0].siteCondition);
+            	
+            	$("#obsrvcommnts").val(jsonData[0].comments);
+         }
+         }					
+		 }); 
+}
+
 
 </script>
 <style>

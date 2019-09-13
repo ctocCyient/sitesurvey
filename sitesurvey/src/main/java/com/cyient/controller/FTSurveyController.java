@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -245,6 +246,41 @@ public class FTSurveyController {
 			model.setViewName("siteAreaDetails");
 			return model;
 	}*/
+	 @RequestMapping(value="/getSiteAccessDetails", method=RequestMethod.GET)
+		@ResponseBody
+		public String getSiteAccessDetails(HttpServletRequest request)
+		{
+			String siteId=request.getParameter("siteId");
+			System.out.println("safasfasff"+siteId);
+			List<Site_Access> siteAccessList=surveyDAO.getSiteAccDetails(siteId);
+			Gson gson=new GsonBuilder().create();
+			String siteAccessJson=gson.toJson(siteAccessList);
+			return siteAccessJson.toString();
+		}
+	 
+	 
+	 @RequestMapping(value="/getSiteAreaDetails", method=RequestMethod.GET)
+		@ResponseBody
+		public String getSiteArrDetails(HttpServletRequest request)
+		{
+			String siteId=request.getParameter("siteId");
+			System.out.println("safasfasff"+siteId);
+			List<Site_Area> siteAccessList=surveyDAO.getSiteArDetails(siteId);
+			Gson gson=new GsonBuilder().create();
+			String siteAreaJson=gson.toJson(siteAccessList);
+			return siteAreaJson.toString();
+		}
+	 @RequestMapping(value="/getSiteWiringDetails", method=RequestMethod.GET)
+		@ResponseBody
+		public String getSiteWiringDetails(HttpServletRequest request)
+		{
+			String siteId=request.getParameter("siteId");
+			System.out.println("safasfasff"+siteId);
+			List<Site_Wiring> siteAccessList=surveyDAO.getPowerWiringDetails(siteId);
+			Gson gson=new GsonBuilder().create();
+			String siteAreaJson=gson.toJson(siteAccessList);
+			return siteAreaJson.toString();
+		}
 		@RequestMapping(value="/saveAccess" , method=RequestMethod.POST)
 		public String saveAccess(@ModelAttribute("Site_Access") Site_Access siteacc,RedirectAttributes redirectAttributes,@RequestParam("file") MultipartFile[] multipart, ModelAndView model,@RequestParam("clickBtn") String clickBtn)throws IOException{
 	
@@ -268,15 +304,14 @@ public class FTSurveyController {
 				  {
 				   System.out.println(e.toString());
 				  }
-		    if(siteacc.getId()==0){
-		    	surveyDAO.addSiteAccess(siteacc);
-		    }
-		    else {
-		    	surveyDAO.updateSiteAccess(siteacc);
-		    }
+		   
+		   
+		   
+		   
+			
+		    
 			String status="Site Access Details Added Successfully";
-			
-			
+			surveyDAO.addSiteAccess(siteacc);
 			redirectAttributes.addFlashAttribute("status",status);
 			if(clickBtn.equals("Save")){
 			return "redirect:/siteAccess";
@@ -305,7 +340,7 @@ public class FTSurveyController {
 				   System.out.println(e.toString());
 				  }
 				  
-
+            
 			String status="Site Area Details Added Successfully";
 			surveyDAO.addSiteArea(sitearea);
 			redirectAttributes.addFlashAttribute("status",status);

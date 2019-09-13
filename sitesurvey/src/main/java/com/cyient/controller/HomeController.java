@@ -49,7 +49,7 @@ import com.cyient.model.Battery_Bank_Master;
 import com.cyient.model.Cabinet_Master;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
-
+import com.cyient.model.Site_Access;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
 import com.cyient.model.Site_Battery_Bank;
@@ -458,6 +458,7 @@ public class HomeController {
 		String siteGeneratorJson=gson.toJson(siteGeneratorList);
 		return siteGeneratorJson.toString();
 	}
+
 	@RequestMapping(value = "/saveBB", method = RequestMethod.POST)
 	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "photos") MultipartFile[] tag_photo) throws IOException {
 		System.out.println("save bb calling" + tag_photo);
@@ -467,7 +468,6 @@ public class HomeController {
 		//update type condition check
 		if(updatetype.split(";")[0].contains("New"))
 		{
-			
 		}
 		else
 		{
