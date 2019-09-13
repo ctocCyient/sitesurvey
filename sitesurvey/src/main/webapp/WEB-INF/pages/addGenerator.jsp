@@ -168,7 +168,7 @@ label {
 			<!-- <span id="addMsg" style="font-size:18px;margin-left:221px;"><b>Add New</b><button type="submit" value="Add" name="submit"><i class="fa fa-plus-square" aria-hidden="true"></i></button></span><br><br>-->
 			 <form:hidden path="id" id="id"/>
 			<label for="siteid" class="placeholder">Site Id</label>
-				<form:input id="siteId" path="siteid.siteid" name="siteId" class="form-control input-full filled" />
+				<form:input id="siteId" path="siteid.siteid" name="siteId" class="form-control input-full filled" readonly="true" />
 				<form:errors path="siteid.siteid" cssClass="error"/>
 			
 				 <br>
