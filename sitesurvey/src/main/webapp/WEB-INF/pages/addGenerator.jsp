@@ -68,22 +68,8 @@ $(document).ready(function(){
 		 var siteID=siteId;
 		 $("#siteId").val(siteID);
 		getGeneratorDetails(siteID);
-		//swalFormat();
+		
 });
-
-
-function swalFormat()
-{
-	swal("Invalid Image Format", {
-		icon : "error",
-		buttons: {        			
-			confirm: {
-				className : 'btn btn-danger'
-			}
-		},
-	});
-}
-
 
 
 function getGeneratorDetails(siteID)
