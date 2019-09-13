@@ -167,6 +167,7 @@ public interface SurveyDAO {
 	@Transactional
 	public void addCabinet(String updatetype,Site_Cabinet BB);
 		
+
 	 
 		@Transactional
 		public String saveTowerInstallation(Tower_Installation tower);
@@ -177,13 +178,13 @@ public interface SurveyDAO {
 		@Transactional
 		public String storeSitesecurity(Site_Security ss);
 		@Transactional
-		public String storeSitesecurity(Site_Safety sf);
+		public String storeSiteSafety(Site_Safety sf);
 		@Transactional
 		public String storeSiteAdditional(Site_Additional_Notes sa);
 		
 		@Transactional
 		public List<Tower_Installation> fetchTowerDetails(String siteid);
-
+		
 	 @Transactional
 	 public List<Site_SMPS> getSMPSDetails(String siteId);
 	 
@@ -195,4 +196,11 @@ public interface SurveyDAO {
 
 	 @Transactional
 	 public List<Site_Cabinet> getCabinet(String Siteid);
+
+		@Transactional
+		public List<Site_Safety> getSafetyDetails(String siteId);
+		@Transactional
+		public List<Site_Safety> getSecurityDetails(String siteId);
+		@Transactional
+		public List<Site_Safety> getSiteAddDetails(String siteId);
 }

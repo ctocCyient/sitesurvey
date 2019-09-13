@@ -71,6 +71,8 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
+	
+	$("select option[value='Select']").attr('disabled','disabled');
 	 $("#towerInstallationForm :input").attr("required", '');
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
@@ -93,7 +95,7 @@ function getTowerInstallationDetails(sid){
         contentType: 'application/json',
 		    data:{"siteid":sid},
         success: function(result) {
-        	alert(result)
+        	//alert(result)
         	
        towerjsonData=JSON.parse(result);
         console.log("json"+towerjsonData);
@@ -233,6 +235,7 @@ else {
 	  <div class="container container-login animated fadeIn">
 	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${succMsg}</span></div>	<br><br>
 				<h3 class="text-center">Tower Audit</h3>
+				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				<form:form method="post" id="towerInstallationForm" modelAttribute="Tower_Installation" action="towerinstallation" enctype="multipart/form-data"   >
 				
 				<form:input type="hidden" path="id" id="tid" />
@@ -263,7 +266,7 @@ else {
 						</label>
 						<form:input id="visualinspection1" path="virtualInspection" class="form-control input-full"  />	
 						<form:errors path="virtualInspection" cssClass="error" />				
-					</div>browse
+					</div>
 					<div class="form-group ">
 						<label for="visualinspection2" class="placeholder">Visual inspection:Bent,twisted,cracked or missing members </label>
 						<form:input id="visualinspection2" path="virtualInspection2" class="form-control input-full"  />
@@ -309,7 +312,7 @@ else {
 					
 							<div class="form-group ">
 				
-				<label for="Upload Image" class="placeholder" >Upload Image </label>
+				<label for="Upload Image" class="placeholder" >Upload Image1 </label>
 							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);" required /> 
 					<span class="isa_failure" id="image0">${errMsg}</span>
   </div>

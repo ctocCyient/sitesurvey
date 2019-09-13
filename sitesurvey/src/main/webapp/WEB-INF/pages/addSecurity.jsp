@@ -69,6 +69,7 @@ var ticketStatus;
 var jsonDetails;
 $(document).ready(function(){	
 	
+	$("select option[value='Select']").attr('disabled','disabled');
 	 $("#securityform :input").attr("required", '');
 	$("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
@@ -76,12 +77,40 @@ $(document).ready(function(){
 	
 	var ticketDetails=JSON.parse(jsonDetails);
 	//alert(ticketDetails);
-	$("#siteid")[0].value=ticketDetails.split(",")[1];
-	//alert(ticketDetails.split(",")[1]);
+	var siteId=ticketDetails.split(",")[1];
+	$("#siteid")[0].value=siteId;
 	  $("#json")[0].value=ticketDetails;
-	 
+	  //alert(siteId);
+	  
+	  getSiteSecurityDetails(siteId);
+	  
 	
 });
+function getSiteSecurityDetails(siteId){
+	
+	 $.ajax({
+         type: "get",
+         url: "getSecurityDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#securityid").val(jsonData[0].id);
+            	$("#obnotes").val(jsonData[0].observations);
+            	$("#securitycondition").val(jsonData[0].securityCondition);
+            	
+            	
+            }
+         }					
+		 }); 
+}
 
 
 function ValidateImage(id){
@@ -175,8 +204,9 @@ else {
 	  <div class="container container-login animated fadeIn">
 	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${succMsg}</span></div>	<br><br>
 				<h3 class="text-center">Security</h3>
+				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				<form:form method="post" id="securityform" modelAttribute="Site_Security" action="sitesecurity" enctype="multipart/form-data"   >
-				
+				<form:input type="hidden" path="id" id="securityid" />
 				<form:input type="hidden"  path="" id="json" name="json" />
 				<form:input type="hidden" path="siteid.siteid" id="siteid" />	
 				
@@ -205,7 +235,7 @@ else {
 					</div>
 						
 				<div class="form-group ">
-				<label for="Upload Image" class="placeholder" >Upload Image </label>
+				<label for="Upload Image" class="placeholder" >Upload Image1 </label>
 				<input type="file"   path="security_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>

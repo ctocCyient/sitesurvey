@@ -392,11 +392,20 @@ public class SurveyDAOImpl implements SurveyDAO {
 		return 	userlist;
 	}
 
-	/*public String saveTowerInstallation(Tower_Installation towerinstallation) {
-		// TODO Auto-generated method stub
-		return null;
-<<<<<<< HEAD
-	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List<Site_SMPS> getSMPSDetails(String siteId)
+	{
+		return sessionFactory.getCurrentSession().createQuery("from Site_SMPS where siteid='"+siteId+"'").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Site_Generator> getGeneratorDetails(String siteId)
+	{
+		return sessionFactory.getCurrentSession().createQuery("from Site_Generator where siteid='"+siteId+"'").list();
+	}
+	
+
 	public String saveTowerInstallation(Tower_Installation tower) {
 		sessionFactory.getCurrentSession().saveOrUpdate(tower);
 			return "Saved";	
@@ -413,7 +422,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		return "Saved";
 	}
 
-	public String storeSitesecurity(Site_Safety sf) {
+	public String storeSiteSafety(Site_Safety sf) {
 		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().saveOrUpdate(sf);
 		return "Saved";
@@ -425,6 +434,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		return "Saved";
 	}
 
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Tower_Installation> fetchTowerDetails(String siteid) {
@@ -432,16 +442,26 @@ public class SurveyDAOImpl implements SurveyDAO {
 		return sessionFactory.getCurrentSession().createQuery("from Tower_Installation  where siteid ='"+siteid+"'").list();
 	}
 	
+
 	@SuppressWarnings("unchecked")
-	public List<Site_SMPS> getSMPSDetails(String siteId)
-	{
-		return sessionFactory.getCurrentSession().createQuery("from Site_SMPS where siteid='"+siteId+"'").list();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Site_Generator> getGeneratorDetails(String siteId)
-	{
-		return sessionFactory.getCurrentSession().createQuery("from Site_Generator where siteid='"+siteId+"'").list();
+	public List<Site_Safety> getSafetyDetails(String siteId){
+		
+		return sessionFactory.getCurrentSession().createQuery("from Site_Safety where siteid='"+siteId+"'").list();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Site_Safety> getSecurityDetails(String siteId) {
+		// TODO Auto-generated method stub
+		return sessionFactory.getCurrentSession().createQuery("from Site_Security where siteid='"+siteId+"'").list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Site_Safety> getSiteAddDetails(String siteId) {
+		// TODO Auto-generated method stub
+		return sessionFactory.getCurrentSession().createQuery("from Site_Additional_Notes where siteid='"+siteId+"'").list();
+	}
+	
+	
 }

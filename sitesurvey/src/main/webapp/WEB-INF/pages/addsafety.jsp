@@ -69,47 +69,57 @@ var ticketStatus;
 var jsonDetails;
 $(document).ready(function(){	
 	
+	$("select option[value='Select']").attr('disabled','disabled');
 	 $("#safetyform :input").attr("required", '');
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
-	alert(jsonDetails)
+//	alert(jsonDetails)
 	var ticketDetails=JSON.parse(JSON.stringify(jsonDetails));
-
-	$("#siteid")[0].value=ticketDetails.split(",")[1];
-	//alert(ticketDetails.split(",")[1]);
+	var siteId=ticketDetails.split(",")[1];
+	$("#siteid")[0].value=siteId;
 	  $("#json")[0].value=ticketDetails;
+	  getSafetyDetails(siteId);
 	
 });
 
 
-function ValidateImage(id){
-		  var fuData = document.getElementById(id);
-      var FileUploadPath = fuData.value;
-//To check if user upload any file
-      if (FileUploadPath == '') {
-          alert("Please upload an image");
-     } else {
-          var Extension = FileUploadPath.substring(
-                  FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-//The file uploaded is an image
-if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
-//To Display
-              if (fuData.files && fuData.files[0]) {
-                 var reader = new FileReader();
-                 reader.onload = function(e) {
-                     // $('#blah').attr('src', e.target.result);
-                  }
-                 reader.readAsDataURL(fuData.files[0]);
-              }
-         }
-//The file upload is NOT an image
-else {
-             alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
-             document.getElementById(id).value="";
-          }
-      }
-  }
+function getSafetyDetails(siteId)
+{
+	//alert("ji")
+
+	 $.ajax({
+         type: "get",
+         url: "getSafetyDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	//alert(jsonData[0].id)
+            	$("#safetyid").val(jsonData[0].id);
+            	$("#securitycondition").val(jsonData[0].extinguishersAvailability);
+            	$("#edate").val(jsonData[0].extinguishersDueDate);
+            	$("#aviationlight").val(jsonData[0].aviationLights);
+            	$("#arrestor").val(jsonData[0].lightningArrestor);
+            	$("#rttloc").val(jsonData[0].rtt_rtp_locations);
+               	$("#stairs").val(jsonData[0].stairsLaddersCondition);
+            	$("#climbdevice").val(jsonData[0].safeClimbDevice);
+            	$("#anticlimbdevice").val(jsonData[0].antiClimbProtection);
+            	$("#fireclear").val(jsonData[0].siteFireClear);
+            	$("#oilspill").val(jsonData[0].oilSpillsDG);
+            	$("#safetysignage").val(jsonData[0].safetySignage);
+            	$("#obv").val(jsonData[0].observations);
+            	
+            }
+         }					
+		 }); 
+}
 
 </script>
 <style>
@@ -172,27 +182,21 @@ else {
 		
 	<div class="wrapper wrapper-login">
 	  <div class="container container-login animated fadeIn">
-	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
+	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${succMsg}</span></div>	<br><br>
 				<h3 class="text-center">Safety</h3>
-
+				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				<form:form method="post" id="safetyform" modelAttribute="Site_Safety" action="sitesafety" enctype="multipart/form-data">
 				<form:input type="hidden"  path="" id="json" name="json" />
+				
+				<form:input type="hidden" path="id" id="safetyid" />
 				<div class="form-group ">
 						<label for="siteid" class="placeholder">Site ID
 				
 						</label>
 						 
-						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full"  />				
+						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full" readonly="true"  />				
 						<form:errors path="siteid.siteid" cssClass="error" />	
 					</div>
-								
-					<div class="form-group ">
-						<label for="observations" class="observations">Observations</label>
-						<form:input  id="observations" path="observations" class="form-control input-full"  />				
-						<form:errors path="observations" cssClass="error" />	
-
-					</div>
-
 				<div class="form-group ">
 						<label for="extinguishersAvailability" class="placeholder">Are Fire extinguishers available (Non expired)? </label>
 						<form:select id="securitycondition" path="extinguishersAvailability"  name="overallconditon"  class="form-control input-full filled" >
@@ -212,9 +216,8 @@ else {
 						<form:errors path="extinguishersDueDate" cssClass="error" />	
 					</div>
 						
-				
 				<div class="form-group ">
-				<label for="Upload Image" class="placeholder" >Upload Image </label>
+				<label for="Upload Image" class="placeholder" >Upload Image1 </label>
 				<input type="file"   path="safety_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
@@ -261,7 +264,7 @@ else {
  				<div class="form-group ">
 				<label for="Upload Image" class="placeholder" >Upload Image2 </label>
 				<input type="file" path="safety_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="return ValidateImage('img2');"/> 
-				<span class="isa_failure" id="image2">${errMsg}</span>
+					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
   				
   				<div class="form-group ">
@@ -370,7 +373,7 @@ else {
 						<span class="isa_failure" id="image6">${errMsg}</span>
   					</div>
   					<div class="form-group ">
-						<label for="Upload Image" class="placeholder" >Upload Image5 </label>
+						<label for="Upload Image" class="placeholder" >Upload Image7 </label>
 						<input type="file" path="safety_photo6"  class="form-control input-border-bottom"  id="img6"  name="file"  onchange="return ValidateImage('img2');"/> 
 						<span class="isa_failure" id="image6">${errMsg}</span>
   					</div>

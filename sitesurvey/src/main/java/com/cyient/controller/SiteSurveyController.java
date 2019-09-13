@@ -46,6 +46,7 @@ import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Regions;
 import com.cyient.model.Site;
 import com.cyient.model.Site_Additional_Notes;
+import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_Safety;
 import com.cyient.model.Site_Security;
 import com.cyient.model.Technician;
@@ -489,7 +490,7 @@ public class SiteSurveyController {
 			
 			
 			
-			String status=surveyDAO.storeSitesecurity(sitesafety);
+			String status=surveyDAO.storeSiteSafety(sitesafety);
 		
 			
 			
@@ -564,9 +565,7 @@ public class SiteSurveyController {
 		model.setViewName("addSiteAdditional");
 		return model;
 	}
-<<<<<<< HEAD
-	
-	
+
 	@SuppressWarnings("null")
 	@RequestMapping(params = "btn",value = "/additionalNotes",  method = RequestMethod.POST)
 	public ModelAndView savesitesafety(@Valid @ModelAttribute("Site_Additional_Notes") Site_Additional_Notes siteaddtional,
@@ -648,6 +647,7 @@ public class SiteSurveyController {
 		
 		return model;
 	}
+
 	@RequestMapping(value = "/getTowerDetails", method = RequestMethod.GET)
 	@ResponseBody
 	public String fetchTowerDetails(ModelAndView model,HttpServletRequest request){
@@ -664,6 +664,41 @@ public class SiteSurveyController {
 	}
 	
 	
+	@RequestMapping(value="/getSecurityDetails", method=RequestMethod.GET)
+	@ResponseBody
+	public String getSecurityDetails(HttpServletRequest request)
+	{
+		String siteId=request.getParameter("siteId");
+		List<Site_Safety> siteSecurityList=surveyDAO.getSecurityDetails(siteId);
+		Gson gson=new GsonBuilder().create();
+		String siteSafetyJson=gson.toJson(siteSecurityList);
+		return siteSafetyJson.toString();
+	}
+
+	@RequestMapping(value="/getSafetyDetails", method=RequestMethod.GET)
+	@ResponseBody
+	public String getSafetyDetails(HttpServletRequest request)
+	{
+		String siteId=request.getParameter("siteId");
+		List<Site_Safety> siteSafetyList=surveyDAO.getSafetyDetails(siteId);
+		Gson gson=new GsonBuilder().create();
+		String siteSafetyJson=gson.toJson(siteSafetyList);
+		return siteSafetyJson.toString();
+	}
+	
+	
+	
+	
+	@RequestMapping(value="/getSiteAdditionalDetails", method=RequestMethod.GET)
+	@ResponseBody
+	public String getSiteAdditionalDetails(HttpServletRequest request)
+	{
+		String siteId=request.getParameter("siteId");
+		List<Site_Safety> siteAdditionalList=surveyDAO.getSiteAddDetails(siteId);
+		Gson gson=new GsonBuilder().create();
+		String siteSafetyJson=gson.toJson(siteAdditionalList);
+		return siteSafetyJson.toString();
+	}
 	
 	
 }
