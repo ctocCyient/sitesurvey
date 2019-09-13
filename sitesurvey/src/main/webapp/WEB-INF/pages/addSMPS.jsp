@@ -2,8 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
- <%String siteId=request.getParameter("siteId");
-	String ticketId=request.getParameter("ticketId"); %>
+
 <!DOCTYPE html >
 <html lang="en">
 
@@ -15,23 +14,22 @@
 <title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<script type="text/javascript">
-	role=sessionStorage.getItem("role");
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		//window.location.href = "/sitesurvey/";
-		//alert(sessionStorage.getItem("username"));
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-   	}
-	   else if(role=="Admin" | role=="SuperAdmin")
-		   {
-		   
-		   }
-	   else
-		   {
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-		   }
+	
+	
+	 if(sessionStorage.getItem("username")==null)
+	   	{
+			//window.location.href = "/sitesurvey/";
+			//alert(sessionStorage.getItem("username"));
+			   url = "/sitesurvey/";
+			      $( location ).attr("href", url);
+	   	}
+		   else
+			   {
+			   role=sessionStorage.getItem("role");
+				siteId=sessionStorage.getItem("siteId");
+				
+			   }
+		
 
 </script>
 
@@ -63,24 +61,13 @@ $(document).ready(function(){
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
 	  $("#addSMPS :input").attr("required", '');
-	  var siteID='<%=siteId%>';
-	  var ticketId='<%=ticketId%>;'
+	  var siteID=siteId;	 
 	$("#siteId").val(siteID);
-	$("#ticketId").val(ticketId);
 	$(".isa_success").fadeOut(10000);
 	getSMPSDetails(siteID);
 });
 
-/* function populateDropdown(data,id)
-{
-	var	catOptions="<option value=''>Select</option>";
- 	for (i in data) {
- 		
-   	 	 catOptions += "<option>" + data[i] + "</option>";
- 		}
- 		document.getElementById(id).innerHTML = catOptions;
- 		 $("select option[value='']").attr('disabled','disabled');
-} */
+
 
 function getSMPSDetails(siteID)
 {
@@ -175,7 +162,7 @@ label {
 				<label for="siteId" class=siteId>Site Id</label>
 				<form:input id="siteId" path="siteid.siteid" class="form-control input-full filled" readonly="true"/>
 				<br>
-				<form:hidden id="ticketId" path=""/>
+				
 				 <br>
 				<label for="Manufacturer" class="placeholder">Manufacturer</label>
 				<form:input id="Manufacturer" path="Manufacturer" class="form-control input-full filled" onkeypress="return isCharacters(event);"/>

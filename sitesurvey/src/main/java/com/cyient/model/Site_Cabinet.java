@@ -66,6 +66,16 @@ public class Site_Cabinet implements Serializable {
 	
 	@Column(name="Photo_2_Longitude")
 	private String Photo_2_longitude;
+	
+	private String photoString;
+
+	public String getPhotoString() {
+		return photoString;
+	}
+
+	public void setPhotoString(String photoString) {
+		this.photoString = photoString;
+	}
 
 	public int getId() {
 		return id;

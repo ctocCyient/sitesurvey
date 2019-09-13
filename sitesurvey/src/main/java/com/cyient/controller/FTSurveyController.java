@@ -200,10 +200,14 @@ public class FTSurveyController {
 			   System.out.println(e.toString());
 			  }
 			surveyDAO.addSiteSurveyPPE(surveyTeamPPPE);
-			redirectAttributes.addFlashAttribute("PPEStatus",status);
-			redirectAttributes.addFlashAttribute("btnClick",clickBtn);
-			
-				return "redirect:/surveyTeamPPE";
+//			redirectAttributes.addFlashAttribute("PPEStatus",status);
+//			redirectAttributes.addFlashAttribute("btnClick",clickBtn);
+			if(clickBtn.equals("Save")){
+				return "redirect:/home";
+				}
+				else{
+					return "redirect:/siteAccess";
+				}
 			
 		}
 		

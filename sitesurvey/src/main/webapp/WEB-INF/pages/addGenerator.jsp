@@ -3,8 +3,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%String siteId=request.getParameter("siteId"); %>
-
 <!DOCTYPE html >
 <html lang="en">
 
@@ -19,16 +17,20 @@
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<script type="text/javascript">
 	
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-   	}
-	 
-	   else
-		   {
-		   role=sessionStorage.getItem("role");
-		   }
+	 if(sessionStorage.getItem("username")==null)
+	   	{
+			//window.location.href = "/sitesurvey/";
+			//alert(sessionStorage.getItem("username"));
+			   url = "/sitesurvey/";
+			      $( location ).attr("href", url);
+	   	}
+		   else
+			   {
+			   role=sessionStorage.getItem("role");
+				siteId=sessionStorage.getItem("siteId");
+				ticketId=sessionStorage.getItem("ticketId");
+			   }
+		
 
 </script>
 
@@ -62,7 +64,7 @@ $(document).ready(function(){
 	  $("#addGenerator :input").attr("required", '');
 	  $("select option[value='Select']").attr('disabled','disabled');
 		 $(".isa_success").fadeOut(10000);
-		 var siteID='<%=siteId%>';
+		 var siteID=siteId;
 		 $("#siteId").val(siteID);
 		getGeneratorDetails(siteID);
 });
@@ -172,7 +174,7 @@ label {
 				<form:errors path="siteid.siteid" cssClass="error"/>
 			
 				 <br>
-				<form:hidden path="" id="ticketId" name="ticketId" />
+				
 				<label for="Manufacturer" class="placeholder">Manufacturer</label>
 				<form:input id="dgManufacturer" path="dgManufacturer" class="form-control input-full filled" onkeypress="return isCharacters(event);"/>
 				<form:errors path="dgManufacturer" cssClass="error"/>
@@ -215,7 +217,6 @@ label {
                 <br> 
               
               	<label for="tagNumber" class="placeholder">Asset Tag Number</label>
-				<!--<form:input id="assettagnumber" path="assettagnumber"  name="assettagnumber"  class="form-control input-full filled"  />-->
 				 <form:radiobutton path="assettagnumber" name="assettagnumber" value="Yes"/> Yes 
         		 <form:radiobutton path="assettagnumber" name="assettagnumber" value="No"/>  No
 				<br>

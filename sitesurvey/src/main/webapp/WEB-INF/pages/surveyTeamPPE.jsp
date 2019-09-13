@@ -2,8 +2,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<% String status=(String)request.getAttribute("PPEStatus"); %>
-<% String btnClick=(String)request.getAttribute("btnClick"); %>
+<%-- <% String status=(String)request.getAttribute("PPEStatus"); %> --%>
+<%-- <% String btnClick=(String)request.getAttribute("btnClick"); %> --%>
 <!DOCTYPE html >
 <html lang="en">
 
@@ -90,36 +90,36 @@ $(document).ready(function(){
 	  $('#siteid').attr('readonly','readonly');
 	 getSurveyTeamPPEDetails();
 
-	 var status='<%=status%>';
-	 var btnClick='<%=btnClick%>';
-		// $(".isa_success").fadeOut(10000);
+<%-- 	 var status='<%=status%>'; --%>
+<%-- 	 var btnClick='<%=btnClick%>'; --%>
+// 		// $(".isa_success").fadeOut(10000);
 		
 		
-		 if(status=='Saved')
-		{
-			 	var nextUrl;
-			  if(btnClick=="Save"){
-				  nextUrl="/sitesurvey/home";
-			  }
-			  else if(btnClick=="Save & Continue"){
-				  nextUrl="/sitesurvey/siteAccess";
-			  }
-			  swal({
-					//title: 'Are you sure?',
-					text: "Details Saved Successfully",
-					type: 'info',
-					buttons:{
-						confirm: {
-							text : 'Ok',
-							className : 'btn btn-success'
-						}
-					}
-				}).then((Delete) => {
-					if (Delete) {
-						window.location.href = nextUrl;
-					} 
-				});
-			}
+// 		 if(status=='Saved')
+// 		{
+// 			 	var nextUrl;
+// 			  if(btnClick=="Save"){
+// 				  nextUrl="/sitesurvey/home";
+// 			  }
+// 			  else if(btnClick=="Save & Continue"){
+// 				  nextUrl="/sitesurvey/siteAccess";
+// 			  }
+// 			  swal({
+// 					//title: 'Are you sure?',
+// 					text: "Details Saved Successfully",
+// 					type: 'info',
+// 					buttons:{
+// 						confirm: {
+// 							text : 'Ok',
+// 							className : 'btn btn-success'
+// 						}
+// 					}
+// 				}).then((Delete) => {
+// 					if (Delete) {
+// 						window.location.href = nextUrl;
+// 					} 
+// 				});
+// 			}
 	
 });
 
