@@ -24,30 +24,6 @@
 <link rel="stylesheet"
 	href="<c:url value='resources/css/jquery-ui.css' />">
 
-<!-- <script type="text/javascript">
-	role=sessionStorage.getItem("role");
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		//window.location.href = "/sitesurvey/";
-		//alert(sessionStorage.getItem("username"));
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-   	}
-	   else if(role=="Admin" | role=="SuperAdmin")
-		   {
-		   
-		   }
-	   else
-		   {
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-		   }
-
-</script>-->
-
-
-
-
 <script
 	src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet"
@@ -152,6 +128,12 @@ function getBB()
 	         	if(JSON.parse(res).length==0)
 	         		{
 	 	         	document.getElementById("updatetype").value="New;"+"1";
+	 	           $('#photo_1_checkbox').prop('checked', false);
+	 	          $('#photo_2_checkbox').prop('checked', false);
+	 	          $('#photo_3_checkbox').prop('checked', false);
+	 	         	$("#tag_photo1").removeAttr("disabled");     
+	 	         	$("#tag_photo2").removeAttr("disabled");     
+	 	         	$("#tag_photo3").removeAttr("disabled");     
 	         		}
 		 		//alert(jsonData.id)	
 		 		else
@@ -190,7 +172,7 @@ function getBB()
 			{
 			$('#updatetype').val("Existing;"+Unqid+filestate);		
 			}
-		alert($('#updatetype').val());
+	//	alert($('#updatetype').val());
 	}	
 	 
 </script>
@@ -262,13 +244,13 @@ label {
 					<br> <label for="Manufacturer" class="placeholder">Manufacturer</label>
 					<form:select id="Manufacturer" path="Manufacturer"
 						name="Manufacturer" class="form-control input-full filled">
-						<form:option value="Select">Select</form:option>
+						<form:option value="">Select</form:option>
 						<form:options items="${BBManufacturer}"></form:options>
 					</form:select>
 					<br> <label for="type" class="placeholder">Type</label>
 					<form:select id="type" path="type" name="type"
 						class="form-control input-full filled">
-						<form:option value="Select">Select</form:option>
+						<form:option value="">Select</form:option>
 						<form:options items="${BBType}"></form:options>
 					</form:select>
 
@@ -276,8 +258,8 @@ label {
 
 					<br> <label for="date" class="placeholder">Date of
 						Manufacturer/Installation</label> 
-					<!--<form:input type="date" id="manufacturedDate"
-						path="manufacturedDate" class="form-control input-full filled" />-->
+					<form:input type="date" id="manufacturedDate"
+						path="manufacturedDate" class="form-control input-full filled" />
 					<br> <label for="number_of_batteries" class="placeholder">Number_of_batteries</label>
 					<form:input id="number_of_batteries" path="number_of_batteries" onkeypress="return isNumber(event)"
 						name="number_of_batteries" class="form-control input-full filled" />
@@ -292,7 +274,6 @@ label {
 						class="form-control input-full filled" />
 					<br> <label for="overallCondition" class="placeholder">Overall
 						Condition of Battery Bank Equipment</label>
-					<!--<form:input id="overallCondition" path="overallCondition"  name="overallCondition"  class="form-control input-full filled"  />-->
 
 
 					<form:select id="overallCondition" path="overallCondition"
