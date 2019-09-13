@@ -241,6 +241,8 @@ color: #fff!important;
 		            //debugger;
 		            
 		            siteIds=e;
+		            sessionScope.setItem("siteId",e);
+		            sessionScope.setItem("ticketId",ticketId);
 		            console.log("site"+siteIds);
 		            
 		            // window.location.href = '/sitesurvey/siteDetails?ticketId='+ticketId+'&siteId='+siteIds;

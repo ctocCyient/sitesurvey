@@ -6,8 +6,10 @@
 <% String jsondetails=(String)request.getParameter("jsonarr"); 
    System.out.println("json>>>>>>>"+jsondetails);%>
 <% String ticketId=(String)request.getParameter("ticketid"); %>
-<% String ticketType=(String)request.getParameter("ticketType"); %>
-<% String ticketStatus=(String)request.getParameter("ticketStatus"); %>
+<% String status=(String)request.getAttribute("status"); %>
+
+<% String btnClick=(String)request.getAttribute("btnClick"); 
+  System.out.println("btnclck>>>>>>>"+btnClick);%>
 
 <!DOCTYPE html >
 <html lang="en">
@@ -71,6 +73,37 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
+	var status='<%=status%>';
+
+	var btnClick='<%=btnClick%>';
+	//alert(status);
+	 if(status=='Saved')
+
+     {
+                  var nextUrl;
+              if(btnClick=="Save"){
+                    nextUrl="/sitesurvey/home";
+              }
+              else if(btnClick=="Save & Continue"){
+                    nextUrl="/sitesurvey/fetchtowerinstallation";
+              }
+              swal({
+                         //title: 'Are you sure?',
+                         text: "Details Saved Successfully",
+                         type: 'info',
+                         buttons:{
+                                confirm: {
+                                       text : 'Ok',
+                                       className : 'btn btn-success'
+                                }
+                         }
+                  }).then((Delete) => {
+                         if (Delete) {
+                                window.location.href = nextUrl;
+                         }
+                  });
+            }
+	
 	
 	$("select option[value='Select']").attr('disabled','disabled');
 	 $("#towerInstallationForm :input").attr("required", '');
@@ -379,7 +412,9 @@ else {
 <!-- jQuery Scrollbar -->
 <script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
 
+<!-- Sweet Alert -->
 
+<script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 <!-- jQuery Sparkline -->
 

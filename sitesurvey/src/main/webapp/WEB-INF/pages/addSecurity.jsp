@@ -5,7 +5,10 @@
 
 <% String jsondetails=(String)request.getParameter("ticketDetails"); 
    System.out.println("json>>>>>>>"+jsondetails);%>
+<% String status=(String)request.getAttribute("status"); %>
 
+<% String btnClick=(String)request.getAttribute("btnClick"); 
+  System.out.println("btnclck>>>>>>>"+btnClick);%>
 <!DOCTYPE html >
 <html lang="en">
 
@@ -68,6 +71,39 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
+	
+	var status='<%=status%>';
+
+	var btnClick='<%=btnClick%>';
+	//alert(status);
+	 if(status=='Saved')
+
+     {
+                  var nextUrl;
+              if(btnClick=="Save"){
+                    nextUrl="/sitesurvey/home";
+              }
+              else if(btnClick=="Save & Continue"){
+                    nextUrl="/sitesurvey/gotositesecurity";
+              }
+              swal({
+                         //title: 'Are you sure?',
+                         text: "Details Saved Successfully",
+                         type: 'info',
+                         buttons:{
+                                confirm: {
+                                       text : 'Ok',
+                                       className : 'btn btn-success'
+                                }
+                         }
+                  }).then((Delete) => {
+                         if (Delete) {
+                                window.location.href = nextUrl;
+                         }
+                  });
+            }
+	
+	
 	
 	$("select option[value='Select']").attr('disabled','disabled');
 	 $("#securityform :input").attr("required", '');
@@ -290,6 +326,9 @@ else {
 
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
 
+<!-- Sweet Alert -->
+
+<script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 
 </body>
