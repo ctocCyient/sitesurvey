@@ -74,10 +74,11 @@ $(document).ready(function(){
 		//getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
-		 
+		 getBB();
 		 $("input").attr("required", "true");
 		 $("select").attr("required", "true");
          $("select option:contains('Select')").attr("disabled","disabled");
+         imagewarn();
 });
 
 function populateDropdown(data,id)
@@ -114,7 +115,44 @@ function getState(region)
 		 	}
 	 });
 }
-	
+function getBB()
+{
+	 $.ajax({
+		 	type:"get",
+		 	url:"getBBData",
+		 	contentType:'application/json',
+		 	datatype:"json",
+		 	data:{"siteid":"IND001"},
+		 	success:function(res){
+	         	jsonData = JSON.parse(res)[0];
+	         	if(JSON.parse(res).length==0)
+	         		{
+	 	         	document.getElementById("updatetype").value="New;"+"1";
+	         		}
+		 		//alert(jsonData.id)	
+		 		else
+		 			{
+	         	document.getElementById("siteid").value=jsonData.siteid.siteid;
+	         	document.getElementById("Manufacturer").value=jsonData.Manufacturer;
+	         	document.getElementById("type").value=jsonData.type;
+	         	document.getElementById("manufacturedDate").value=jsonData.manufacturedDate;
+	         	document.getElementById("number_of_working_Module_rating").value=jsonData.number_of_working_Module_rating;
+	         	document.getElementById("capacity").value=jsonData.capacity;
+	         	document.getElementById("overallCondition").value=jsonData.overallCondition;
+	         	document.getElementById("number_of_batteries").value=jsonData.number_of_batteries;
+				document.getElementById("tag_observed").value=jsonData.tag_observed;
+	         	document.getElementById("comments").value=jsonData.comments;
+	         	document.getElementById("updatetype").value="Existing;"+jsonData.id;
+		 			}
+		 	},
+		 	error:function()
+		 	{
+		 		console.log("Error");	
+		 	}
+	 });
+}	
+
+
 function getDistrict(state)
 { 
 	var selectedRegion=$("#regions").val();
@@ -195,44 +233,7 @@ function getCity(district)
 			});
 	}
 
-	 function ValidateFileUpload(id) {
-	        var fuData = document.getElementById(id);
-	        var FileUploadPath = fuData.value;
-
-	//To check if user upload any file
-	        if (FileUploadPath == '') {
-	            alert("Please upload an image");
-
-	        } else {
-	            var Extension = FileUploadPath.substring(
-	                    FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-
-	//The file uploaded is an image
-
-	if (Extension == "gif" || Extension == "png" || Extension == "bmp"
-	                    || Extension == "jpeg" || Extension == "jpg") {
-
-	// To Display
-	                if (fuData.files && fuData.files[0]) {
-	                    var reader = new FileReader();
-
-	                    reader.onload = function(e) {
-	                        $('#blah').attr('src', e.target.result);
-	                    }
-
-	                    reader.readAsDataURL(fuData.files[0]);
-	                }
-
-	            } 
-
-	//The file upload is NOT an image
-	else {
-	                alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
-	                document.getElementById(id).value="";
-	            }
-	        }
-	    }
-
+	 
 </script>
 <style>
 .fa-bars, .fa-ellipsis-v {
@@ -295,7 +296,7 @@ label {
 			<form:form action="saveBB" method="post"
 				modelAttribute="Site_Battery_Bank" enctype="multipart/form-data">
 				<div class="login-form">
-
+<input type="hidden" id="updatetype" name="updatetype"/>
 					<br> <label for="Site ID" class="placeholder">Site ID</label>
 					<form:input id="siteid" path="siteid.siteid"
 						class="form-control input-full filled" value="IND001" />
@@ -315,20 +316,20 @@ label {
 
 
 					<br> <label for="date" class="placeholder">Date of
-						Manufacturer/Installation</label> -->
+						Manufacturer/Installation</label> 
 					<form:input type="date" id="manufacturedDate"
 						path="manufacturedDate" class="form-control input-full filled" />
 					<br> <label for="number_of_batteries" class="placeholder">Number_of_batteries</label>
-					<form:input id="number_of_batteries" path="number_of_batteries"
+					<form:input id="number_of_batteries" path="number_of_batteries" onkeypress="return isNumber(event)"
 						name="number_of_batteries" class="form-control input-full filled" />
 					<br> <label for="number_of_working_Module_rating"
 						class="placeholder">Number of Working modules available</label>
-					<form:input id="number_of_working_Module_rating"
+					<form:input id="number_of_working_Module_rating" onkeypress="return isNumber(event)"
 						path="number_of_working_Module_rating"
 						name="number_of_working_Module_rating"
 						class="form-control input-full filled" />
 					<br> <label for="capacity" class="placeholder">capacity</label>
-					<form:input id="capacity" path="capacity" name="capacity"
+					<form:input id="capacity" path="capacity" name="capacity" onkeypress="return isNumber(event)"
 						class="form-control input-full filled" />
 					<br> <label for="overallCondition" class="placeholder">Overall
 						Condition of Battery Bank Equipment</label>
@@ -357,36 +358,33 @@ label {
 
 					</form:select>
 					<br> <label for="comments" class="placeholder">Observation/Comments</label>
-					<form:input id="comments" path="comments" name="comments"
+					<form:input id="comments" path="comments" name="comments" onkeypress="return isCharacters(event)" 
 						class="form-control input-full filled" />
 					<br> <label for="tag_photo" class="placeholder">Tag
 						photo</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo" path="tag_photo" name="tag_photo" onchange="return ValidateFileUpload(this.id)" accept="image/*"
+					<input type="file" id="tag_photo1" path="tag_photo" name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 
 					<br> <label for="tag_photo" class="placeholder">Battery Bank Photo 1</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo" path="tag_phot01" name="tag_photo" onchange="return ValidateFileUpload(this.id)" accept="image/*"
+					<input type="file" id="tag_photo2" path="tag_phot01" name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 						
 											<br> <label for="tag_photo" class="placeholder">Battery Bank Photo 2</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
-					<input type="file" id="tag_photo" path="tag_photo2" name="tag_photo" onchange="return ValidateFileUpload(this.id)" accept="image/*"
+					<input type="file" id="tag_photo3" path="tag_photo2" name="tag_photo" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 
 
 
 
 
-					<div class="form-action">
-						<a href="home" id="show-signin"
-							class="btn btn-rounded btn-login mr-3"
-							style="background-color: #E4002B; color: white;">Cancel</a> <input
-							type="submit" id="submit" value="Add"
-							class="btn btn-rounded btn-login"
-							style="background-color: #012169; color: white;">
-					</div>
+<div class="form-action">
+					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
+					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+				</div>
 				</div>
 			</form:form>
 
