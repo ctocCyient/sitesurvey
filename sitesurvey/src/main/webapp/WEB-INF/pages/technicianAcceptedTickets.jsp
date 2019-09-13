@@ -143,6 +143,7 @@ color: #fff!important;
                 datatype : "json",
                  data:{"username":s},
                 success:function(data1) {
+                	
                     openTicketsList = JSON.parse(data1);                    
 
                     for(var i=0;i<openTicketsList.length;i++)
@@ -150,7 +151,7 @@ color: #fff!important;
                     	times.push(openTicketsList[i].siteids.split(','));
                     	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids.split(','),openTicketsList[i].ticketDescription]);
 		 		   }
-                       
+                    
                    
 			 var table1=$('#technicianAcceptedTickets').DataTable({
 				 destroy: true,
@@ -163,17 +164,21 @@ color: #fff!important;
 							render: function (data, type, full,meta) {		
 								
 					                  data1 = '<select id="jsonStatusList" name="jsonStatusList">';
-					               
+					                  
+					                
 					                  $.each(times, function (i, item) {	
 					                	 var str = "";
 					                		 str= times[i].toString();
 					                	 var nameArr = str.split(',');
 					                	 for(var j=0;j<nameArr.length;j++){
 					                		 if(meta.row==i){
-						                         data1 += '<option>' + nameArr[j] + '</option>';		
+						                         data1 += '<option>' + nameArr[j] + '</option>';	
+						                         
 					                		 }
 					                	 }
 					                	
+					                	 
+					                     
 					                  });
 					                  data1 += '</select>';					                
 					               return data1;
@@ -228,16 +233,23 @@ color: #fff!important;
 			 $('#technicianAcceptedTickets tbody').on('click', '[id*=surveyBtn]','[name*="jsonStatusList"]', function () {
 			
 		            data1 =  table1.row($(this).parents('tr')).data();
+		           var d =  table1.row($(this).parents('tr'))[0][0];
+		           var e= document.getElementsByName('jsonStatusList')[d].value;
+		           sessionStorage.setItem("site", e);
+		           
+		           
+		            
+		           
 		            //data3=table1.row($(this).parents('tr'));
 		            console.log('fsaf'+data1);
-		            
+		           //console.log( 'ushaaaa'+table1.row( this ).data1() );
 		          
 		              
 		            rowIndex = $(this).parent().index();			          
 		            ticketId=data1[0];	
 		            //debugger;
 		            
-		            siteIds="IND005";
+		            //siteIds="IND005";
 		            console.log("site"+siteIds);
 		            
 		            // window.location.href = '/sitesurvey/siteDetails?ticketId='+ticketId+'&siteId='+siteIds;
@@ -258,11 +270,12 @@ color: #fff!important;
 		                type: "get",
 		                url: "getSiteDetails",
 		                contentType: 'application/json',
-		                data:{"siteId":siteIds,"ticketId":ticketId},
+		                data:{"siteId":e,"ticketId":ticketId},
 		                datatype: "json",
 		                success: function(result) {
 		                    listData = JSON.parse(result);
-		                   window.location.href = '/sitesurvey/siteDetails?siteID='+siteIds+'&ticketId='+ticketId+'&ticketDetails='+ window.encodeURIComponent(JSON.stringify(listData)); 
+		                    
+		                   window.location.href = '/sitesurvey/siteDetails?ticketDetails='+ window.encodeURIComponent(JSON.stringify(listData)); 
 		                }					
 		       		 }); 
       	 		});
@@ -270,6 +283,7 @@ color: #fff!important;
 			 
 			 $('#technicianAcceptedTickets tbody').on('click', '[id*=assignBtn]', function () {
 		            data1 =  table1.row($(this).parents('tr')).data();
+		            
 		            rowIndex = $(this).parent().index();
 					 rowToDelete= table1.row($(this).parents('tr'));
 		            // alert(data1[0] );
@@ -284,8 +298,9 @@ color: #fff!important;
 		                datatype: "json", 
 						    data:{"ticketid":ticketId,"siteid":siteId},
 		                success: function(result) {
-		                	
+		                	alert("Usha"+result);
 		                	jsonarr=JSON.parse(result);
+		                	
 		                	//alert(jsonarr[0]);
 		    	         	window.location.href = '/sitesurvey/fetchtowerinstallation?jsonarr='+jsonarr;
 
