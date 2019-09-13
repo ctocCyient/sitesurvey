@@ -46,7 +46,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public void addTicket(Ticketing ticket){
 		
 		sessionFactory.getCurrentSession().saveOrUpdate(ticket);
-		System.out.println("ADDEDDDDSDGF");
+		//System.out.println("ADDEDDDDSDGF");
 	}
 	
 
@@ -73,6 +73,9 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(site);
 	}
 
+	public void updateSiteAccess(Site_Access upsiteacc) {
+		sessionFactory.getCurrentSession().update(upsiteacc);
+	}
 	public void addGenerator(Site_Generator generator){	
 		sessionFactory.getCurrentSession().saveOrUpdate(generator);
 	}

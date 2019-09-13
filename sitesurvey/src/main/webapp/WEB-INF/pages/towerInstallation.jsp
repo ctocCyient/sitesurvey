@@ -292,13 +292,13 @@ else {
 				<form:input type="hidden" path="id" id="tid" />
 				<form:input type="hidden"  path="" id="json" name="json" />
 				<div class="form-group ">
-						<label for="siteid" class="placeholder">Site Id
+						<label for="siteid" class="placeholder"><b>Site Id</b>
 						</label>
 						<form:input id="siteid" path="siteid.siteid" class="form-control input-full" readonly="true" />
 					</div>
 				<div class="login-form">			
 					<div class="form-group ">
-						<label for="towertype" class="placeholder">Tower Type</label>
+						<label for="towertype" class="placeholder"><b>Tower Type</b></label>
 						<form:select id="towertype" path="towerType"  name="towerType"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="GBT">GBT</form:option>
@@ -310,25 +310,25 @@ else {
 		                </form:select>			
 					</div>
 					<div class="form-group ">
-						<label for="obnotes" class="placeholder">Observation Notes- Structures corrision,Plinth,cracking/spalling,
-							<br>previous upgrade(metal jackets) or extension to top of structure
+						<label for="obnotes" class="placeholder"><b>Observation Notes- Structures corrision,Plinth,cracking/spalling,
+							<br>previous upgrade(metal jackets) or extension to top of structure</b>
 						</label>
 						<form:input id="obnotes" path="observationNotes" class="form-control input-full"  />				
 						<form:errors path="observationNotes" cssClass="error" />	
 					</div>
 					<div class="form-group ">
-						<label for="visualinspection1" class="placeholder"> Visual inspection:Any subsidence and/or undermining the foundation
+						<label for="visualinspection1" class="placeholder"><b>Visual inspection:Any subsidence and/or undermining the foundation</b>
 						</label>
 						<form:input id="visualinspection1" path="virtualInspection" class="form-control input-full"  />	
 						<form:errors path="virtualInspection" cssClass="error" />				
 					</div>
 					<div class="form-group ">
-						<label for="visualinspection2" class="placeholder">Visual inspection:Bent,twisted,cracked or missing members </label>
+						<label for="visualinspection2" class="placeholder"><b>Visual inspection:Bent,twisted,cracked or missing members</b> </label>
 						<form:input id="visualinspection2" path="virtualInspection2" class="form-control input-full"  />
 						<form:errors path="virtualInspection2" cssClass="error" />					
 					</div>
 					<div class="form-group ">
-						<label for="towercondition" class="placeholder">Overall tower condition </label>
+						<label for="towercondition" class="placeholder"><b>Overall tower condition</b> </label>
 						<form:select id="towercondition" path="overallconditon"  name="overallconditon"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Not assessed">Not assessed (Note why not assessed in observation)</form:option>
@@ -343,52 +343,52 @@ else {
 										
 					</div>
 					<div class="form-group ">
-						<label for="ticomments" class="placeholder">Comments on available space for additional antennae </label>
+						<label for="ticomments" class="placeholder"><b>Comments on available space for additional antennae </b></label>
 						<form:input id="ticomments" path="comments" class="form-control input-full"  />	
 						<form:errors path="comments" cssClass="error" />				
 					</div>
 					
 					<div class="form-group ">
-						<label for="tirfantennae" class="placeholder">Number of RF antennae </label>
+						<label for="tirfantennae" class="placeholder"><b>Number of RF antennae</b> </label>
 						<form:input id="tirfantennae" path="noofRFAntennas" class="form-control input-full"  />			
 						<form:errors path="noofRFAntennas" cssClass="error" />		
 					</div>
 					<div class="form-group ">
-						<label for="timwantennae" class="placeholder">Number of MW antennae </label>
+						<label for="timwantennae" class="placeholder"><b>Number of MW antennae </b></label>
 						<form:input id="timwantennae" path="noofMWAntenna" class="form-control input-full"  />	
 						<form:errors path="noofMWAntenna" cssClass="error" />				
 					</div>
 					
 					<div class="form-group ">
-						<label for="tirrh" class="placeholder">Number of RRH(Remote Radio Head)</label>
+						<label for="tirrh" class="placeholder"><b>Number of RRH(Remote Radio Head)</b></label>
 						<form:input id="tirrh" path="noofRRH" class="form-control input-full"  />			
 						<form:errors path="noofRRH" cssClass="error" />		
 					</div>
 					
 							<div class="form-group ">
 				
-				<label for="Upload Image" class="placeholder" >Upload Image1 </label>
-							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);" required /> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
+							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);" required /> 
 					<span class="isa_failure" id="image0">${errMsg}</span>
   </div>
  	
 				<div class="form-group ">
 				
-				<label for="Upload Image" class="placeholder" >Upload Image2 </label>
-							<input type="file" path="tower_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="return ValidateImage('img2');"/> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b></label>
+							<input type="file" path="tower_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
   		</div>
  	
 				<div class="form-group ">
 				
-				<label for="Upload Image" class="placeholder" >Upload Image3 </label>
-							<input type="file"  path="tower_photo3" class="form-control input-border-bottom" id="img3"   name="file" onchange="return ValidateImage('img3');"  /> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 3</b> </label>
+							<input type="file"  path="tower_photo3" class="form-control input-border-bottom" id="img3"   name="file" onchange="ValidateImage(this.id);"  /> 
 					<span class="isa_failure" id="image2">${errMsg}</span>
 					</div>
 					<div class="form-group ">
 				
-				<label for="Upload Image" class="placeholder" >Upload Image4 </label>
-							<input type="file"  path="tower_photo4" class="form-control input-border-bottom" id="img4"   name="file"  onchange="return ValidateImage('img4');"  /> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 4</b></label>
+							<input type="file"  path="tower_photo4" class="form-control input-border-bottom" id="img4"   name="file"  onchange="ValidateImage(this.id);"  /> 
 					<span class="isa_failure" id="image3">${errMsg}</span>
 					</div>
  

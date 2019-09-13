@@ -258,7 +258,7 @@ else {
 				<form:input type="hidden" path="id" id="siteaddid" />
 				<input type="hidden"   id="json" name="json" />
 				<div class="form-group ">
-						<label for="siteid" class="placeholder">Site ID
+						<label for="siteid" class="placeholder"><b>Site Id</b>
 				
 						</label>
 						 
@@ -267,22 +267,22 @@ else {
 					</div>
 								
 					<div class="form-group ">
-						<label for="observations" class="observations">Observations</label>
+						<label for="observations" class="observations"><b>Observations</b></label>
 						<form:input  id="observations" path="observations" class="form-control input-full"  />				
 						<form:errors path="observations" cssClass="error" />	
 					</div>
 						
 				
 				<div class="form-group ">
-				<label for="site_photo2" class="placeholder" >Site Photo1</label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="return ValidateImage('img1');"/> 
+				<label for="site_photo2" class="placeholder" ><b>Photo 1 </b></label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
   				</div>
   				
   				
 				<div class="form-group ">
-				<label for="site_photo1" class="placeholder" >Site Photo2</label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="return ValidateImage('img2');"/> 
+				<label for="site_photo1" class="placeholder" ><b>Photo 2 </b></label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
   				

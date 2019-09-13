@@ -239,7 +239,7 @@ function getSafetyDetails(siteId)
 				
 				<form:input type="hidden" path="id" id="safetyid" />
 				<div class="form-group ">
-						<label for="siteid" class="placeholder">Site ID
+						<label for="siteid" class="placeholder"><b>Site Id</b>
 				
 						</label>
 						 
@@ -247,7 +247,7 @@ function getSafetyDetails(siteId)
 						<form:errors path="siteid.siteid" cssClass="error" />	
 					</div>
 				<div class="form-group ">
-						<label for="extinguishersAvailability" class="placeholder">Are Fire extinguishers available (Non expired)? </label>
+						<label for="extinguishersAvailability" class="placeholder"><b>Are Fire extinguishers available (Non expired)?</b> </label>
 						<form:select id="securitycondition" path="extinguishersAvailability"  name="overallconditon"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Yes">Yes</form:option>
@@ -260,19 +260,19 @@ function getSafetyDetails(siteId)
 					</div>
 					
 					<div class="form-group ">
-						<label for="edate" class="placeholder">When are fire extinguishers due for a service?</label>
+						<label for="edate" class="placeholder"><b>When are fire extinguishers due for a service?</b></label>
 						<form:input type="date" id="edate" path="extinguishersDueDate" class="form-control input-full"  />				
 						<form:errors path="extinguishersDueDate" cssClass="error" />	
 					</div>
 						
 				<div class="form-group ">
-				<label for="Upload Image" class="placeholder" >Upload Image1 </label>
-				<input type="file"   path="safety_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);"  /> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
+				<input type="file"   path="safety_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
   				
   				<div class="form-group ">
-						<label for="aviationlight" class="placeholder">Does the tower have a aviation lights?</label>
+						<label for="aviationlight" class="placeholder"><b>Does the tower have a aviation lights?></b></label>
 						<form:select id="aviationlight" path="aviationLights"  name="aviationlight"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Yes">Yes</form:option>
@@ -284,7 +284,7 @@ function getSafetyDetails(siteId)
 										
 					</div>
 					<div class="form-group ">
-						<label for="arrestor" class="placeholder">Is the lighting arrestor spike and connection to tower or earthing available?</label>
+						<label for="arrestor" class="placeholder"><b>Is the lighting arrestor spike and connection to tower or earthing available?</b></label>
 						<form:select id="arrestor" path="lightningArrestor"  name="arrestor"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Yes">Yes</form:option>
@@ -296,7 +296,7 @@ function getSafetyDetails(siteId)
 										
 					</div>
 					<div class="form-group ">
-						<label for="rttloc" class="placeholder">For RTT/RTP loactions,are protection rails or parapet walls available</label>
+						<label for="rttloc" class="placeholder"><b>For RTT/RTP loactions,are protection rails or parapet walls available </b></label>
 						<form:select id="rttloc" path="rtt_rtp_locations"  name="rttloc"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Yes">Yes</form:option>
@@ -311,13 +311,13 @@ function getSafetyDetails(siteId)
   				
   				
  				<div class="form-group ">
-				<label for="Upload Image" class="placeholder" >Upload Image2 </label>
-				<input type="file" path="safety_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="return ValidateImage('img2');"/> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b> </label>
+				<input type="file" path="safety_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id)"/> 
 					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
   				
   				<div class="form-group ">
-						<label for="stairs" class="placeholder">Stairs or ladders-are they in good condition with no missing rungs etc?</label>
+						<label for="stairs" class="placeholder"><b>Stairs or ladders-are they in good condition with no missing rungs etc?</b></label>
 						<form:select id="stairs" path="stairsLaddersCondition"  name="stairs"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Yes">Yes</form:option>
@@ -330,14 +330,14 @@ function getSafetyDetails(siteId)
 					</div>
 					
 					<div class="form-group ">
-						<label for="Upload Image" class="placeholder" >Upload Image3 </label>
-						<input type="file" path="safety_photo3"  class="form-control input-border-bottom"  id="img3"  name="file"  onchange="return ValidateImage('img2');"/> 
+						<label for="Upload Image" class="placeholder" ><b>Photo 3 </b> </label>
+						<input type="file" path="safety_photo3"  class="form-control input-border-bottom"  id="img3"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image3">${errMsg}</span>
   					</div>
 					
 					
 					<div class="form-group ">
-						<label for="climbdevice" class="placeholder">Is there safe climb device installed on ladder ? (Typically a cable or rail)</label>
+						<label for="climbdevice" class="placeholder"><b>Is there safe climb device installed on ladder ? (Typically a cable or rail)</b></label>
 						<form:select id="climbdevice" path="safeClimbDevice"  name="climbdevice"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Yes">Yes</form:option>
@@ -348,7 +348,7 @@ function getSafetyDetails(siteId)
 								<form:errors path="safeClimbDevice" cssClass="error" />
 										
 					</div><div class="form-group ">
-						<label for="anticlimbdevice" class="placeholder">Is the anti climb protection in place?</label>
+						<label for="anticlimbdevice" class="placeholder"><b>Is the anti climb protection in place?</b></label>
 						<form:select id="anticlimbdevice" path="antiClimbProtection"  name="anticlimbdevice"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Yes">Yes</form:option>
@@ -360,7 +360,7 @@ function getSafetyDetails(siteId)
 										
 					</div>
 						<div class="form-group ">
-						<label for="fireclear" class="placeholder">Is the site clear of fire hazard rubble, installation material, released old equipment etc.?</label>
+						<label for="fireclear" class="placeholder"><b>Is the site clear of fire hazard rubble, installation material, released old equipment etc.?</b></label>
 						<form:select id="fireclear" path="siteFireClear"  name="fireclear"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Yes">Yes</form:option>
@@ -372,13 +372,13 @@ function getSafetyDetails(siteId)
 										
 					</div>
 					<div class="form-group ">
-						<label for="Upload Image" class="placeholder" >Upload Image4 </label>
-						<input type="file" path="safety_photo4"  class="form-control input-border-bottom"  id="img4"  name="file"  onchange="return ValidateImage('img2');"/> 
+						<label for="Upload Image" class="placeholder" ><b>Photo 4 </b></label>
+						<input type="file" path="safety_photo4"  class="form-control input-border-bottom"  id="img4"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image4">${errMsg}</span>
   					</div>
   					
 						<div class="form-group ">
-						<label for="oilspill" class="placeholder">Are there oil spills in the DG area (Diesel + Engine oil etc. )?</label>
+						<label for="oilspill" class="placeholder"><b>Are there oil spills in the DG area (Diesel + Engine oil etc. )?</b></label>
 						<form:select id="oilspill" path="oilSpillsDG"  name="oilspill"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Yes">Yes</form:option>
@@ -391,7 +391,7 @@ function getSafetyDetails(siteId)
 					</div>
 					
 					<div class="form-group ">
-						<label for="safetysignage" class="placeholder">Are safety and Hazard signage available?</label>
+						<label for="safetysignage" class="placeholder"><b>Are safety and Hazard signage available?</b></label>
 						<form:select id="safetysignage" path="safetySignage"  name="safetysignage"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Yes">Yes</form:option>
@@ -403,12 +403,12 @@ function getSafetyDetails(siteId)
 										
 					</div>
 					<div class="form-group ">
-						<label for="Upload Image" class="placeholder" >Upload Image5 </label>
-						<input type="file" path="safety_photo5"  class="form-control input-border-bottom"  id="img5"  name="file"  onchange="return ValidateImage('img2');"/> 
+						<label for="Upload Image" class="placeholder" ><b>Photo 5 </b> </label>
+						<input type="file" path="safety_photo5"  class="form-control input-border-bottom"  id="img5"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image5">${errMsg}</span>
   					</div>
 					<div class="form-group ">
-						<label for="siteid" class="placeholder">Observations
+						<label for="siteid" class="placeholder"><b>Observations</b>
 				
 						</label>
 						 
@@ -417,13 +417,13 @@ function getSafetyDetails(siteId)
 					</div>
   				
   					<div class="form-group ">
-						<label for="Upload Image" class="placeholder" >Upload Image6 </label>
-						<input type="file" path="safety_photo6"  class="form-control input-border-bottom"  id="img6"  name="file"  onchange="return ValidateImage('img2');"/> 
+						<label for="Upload Image" class="placeholder" ><b>Photo 6 </b> </label>
+						<input type="file" path="safety_photo6"  class="form-control input-border-bottom"  id="img6"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image6">${errMsg}</span>
   					</div>
   					<div class="form-group ">
-						<label for="Upload Image" class="placeholder" >Upload Image7 </label>
-						<input type="file" path="safety_photo6"  class="form-control input-border-bottom"  id="img6"  name="file"  onchange="return ValidateImage('img2');"/> 
+						<label for="Upload Image" class="placeholder" ><b>Photo 7 </b></label>
+						<input type="file" path="safety_photo6"  class="form-control input-border-bottom"  id="img6"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image6">${errMsg}</span>
   					</div>
   				

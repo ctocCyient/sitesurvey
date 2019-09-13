@@ -260,12 +260,12 @@ else {
 				<form:input type="hidden" path="id" id="securityid" />
 				<form:input type="hidden"  path="" id="json" name="json" />
 				<div class="form-group ">
-						<label for="siteid" class="placeholder">Site Id
+						<label for="siteid" class="placeholder"><b>Site Id</b>
 						</label>
 						<form:input id="siteid" path="siteid.siteid" class="form-control input-full" readonly="true" />
 					</div>
 				<div class="form-group ">
-						<label for="obnotes" class="placeholder">Observation / Comment - Presence of fence,locks,alarm system, other security.
+						<label for="obnotes" class="placeholder"><b>Observation / Comment - Presence of fence,locks,alarm system, other security</b>
 				
 						</label>
 						
@@ -273,7 +273,7 @@ else {
 						<form:errors path="observations" cssClass="error" />	
 					</div>
 				<div class="form-group ">
-						<label for="securitycondition" class="placeholder">What is the overall security Condition? </label>
+						<label for="securitycondition" class="placeholder"><b>What is the overall security Condition?</b> </label>
 						<form:select id="securitycondition" path="securityCondition"  name="overallconditon"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Not assessed">Not assessed (Note why not assessed in observation)</form:option>
@@ -289,13 +289,13 @@ else {
 					</div>
 						
 				<div class="form-group ">
-				<label for="Upload Image" class="placeholder" >Upload Image1 </label>
-				<input type="file"   path="security_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);"  /> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
+				<input type="file"   path="security_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
  				<div class="form-group ">
-				<label for="Upload Image" class="placeholder" >Upload Image2 </label>
-				<input type="file" path="security_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="return ValidateImage('img2');"/> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b> </label>
+				<input type="file" path="security_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
   				</div>
   				

@@ -45,7 +45,11 @@ public interface SurveyDAO {
 	public void addSiteAccess(Site_Access siteacc);
 	
 	@Transactional
+	public void updateSiteAccess(Site_Access upsiteacc);
+	
+	@Transactional
 	public void addSiteArea(Site_Area sitearea);
+	
 	
 	@Transactional
 	public void addSitePowering(Site_Wiring powerwire);

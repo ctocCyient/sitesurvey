@@ -243,8 +243,8 @@ public class FTSurveyController {
 	}*/
 		@RequestMapping(value="/saveAccess" , method=RequestMethod.POST)
 		public String saveAccess(@ModelAttribute("Site_Access") Site_Access siteacc,RedirectAttributes redirectAttributes,@RequestParam("file") MultipartFile[] multipart, ModelAndView model,@RequestParam("clickBtn") String clickBtn)throws IOException{
-		System.out.println("PHOTOOOTOO"+multipart);
-		System.out.println("CLICKKKK"+clickBtn);
+	
+		
 		/*if(br.hasErrors())  
 	         {  
 			 
@@ -264,10 +264,15 @@ public class FTSurveyController {
 				  {
 				   System.out.println(e.toString());
 				  }
-				  
-
+		    if(siteacc.getId()==0){
+		    	surveyDAO.addSiteAccess(siteacc);
+		    }
+		    else {
+		    	surveyDAO.updateSiteAccess(siteacc);
+		    }
 			String status="Site Access Details Added Successfully";
-			surveyDAO.addSiteAccess(siteacc);
+			
+			
 			redirectAttributes.addFlashAttribute("status",status);
 			if(clickBtn.equals("Save")){
 			return "redirect:/siteAccess";
@@ -309,9 +314,10 @@ public class FTSurveyController {
 		}
 		
 		@RequestMapping(value="/saveWiring" , method=RequestMethod.POST)
-		public String saveWiring(@ModelAttribute("Site_Wiring") Site_Wiring sitewiring,RedirectAttributes redirectAttributes,@RequestParam("file") MultipartFile[] multipart, ModelAndView model,@RequestParam("clickBtn") String clickBtn)throws IOException{
+		public String saveWiring(@ModelAttribute("Site_Wiring") Site_Wiring sitewiring,RedirectAttributes redirectAttributes,@RequestParam("file") MultipartFile[] multipart, ModelAndView model,@RequestParam("clickBtn") String clickBtn,HttpServletRequest request)throws IOException{
 		System.out.println("PHOTOOOTOO"+multipart);
 		System.out.println("CLICKKKK"+clickBtn);
+		String siteId=sitewiring.getSiteid().getSiteid();
 		/*if(br.hasErrors())  
 	         {  
 			 
@@ -336,12 +342,12 @@ public class FTSurveyController {
 			String status="Site Power Wiring  Details Added Successfully";
 			surveyDAO.addSitePowering(sitewiring);
 			redirectAttributes.addFlashAttribute("status",status);
-			//if(clickBtn.equals("Save")){
-			///return "redirect:/siteAccess";
-			///}
-			///else{
-				return "redirect:/siteWiring";
-			//}
+			if(clickBtn.equals("Save")){
+			return "redirect:/siteWiring";
+			}
+			else{
+				
+				return "redirect:/newGenerator?siteId="+siteId;
+			}
 		}
-	
 }
