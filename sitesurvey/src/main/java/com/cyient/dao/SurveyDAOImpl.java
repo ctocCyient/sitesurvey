@@ -369,7 +369,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	public void addCabinet(String updatetype,Site_Cabinet BB) {
 		// TODO Auto-generated method stub
-		if(updatetype.split(";")[0]=="Existing")
+		if(updatetype.split(";")[0].contains("Existing"))
 		{		
 		BB.setId(Integer.parseInt(updatetype.split(";")[1]));
 		sessionFactory.getCurrentSession().saveOrUpdate(BB);
