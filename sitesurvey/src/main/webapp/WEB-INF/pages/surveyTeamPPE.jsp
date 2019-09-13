@@ -2,7 +2,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<% String status=(String)request.getAttribute("PPEStatus"); %>
+<% String btnClick=(String)request.getAttribute("btnClick"); %>
 <!DOCTYPE html >
 <html lang="en">
 
@@ -14,9 +15,6 @@
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
 <title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-
-	
-
 
 	<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
@@ -34,26 +32,22 @@
      
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 
-	<!-- <script type="text/javascript">
-	role=sessionStorage.getItem("role"); 
+	 <script type="text/javascript">
+	
    if(sessionStorage.getItem("username")==null) 
    	{ 
-		//window.location.href = "/sitesurvey/";
-	//alert(sessionStorage.getItem("username"));
 		   url = "/sitesurvey/"; 
 		      $( location ).attr("href", url);
   	}
-   else if(role=="Admin" || role=="SuperAdmin")
-		   { 
-		   
-		   } 
+  
  	   else 
  		   { 
- 		   url = "/sitesurvey/"; 
- 		      $( location ).attr("href", url);
+ 		  role=sessionStorage.getItem("role"); 
+ 			siteId=sessionStorage.getItem("siteId");
+ 			ticketId=sessionStorage.getItem("ticketId");
 		   } 
 
- </script> -->
+ </script> 
  
  
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
@@ -92,11 +86,72 @@ WebFont.load({
 $(document).ready(function(){	
 	$("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	 $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
+	 $("#siteid")[0].value=siteId;
+	  $('#siteid').attr('readonly','readonly');
+	 getSurveyTeamPPEDetails();
 
+	 var status='<%=status%>';
+	 var btnClick='<%=btnClick%>';
+		// $(".isa_success").fadeOut(10000);
 		
-		 $(".isa_success").fadeOut(10000);
+		
+		 if(status=='Saved')
+		{
+			 	var nextUrl;
+			  if(btnClick=="Save"){
+				  nextUrl="/sitesurvey/home";
+			  }
+			  else if(btnClick=="Save & Continue"){
+				  nextUrl="/sitesurvey/siteAccess";
+			  }
+			  swal({
+					//title: 'Are you sure?',
+					text: "Details Saved Successfully",
+					type: 'info',
+					buttons:{
+						confirm: {
+							text : 'Ok',
+							className : 'btn btn-success'
+						}
+					}
+				}).then((Delete) => {
+					if (Delete) {
+						window.location.href = nextUrl;
+					} 
+				});
+			}
 	
 });
+
+
+function getSurveyTeamPPEDetails()
+{
+	$.ajax({
+        type:"get",
+        url:"getSurveyTeamPPEDetails",
+        contentType: 'application/json',
+        datatype : "json",
+        data:{"selectedSiteId":siteId},
+        success:function(result) {
+        	var surveyTeamDetails= JSON.parse(result);    
+           if(surveyTeamDetails.length!=0)
+        	{        	   
+ 			  	$("#ppe").val(surveyTeamDetails[0].ppe);
+ 			  	$("#technicianName")[0].value=surveyTeamDetails[0].technicianName;
+ 			 	$("#rigger_Name")[0].value=surveyTeamDetails[0].rigger_Name;
+ 			
+	 			$.each(surveyTeamDetails[0].rigger_Wearing.split(','), function(i, val){
+	 			   $("input[name='rigger_Wearing'][value='" + val + "']").prop('checked', true);
+	 			});
+	 			
+	 			$.each(surveyTeamDetails[0].technicianWearing.split(','), function(i, val){
+	  			   $("input[name='technicianWearing'][value='" + val + "']").prop('checked', true);
+	  			});
+			  
+        	  }
+        }
+	});
+}
 
 
 </script>
@@ -114,10 +169,6 @@ $(document).ready(function(){
 }
 
 
-input[type=file]::-webkit-file-upload-button {
-  border: 1px solid grey;
-  background: #FFFAAA;
-}
 
 </style>
 
@@ -159,19 +210,26 @@ input[type=file]::-webkit-file-upload-button {
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
 			
-			 <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
+			
     
 			<h3 class="text-center">PPE(PERSONAL PROTECTIVE EQUIPMENT)</h3>
 				
-			<form:form action="saveSurveyPPE" method="post" modelAttribute="SurveyTeamPPE">
+			<form:form action="saveSurveyPPE" method="post" modelAttribute="SurveyTeamPPE"  enctype = 'multipart/form-data' >
 			<div class="login-form">
-			
+			<form:hidden path="id"/>
+				<label for=siteid class="placeholder"><b>Site Id</b></label>
+					<form:input id="siteid" path="siteid.siteid"  name="siteid"  class="form-control input-full filled"  />
 				 <br>
 				<label for="ppe" class="placeholder"><b>All members of survey team wearing PPE(safety boots, high visibility vest, hard hat)</b></label>
-				<form:input id="ppe" path="ppe" class="form-control input-full filled" />
+<%-- 				<form:input id="ppe" path="ppe" class="form-control input-full filled" /> --%>
+				<form:select id="ppe" path="ppe"  name="ppe"  class="form-control input-full filled" >
+              	<form:option value="Yes">Yes</form:option>
+              	<form:option value="No">No</form:option>              	
+              	 </form:select>
 				<br>
+				
 				<label for="photoSurveyTeam" class="placeholder"><b>Photo of survey team</b></label>
-				<input type="file"  class="form-control input-border-bottom"  id="photoSurveyTeam" name="photoSurveyTeam"  path="photoSurveyTeam" required/> 
+				<input type="file"  class="form-control input-border-bottom" name="file" /> 
 				<br>
 				<label for="technicianName" class="placeholder"><b>Technician name/s</b></label> 
 				<form:input id="technicianName" path="technicianName"  name="technicianName"  class="form-control input-full filled"  />
@@ -184,7 +242,7 @@ input[type=file]::-webkit-file-upload-button {
                 <br>
                 
                 <label for="photoTechnicianTeam" class="placeholder"><b>Photo of technician/s</b></label>            
-				<input type="file"  class="form-control input-border-bottom"  id="photoTechnicianTeam" name="photoTechnicianTeam"  path="photoTechnicianTeam" required/> 
+				<input type="file"  class="form-control input-border-bottom"  name="file"  /> 
                 <br>
           
 				<label for="rigger_Name" class="placeholder"><b>Rigger Name/s</b></label>
@@ -195,12 +253,11 @@ input[type=file]::-webkit-file-upload-button {
 				<form:checkboxes items="${riggerPPEList}" path="rigger_Wearing" id="rigger_Wearing"  element="p" name="rigger_Wearing"/><br>
 				<br>
 				<label for="photoRiggerTeam" class="placeholder"><b>Photo of Rigger/s</b></label>
-				<input type="file"  class="form-control input-border-bottom"  id="photoRiggerTeam" name="photoRiggerTeam"  path="photoRiggerTeam" required/> 
+				<input type="file"  class="form-control input-border-bottom"  name="file" /> 
 				<br>
 				<div class="form-action">
-					<input type="submit" id="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-<!-- 					<input type="submit" id="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;"> -->
-<a href="siteAccess" class="btn btn-rounded btn-login" >Next</a>
+					<input type="submit" id="clickBtn" value="Save" class="btn btn-rounded btn-login" name="clickBtn" style="background-color: #E4002B;color: white;">
+					<input type="submit" id="clickBtn1" value="Save & Continue" class="btn btn-rounded btn-login" name="clickBtn" style="background-color: #012169;color: white;"> 
 				</div>
 			</div>
 			</form:form>	
@@ -212,17 +269,13 @@ input[type=file]::-webkit-file-upload-button {
 	<script src="<c:url value='resources/assets/css/bootstrap.min.css' />"></script>
 	<script src="<c:url value='resources/assets/js/ready.js' />"></script>
 	
+
 	<!--   Core JS Files   -->
-
-
-
 <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
 
 <!-- jQuery UI -->
-
-
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' />"></script>
 
@@ -232,8 +285,11 @@ input[type=file]::-webkit-file-upload-button {
 
 
 
-<!-- jQuery Sparkline -->
+<!-- Sweet Alert -->
+<script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
+
+<!-- jQuery Sparkline -->
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
 
 

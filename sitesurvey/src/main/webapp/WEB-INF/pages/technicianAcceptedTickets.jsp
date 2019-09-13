@@ -92,15 +92,6 @@ color: #fff!important;
 			  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 			  getCount();
 			  tableData();	
-			  
-			  
-// 			  var times = [
-// 					"Accepted",
-// 					"Rejected"
-// 				];
-
-			  
-
 
 		});	
 		
@@ -111,6 +102,7 @@ color: #fff!important;
 		var dataSet=[];
 		 var ticketId;
 		 var ticketType,siteIds;
+		 var selectedSite;
 		 
 		 function getCount(){
 			 var s=sessionStorage.getItem("username");
@@ -162,7 +154,8 @@ color: #fff!important;
 							targets:1,
 							render: function (data, type, full,meta) {		
 								
-					                  data1 = '<select id="jsonStatusList" name="jsonStatusList">';
+					                  data1 = '<select id="jsonStatusList'+full[0]+'" class="jsonStatusList'+full[0]+'">';
+								
 					               
 					                  $.each(times, function (i, item) {	
 					                	 var str = "";
@@ -170,16 +163,17 @@ color: #fff!important;
 					                	 var nameArr = str.split(',');
 					                	 for(var j=0;j<nameArr.length;j++){
 					                		 if(meta.row==i){
-						                         data1 += '<option>' + nameArr[j] + '</option>';		
+						                         data1 += '<option value='+nameArr[j]+'>' + nameArr[j] + '</option>';		
 					                		 }
 					                	 }
 					                	
 					                  });
-					                  data1 += '</select>';					                
+					                  data1 += '</select>';		
+								
 					               return data1;
 					            }  
 						  
-						},{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' value='Start Survey' />"}],
+						},{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' name='surveyBtn' value='Start Survey' />"}],
 							
 
 			        data: dataSet,
@@ -225,23 +219,22 @@ color: #fff!important;
 // 			        //$(this).val("default");
 // 			    });
 			 
-			 $('#technicianAcceptedTickets tbody').on('click', '[id*=surveyBtn]','[name*="jsonStatusList"]', function () {
+			 $('#technicianAcceptedTickets tbody').on('click', '[name*=surveyBtn]', function () {
 			
-		            data1 =  table1.row($(this).parents('tr')).data();
-		            //data3=table1.row($(this).parents('tr'));
-		            console.log('fsaf'+data1);
+		            data2 =  table1.row($(this).parents('tr')).data();
+		            ticketId=data2[0];
+		            
+		            selectedSite = $("#jsonStatusList"+ticketId+" option:selected").val();
+		       
+		           
+		            rowIndex = $(this).parent().index();			          
+		           
+		       
 		            
 		          
-		              
-		            rowIndex = $(this).parent().index();			          
-		            ticketId=data1[0];	
-		            //debugger;
-		            
-		            siteIds="IND005";
-		            console.log("site"+siteIds);
 		            
 		            // window.location.href = '/sitesurvey/siteDetails?ticketId='+ticketId+'&siteId='+siteIds;
-			      alert("asfaf"+siteIds+"fasfasf");
+			      //alert("asfaf"+siteIds+"fasfasf");
 // 		         	$.get("getSiteDetails", {
 // 						siteId : siteIds,
 // 						ticketId : ticketId
@@ -253,16 +246,17 @@ color: #fff!important;
 // 								JSON.stringify(listData));
 // 						$("#form").submit();						
 // 					});
-
+					sessionStorage.setItem("ticketId", ticketId);
+					sessionStorage.setItem("siteId", selectedSite);
 					$.ajax({
 		                type: "get",
 		                url: "getSiteDetails",
 		                contentType: 'application/json',
-		                data:{"siteId":siteIds,"ticketId":ticketId},
+		                data:{"siteId":selectedSite,"ticketId":ticketId},
 		                datatype: "json",
 		                success: function(result) {
 		                    listData = JSON.parse(result);
-		                   window.location.href = '/sitesurvey/siteDetails?siteID='+siteIds+'&ticketId='+ticketId+'&ticketDetails='+ window.encodeURIComponent(JSON.stringify(listData)); 
+		                   window.location.href = '/sitesurvey/siteDetails?ticketDetails='+ window.encodeURIComponent(JSON.stringify(listData)); 
 		                }					
 		       		 }); 
       	 		});

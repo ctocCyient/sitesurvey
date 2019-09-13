@@ -18,6 +18,7 @@ import com.cyient.model.Site_Area;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
 import com.cyient.model.Site_Wiring;
+import com.cyient.model.Survey_Team_PPE;
 import com.cyient.model.Site_Battery_Bank;
 import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Technician;
@@ -371,4 +372,30 @@ public class SurveyDAOImpl implements SurveyDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void updateSiteDetails(String state,String siteId,String lati,String longi) {
+
+		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Site where siteid ='"+siteId+"'");
+
+		 Site siteData = (Site)q1.list().get(0);
+		 
+		siteData.setState(state);
+		siteData.setLatitude(lati);		
+		siteData.setLongitude(longi);
+	
+		 sessionFactory.getCurrentSession().update(siteData);
+		
+	}
+
+	@Override
+	public void addSiteSurveyPPE(Survey_Team_PPE surveyTeamPPPE) {
+		sessionFactory.getCurrentSession().saveOrUpdate(surveyTeamPPPE);			
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Survey_Team_PPE> getSurveyTeamDetails(String selectedSiteId) {
+		return sessionFactory.getCurrentSession().createQuery("from Survey_Team_PPE where siteid='"+selectedSiteId+"'").list();		
+	}	
 }

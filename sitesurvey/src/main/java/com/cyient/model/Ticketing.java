@@ -66,6 +66,9 @@ public class Ticketing implements Serializable {
 	@Column(name="Status")
 	private String status;
 	
+	@Column(name="Site_Status")
+	private String siteStatus;
+	
 	@Column(name="Comments")
 	private String comments;
 	
@@ -115,6 +118,14 @@ public class Ticketing implements Serializable {
 
 	public String getDistrict() {
 		return district;
+	}
+
+	public String getSiteStatus() {
+		return siteStatus;
+	}
+
+	public void setSiteStatus(String siteStatus) {
+		this.siteStatus = siteStatus;
 	}
 
 	public void setDistrict(String district) {

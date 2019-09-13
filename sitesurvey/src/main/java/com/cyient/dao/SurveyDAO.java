@@ -15,6 +15,7 @@ import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
 import com.cyient.model.Site_Wiring;
+import com.cyient.model.Survey_Team_PPE;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
@@ -163,5 +164,14 @@ public interface SurveyDAO {
 		
 	 @Transactional
 	 public String saveTowerInstallation(Tower_Installation towerinstallation);
+
+	 @Transactional
+	public void updateSiteDetails(String state,String siteId,String lati,String longi);
+
+	 @Transactional
+	public void addSiteSurveyPPE(Survey_Team_PPE surveyTeamPPPE);
+
+	 @Transactional
+	public List<Survey_Team_PPE> getSurveyTeamDetails(String selectedSiteId);
 
 }

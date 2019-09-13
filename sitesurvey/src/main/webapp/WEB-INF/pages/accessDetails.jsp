@@ -91,7 +91,7 @@ $(document).ready(function(){
 	//  getRegions();
 		//getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
-		 $(".isa_success").fadeOut(10000);
+		// $(".isa_success").fadeOut(10000);
 		 $("input").attr("required", "true");
 		
 		 $("select").attr("required","true");
@@ -309,7 +309,7 @@ label {
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-  <span class="isa_success" style="color:green;font-size:14px;">${status}</span>
+
 			<h3 class="text-center">Site Access</h3>
 			
 			<form:form method="post" action="saveAccess"  id="siteAccess" modelAttribute="Site_Access" enctype="multipart/form-data" >

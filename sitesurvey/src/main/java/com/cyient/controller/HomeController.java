@@ -694,7 +694,7 @@ public class HomeController {
 	    
 		
 	    
-	    @SuppressWarnings("unchecked")
+	    @SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping("ticketsCount")
 	    @ResponseBody
 	    public String  ticketsCountData(ModelAndView model) {
@@ -720,7 +720,7 @@ public class HomeController {
 		          return countData.toString();
 	    }
 	 
-	    @SuppressWarnings("unchecked")
+	    @SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping("getOpenTickets")
 	    @ResponseBody
 	    public String  getOpenTicketsData(ModelAndView model) {
@@ -808,6 +808,7 @@ public class HomeController {
 	  
 	  }
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping("getTotalTickets")
 		@ResponseBody
 		public String  getTotalTicketsData(ModelAndView model) {

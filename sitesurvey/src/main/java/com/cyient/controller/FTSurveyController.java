@@ -86,6 +86,80 @@ public class FTSurveyController {
 			return model;
 	}
 	 
+		
+		@RequestMapping(value="/saveSiteDetails" , method=RequestMethod.POST)
+	public String saveSiteDetails(@ModelAttribute("Site") Site site,RedirectAttributes redirectAttributes, ModelAndView model,@RequestParam("clickBtn") String clickBtn)throws IOException{
+	
+		String status="Saved";
+		String state=site.getState();
+		String siteId=site.getSiteid();
+		String lati=site.getLatitude();
+		String longi=site.getLongitude();
+		surveyDAO.updateSiteDetails(state,siteId,lati,longi);
+		redirectAttributes.addFlashAttribute("status",status);
+		redirectAttributes.addFlashAttribute("btnClick",clickBtn);
+//		if(clickBtn.equals("Save")){
+//			return "redirect:/home";
+//		}
+//		else{
+//			return "redirect:/surveyTeamPPE";
+//		}
+		return "redirect:/siteDetails";
+	}
+	
+		 @RequestMapping(value = "/surveyTeamPPE")
+			public ModelAndView surveyTeamPPE(ModelAndView model) throws IOException {
+			 Survey_Team_PPE surveyTeamPPE=new Survey_Team_PPE();
+			 model.addObject("SurveyTeamPPE", surveyTeamPPE);
+				model.setViewName("surveyTeamPPE");
+				return model;
+		}
+		 
+	 @ModelAttribute("statesList")
+	   public Map<String, String> getCountryList() {
+	      Map<String, String> statesList = new HashMap<String, String>();
+	      statesList.put("Andhra Pradesh", "Andhra Pradesh");
+	      statesList.put("Arunachal Pradesh", "Arunachal Pradesh");
+	      statesList.put("Assam", "Assam");
+	      statesList.put("Bihar", "Bihar");
+	      statesList.put("Chhattisgarh", "Chhattisgarh");
+	      statesList.put("Goa", "Goa");
+	      statesList.put("Gujarat", "Gujarat");
+	      statesList.put("Haryana", "Haryana");
+	      statesList.put("Himachal Pradesh", "Himachal Pradesh");
+	      statesList.put("Jammu and Kashmir", "Jammu and Kashmir");
+	      statesList.put("Jharkhand", "Jharkhand");
+	      statesList.put("Karnataka", "Karnataka");
+	      statesList.put("Kerala", "Kerala");
+	      statesList.put("Madya Pradesh", "Madya Pradesh");
+	      statesList.put("Maharashtra", "Maharashtra");
+	      statesList.put("Manipur", "Manipur");
+	      statesList.put("Meghalaya", "Meghalaya");
+	      statesList.put("Mizoram", "Mizoram");
+	      statesList.put("Nagaland", "Nagaland");
+	      statesList.put("Orissa", "Orissa");
+	      statesList.put("Rajasthan", "Rajasthan");
+	      statesList.put("Sikkim", "Sikkim");
+	      statesList.put("Tamil Nadu", "Tamil Nadu");
+	      statesList.put("Telangana", "Telangana");
+	      statesList.put("Tripura", "Tripura");
+	      statesList.put("Uttaranchal", "Uttaranchal");
+	      statesList.put("Uttar Pradesh", "Uttar Pradesh");
+	      statesList.put("West Bengal", "West Bengal");
+	      return statesList;
+	   }
+	 
+	 
+	 @RequestMapping(value="getSurveyTeamPPEDetails", method = RequestMethod.GET)
+	    @ResponseBody
+	    public String  getSurveyTeamPPEDetails(HttpServletRequest request) {
+			String selectedSiteId=request.getParameter("selectedSiteId");
+			System.out.println("SITE"+selectedSiteId);
+			List<Survey_Team_PPE> siteDetails = surveyDAO.getSurveyTeamDetails(selectedSiteId);	
+	        String siteDetailsJson = gsonBuilder.toJson(siteDetails);
+		    return siteDetailsJson.toString();
+	    }
+		 
 	 @ModelAttribute("PPEList")
 	   public List<String> getPPEList() {
 	      List<String> PPEList = new ArrayList<String>();
@@ -105,6 +179,32 @@ public class FTSurveyController {
 	      return riggerPPEList;
 	   }
 	 
+		@RequestMapping(value="/saveSurveyPPE" , method=RequestMethod.POST)
+		public String saveSurveyPPE(@ModelAttribute("Survey_Team_PPE") Survey_Team_PPE surveyTeamPPPE,RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile[] multipart,ModelAndView model,@RequestParam("clickBtn") String clickBtn)throws IOException{
+		
+			
+			String status="Saved";
+			try
+			  {
+				surveyTeamPPPE.setPhotoSurveyTeam(multipart[0].getBytes());
+				surveyTeamPPPE.setPhotoSurveyTeamName(multipart[0].getOriginalFilename());
+				surveyTeamPPPE.setPhotoTechnicianTeam(multipart[1].getBytes());
+				surveyTeamPPPE.setPhotoTechnicianTeamName(multipart[1].getOriginalFilename());
+				surveyTeamPPPE.setPhotoRiggerTeam(multipart[2].getBytes());
+				surveyTeamPPPE.setPhotoRiggerTeamName(multipart[2].getOriginalFilename());
+			  }
+			  catch(Exception e)
+			  {
+			   System.out.println(e.toString());
+			  }
+			surveyDAO.addSiteSurveyPPE(surveyTeamPPPE);
+			redirectAttributes.addFlashAttribute("PPEStatus",status);
+			redirectAttributes.addFlashAttribute("btnClick",clickBtn);
+			
+				return "redirect:/surveyTeamPPE";
+			
+		}
+		
 	 @RequestMapping(value = "/siteAccess", method = RequestMethod.GET)
 		public ModelAndView newAccess(ModelAndView model) {
 			Site_Access siteaccess = new Site_Access();
@@ -113,13 +213,7 @@ public class FTSurveyController {
 			return model;
 		}
 	 
-	 @RequestMapping(value = "/surveyTeamPPE")
-		public ModelAndView surveyTeamPPE(ModelAndView model) throws IOException {
-		 Survey_Team_PPE surveyTeamPPE=new Survey_Team_PPE();
-		 model.addObject("SurveyTeamPPE", surveyTeamPPE);
-			model.setViewName("surveyTeamPPE");
-			return model;
-	}
+
 	 /*@RequestMapping(value = "/accessDetails")
 		public ModelAndView accessDetails(ModelAndView model) throws IOException {
 			model.setViewName("accessDetails");
@@ -180,6 +274,7 @@ public class FTSurveyController {
 				return "redirect:/siteArea";
 			}
 		}
+		
 		@RequestMapping(value="/saveArea" , method=RequestMethod.POST)
 		public ModelAndView saveSiteArea(@ModelAttribute("Site_Area") Site_Area sitearea,RedirectAttributes redirectAttributes,@RequestParam("file") MultipartFile[] multipart, ModelAndView model,@RequestParam("clickBtn")String clickBtn)throws IOException{
 		//System.out.println("PHOTOOOTOO"+multipart);

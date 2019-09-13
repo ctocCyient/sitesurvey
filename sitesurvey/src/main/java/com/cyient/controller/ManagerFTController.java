@@ -107,7 +107,7 @@ public class ManagerFTController {
 			          return countData.toString();
 			}
 		 
-		 @SuppressWarnings("unchecked")
+		 @SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="getManagerOpenTickets", method = RequestMethod.GET)
 		    @ResponseBody
 		    public String getManagerTotalTickets(ModelAndView model,HttpServletRequest request) {
@@ -127,6 +127,7 @@ public class ManagerFTController {
 			              return openJson.toString();
 		    }
 			
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@RequestMapping(value="getManagerNotAcceptedTickets", method = RequestMethod.GET)
 		    @ResponseBody
 		    public String getManagerNotAcceptedTickets(ModelAndView model,HttpServletRequest request) {
@@ -182,6 +183,7 @@ public class ManagerFTController {
 		return model;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="getTechnicianAssignedTickets", method = RequestMethod.GET)
     @ResponseBody
     public String  getTechnicianAssignedTicketsData(HttpServletRequest request) {

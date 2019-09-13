@@ -81,12 +81,23 @@ public class TechnicianTicketInfo implements Serializable {
 	@Column(name="Remarks")
 	private String remarks;
 	
+	@Column(name="Site_Status")
+	private String siteStatus;
+	
 	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getSiteStatus() {
+		return siteStatus;
+	}
+
+	public void setSiteStatus(String siteStatus) {
+		this.siteStatus = siteStatus;
 	}
 
 	public String getTechnicianId() {
