@@ -68,10 +68,13 @@ WebFont.load({
 });
 
 
+
 $(document).ready(function(){	
+	
+	
+	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-
 		 $(".isa_success").fadeOut(10000);
 		 getCabinet();
 		 $("input").attr("required", "true");
@@ -168,7 +171,13 @@ function populateDropdown(data,id)
 	 	         	
 var base64 = base64js.fromByteArray(jsonData.photo_1);
 //console.log(base64);
-//$("#ItemPreview").attr('src', 'data:image/jpeg;base64,' + base64);
+$("#ItemPreview").attr('src', 'data:image/jpeg;base64,' + base64);
+
+
+image_popup(base64);
+
+
+
 
 
 
@@ -197,6 +206,32 @@ function submit_logic()
 		}
 	//alert($('#updatetype').val());
 }
+
+
+function image_popup(base64)
+{
+	/*swal({
+        title: "Image demo",
+        text: "<img src='<c:url value='resources/assets/img/icon.ico' />' style='width:150px;'>",
+        html: true,
+    });*/
+    
+	
+	/*swal({
+	    title: "Image test",
+	    type: 'info',
+	    imageUrl: '‪C:\Users\kv46112\Desktop\1550571075860.jpg',
+        html: true,
+   
+	});*/
+	$("#ItemPreview").attr('src', 'data:image/jpeg;base64,' + base64);
+	var swal_html = '<img id="ItemPreview" src="‪C:\Users\kv46112\Desktop\1550571075860.jpg">';
+	swal({title:"Good Job!", html: swal_html})
+
+
+}
+
+
 
 </script>
 <style>
@@ -314,10 +349,8 @@ label {
 						onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
 						
-						<img id="ItemPreview" src="" />
 
-
-
+<!--  <img id="ItemPreview">-->
 						
 
 
@@ -381,7 +414,11 @@ label {
 	<!-- jQuery Sparkline -->
 
 	<script
-		src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
+		src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />">
+		</script>
+		<script src="https://unpkg.com/sweetalert2@7.19.3/dist/sweetalert2.all.js"></script>
+		
+<!--  <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>-->
 
 
 
