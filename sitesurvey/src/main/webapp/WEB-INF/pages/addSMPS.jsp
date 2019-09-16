@@ -14,23 +14,22 @@
 <title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<script type="text/javascript">
-	role=sessionStorage.getItem("role");
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		//window.location.href = "/sitesurvey/";
-		//alert(sessionStorage.getItem("username"));
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-   	}
-	   else if(role=="Admin" | role=="SuperAdmin")
-		   {
-		   
-		   }
-	   else
-		   {
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-		   }
+	
+	
+	 if(sessionStorage.getItem("username")==null)
+	   	{
+			//window.location.href = "/sitesurvey/";
+			//alert(sessionStorage.getItem("username"));
+			   url = "/sitesurvey/";
+			      $( location ).attr("href", url);
+	   	}
+		   else
+			   {
+			   role=sessionStorage.getItem("role");
+				siteId=sessionStorage.getItem("siteId");
+				
+			   }
+		
 
 </script>
 
@@ -60,131 +59,49 @@ WebFont.load({
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	  $("#addSMPS :input").attr("required", '');
-	//  getRegions();
-		getSiteId();
-		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
-		 $(".isa_success").fadeOut(10000);
+	  var siteID=siteId;	 
+	$("#siteId").val(siteID);
+	$(".isa_success").fadeOut(10000);
+	getSMPSDetails(siteID);
 });
 
-function populateDropdown(data,id)
+
+
+function getSMPSDetails(siteID)
 {
-	var	catOptions="<option value=''>Select</option>";
- 	for (i in data) {
- 		
-   	 	 catOptions += "<option>" + data[i] + "</option>";
- 		}
- 		document.getElementById(id).innerHTML = catOptions;
- 		 $("select option[value='']").attr('disabled','disabled');
-}
-
-
-
-function getState(region)
-{
-	//alert(region)
+	var siteID=siteID;
+	
 	 $.ajax({
-		 	type:"get",
-		 	url:"getStates",
-		 	contentType:'application/json',
-		 	datatype:"json",
-		 	data:{"selectedRegion":region},
-		 	success:function(res){
-		 		//alert(JSON.parse(res))
-		 		console.log(res);
-		 		jsonData=JSON.parse(res);
-		 		populateDropdown(jsonData,"state");
-		 	},
-		 	error:function()
-		 	{
-		 		console.log("Error");	
-		 	}
-	 });
+         type: "get",
+         url: "getSMPSDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteID},
+         datatype: "json",
+         success: function(result) {
+             jsonData = JSON.parse(result);
+          	if(jsonData.length==0)
+          	{
+          		
+          	}
+          	else
+          	{
+          		$("#id").val(jsonData[0].id);
+          		$("#Manufacturer").val(jsonData[0].Manufacturer);
+          		$("#model").val(jsonData[0].model);
+          		$("#manufacturerDate").val(jsonData[0].manufacturedDate);
+          		$("#module_rating").val(jsonData[0].module_rating);
+          		$("#workingModules").val(jsonData[0].number_of_working_Module_rating);
+          		$("#smpsCondition").val(jsonData[0].smpsCondition);
+          		$("#comments").val(jsonData[0].comments);
+          		
+          	}
+         }					
+		 }); 
+	
 }
 	
-function getDistrict(state)
-{ 
-	var selectedRegion=$("#regions").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getDistricts",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":state},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"districts");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
-function getCity(district)
-{ 
-	
-	var selectedRegion=$("#regions").val();
-	var selectedState=$("#state").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getCities",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":district},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"city");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
-
-
-	function getSiteId()
-	{
-		var jsonArr1;
-			$.ajax({
-		        type:"get",
-		        url:"getLastSiteId",
-		        contentType: 'application/json',
-		        datatype : "json",
-		        success:function(data) {
-		        	var jsonArr=JSON.parse(data);	
-//		        	alert(jsonArr)
-		        	 if(jsonArr.length==0){
-			        		jsonArr1="IND001";
-			        	}  	
-		        	 else{
-			        	var dataSplit=jsonArr[0].split("D");
-			        	console.log(dataSplit[0]);
-			        	var dataSplitInt=parseInt(dataSplit[1]);
-			        	console.log(dataSplitInt+1);
-			        	dataSplitInt=dataSplitInt+1;
-			        	
-			        	if(dataSplitInt>0&&dataSplitInt<=9)
-			        		jsonArr1="IND00"+dataSplitInt;
-			        	else if(dataSplitInt>9&&dataSplitInt<99)
-			        		jsonArr1="IND0"+dataSplitInt;
-			        	else if(dataSplitInt>99)
-			        		jsonArr1="IND"+dataSplitInt;        	
-	        		}	        	
-		        	$('#siteid').val(jsonArr1);	 
-		        	$('#siteid').attr('readonly', true);
-		        },
-		        error:function()
-		        {
-		        	console.log("Error");
-		        }
-			});
-	}
-
-
-
 </script>
 <style>
 .fa-bars,
@@ -228,60 +145,64 @@ label {
 		</div>
 
 		<!-- Sidebar -->
-<div id="superAdminSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-    <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
+<%--     <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br> --%>
     
 			<h3 class="text-center">Add SMPS</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 			<form:form action="saveSMPS" id="addSMPS" method="post" modelAttribute="Site_SMPS" enctype="Multipart/form-data">
 			<div class="login-form">
-			
+				 <br>
+				 <form:hidden path="id" id="id"/>
+				<label for="siteId" class=siteId><b>Site Id</b></label>
+				<form:input id="siteId" path="siteid.siteid" class="form-control input-full filled" readonly="true"/>
+				<br>
 				
 				 <br>
-				<label for="Manufacturer" class="placeholder">Manufacturer</label>
-				<form:input id="Manufacturer" path="Manufacturer" class="form-control input-full filled" />
+				<label for="Manufacturer" class="placeholder"><b>Manufacturer</b></label>
+				<form:input id="Manufacturer" path="Manufacturer" class="form-control input-full filled" onkeypress="return isCharacters(event);"/>
 				<br>
 				
-				<label for="model" class="placeholder">Model(Rack Capacity kW)</label> 
-				<form:input id="model" path="model"  name="model"  class="form-control input-full filled"  />
+				<label for="model" class="placeholder"><b>Model(Rack Capacity kW)</b></label> 
+				<form:input id="model" path="model"  name="model"  class="form-control input-full filled" onkeypress="return isNumber(event)"  />
 				<br>
 				
-				<label for="date" class="placeholder">Date of Manufacturer/Installation</label>
-				 <form:input type="date"  placeholder="mm/dd/yyyy" value="" path="manufacturedDate" class="form-control input-full filled" max="9999-12-31"/>
+				<label for="date" class="placeholder"><b>Date of Manufacturer/Installation</b></label>
+				 <form:input type="date" id="manufacturerDate" placeholder="mm/dd/yyyy" value="" path="manufacturedDate" class="form-control input-full filled" max="9999-12-31"/>
 				<br>
 				
-				<label for="module_rating" class="module_rating">Modules Rating(kW)</label>
-               <form:input id="module_rating" path="module_rating"  name="module_rating"  class="form-control input-full filled"  />
+				<label for="module_rating" class="module_rating"><b>Modules Rating(kW)</b></label>
+               <form:input id="module_rating" path="module_rating"  name="module_rating"  class="form-control input-full filled"  onkeypress="return isNumber(event)" />
                 <br>
                 
-                 <label for="fuellevel" class="fuellevel">Number of Working modules available</label>
-                	 <form:input id="number_of_working_Module_rating" path="number_of_working_Module_rating"  name="number_of_working_Module_rating"  class="form-control input-full filled"  />
+                 <label for="fuellevel" class="fuellevel"><b>Number of Working modules available</b></label>
+                	 <form:input id="workingModules" path="number_of_working_Module_rating"  name="number_of_working_Module_rating"  class="form-control input-full filled" onkeypress="return isNumber(event)"  />
               	<br>
               	
-              	<label for="smpsCondition" class="smpsCondition">Overall Condition of SMPS Equipment</label>
+              	<label for="smpsCondition" class="smpsCondition"><b>Overall Condition of SMPS Equipment</b></label>
               	 <form:input id="smpsCondition" path="smpsCondition"  name="smpsCondition"  class="form-control input-full filled"  />
                 <br>
                 
-                <label for="comments" class="comments">Observation/Comments</label>
+                <label for="comments" class="comments"><b>Observation/Comments</b></label>
               	 <form:input id="comments" path="comments"  name="comments"  class="form-control input-full filled"  />
                 <br>
                               
-                <label for="" class="">Photo1 : GPS Accuracy of Photo</label>
-               <input type="file" id="photos"  name="file"  class="form-control input-full filled"  />
+                <label for="" class=""><b>Photo1 : GPS Accuracy of Photo</b></label>
+               <input type="file" id="photos"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br>
                                
-              	<label for="" class="">Photo 2 : GPS Accuracy of Photo</label>
-               <input type="file"  id="photos"  name="file"  class="form-control input-full filled"  />
+              	<label for="" class=""><b>Photo 2 : GPS Accuracy of Photo</b></label>
+               <input type="file"  id="photos"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br>
                               
 				<div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
 					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 
 				</div>

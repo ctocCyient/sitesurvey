@@ -180,7 +180,8 @@ color: #fff!important;
 			<div class="content">
 				<div class="page-inner">
 					<div class="page-header">
-						<h4 class="page-title">Dashboard</h4>						
+						<h4 class="page-title">Dashboard</h4>		
+						<div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${succMsg}</span></div>				
 					</div>
 					<div class="row">
 						<div class="col-sm-6 col-md-3">

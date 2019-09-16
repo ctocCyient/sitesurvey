@@ -40,7 +40,7 @@
 	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">	
 </head>
 	<script type="text/javascript">
-	role=sessionStorage.getItem("role");
+	
 	   if(sessionStorage.getItem("username")==null)
    	{
 		//window.location.href = "/sitesurvey/";
@@ -51,7 +51,7 @@
 	   else
 	   {
 	   role=sessionStorage.getItem("role");
-	   siteId=sessionStorage.getItem("site");
+	   siteId=sessionStorage.getItem("siteId");
 	
 	   }
 	   
@@ -79,7 +79,7 @@ WebFont.load({
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	  $("#siteWiring :input").attr("required",'');
 	  //document.getElementById("accesstypespan").style.display = "none";
 	  //document.getElementById("roadcondspan").style.display = "none";
@@ -91,7 +91,7 @@ $(document).ready(function(){
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
 		 $("input").attr("required", "true");
-		
+		 getSiteWiringDetails(siteId);
 		 $("select").attr("required","true");
 		 $("select option:contains('Select')").attr("disabled","disabled");
 		 document.getElementById("image1spanMSG").style.display = "none";
@@ -145,6 +145,32 @@ else {
 }
 
 
+
+function getSiteWiringDetails(siteId)
+{
+
+	 $.ajax({
+         type: "get",
+         url: "getSiteWiringDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            console.log("fasf"+JSON.stringify(jsonData));
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#id").val(jsonData[0].id);
+            	$("#wiringCondition").val(jsonData[0].wiringCondition);
+            	$("#obsrvcommnts").val(jsonData[0].comments);
+         }
+         }					
+		 }); 
+}
 /*function validate(){
 	var accesstype=document.getElementById("accesstype").value;
 	var roadcond=document.getElementById("condition").value;
@@ -344,13 +370,13 @@ label {
 		</div>
 
 		<!-- Sidebar -->
-<div id="execSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-  <span class="isa_success" style="color:green;font-size:14px;">${status}</span>
+<%--   <span class="isa_success" style="color:green;font-size:14px;">${status}</span> --%>
 			<h3 class="text-center">Power Wiring</h3>
 			<span id="image1span" style="color:red">*Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. *</span>
 			<span id="image1spanMSG" style="color:red">*Please Upload an Image*</span>
@@ -361,7 +387,7 @@ label {
 	          <div id="exchangeExistDiv">
 	          <form:hidden path="id"/>
 					<div class="form-group">
-					<label for="siteid" class="placeholder">Site ID</label>
+					<label for="siteid" class="placeholder"><b>Site ID</b></label>
 	                <form:input id="siteid" path="siteid.siteid" name="siteid" class="form-control input-border "  />	
 	                         
 	            	</div>
@@ -370,7 +396,7 @@ label {
 
 				  <div id="exchangeExistDiv" >
 					<div class="form-group">
-					<label for="condition" class="placeholder">Condition</label>
+					<label for="condition" class="placeholder"><b>Condition</b></label>
 	                <form:select id="wiringCondition"  path="wiringCondition" name="wiringCondition" class="form-control input-border " >
 	                <form:option  value="" >Select</form:option>
 	                <form:option value="Notassessed">Not assessed</form:option>
@@ -387,7 +413,7 @@ label {
 				
 				<div id="exchangeExistDiv">
 					<div class="form-group">
-					<label for="obsrvcommnts" class="placeholder">Observations/Comments</label>
+					<label for="obsrvcommnts" class="placeholder"><b>Observations/Comments</b></label>
 	                <form:input id="obsrvcommnts" path="comments" name="obsrvcommnts" class="form-control input-border " />	   
 	                <!-- <span id="commntsspan" style="color:red">*Please Enter Comments*</span>-->                  
 	            	</div>
@@ -395,7 +421,7 @@ label {
                 
                 <div id="exchangeExistDiv">
 					<div class="form-group">
-					<label for="photo1up" class="placeholder">Upload Image1(Photo 1) </label>
+					<label for="photo1up" class="placeholder"><b>Photo 1</b> </label>
 	                <input type="file" id="site_photo1" name="file" accept="image/*" onchange="return ValidateFileUpload(this.id)" class="form-control input-border" />	
 	                         
 	            	</div>
@@ -403,7 +429,7 @@ label {
             	</div>
 				 <div id="exchangeExistDiv">
 					<div class="form-group">
-					<label for="photo2up" class="placeholder">Upload Image2(Photo 2) </label>
+					<label for="photo2up" class="placeholder"><b>Photo 2</b> </label>
 	                <input type="file" id="site_photo1" name="file" accept="image/*" onchange="return ValidateFileUpload(this.id)" class="form-control input-border" />	
 	                <!--<span id="image2sspan" style="color:red">*Please Upload Image*</span> -->              
 	            	</div>

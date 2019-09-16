@@ -7,6 +7,11 @@
 <head >
 
 </head>
+<script>
+
+$('#currentUser')[0].innerHTML=sessionStorage.getItem("username");
+
+</script>
 <body>
 
 <div class="sidebar"  >
@@ -22,6 +27,7 @@
 						<div class="info">
 							<a data-toggle="collapse"  aria-expanded="">
 								<span>
+								<span class="user-level1" id="currentUser"></span>
 									<span class="user-level">Logged in as</span>
 									<span class="user-level">Field Technician</span>									
 								</span>

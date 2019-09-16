@@ -18,7 +18,6 @@ public class Survey_Team_PPE implements Serializable {
 
 	private static final long serialVersionUID = -3465813074586302847L;
 
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -44,6 +43,9 @@ public class Survey_Team_PPE implements Serializable {
 
 	@Column(name="Photo_Technician_Team", unique = false, nullable = false, length = 16777215)
 	private byte[] photoTechnicianTeam;
+	
+	@Column(name="Photo_Technician_Team_Name")
+	private String photoTechnicianTeamName;
 		
 	@Column(name="Rigger_Name")
 	private String rigger_Name;
@@ -87,6 +89,30 @@ public class Survey_Team_PPE implements Serializable {
 
 	public void setPhotoSurveyTeam(byte[] photoSurveyTeam) {
 		this.photoSurveyTeam = photoSurveyTeam;
+	}
+
+	public String getPhotoSurveyTeamName() {
+		return photoSurveyTeamName;
+	}
+
+	public void setPhotoSurveyTeamName(String photoSurveyTeamName) {
+		this.photoSurveyTeamName = photoSurveyTeamName;
+	}
+
+	public String getPhotoRiggerTeamName() {
+		return photoRiggerTeamName;
+	}
+
+	public String getPhotoTechnicianTeamName() {
+		return photoTechnicianTeamName;
+	}
+
+	public void setPhotoTechnicianTeamName(String photoTechnicianTeamName) {
+		this.photoTechnicianTeamName = photoTechnicianTeamName;
+	}
+
+	public void setPhotoRiggerTeamName(String photoRiggerTeamName) {
+		this.photoRiggerTeamName = photoRiggerTeamName;
 	}
 
 	public String getTechnicianName() {

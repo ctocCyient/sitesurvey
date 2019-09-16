@@ -5,10 +5,10 @@
 
 <% String jsondetails=(String)request.getParameter("ticketDetails"); 
    System.out.println("json>>>>>>>"+jsondetails);%>
-<%-- <% String status=(String)request.getAttribute("status"); %> --%>
+<% String status=(String)request.getAttribute("status"); %>
 
-<%-- <% String btnClick=(String)request.getAttribute("btnClick");  --%>
-<%--   System.out.println("btnclck>>>>>>>"+btnClick);%> --%>
+<% String btnClick=(String)request.getAttribute("btnClick"); 
+  System.out.println("btnclck>>>>>>>"+btnClick);%> 
 <!DOCTYPE html >
 <html lang="en">
 
@@ -18,7 +18,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
-<title>Site Survey</title>
+<title>RFID</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
 	<link href="${mainCss}" rel="stylesheet" />
@@ -35,7 +35,7 @@
 	<script src="${jqueryJs}"></script>
     <script src="${jqueryuiJs}"></script>
     <script src="${validationsJs}"></script>
-       	 <script type="text/javascript">
+      <script type="text/javascript">
 	
    if(sessionStorage.getItem("username")==null) 
    	{ 
@@ -86,76 +86,73 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
-	
-<%-- 	var status='<%=status%>'; --%>
+	var status='<%=status%>';
 
-<%-- 	var btnClick='<%=btnClick%>'; --%>
-// 	//alert(status);
-// 	 if(status=='Saved')
+	var btnClick='<%=btnClick%>';
+	//alert(status);
+	 if(status=='Saved')
 
-//      {
-//                   var nextUrl;
-//               if(btnClick=="Save"){
-//                     nextUrl="/sitesurvey/home";
-//               }
-//               else if(btnClick=="Save & Continue"){
-//                     nextUrl="/sitesurvey/gotosafety";
-//               }
-//               swal({
-//                          //title: 'Are you sure?',
-//                          text: "Details Saved Successfully",
-//                          type: 'info',
-//                          buttons:{
-//                                 confirm: {
-//                                        text : 'Ok',
-//                                        className : 'btn btn-success'
-//                                 }
-//                          }
-//                   }).then((Delete) => {
-//                          if (Delete) {
-//                                 window.location.href = nextUrl;
-//                          }
-//                   });
-//             }
-	
+     {
+                         
+              swal({
+                         //title: 'Are you sure?',
+                         text: "Details Saved and Ticket Closed Succesfully",
+                         type: 'info',
+                         buttons:{
+                                confirm: {
+                                       text : 'Ok',
+                                       className : 'btn btn-success'
+                                }
+                         }
+                  }).then((Delete) => {
+                         if (Delete) {
+                                window.location.href = "/sitesurvey/home";
+                         }
+                  });
+            }
 	
 	
 	$("select option[value='Select']").attr('disabled','disabled');
-	 $("#securityform :input").attr("required", '');
-	$("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
+	//$("#additionalNotes : input").attr("required",'');
+	 $("#additionalNotes :input").attr("required", '');
+	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	$("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
-	
-	var ticketDetails=JSON.parse(jsonDetails);
+	//alert(jsonDetails)
+	var ticketDetails=JSON.parse(JSON.stringify(jsonDetails));
 	//alert(ticketDetails);
-	
-	$("#siteid")[0].value=siteId;
+	//$("#siteid")[0].value=ticketDetails.split(",")[1];
+	//alert(ticketDetails.split(",")[1]);
 	  $("#json")[0].value=ticketDetails;
-	  //alert(siteId);
-	  
-	  getSiteSecurityDetails(siteId);
-	  
+	
+		$("#siteid")[0].value=siteId;
+		  $("#json")[0].value=ticketDetails;
+		  //alert(siteId);
+		  getSiteAdditionalDetails(siteId);
 	
 });
-function getSiteSecurityDetails(siteId){
+
+function getSiteAdditionalDetails(siteId){
 	
 	 $.ajax({
          type: "get",
-         url: "getSecurityDetails",
+         url: "getSiteAdditionalDetails",
          contentType: 'application/json',
          data:{"siteId":siteId},
          datatype: "json",
          success: function(result) {
             jsonData = JSON.parse(result);
+            console.log("jsonDa"+jsonData);
             if(jsonData.length==0)
             {
             	
             }
             else
             {
-            	$("#securityid").val(jsonData[0].id);
-            	$("#obnotes").val(jsonData[0].observations);
-            	$("#securitycondition").val(jsonData[0].securityCondition);
+            	$("#siteaddid").val(jsonData[0].id);
+            	$("#observations").val(jsonData[0].observations);
+            	$("#site_photo1").val(jsonData[0].site_photo1_name);
+            	//$("#securitycondition").val(jsonData[0].securityCondition);
             	
             	
             }
@@ -191,6 +188,7 @@ else {
           }
       }
   }
+
 
 </script>
 <style>
@@ -253,65 +251,56 @@ else {
 		
 	<div class="wrapper wrapper-login">
 	  <div class="container container-login animated fadeIn">
-<%-- 	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${succMsg}</span></div>	<br><br> --%>
-				<h3 class="text-center">Security</h3>
+	 
+				<h3 class="text-center">Additional Details</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
-				<form:form method="post" id="securityform" modelAttribute="Site_Security" action="sitesecurity" enctype="multipart/form-data"   >
-				<form:input type="hidden" path="id" id="securityid" />
-				<form:input type="hidden"  path="" id="json" name="json" />
+				<form:form method="post" id="additionalNotes" modelAttribute="Site_Additional_Notes" action="additionalNotes" enctype="multipart/form-data" onsubmit="return ValiidateForm()">
+				<form:input type="hidden" path="id" id="siteaddid" />
+				<input type="hidden"   id="json" name="json" />
 				<div class="form-group ">
 						<label for="siteid" class="placeholder"><b>Site Id</b>
-						</label>
-						<form:input id="siteid" path="siteid.siteid" class="form-control input-full" readonly="true" />
-					</div>
-				<div class="form-group ">
-						<label for="obnotes" class="placeholder"><b>Observation / Comment - Presence of fence,locks,alarm system, other security</b>
 				
 						</label>
-						
-						<form:input id="obnotes" path="observations" class="form-control input-full"  />				
+						 
+						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full"  readonly="true" />				
+						<form:errors path="siteid.siteid" cssClass="error" />	
+					</div>
+								
+					<div class="form-group ">
+						<label for="observations" class="observations"><b>Observations</b></label>
+						<form:input  id="observations" path="observations" class="form-control input-full"  />				
 						<form:errors path="observations" cssClass="error" />	
 					</div>
-				<div class="form-group ">
-						<label for="securitycondition" class="placeholder"><b>What is the overall security Condition?</b> </label>
-						<form:select id="securitycondition" path="securityCondition"  name="overallconditon"  class="form-control input-full filled" >
-		                <form:option value="Select">Select</form:option>
-		                <form:option value="Not assessed">Not assessed (Note why not assessed in observation)</form:option>
-		                <form:option value="Very Poor">very poor- Fencing,locks,alarm system are non existent/broken</form:option>
-		                <form:option value="Poor">Poor - Fencing,locks,alarm system are in place, need significant work</form:option>
-		                <form:option value="Fair"> Fair - Fencing,locks,alarm systems, need light maintenance</form:option>
-		                <form:option value="Good">Good - Fencing, locks, alarm systems good condition</form:option>
-		                <form:option value="Very Good">Very good - Fencing locks, alarm systems good new condition</form:option>
-		                <form:option value="Not Applicable">Not Applicable</form:option>
-		                </form:select>
-								<form:errors path="securityCondition" cssClass="error" />
-										
-					</div>
 						
+				
 				<div class="form-group ">
-				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
-				<input type="file"   path="security_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
-				<span class="isa_failure" id="image0">${errMsg}</span>
-  				</div>
- 				<div class="form-group ">
-				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b> </label>
-				<input type="file" path="security_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
+				<label for="site_photo2" class="placeholder" ><b>Photo 1 </b></label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
   				</div>
   				
+  				
+				<div class="form-group ">
+				<label for="site_photo1" class="placeholder" ><b>Photo 2 </b></label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="ValidateImage(this.id);"/> 
+					<span class="isa_failure" id="image2">${errMsg}</span>
+  				</div>
+  				
  						<div class="form-action" id="new_submit" >
-				 		<input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #E4002B;color: white;">  
+				 		<input type="submit"  class="btn btn-rounded btn-login" value="Finish Survey" name="btn" style="background-color: #012169;color: white;">  
 					
  						<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				
  				
-				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">  
+<!-- 				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">   -->
 					
  							<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  							</div>
+ 						
  				</form:form>	
 				</div>
-							
+				
+						
 			</div>
 	
    <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
@@ -339,14 +328,13 @@ else {
 <script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
 
 
+<!-- Sweet Alert -->
 
+<script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 <!-- jQuery Sparkline -->
 
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
 
-<!-- Sweet Alert -->
-
-<script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 
 </body>

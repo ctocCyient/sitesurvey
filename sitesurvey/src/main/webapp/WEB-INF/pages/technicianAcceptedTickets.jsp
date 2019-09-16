@@ -92,15 +92,6 @@ color: #fff!important;
 			  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 			  getCount();
 			  tableData();	
-			  
-			  
-// 			  var times = [
-// 					"Accepted",
-// 					"Rejected"
-// 				];
-
-			  
-
 
 		});	
 		
@@ -111,6 +102,7 @@ color: #fff!important;
 		var dataSet=[];
 		 var ticketId;
 		 var ticketType,siteIds;
+		 var selectedSite;
 		 
 		 function getCount(){
 			 var s=sessionStorage.getItem("username");
@@ -149,7 +141,7 @@ color: #fff!important;
                     for(var i=0;i<openTicketsList.length;i++)
          		   {
                     	times.push(openTicketsList[i].siteids.split(','));
-                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids.split(','),openTicketsList[i].ticketDescription]);
+                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids.split(','),openTicketsList[i].ticketDescription,openTicketsList[i].siteFlag]);
 		 		   }
                     
                    
@@ -161,38 +153,57 @@ color: #fff!important;
 					columnDefs: [
 						{
 							targets:1,
-							render: function (data, type, full,meta) {		
+							render: function (data, type, full,meta) {	
+					                  data1 = '<select id="jsonStatusList'+full[0]+'" class="jsonStatusList'+full[0]+'">';
 								
-					                  data1 = '<select id="jsonStatusList" name="jsonStatusList">';
-					                  
-					                
 					                  $.each(times, function (i, item) {	
 					                	 var str = "";
 					                		 str= times[i].toString();
 					                	 var nameArr = str.split(',');
 					                	 for(var j=0;j<nameArr.length;j++){
 					                		 if(meta.row==i){
-						                         data1 += '<option>' + nameArr[j] + '</option>';	
-						                         
+						                         data1 += '<option value='+nameArr[j]+'>' + nameArr[j] + '</option>';		
+
 					                		 }
 					                	 }
 					                	
 					                	 
 					                     
 					                  });
-					                  data1 += '</select>';					                
+					                  data1 += '</select>';		
+								
 					               return data1;
 					            }  
-						  
-						},{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' value='Start Survey' />"}],
-							
+
+						},
+				        {
+			                "targets": [ 3 ],
+			                "visible": false,
+			                "searchable": false
+			            },
+						{ "targets": -1, "data": null, "defaultContent": "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' name='surveyBtn' value='Start Survey' />"},
+// 						{ "targets": -1, "data": null, render: function (a,b,data,d) {
+// 							console.log("data"+data);
+// 							if (data[3] =='-1') {
+// 				                return "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Start Survey' />";
+// 				            }
+// 				            else if (data[3] =='false') {
+// 					                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Resume Survey' />";
+// 					            }
+// 				            else if (data[3] =='true') {
+// 				                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='Finished Survey' />";
+// 				            }
+// 				            }			            
+// 				        }
+						],
 
 			        data: dataSet,
 			        columns: [
 						{title: "Ticket Id" },	
 						{title: "Site Id" },
-						{title: "Ticket Description" },						
-						{title: "Action" ,width:"100px" },
+						{title: "Ticket Description" },	
+						{title: "Site Status" },	
+						{title: "Action" ,width:"280px" },
 						
 			        ]
 			    } );
@@ -230,30 +241,19 @@ color: #fff!important;
 // 			        //$(this).val("default");
 // 			    });
 			 
-			 $('#technicianAcceptedTickets tbody').on('click', '[id*=surveyBtn]','[name*="jsonStatusList"]', function () {
-			
-		            data1 =  table1.row($(this).parents('tr')).data();
-		           var d =  table1.row($(this).parents('tr'))[0][0];
-		           var e= document.getElementsByName('jsonStatusList')[d].value;
-		           sessionStorage.setItem("site", e);
-		           
-		           
+
+			 $('#technicianAcceptedTickets tbody').on('click', '[name*=surveyBtn]', function () {
+
+		            data2 =  table1.row($(this).parents('tr')).data();
+		            ticketId=data2[0];
 		            
-		           
-		            //data3=table1.row($(this).parents('tr'));
-		            console.log('fsaf'+data1);
-		           //console.log( 'ushaaaa'+table1.row( this ).data1() );
-		          
-		              
+		            selectedSite = $("#jsonStatusList"+ticketId+" option:selected").val();
+		       
+
 		            rowIndex = $(this).parent().index();			          
-		            ticketId=data1[0];	
-		            //debugger;
-		            
-		            //siteIds="IND005";
-		            console.log("site"+siteIds);
-		            
+
 		            // window.location.href = '/sitesurvey/siteDetails?ticketId='+ticketId+'&siteId='+siteIds;
-			      alert("asfaf"+siteIds+"fasfasf");
+			      //alert("asfaf"+siteIds+"fasfasf");
 // 		         	$.get("getSiteDetails", {
 // 						siteId : siteIds,
 // 						ticketId : ticketId
@@ -265,52 +265,23 @@ color: #fff!important;
 // 								JSON.stringify(listData));
 // 						$("#form").submit();						
 // 					});
-
+					sessionStorage.setItem("ticketId", ticketId);
+					sessionStorage.setItem("siteId", selectedSite);
 					$.ajax({
 		                type: "get",
 		                url: "getSiteDetails",
 		                contentType: 'application/json',
-		                data:{"siteId":e,"ticketId":ticketId},
+		                data:{"siteId":selectedSite,"ticketId":ticketId},
 		                datatype: "json",
 		                success: function(result) {
 		                    listData = JSON.parse(result);
-		                    
 		                   window.location.href = '/sitesurvey/siteDetails?ticketDetails='+ window.encodeURIComponent(JSON.stringify(listData)); 
 		                }					
 		       		 }); 
       	 		});
 
 			 
-			 $('#technicianAcceptedTickets tbody').on('click', '[id*=assignBtn]', function () {
-		            data1 =  table1.row($(this).parents('tr')).data();
-		            
-		            rowIndex = $(this).parent().index();
-					 rowToDelete= table1.row($(this).parents('tr'));
-		            // alert(data1[0] );
-		           ticketId=data1[0];
-		           //alert(ticketId)
-		           siteId=data1[1];
-		           city=data1[5];
-		           $.ajax({
-		                type: "get",
-		                url: "fetchSiteInformation",
-		                contentType: 'application/json',
-		                datatype: "json", 
-						    data:{"ticketid":ticketId,"siteid":siteId},
-		                success: function(result) {
-		                	alert("Usha"+result);
-		                	jsonarr=JSON.parse(result);
-		                	
-		                	//alert(jsonarr[0]);
-		    	         	window.location.href = '/sitesurvey/fetchtowerinstallation?jsonarr='+jsonarr;
-
-		                	
-		                	
-		                }
-					
-		       		 });
-			 
-          });
+			
 			 
 		}
 			});

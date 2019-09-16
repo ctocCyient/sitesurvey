@@ -3,28 +3,16 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
 	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
-	
-				<script type="text/javascript">
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		   url = "/sitesurvey/";
-		  $( location ).attr("href", url);
-   	}	else {
-		s = sessionStorage.getItem("username");
-		role = sessionStorage.getItem("role");
-		userRegion = sessionStorage.getItem("region");
-		userCity = sessionStorage.getItem("city");
-	}
-	</script>	
-	
 	
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/js/validations.js' />"></script>
@@ -35,7 +23,19 @@
 
 	<!-- Fonts and icons -->
 	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
-		
+					<script type="text/javascript">
+	   if(sessionStorage.getItem("username")==null)
+   	{
+		   url = "/sitesurvey/";
+		  $( location ).attr("href", url);
+   	}	
+	   else {
+			name = sessionStorage.getItem("username");
+			role = sessionStorage.getItem("role");
+			userRegion = sessionStorage.getItem("region");
+			userCity = sessionStorage.getItem("city");
+		}
+	</script>
 		<style type="text/css">
 #openModal {
 	text-align:center;
@@ -88,12 +88,13 @@ max-width:100%;
 	</script>
 	
 	<script >
+	var s;
 	
 		$(document).ready(function() {
 
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 			  $("#managerSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
-			  getCount();
+			 getManagerCount();
 			  tableData();			
 		
 		});	
@@ -101,17 +102,18 @@ max-width:100%;
 		var dataSet=[];
 		 var ticketId;
 		 
-		 function getCount(){
-				
+		 function getManagerCount(){
+			  s=name;
+
 				$.ajax({
 	                type:"get",
 	                url:"getManagerTicketsCount",
 	                contentType: 'application/json',
 	                datatype : "json",
-	                data:{"username":s,"region":userRegion,"city":userCity},
+	                data:{"username":s},
 	                success:function(result) {
 	                	var jsonArr = $.parseJSON(result);
-	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets; 
+	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets;   
 	                	$('#managerAssignedTickets')[0].innerHTML=jsonArr.AssignedTickets;     
 	                	$('#managerClosedTickets')[0].innerHTML=jsonArr.ClosedTickets;     
 	                	$('#managerNotAcceptedTickets')[0].innerHTML=jsonArr.NotAcceptedTickets;     
@@ -119,26 +121,26 @@ max-width:100%;
 	                }
 				});
 			}
+		 
 		
 		function tableData()
 		{					
 			$.ajax({
                 type:"get",
-                url:"getManagerClosedTickets",
+                url:"getManagerAssignedTickets",
                 contentType: 'application/json',
                 datatype : "json",
                 data:{"username":s},
                 success:function(data) {
-                    closedTicketsList = JSON.parse(data);
+                   var assignedTicketsList = JSON.parse(data);
 					
-                    for(var i=0;i<closedTicketsList.length;i++)
+                    for(var i=0;i<assignedTicketsList.length;i++)
          		   {
-                    	dataSet.push([closedTicketsList[i].ticketNum,closedTicketsList[i].siteid,closedTicketsList[i].technicianName,closedTicketsList[i].status]);
+                    	dataSet.push([assignedTicketsList[i].ticketNum,assignedTicketsList[i].siteids,assignedTicketsList[i].technicianName,assignedTicketsList[i].status]);
          			   
          		   }
-                   
                     
-			 var table1=$('#closedTickets').DataTable({
+			 var table1=$('#managerAssignedTable').DataTable({
 					destroy:true,
 					language: {
 					  emptyTable: "No Data Available"
@@ -147,12 +149,10 @@ max-width:100%;
 			        columns: [
 						{title: "Ticket Id" },
 						{title: "Site Id" },
-						{title: "Technician Name" },
-						{title: "Status" },	
+						{title: "Assigned To" },
+						{title: "Status"}
 			        ]
-			    } );
-				
-
+			    });
 		}
 			});
 		}
@@ -222,7 +222,8 @@ max-width:100%;
 					</div>
 					
 					<div class="row">
-						<div class="col-sm-6 col-md-3">
+						
+					<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round" >
 								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="cursor:pointer;">
 									<div class="row align-items-center" >
@@ -233,8 +234,8 @@ max-width:100%;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category" >Open</p>
-												<h4 class="card-title" id="managerOpenTickets" ></h4>
+												<p class="card-category">Open</p>
+												<h4 class="card-title" id="managerOpenTickets"></h4>
 											</div>
 										</div>
 									</div>
@@ -243,7 +244,7 @@ max-width:100%;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerAssignedTickets'" style="cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerAssignedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
@@ -252,8 +253,8 @@ max-width:100%;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category">Assigned</p>
-												<h4 class="card-title" id="managerAssignedTickets"></h4>
+												<p class="card-category"  style="color:#ffffff;">Assigned</p>
+												<h4 class="card-title" id="managerAssignedTickets"  style="color:#ffffff;"></h4>
 											</div>
 										</div>
 									</div>
@@ -262,7 +263,7 @@ max-width:100%;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerClosedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerClosedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
@@ -271,8 +272,8 @@ max-width:100%;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category"  style="color:#ffffff;">Closed</p>
-												<h4 class="card-title" id="managerClosedTickets"  style="color:#ffffff;"></h4>
+												<p class="card-category">Closed</p>
+												<h4 class="card-title" id="managerClosedTickets"></h4>
 											</div>
 										</div>
 									</div>
@@ -290,8 +291,8 @@ max-width:100%;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category">Not Accepted</p>
-												<h4 class="card-title" id="managerNotAcceptedTickets"></h4>
+												<p class="card-category" >Not Accepted</p>
+												<h4 class="card-title" id="managerNotAcceptedTickets"  ></h4>
 											</div>
 										</div>
 									</div>
@@ -299,8 +300,10 @@ max-width:100%;
 							</div>
 						</div>
 						
-					</div>
 					
+						
+					
+					</div>
 					<div class="row">
 
 							<div class="col-md-12">
@@ -310,7 +313,7 @@ max-width:100%;
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">
-										<table id="closedTickets" style="width:100%" role="row" class="display table table-striped table-hover"   >
+										<table id="managerAssignedTable" style="width:100%" role="row" class="display table table-striped table-hover"   >
 											
 										</table>
 									</div>

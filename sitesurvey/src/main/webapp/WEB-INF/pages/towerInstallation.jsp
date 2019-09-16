@@ -6,8 +6,10 @@
 <% String jsondetails=(String)request.getParameter("jsonarr"); 
    System.out.println("json>>>>>>>"+jsondetails);%>
 <% String ticketId=(String)request.getParameter("ticketid"); %>
-<% String ticketType=(String)request.getParameter("ticketType"); %>
-<% String ticketStatus=(String)request.getParameter("ticketStatus"); %>
+<%-- <% String status=(String)request.getAttribute("status"); --%>
+<%-- System.out.println("sdgsdsdh>>>>>>>"+status);%> --%>
+<%-- <% String btnClick=(String)request.getAttribute("btnClick");  --%>
+<%--   System.out.println("btnclck>>>>>>>"+btnClick);%> --%>
 
 <!DOCTYPE html >
 <html lang="en">
@@ -18,7 +20,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
-<title>RFID</title>
+<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
 	<link href="${mainCss}" rel="stylesheet" />
@@ -36,6 +38,24 @@
     <script src="${jqueryuiJs}"></script>
     <script src="${validationsJs}"></script>
      
+     
+     	 <script type="text/javascript">
+	
+   if(sessionStorage.getItem("username")==null) 
+   	{ 
+		   url = "/sitesurvey/"; 
+		      $( location ).attr("href", url);
+  	}
+  
+ 	   else 
+ 		   { 
+ 		  role=sessionStorage.getItem("role"); 
+ 			siteId=sessionStorage.getItem("siteId");
+ 			ticketId=sessionStorage.getItem("ticketId");
+		   } 
+
+ </script> 
+ 
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
@@ -71,19 +91,91 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
+<%-- 	var status='<%=status%>'; --%>
+
+<%-- 	var btnClick='<%=btnClick%>'; --%>
+// 	//alert(status);
+// 	 if(status=='Saved')
+
+//      {
+//                   var nextUrl;
+//               if(btnClick=="Save"){
+//                     nextUrl="/sitesurvey/home";
+//               }
+//               else if(btnClick=="Save & Continue"){
+//                     nextUrl="/sitesurvey/gotositesecurity";
+//               }
+//               swal({
+//                          //title: 'Are you sure?',
+//                          text: "Details Saved Successfully",
+//                          type: 'info',
+//                          buttons:{
+//                                 confirm: {
+//                                        text : 'Ok',
+//                                        className : 'btn btn-success'
+//                                 }
+//                          }
+//                   }).then((Delete) => {
+//                          if (Delete) {
+//                                 window.location.href = nextUrl;
+//                          }
+//                   });
+//             }
+	
+	
+	$("select option[value='Select']").attr('disabled','disabled');
+	 $("#towerInstallationForm :input").attr("required", '');
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
+	 $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
 	
 	var ticketDetails=JSON.stringify(jsonDetails);
 	//alert(ticketDetails);
-	$("#siteid")[0].value=jsonDetails.split(",")[1];
+	var sid=siteId;
+	$("#siteid")[0].value=siteId;
 	$("#json")[0].value=ticketDetails;
-	  
+	getTowerInstallationDetails(sid);  
+	
 });
 
+function getTowerInstallationDetails(sid){
+	
+    $.ajax({
+        type: "get",
+        url: "getTowerDetails",
+        contentType: 'application/json',
+		    data:{"siteid":sid},
+        success: function(result) {
+        	//alert(result)
+        	
+       towerjsonData=JSON.parse(result);
+        console.log("json"+towerjsonData);
+        if(towerjsonData.length!=0){
+        	
+        	$("#tid")[0].value=towerjsonData[0].id;
+        	$("#towertype")[0].value=towerjsonData[0].towerType;
+        	$("#obnotes")[0].value=towerjsonData[0].observationNotes;
+        	$("#visualinspection1")[0].value=towerjsonData[0].virtualInspection;
+        	$("#visualinspection2")[0].value=towerjsonData[0].virtualInspection2;
+        	$("#towercondition")[0].value=towerjsonData[0].overallconditon;
+        	$("#ticomments")[0].value=towerjsonData[0].comments;
+        	$("#tirfantennae")[0].value=towerjsonData[0].noofRFAntennas;
+        	$("#timwantennae")[0].value=towerjsonData[0].noofMWAntenna;
+        	$("#tirrh")[0].value=towerjsonData[0].noofRRH;
+        	
+        	
+        	
+        }
+        
+        	
+        	
+        }
+	
+		 });
+}
 
-function ValidateImage(id){
+
+ function ValidateImage(id){
 		  var fuData = document.getElementById(id);
       var FileUploadPath = fuData.value;
 //To check if user upload any file
@@ -109,7 +201,27 @@ else {
              document.getElementById(id).value="";
           }
       }
-  }
+  } 
+  
+  
+/*   
+  function ValidateImage(id){
+	  alert(id);
+	  if( document.getElementById(id).files.length == 0 ){
+	        console.log("no files selected");
+	        $("#isa_failure")[0].innerHTML=" Please upload the image";  
+	    }
+
+		//var formData = new FormData();
+	    //formData.append('file', browse.files[0]);    
+	    var fileType = id.files[0]['type'];
+	    alert("filetype"+fileType)
+	    var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+	    if ($.inArray(fileType, validImageTypes) < 0) {
+	     // invalid file type code goes here.
+	    $("#isa_failure")[0].innerHTML=" Uploaded file Must be Image format";    
+		 }
+  } */
 
 </script>
 <style>
@@ -166,21 +278,27 @@ else {
 		</div>
 
 		<!-- Sidebar -->
-<div id="execSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 	<div class="wrapper wrapper-login">
 	  <div class="container container-login animated fadeIn">
-	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${succMsg}</span></div>	<br><br>
+<%-- 	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${succMsg}</span></div>	<br><br> --%>
 				<h3 class="text-center">Tower Audit</h3>
+				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				<form:form method="post" id="towerInstallationForm" modelAttribute="Tower_Installation" action="towerinstallation" enctype="multipart/form-data"   >
 				
-				<form:input type="hidden" path="siteid.siteid" id="siteid" />
+				<form:input type="hidden" path="id" id="tid" />
 				<form:input type="hidden"  path="" id="json" name="json" />
+				<div class="form-group ">
+						<label for="siteid" class="placeholder"><b>Site Id</b>
+						</label>
+						<form:input id="siteid" path="siteid.siteid" class="form-control input-full" readonly="true" />
+					</div>
 				<div class="login-form">			
 					<div class="form-group ">
-						<label for="towertype" class="placeholder">Tower Type</label>
+						<label for="towertype" class="placeholder"><b>Tower Type</b></label>
 						<form:select id="towertype" path="towerType"  name="towerType"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="GBT">GBT</form:option>
@@ -192,25 +310,25 @@ else {
 		                </form:select>			
 					</div>
 					<div class="form-group ">
-						<label for="obnotes" class="placeholder">Observation Notes- Structures corrision,Plinth,cracking/spalling,
-							<br>previous upgrade(metal jackets) or extension to top of structure
+						<label for="obnotes" class="placeholder"><b>Observation Notes- Structures corrision,Plinth,cracking/spalling,
+							<br>previous upgrade(metal jackets) or extension to top of structure</b>
 						</label>
 						<form:input id="obnotes" path="observationNotes" class="form-control input-full"  />				
 						<form:errors path="observationNotes" cssClass="error" />	
 					</div>
 					<div class="form-group ">
-						<label for="visualinspection1" class="placeholder"> Visual inspection:Any subsidence and/or undermining the foundation
+						<label for="visualinspection1" class="placeholder"><b>Visual inspection:Any subsidence and/or undermining the foundation</b>
 						</label>
 						<form:input id="visualinspection1" path="virtualInspection" class="form-control input-full"  />	
 						<form:errors path="virtualInspection" cssClass="error" />				
-					</div>browse
+					</div>
 					<div class="form-group ">
-						<label for="visualinspection2" class="placeholder">Visual inspection:Bent,twisted,cracked or missing members </label>
+						<label for="visualinspection2" class="placeholder"><b>Visual inspection:Bent,twisted,cracked or missing members</b> </label>
 						<form:input id="visualinspection2" path="virtualInspection2" class="form-control input-full"  />
 						<form:errors path="virtualInspection2" cssClass="error" />					
 					</div>
 					<div class="form-group ">
-						<label for="towercondition" class="placeholder">Overall tower condition </label>
+						<label for="towercondition" class="placeholder"><b>Overall tower condition</b> </label>
 						<form:select id="towercondition" path="overallconditon"  name="overallconditon"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Not assessed">Not assessed (Note why not assessed in observation)</form:option>
@@ -225,52 +343,52 @@ else {
 										
 					</div>
 					<div class="form-group ">
-						<label for="ticomments" class="placeholder">Comments on available space for additional antennae </label>
+						<label for="ticomments" class="placeholder"><b>Comments on available space for additional antennae </b></label>
 						<form:input id="ticomments" path="comments" class="form-control input-full"  />	
 						<form:errors path="comments" cssClass="error" />				
 					</div>
 					
 					<div class="form-group ">
-						<label for="tirfantennae" class="placeholder">Number of RF antennae </label>
+						<label for="tirfantennae" class="placeholder"><b>Number of RF antennae</b> </label>
 						<form:input id="tirfantennae" path="noofRFAntennas" class="form-control input-full"  />			
 						<form:errors path="noofRFAntennas" cssClass="error" />		
 					</div>
 					<div class="form-group ">
-						<label for="timwantennae" class="placeholder">Number of MW antennae </label>
+						<label for="timwantennae" class="placeholder"><b>Number of MW antennae </b></label>
 						<form:input id="timwantennae" path="noofMWAntenna" class="form-control input-full"  />	
 						<form:errors path="noofMWAntenna" cssClass="error" />				
 					</div>
 					
 					<div class="form-group ">
-						<label for="tirrh" class="placeholder">Number of RRH(Remote Radio Head)</label>
+						<label for="tirrh" class="placeholder"><b>Number of RRH(Remote Radio Head)</b></label>
 						<form:input id="tirrh" path="noofRRH" class="form-control input-full"  />			
 						<form:errors path="noofRRH" cssClass="error" />		
 					</div>
 					
 							<div class="form-group ">
 				
-				<label for="Upload Image" class="placeholder" >Upload Image </label>
-							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="return ValidateImage(this.id);"  /> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
+							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);" required /> 
 					<span class="isa_failure" id="image0">${errMsg}</span>
   </div>
  	
 				<div class="form-group ">
 				
-				<label for="Upload Image" class="placeholder" >Upload Image2 </label>
-							<input type="file" path="tower_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="return ValidateImage('img2');"/> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b></label>
+							<input type="file" path="tower_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
   		</div>
  	
 				<div class="form-group ">
 				
-				<label for="Upload Image" class="placeholder" >Upload Image3 </label>
-							<input type="file"  path="tower_photo3" class="form-control input-border-bottom" id="img3"   name="file" onchange="return ValidateImage('img3');"  /> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 3</b> </label>
+							<input type="file"  path="tower_photo3" class="form-control input-border-bottom" id="img3"   name="file" onchange="ValidateImage(this.id);"  /> 
 					<span class="isa_failure" id="image2">${errMsg}</span>
 					</div>
 					<div class="form-group ">
 				
-				<label for="Upload Image" class="placeholder" >Upload Image4 </label>
-							<input type="file"  path="tower_photo4" class="form-control input-border-bottom" id="img4"   name="file"  onchange="return ValidateImage('img4');"  /> 
+				<label for="Upload Image" class="placeholder" ><b>Photo 4</b></label>
+							<input type="file"  path="tower_photo4" class="form-control input-border-bottom" id="img4"   name="file"  onchange="ValidateImage(this.id);"  /> 
 					<span class="isa_failure" id="image3">${errMsg}</span>
 					</div>
  
@@ -278,7 +396,7 @@ else {
 		
  					
 				<div class="form-action" id="new_submit" >
-				 <input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #012169;color: white;">  
+				 <input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #E4002B;color: white;">  
 					
  					<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				
@@ -316,7 +434,9 @@ else {
 <!-- jQuery Scrollbar -->
 <script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
 
+<!-- Sweet Alert -->
 
+<script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 <!-- jQuery Sparkline -->
 
