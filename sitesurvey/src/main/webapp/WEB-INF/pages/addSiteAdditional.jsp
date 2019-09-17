@@ -18,7 +18,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
-<title>RFID</title>
+<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
 	<link href="${mainCss}" rel="stylesheet" />
@@ -162,6 +162,7 @@ function getSiteAdditionalDetails(siteId){
 
 
 function ValidateImage(id){
+	var  i=id[id.length-1];
 		  var fuData = document.getElementById(id);
       var FileUploadPath = fuData.value;
 //To check if user upload any file
@@ -173,6 +174,7 @@ function ValidateImage(id){
 //The file uploaded is an image
 if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
 //To Display
+			 $("#image"+i)[0].innerHTML="";
               if (fuData.files && fuData.files[0]) {
                  var reader = new FileReader();
                  reader.onload = function(e) {
@@ -183,7 +185,8 @@ if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension =
          }
 //The file upload is NOT an image
 else {
-             alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+            // alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+              $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
              document.getElementById(id).value="";
           }
       }

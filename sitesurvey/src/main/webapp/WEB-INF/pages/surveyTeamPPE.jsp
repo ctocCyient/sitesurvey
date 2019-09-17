@@ -88,6 +88,7 @@ $(document).ready(function(){
 	 $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	 $("#siteid")[0].value=siteId;
 	  $('#siteid').attr('readonly','readonly');
+	  $("#technicianName,#rigger_Name,#img1,#img2,#img0").attr('required', '');  
 	 getSurveyTeamPPEDetails();
 
 <%-- 	 var status='<%=status%>'; --%>
@@ -155,8 +156,50 @@ function getSurveyTeamPPEDetails()
 }
 
 
+
+function ValidateImage(id){
+	
+	var  i=id[id.length-1];
+		  var fuData = document.getElementById(id);
+      var FileUploadPath = fuData.value;
+//To check if user upload any file
+      if (FileUploadPath == '') {
+          alert("Please upload an image");
+     } else {
+          var Extension = FileUploadPath.substring(
+                  FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+//The file uploaded is an image
+if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
+//To Display
+			 $("#image"+i)[0].innerHTML="";
+              if (fuData.files && fuData.files[0]) {
+                 var reader = new FileReader();
+                 reader.onload = function(e) {
+                     // $('#blah').attr('src', e.target.result);
+                  }
+                 reader.readAsDataURL(fuData.files[0]);
+              }
+         }
+//The file upload is NOT an image
+else {
+           // alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+              $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
+             document.getElementById(id).value="";
+          }
+      }
+  }
+
+
 </script>
 <style>
+.isa_failure{
+    color:red;
+}
+.error {
+ color: #ff0000;
+ font-style: italic;
+ font-weight: bold;
+}
 .login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
     width: 700px;
     background: #fff;
@@ -168,7 +211,6 @@ function getSurveyTeamPPEDetails()
     box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
     border: 1px solid #ebecec;
 }
-
 
 
 </style>
@@ -214,7 +256,7 @@ function getSurveyTeamPPEDetails()
     
 			<h3 class="text-center">PPE(PERSONAL PROTECTIVE EQUIPMENT)</h3>
 				
-			<form:form action="saveSurveyPPE" method="post" modelAttribute="SurveyTeamPPE"  enctype = 'multipart/form-data' >
+			<form:form action="saveSurveyPPE" method="post" modelAttribute="SurveyTeamPPE"  enctype = 'multipart/form-data' id="ppeForm">
 			<div class="login-form">
 			<form:hidden path="id" id="ppeId"/>
 				<label for=siteid class="placeholder"><b>Site Id</b></label>
@@ -229,7 +271,8 @@ function getSurveyTeamPPEDetails()
 				<br>
 				
 				<label for="photoSurveyTeam" class="placeholder"><b>Photo of survey team</b></label>
-				<input type="file"  class="form-control input-border-bottom" name="file" /> 
+				<input type="file"  class="form-control input-border-bottom" name="file" id="img0" onchange="ValidateImage(this.id)"/> 
+				<span class="isa_failure" id="image0">${errMsg}</span>
 				<br>
 				<label for="technicianName" class="placeholder"><b>Technician name/s</b></label> 
 				<form:input id="technicianName" path="technicianName"  name="technicianName"  class="form-control input-full filled"  />
@@ -242,7 +285,8 @@ function getSurveyTeamPPEDetails()
                 <br>
                 
                 <label for="photoTechnicianTeam" class="placeholder"><b>Photo of technician/s</b></label>            
-				<input type="file"  class="form-control input-border-bottom"  name="file"  /> 
+				<input type="file"  class="form-control input-border-bottom"  name="file"  id="img1" onchange="ValidateImage(this.id)"/> 
+				<span class="isa_failure" id="image1">${errMsg}</span>
                 <br>
           
 				<label for="rigger_Name" class="placeholder"><b>Rigger Name/s</b></label>
@@ -253,7 +297,8 @@ function getSurveyTeamPPEDetails()
 				<form:checkboxes items="${riggerPPEList}" path="rigger_Wearing" id="rigger_Wearing"  element="p" name="rigger_Wearing"/><br>
 				<br>
 				<label for="photoRiggerTeam" class="placeholder"><b>Photo of Rigger/s</b></label>
-				<input type="file"  class="form-control input-border-bottom"  name="file" /> 
+				<input type="file"  class="form-control input-border-bottom"  name="file" id="img2" onchange="ValidateImage(this.id)"/> 
+				<span class="isa_failure" id="image2">${errMsg}</span>
 				<br>
 				<div class="form-action">
 					<input type="submit" id="clickBtn" value="Save" class="btn btn-rounded btn-login" name="clickBtn" style="background-color: #E4002B;color: white;">

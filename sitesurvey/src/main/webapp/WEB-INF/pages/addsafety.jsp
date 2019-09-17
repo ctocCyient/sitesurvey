@@ -131,6 +131,37 @@ $(document).ready(function(){
 	
 });
 
+function ValidateImage(id){
+	var i=id[id.length-1];
+	  var fuData = document.getElementById(id);
+  var FileUploadPath = fuData.value;
+//To check if user upload any file
+  if (FileUploadPath == '') {
+      alert("Please upload an image");
+ } else {
+      var Extension = FileUploadPath.substring(
+              FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+//The file uploaded is an image
+if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
+//To Display
+		  $("#image"+i)[0].innerHTML="";
+          if (fuData.files && fuData.files[0]) {
+             var reader = new FileReader();
+             reader.onload = function(e) {
+                 // $('#blah').attr('src', e.target.result);
+              }
+             reader.readAsDataURL(fuData.files[0]);
+          }
+     }
+//The file upload is NOT an image
+else {
+       //  alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+         $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";  
+       document.getElementById(id).value="";
+      }
+  }
+}
+
 
 function getSafetyDetails(siteId)
 {
@@ -423,8 +454,8 @@ function getSafetyDetails(siteId)
   					</div>
   					<div class="form-group ">
 						<label for="Upload Image" class="placeholder" ><b>Photo 7 </b></label>
-						<input type="file" path="safety_photo6"  class="form-control input-border-bottom"  id="img6"  name="file"  onchange="ValidateImage(this.id);"/> 
-						<span class="isa_failure" id="image6">${errMsg}</span>
+						<input type="file" path="safety_photo7"  class="form-control input-border-bottom"  id="img7"  name="file"  onchange="ValidateImage(this.id);"/> 
+						<span class="isa_failure" id="image7">${errMsg}</span>
   					</div>
   				
   				
