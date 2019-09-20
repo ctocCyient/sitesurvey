@@ -432,8 +432,8 @@ label {
 						class="form-control input-full filled" accept="image/*" 
 						onchange="ValidateFileUpload(this.id)" />
 												<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes"  name="photo_1_text_div_radio_update" onclick="upload_files(this)" checked/></div><div class="col-md-2">No<input type="radio"  onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio_update" />
+						<!--  <label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
+						  <input type="radio"  value="Yes"  name="photo_1_text_div_radio_update" onclick="upload_files(this)" checked/></div><div class="col-md-2">No<input type="radio"  onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio_update" />-->
 						</div>
 						</div>
 						</div>
@@ -457,22 +457,24 @@ label {
 
 						</div>
 						</div>
-						<div class="row mt-1">	<div class="col-md-7">
+
+						</div>
+												<div class="row mt-1">	<div class="col-md-7">
 						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
 						  <input type="radio"  value="Yes" id="defaultChecked" name="photo_1_text_div_radio" onclick="upload_files(this)" /></div><div class="col-md-2">No<input type="radio" onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio" checked/>
 						</div>
 						</div>
-						</div>
+						
 <br>
 						 <div id="photo_2_div">
 					<label for="photo_2" class="placeholder" id="picture_2"><b>photo 2</b></label>
 					<input type="file" id="photo_2" name="tag_photo"
 						onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> 
-												<div class="row mt-1">	<div class="col-md-7">
+											<!--  	<div class="row mt-1">	<div class="col-md-7">
 						<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
 						  <input type="radio"  value="Yes" onclick="upload_files(this)" name="photo_2_text_div_radio_update"  checked/></div><div class="col-md-2">No<input type="radio" value="No" onclick="upload_files(this)" name="photo_2_text_div_radio_update" />
-						</div>
+						</div>-->
 						</div>
 						</div>
 <div id="photo_2_text_div">
@@ -486,15 +488,15 @@ label {
 										<input class="btn btn-info" type="button" id="picture_2" onclick="photohover(this);" value="View"/>
 						</div>
 						</div>
-						<div class="row mt-1">	<div class="col-md-7">
+
+						
+						
+						</div>
+											<div class="row mt-1">	<div class="col-md-7">
 						<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
 						  <input type="radio"  value="Yes" onclick="upload_files(this)" name="photo_2_text_div_radio"  /></div><div class="col-md-2">No<input type="radio" value="No" onclick="upload_files(this)" name="photo_2_text_div_radio" checked/>
 						</div>
-						</div>
-						
-						
-						</div>
-						
+						</div>	
 
 <!--  <img id="ItemPreview">-->
 						
