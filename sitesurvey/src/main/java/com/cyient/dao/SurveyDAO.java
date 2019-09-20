@@ -202,5 +202,5 @@ public interface SurveyDAO {
 		@Transactional
 		public List<Site_Safety> getSecurityDetails(String siteId);
 		@Transactional
-		public List<Site_Safety> getSiteAddDetails(String siteId);
+		public List<Site_Additional_Notes> getSiteAddDetails(String siteId);
 }

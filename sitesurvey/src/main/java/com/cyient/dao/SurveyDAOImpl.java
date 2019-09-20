@@ -458,7 +458,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Site_Safety> getSiteAddDetails(String siteId) {
+	public List<Site_Additional_Notes> getSiteAddDetails(String siteId) {
 		// TODO Auto-generated method stub
 		return sessionFactory.getCurrentSession().createQuery("from Site_Additional_Notes where siteid='"+siteId+"'").list();
 	}

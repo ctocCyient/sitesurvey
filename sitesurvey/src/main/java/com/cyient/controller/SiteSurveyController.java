@@ -390,6 +390,7 @@ public class SiteSurveyController {
 			 redirectAttributes.addFlashAttribute("status",status);
 			 model.addObject("ticketDetails",json);
            redirectAttributes.addFlashAttribute("btnClick",action);
+           model.setViewName("redirect:/gotositesecurity");
 /*			Gson gsonBuilder = new GsonBuilder().create();
             String sitesecurityJson = gsonBuilder.toJson(sitesecurity);
             URL url = new URL("http://localhost:8080/SiteSurveyRest/sitesurvey/saveSiteSecurity");
@@ -590,13 +591,24 @@ public class SiteSurveyController {
 		System.out.println("observations"+siteaddtional.getObservations());
 		String action= request.getParameter("btn");
 		try{
-			System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
+			for(int i=0;i<multipart.length;i++)
+			System.out.println(" Multi Part Length"+multipart[i].isEmpty());
+		/*	if(multipart.length==0){
+				
+				List<Site_Additional_Notes> siteAdditionalList=surveyDAO.getSiteAddDetails(siteaddtional.getSiteid().getSiteid());
+				System.out.println("site>>>>>>>>>>>>>>>>>>>>>>>>>> "+(multipart.length==0));
+				siteaddtional.setSite_photo1(siteAdditionalList.get(0).getSite_photo1());
+				siteaddtional.setSite_photo1_name(siteAdditionalList.get(0).getSite_photo1_name());
+				siteaddtional.setSite_photo2(siteAdditionalList.get(0).getSite_photo2());
+				siteaddtional.setSite_photo2_name(siteAdditionalList.get(0).getSite_photo2_name());
+			}else{*/
+			//System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
 			siteaddtional.setSite_photo1(multipart[0].getBytes());
 			siteaddtional.setSite_photo1_name(multipart[0].getOriginalFilename());
 			
 			siteaddtional.setSite_photo2(multipart[1].getBytes());
 			siteaddtional.setSite_photo2_name(multipart[1].getOriginalFilename());
-			
+			/*}*/
 			String status=surveyDAO.storeSiteAdditional(siteaddtional);
 			System.out.println("site additional status............................"+status);
 			 redirectAttributes.addFlashAttribute("status",status);
@@ -658,7 +670,7 @@ public class SiteSurveyController {
                	}
             }*/
 		}catch(Exception e){
-			
+			System.out.println("Exception"+e);
 		}
 		
 		return model;
@@ -710,7 +722,7 @@ public class SiteSurveyController {
 	public String getSiteAdditionalDetails(HttpServletRequest request)
 	{
 		String siteId=request.getParameter("siteId");
-		List<Site_Safety> siteAdditionalList=surveyDAO.getSiteAddDetails(siteId);
+		List<Site_Additional_Notes> siteAdditionalList=surveyDAO.getSiteAddDetails(siteId);
 		Gson gson=new GsonBuilder().create();
 		String siteSafetyJson=gson.toJson(siteAdditionalList);
 		return siteSafetyJson.toString();

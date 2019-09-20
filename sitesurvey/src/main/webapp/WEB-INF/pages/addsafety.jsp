@@ -83,7 +83,7 @@ $(document).ready(function(){
                     nextUrl="/sitesurvey/home";
               }
               else if(btnClick=="Save & Continue"){
-                    nextUrl="/sitesurvey/gotosafety";
+                    nextUrl="/sitesurvey/gotoAdditional";
               }
               swal({
                          //title: 'Are you sure?',
@@ -108,8 +108,9 @@ $(document).ready(function(){
 	 jsonDetails='<%=jsondetails%>';
 //	alert(jsonDetails)
 	var ticketDetails=JSON.parse(JSON.stringify(jsonDetails));
-	var siteId=ticketDetails.split(",")[1];
-	$("#siteid")[0].value=siteId;
+	var siteId="IND005"
+	$("#siteid")[0].value="IND005";
+	
 	  $("#json")[0].value=ticketDetails;
 	  getSafetyDetails(siteId);
 	

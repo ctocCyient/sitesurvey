@@ -84,7 +84,7 @@ $(document).ready(function(){
                     nextUrl="/sitesurvey/home";
               }
               else if(btnClick=="Save & Continue"){
-                    nextUrl="/sitesurvey/gotositesecurity";
+                    nextUrl="/sitesurvey/gotosafety";
               }
               swal({
                          //title: 'Are you sure?',
