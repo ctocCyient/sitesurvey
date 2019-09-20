@@ -33,8 +33,10 @@ function isCharacters(e)
 		 k == 32 ;
 		
 	if(!ok || (e.ctrlKey && e.altKey && e.shiftKey)){
-		e.preventDefault();
+			e.preventDefault();
+		
 	}
+	
 }
 	
 function isNumber(evt) {

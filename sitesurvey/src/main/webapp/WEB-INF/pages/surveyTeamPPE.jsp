@@ -275,7 +275,7 @@ else {
 				<span class="isa_failure" id="image0">${errMsg}</span>
 				<br>
 				<label for="technicianName" class="placeholder"><b>Technician name/s</b></label> 
-				<form:input id="technicianName" path="technicianName"  name="technicianName"  class="form-control input-full filled"  />
+				<form:input id="technicianName" path="technicianName"  name="technicianName"  class="form-control input-full filled"  onkeypress="isCharacters(event)"/>
 				<br>
                
 				<label for="technicianWearing" class="placeholder"><b>Technician/s wearing PPE</b></label><br><br>

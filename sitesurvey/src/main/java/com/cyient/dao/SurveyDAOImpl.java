@@ -1,5 +1,6 @@
 package com.cyient.dao;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -219,19 +220,19 @@ public class SurveyDAOImpl implements SurveyDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<Ticketing> openTicketsData() {
-		return sessionFactory.getCurrentSession().createQuery("FROM Ticketing where status='Open'").list();
+		return sessionFactory.getCurrentSession().createQuery("FROM Ticketing where ticketStatus='Open'").list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> assignedTicketsData() {
-		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='Assigned' or status='Accepted' or status='InProgress'").list();
+		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where ticketStatus='Assigned' or ticketStatus='Accepted' or ticketStatus='InProgress'").list();
 	}
 	
 	
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> historyTicketsData() {
-		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='Closed'").list();
+		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where ticketStatus='Closed'").list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -247,17 +248,17 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Ticketing> managerOpenTickets(String username,String region,String city) {
-		return sessionFactory.getCurrentSession().createQuery("from Ticketing where status='Open' or status='Not Accepted' and region='"+region+"' and city ='"+city+"'").list();	
+		return sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketStatus='Open' or ticketStatus='Not Accepted' and region='"+region+"' and city ='"+city+"'").list();	
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> managerClosedTickets(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='Closed'").list();	
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and ticketStatus='Closed'").list();	
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> managerNotAcceptedTickets(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='Not Accepted'").list();	
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and ticketStatus='Not Accepted'").list();	
 	}
 
 	@SuppressWarnings("unchecked")
@@ -267,17 +268,17 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techAssignedTicketsData(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='Assigned' and technicianId='"+username+"'").list();
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where ticketStatus='Assigned' and technicianId='"+username+"'").list();
 	}	
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techAcceptedTicketsData(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where technicianId='"+username+"' and (status='Accepted' or status='InProgress')").list();
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where technicianId='"+username+"' and (ticketStatus='Accepted' or ticketStatus='InProgress')").list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techClosedTicketsData(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='Closed' and technicianId='"+username+"'").list();
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where ticketStatus='Closed' and technicianId='"+username+"'").list();
 	}
 
 	public String assignTechnician(TechnicianTicketInfo technicianTicket) {
@@ -290,11 +291,13 @@ public class SurveyDAOImpl implements SurveyDAO {
 		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"' and siteid='"+siteId+"'");
 		
 		// System.out.println("Tcoetknknf123"+(Ticketing)q1.list().get(0));
-		 
+		// for(int i=0;i<q1.list().size();i++){
 		 Ticketing ticketing = (Ticketing)q1.list().get(0);		
 		// System.out.println("ticketId"+ticketing.getId());
-		 ticketing.setStatus("Assigned");	
-		 sessionFactory.getCurrentSession().update(ticketing);		
+		 ticketing.setTicketStatus("Assigned");	
+		 
+		 sessionFactory.getCurrentSession().update(ticketing);	
+		// }
 		return "Assigned";
 	}
 
@@ -322,7 +325,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
 		 for(int i=0;i<q1.list().size();i++){
 			 Ticketing ticketing = (Ticketing)q1.list().get(i);
-			 ticketing.setStatus(techStatus);
+			 ticketing.setTicketStatus(techStatus);
 			 ticketing.setComments(commentsData);
 			 ticketing.setRemarks(remarksData);
 		
@@ -336,7 +339,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		 for(int i=0;i<q2.list().size();i++){
 		 TechnicianTicketInfo technicianTicketInfo = (TechnicianTicketInfo)q2.list().get(i);
 		 
-		 technicianTicketInfo.setStatus(techStatus);
+		 technicianTicketInfo.setTicketStatus(techStatus);
 		 technicianTicketInfo.setComments(commentsData);
 		 technicianTicketInfo.setRemarks(remarksData);
 	
@@ -441,7 +444,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<TechnicianTicketInfo> managerAssignedTickets(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and (status='Assigned' or status='Accepted' or status='InProgress')").list();	
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and (ticketStatus='Assigned' or ticketStatus='Accepted' or ticketStatus='InProgress')").list();	
 	}
 
 	@Override
@@ -452,8 +455,9 @@ public class SurveyDAOImpl implements SurveyDAO {
 		
 		 for(int i=0;i<q1.list().size();i++){
 			 Ticketing ticket = (Ticketing)q1.list().get(i);
-				ticket.setSiteFlag("false");
-				ticket.setStatus("InProgress");
+			
+				ticket.setTicketStatus("InProgress");
+				ticket.setSurveyStatus("InProgress");
 	
 				sessionFactory.getCurrentSession().update(ticket);
 		 }
@@ -463,8 +467,9 @@ public class SurveyDAOImpl implements SurveyDAO {
 		
 		 for(int i=0;i<q2.list().size();i++){
 			 TechnicianTicketInfo ticketInfo = (TechnicianTicketInfo)q2.list().get(i);
-				ticketInfo.setSiteFlag("false");
-				ticketInfo.setStatus("InProgress");
+			
+				ticketInfo.setTicketStatus("InProgress");
+				ticketInfo.setSurveyStatus("InProgress");
 	
 				sessionFactory.getCurrentSession().update(ticketInfo);
 		 }
@@ -532,6 +537,34 @@ public class SurveyDAOImpl implements SurveyDAO {
 	@SuppressWarnings("unchecked")
 	public List<Site_Wiring> getPowerWiringDetails(String siteId) {
 		return sessionFactory.getCurrentSession().createQuery("from Site_Wiring where siteid='"+siteId+"'").list();
+	}
+	
+	
+	@Override
+	public String updateClosedSurveyStatus(String ticketId,String siteId) {
+	//	System.out.println("TICKET "+ticketId);
+		
+		Calendar cal = Calendar.getInstance();
+		 Query q = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where siteid ='"+siteId+"' and ticketNum='"+ticketId+"'");
+		 TechnicianTicketInfo technicianTicket = (TechnicianTicketInfo)q.list().get(0);
+		 
+		 technicianTicket.setSurveyStatus("Closed");
+//		 technicianTicket.setClosedDate(cal.getTime());
+//		 technicianTicket.setClosedTime(cal.getTime());
+		
+		 sessionFactory.getCurrentSession().update(technicianTicket);
+		 
+		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"' and siteid ='"+siteId+"'");
+		 Ticketing ticketing = (Ticketing)q1.list().get(0);
+		 
+		 ticketing.setSurveyStatus("Closed");
+//		ticketing.setClosedDate(cal.getTime());
+//		ticketing.setClosedTime(cal.getTime());
+	
+		
+		 sessionFactory.getCurrentSession().update(ticketing);
+		 
+		return "Updated";
 	}
 	
 }

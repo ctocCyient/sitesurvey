@@ -373,27 +373,27 @@ else {
 							<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
-							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);" required /> 
+							<input type="file"  class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);" required /> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
   </div>
  	
 				<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b></label>
-							<input type="file" path="tower_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
+							<input type="file"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image2">${errMsg}</span>
   		</div>
  	
 				<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" ><b>Photo 3</b> </label>
-							<input type="file"  path="tower_photo3" class="form-control input-border-bottom" id="img3"   name="file" onchange="ValidateImage(this.id);"  /> 
+							<input type="file" class="form-control input-border-bottom" id="img3"   name="file" onchange="ValidateImage(this.id);"  /> 
 					<span class="isa_failure" id="image3">${errMsg}</span>
 					</div>
 					<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" ><b>Photo 4</b></label>
-							<input type="file"  path="tower_photo4" class="form-control input-border-bottom" id="img4"   name="file"  onchange="ValidateImage(this.id);"  /> 
+							<input type="file"  class="form-control input-border-bottom" id="img4"   name="file"  onchange="ValidateImage(this.id);"  /> 
 					<span class="isa_failure" id="image4">${errMsg}</span>
 					</div>
  

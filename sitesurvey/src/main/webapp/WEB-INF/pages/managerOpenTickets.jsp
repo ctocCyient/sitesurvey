@@ -189,7 +189,7 @@ color: #fff!important;
 					
                     for(var i=0;i<openTicketsList.length;i++)
          		   {
-                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteid,openTicketsList[i].region,openTicketsList[i].city,openTicketsList[i].status]);
+                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids,openTicketsList[i].region,openTicketsList[i].city,openTicketsList[i].ticketStatus]);
          			   
          		   }
                    

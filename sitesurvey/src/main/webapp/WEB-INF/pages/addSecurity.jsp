@@ -293,12 +293,12 @@ else {
 						
 				<div class="form-group ">
 				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
-				<input type="file"   path="security_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
+				<input type="file"  class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
  				<div class="form-group ">
 				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b> </label>
-				<input type="file" path="security_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
+				<input type="file" class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
   				</div>
   				

@@ -89,7 +89,7 @@ $(document).ready(function(){
 	var status='<%=status%>';
 
 	var btnClick='<%=btnClick%>';
-	//alert(status);
+	
 	 if(status=='Saved')
 
      {
@@ -120,6 +120,7 @@ $(document).ready(function(){
 	 jsonDetails='<%=jsondetails%>';
 	//alert(jsonDetails)
 	var ticketDetails=JSON.parse(JSON.stringify(jsonDetails));
+	$('#selectedTicketId')[0].value=ticketId;
 	//alert(ticketDetails);
 	//$("#siteid")[0].value=ticketDetails.split(",")[1];
 	//alert(ticketDetails.split(",")[1]);
@@ -292,7 +293,7 @@ else {
  						<div class="form-action" id="new_submit" >
 				 		<input type="submit"  class="btn btn-rounded btn-login" value="Finish Survey" name="btn" style="background-color: #012169;color: white;">  
 					
- 						<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
+ 						 <input id="selectedTicketId" name="selectedTicketId" value="" type="hidden"> 
  				
  				
 <!-- 				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">   -->

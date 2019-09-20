@@ -86,6 +86,7 @@ public class SiteSurveyController {
 		return model;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
 
     public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) throws SocketException {
@@ -219,6 +220,7 @@ public class SiteSurveyController {
 	 }
 	
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/fetchSiteInformation", method = RequestMethod.GET)
 	@ResponseBody
 	public String fetchsiteinformation(ModelAndView model,HttpServletRequest request){
@@ -250,7 +252,7 @@ public class SiteSurveyController {
 			BindingResult bir,
 			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
 		
-		ModelMap map= new ModelMap();
+	//	ModelMap map= new ModelMap();
 		
 		 String json=(String) request.getParameter("json");
 		System.out.println("json>>>>------------------------"+json);
@@ -260,7 +262,7 @@ public class SiteSurveyController {
 		String action= request.getParameter("btn");
 		System.out.println("bts value>>>> "+action);
 	//	System.out.println("json>>>>>>>>"+jsonarr);
-		String message = "";
+		//String message = "";
 		if(bir.hasErrors()){
 			System.out.println(" Got error");
 			model.setViewName("towerInstallation");
@@ -511,9 +513,9 @@ public class SiteSurveyController {
 			
 			String status=surveyDAO.storeSiteSafety(sitesafety);
 				System.out.println("dsafety status............................"+status);
-			 redirectAttributes.addFlashAttribute("status",status);
+			// redirectAttributes.addFlashAttribute("status",status);
 			 //model.addObject("ticketDetails",json);
-             redirectAttributes.addFlashAttribute("btnClick",action);
+            // redirectAttributes.addFlashAttribute("btnClick",action);
              if(action.equals("Save")){
          		model.setViewName("redirect:/home");
          		}
@@ -595,7 +597,7 @@ public class SiteSurveyController {
 
 	@RequestMapping(params = "btn",value = "/additionalNotes",  method = RequestMethod.POST)
 	public ModelAndView savesitesafety(@Valid @ModelAttribute("Site_Additional_Notes") Site_Additional_Notes siteaddtional,
-			BindingResult bir,
+			BindingResult bir,@RequestParam("selectedTicketId") String selectedTicketId,
 			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
 		 String json=(String) request.getParameter("json");
 		 System.out.println("json site safety>>>>>>>>>"+json);
@@ -672,12 +674,14 @@ public class SiteSurveyController {
 		}catch(Exception e){
 			
 		}
-		if(action.equals("Save")){
-			model.setViewName("redirect:/home");
-			}
-			else if(action.equals("Save & Continue")){
+		
+		String status=surveyDAO.updateClosedSurveyStatus(selectedTicketId,siteaddtional.getSiteid().getSiteid());
+//		if(action.equals("Finish Survey")){
+//			model.setViewName("redirect:/home");
+//			}
+//			else if(action.equals("Save & Continue")){
 		model.setViewName("redirect:/gotoAdditional");
-			}
+//			}
 		return model;
 	}
 
