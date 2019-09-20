@@ -372,7 +372,8 @@ var jsonData=[];
       			<label for="city" class="placeholder">City</label>
                 <form:select id="city" path="city" name="city" class="form-control input-border"  onchange="getSiteId(this.value);" />
                <br>
-                 <form:hidden id="status" value="Open" path="status" name="status" />                  
+                 <form:hidden id="status" value="Open" path="ticketStatus" name="status" />  
+                 <form:hidden id="surveyStatus" value="Open" path="surveyStatus" name="surveyStatus" />                  
                  <label for="siteId">Site Id</label>
 				<form:select name="siteIds" id="siteIds" class="form-control input-full siteIds"  multiple="true" path="siteid" ></form:select>
 

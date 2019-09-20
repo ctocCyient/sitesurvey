@@ -86,6 +86,7 @@ public class SiteSurveyController {
 		return model;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
 
     public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) throws SocketException {
@@ -219,6 +220,7 @@ public class SiteSurveyController {
 	 }
 	
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/fetchSiteInformation", method = RequestMethod.GET)
 	@ResponseBody
 	public String fetchsiteinformation(ModelAndView model,HttpServletRequest request){
@@ -250,7 +252,7 @@ public class SiteSurveyController {
 			BindingResult bir,
 			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
 		
-		ModelMap map= new ModelMap();
+	//	ModelMap map= new ModelMap();
 		
 		 String json=(String) request.getParameter("json");
 		System.out.println("json>>>>------------------------"+json);
@@ -260,7 +262,7 @@ public class SiteSurveyController {
 		String action= request.getParameter("btn");
 		System.out.println("bts value>>>> "+action);
 	//	System.out.println("json>>>>>>>>"+jsonarr);
-		String message = "";
+		//String message = "";
 		if(bir.hasErrors()){
 			System.out.println(" Got error");
 			model.setViewName("towerInstallation");
@@ -286,7 +288,7 @@ public class SiteSurveyController {
 			
 			System.out.println("tower installation  status............................"+status);
 			 redirectAttributes.addFlashAttribute("status",status);
-			 model.addObject("ticketDetails",json);
+			// model.addObject("ticketDetails",json);
             redirectAttributes.addFlashAttribute("btnClick",action);
 			
 			/*Gson gsonBuilder = new GsonBuilder().create();
@@ -353,6 +355,12 @@ public class SiteSurveyController {
 			        } catch (Exception e) {
 			            System.out.println("Exception in NetClientGet:- " + e);
 			        }
+		if(action.equals("Save")){
+		model.setViewName("redirect:/home");
+		}
+		else if(action.equals("Save & Continue")){
+			model.setViewName("redirect:/gotositesecurity");
+			}
 
 		return model;
 	}
@@ -388,7 +396,7 @@ public class SiteSurveyController {
 			String status=surveyDAO.storeSitesecurity(sitesecurity);
 			System.out.println("site security status............................"+status);
 			 redirectAttributes.addFlashAttribute("status",status);
-			 model.addObject("ticketDetails",json);
+			// model.addObject("ticketDetails",json);
            redirectAttributes.addFlashAttribute("btnClick",action);
            model.setViewName("redirect:/gotositesecurity");
 /*			Gson gsonBuilder = new GsonBuilder().create();
@@ -447,8 +455,12 @@ public class SiteSurveyController {
             }*/
 		}catch(Exception e){
 			
-		}
-		
+		}if(action.equals("Save")){
+			model.setViewName("redirect:/home");
+			}
+			else if(action.equals("Save & Continue")){
+		model.setViewName("redirect:/gotosafety");
+			}
 		return model;
 	}
 	
@@ -502,11 +514,15 @@ public class SiteSurveyController {
 			
 			String status=surveyDAO.storeSiteSafety(sitesafety);
 				System.out.println("dsafety status............................"+status);
-			 redirectAttributes.addFlashAttribute("status",status);
-			 model.addObject("ticketDetails",json);
-             redirectAttributes.addFlashAttribute("btnClick",action);
-			
-             model.setViewName("redirect:/gotosafety");
+			// redirectAttributes.addFlashAttribute("status",status);
+			 //model.addObject("ticketDetails",json);
+            // redirectAttributes.addFlashAttribute("btnClick",action);
+             if(action.equals("Save")){
+         		model.setViewName("redirect:/home");
+         		}
+         		else if(action.equals("Save & Continue")){
+             model.setViewName("redirect:/gotoAdditional");
+         		}
 		/*	Gson gsonBuilder = new GsonBuilder().create();
             String sitesafetyJson = gsonBuilder.toJson(sitesafety);
             URL url = new URL("http://localhost:8080/SiteSurveyRest/sitesurvey/saveSiteSafety");
@@ -576,14 +592,12 @@ public class SiteSurveyController {
 		System.out.println();
 		Site_Additional_Notes sa= new Site_Additional_Notes();	
 		model.addObject("Site_Additional_Notes",sa);
-		model.setViewName("addSiteAdditional");
-		return model;
+		model.setViewName("addSiteAdditional");		return model;
 	}
 
-	@SuppressWarnings("null")
 	@RequestMapping(params = "btn",value = "/additionalNotes",  method = RequestMethod.POST)
 	public ModelAndView savesitesafety(@Valid @ModelAttribute("Site_Additional_Notes") Site_Additional_Notes siteaddtional,
-			BindingResult bir,
+			BindingResult bir,@RequestParam("selectedTicketId") String selectedTicketId,
 			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
 		 String json=(String) request.getParameter("json");
 		 System.out.println("json site safety>>>>>>>>>"+json);
@@ -612,8 +626,7 @@ public class SiteSurveyController {
 			String status=surveyDAO.storeSiteAdditional(siteaddtional);
 			System.out.println("site additional status............................"+status);
 			 redirectAttributes.addFlashAttribute("status",status);
-			 model.addObject("ticketDetails",json);
-           redirectAttributes.addFlashAttribute("btnClick",action);
+			// model.addObject("ticketDetails",json);
 			/*Gson gsonBuilder = new GsonBuilder().create();
             String siteAdditionalJson = gsonBuilder.toJson(siteaddtional);
             URL url = new URL("http://localhost:8080/SiteSurveyRest/sitesurvey/saveSiteAddition");
@@ -673,6 +686,13 @@ public class SiteSurveyController {
 			System.out.println("Exception"+e);
 		}
 		
+		String status=surveyDAO.updateClosedSurveyStatus(selectedTicketId,siteaddtional.getSiteid().getSiteid());
+//		if(action.equals("Finish Survey")){
+//			model.setViewName("redirect:/home");
+//			}
+//			else if(action.equals("Save & Continue")){
+		model.setViewName("redirect:/gotoAdditional");
+//			}
 		return model;
 	}
 
@@ -681,10 +701,10 @@ public class SiteSurveyController {
 	public String fetchTowerDetails(ModelAndView model,HttpServletRequest request){
 		
 		String siteid=request.getParameter("siteid");
-		System.out.println("sid>>>>>>>>>>>>>>>>>."+siteid);
+		//System.out.println("sid>>>>>>>>>>>>>>>>>."+siteid);
 		List<Tower_Installation> list=surveyDAO.fetchTowerDetails(siteid);
 			
-		System.out.println("list>>>>>>>>>>>>>>."+list.get(0).getId());
+		//System.out.println("list>>>>>>>>>>>>>>."+list.get(0).getId());
 		Gson gsonBuilder = new GsonBuilder().create();
         String towerDetailsJson = gsonBuilder.toJson(list);
 		
@@ -697,7 +717,7 @@ public class SiteSurveyController {
 	public String getSecurityDetails(HttpServletRequest request)
 	{
 		String siteId=request.getParameter("siteId");
-		List<Site_Safety> siteSecurityList=surveyDAO.getSecurityDetails(siteId);
+		List<Site_Security> siteSecurityList=surveyDAO.getSecurityDetails(siteId);
 		Gson gson=new GsonBuilder().create();
 		String siteSafetyJson=gson.toJson(siteSecurityList);
 		return siteSafetyJson.toString();

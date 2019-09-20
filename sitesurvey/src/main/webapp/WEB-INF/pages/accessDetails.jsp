@@ -39,8 +39,8 @@
 	
 	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">	
 </head>
-<!--	<script type="text/javascript">
-	role=sessionStorage.getItem("role");
+	<script type="text/javascript">
+	var  siteId;
 	   if(sessionStorage.getItem("username")==null)
    	{
 		//window.location.href = "/sitesurvey/";
@@ -48,18 +48,14 @@
 		   url = "/sitesurvey/";
 		      $( location ).attr("href", url);
    	}
-	   else if(role=="Admin" | role=="SuperAdmin")
-		   {
-		   
-		   }
 	   else
 		   {
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
+		   role=sessionStorage.getItem("role");
+		   siteId=sessionStorage.getItem("siteId");
+		ticketId=sessionStorage.getItem("ticketId");
 		   }
-	   
 
-</script>-->
+</script>
 
 
 		
@@ -82,7 +78,9 @@ WebFont.load({
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
+	  $("#siteAccess :input").attr("required",'');
+	  getSiteAccessDetails(siteId);
 	  //document.getElementById("accesstypespan").style.display = "none";
 	  //document.getElementById("roadcondspan").style.display = "none";
 	  //document.getElementById("commntsspan").style.display = "none";
@@ -91,19 +89,89 @@ $(document).ready(function(){
 	//  getRegions();
 		//getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
-		 $(".isa_success").fadeOut(10000);
+
+		// $(".isa_success").fadeOut(10000);
 		 $("input").attr("required", "true");
+		// $(".isa_success").fadeOut(10000);
+		 //$("input").attr("required", "true");
+		document.getElementById('siteIdInpt').value=siteId;
+		$('#siteIdInpt').prop('readonly', true);
 		
-		 $("select").attr("required","true");
 		 $("select option:contains('Select')").attr("disabled","disabled");
-		
+		 document.getElementById("image1spanMSG").style.display = "none";
+		 document.getElementById("image1span").style.display = "none";
+		 
 });
+
+function getSiteAccessDetails(siteId)
+{
+
+	 $.ajax({
+         type: "get",
+         url: "getSiteAccessDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            console.log("fasf"+JSON.stringify(jsonData));
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#id").val(jsonData[0].id);
+            	$("#accesstype").val(jsonData[0].accessType);
+            	$("#condition").val(jsonData[0].roadCondition);
+            	$("#obsrvcommnts").val(jsonData[0].comments);
+         }
+         }					
+		 }); 
+}
 
 function redirectToOther()
 {
 	window.location.href = "/sitesurvey/siteArea";
 } 
 
+function ValidateFileUpload(id) {
+    var fuData = document.getElementById(id);
+    var FileUploadPath = fuData.value;
+
+//To check if user upload any file
+    if (FileUploadPath == '') {
+    	 document.getElementById("image1spanMSG").style.display ="block";
+
+    } else {
+        var Extension = FileUploadPath.substring(
+                FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+
+//The file uploaded is an image
+
+if (Extension == "gif" || Extension == "png" || Extension == "bmp"
+                || Extension == "jpeg" || Extension == "jpg") {
+
+//To Display
+            if (fuData.files && fuData.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(fuData.files[0]);
+            }
+
+        } 
+
+//The file upload is NOT an image
+else {
+	        document.getElementById("image1span").style.display ="block";
+            document.getElementById(id).value="";
+        }
+    }
+}
 /*function validate(){
 	var accesstype=document.getElementById("accesstype").value;
 	var roadcond=document.getElementById("condition").value;
@@ -170,107 +238,7 @@ label {
     font-size: 13px!important;
 }
 </style>
-<%--   <body  class="login">
 
-    <div class="main-header" style="background-color: #00B1BF;">
-			<!-- Logo Header -->
-			<div class="logo-header">
-				
-				<a href="home" class="logo">
-				
-					<img src="<c:url value='resources/assets/img/logo.png' />" alt="navbar brand" class="navbar-brand">
-				</a>
-				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon">
-						<i class="fa fa-bars"></i>
-					</span>
-				</button>
-				<button class="topbar-toggler more"><i class="fa fa-ellipsis-v"></i></button>
-				<div class="navbar-minimize">
-					<button class="btn btn-minimize btn-rounded">
-						<i class="fa fa-bars"></i>
-					</button>
-				</div>
-			</div>
-			<!-- End Logo Header -->
-
-			<!-- Navbar Header -->
-			<div  id="navbar">	
-			</div>
-			<!-- End Navbar -->
-		</div>
-
-		<!-- Sidebar -->
-<div id="superAdminSidebar">
-</div>
-		<!-- End Sidebar -->
-		
-<div class="wrapper wrapper-login">
-  <div class="container container-login animated fadeIn">
-    <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
-    
-			<h3 class="text-center">ACCESS</h3>
-				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
-			<form action="saveAccess" method="post" modelAttribute="Site_Access" >
-			<div class="login-form">
-			
-				
-				 <br>
-				<label for="AccessType" class="placeholder">Access Type</label>
-				<input id="accesstype" path="accessType" class="form-control input-full filled" />
-				<br>
-				<label for="Condition" class="placeholder">Condition</label>
-				<input id="condition" path="roadCondition" class="form-control input-full filled"     />
-				<br>
-				
-				<label for="ObservationComments" class="placeholder">Observation/Comments</label> 
-				<input id="obsvcommnts" path="comments"  name="obsvcommnts"  class="form-control input-full filled"  />
-				<br>
-               
-				
-               <!-- href="home" -->
-				<div class="form-action">
-					
-<!-- 					<input type="submit" id="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;"> -->
-					<input type="submit" id="submit" value="Save and Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
-				</div>
-			</div>
-			</form>
-		
-		</div>
-</div>
-   <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
-	<script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
-	<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
-	<script src="<c:url value='resources/assets/css/bootstrap.min.css' />"></script>
-	<script src="<c:url value='resources/assets/js/ready.js' />"></script>
-	
-	<!--   Core JS Files   -->
-
-
-<script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
-<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
-<script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
-
-<!-- jQuery UI -->
-
-
-<script src="<c:url value='resources/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
-<script src="<c:url value='resources/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' />"></script>
-
-
-<!-- jQuery Scrollbar -->
-<script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
-
-
-
-<!-- jQuery Sparkline -->
-
-<script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
-
-
-
-</body>  --%>
 <body  class="login">
 
     <div class="main-header" style="background-color: #00B1BF;">
@@ -303,15 +271,16 @@ label {
 		</div>
 
 		<!-- Sidebar -->
-<div id="execSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-  <span class="isa_success" style="color:green;font-size:14px;">${status}</span>
+
 			<h3 class="text-center">Site Access</h3>
-			
+			<span id="image1span" style="color:red">*Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. *</span>
+			<span id="image1spanMSG" style="color:red">*Please Upload an Image*</span>
 			<form:form method="post" action="saveAccess"  id="siteAccess" modelAttribute="Site_Access" enctype="multipart/form-data" >
 			<div class="login-form">	
 
@@ -319,14 +288,14 @@ label {
 	          <div id="exchangeExistDiv">
 	          <form:hidden path="id"/>
 					<div class="form-group">
-					<label for="siteid" class="placeholder">Site ID</label>
-	                <form:input id="siteid" path="siteid.siteid" name="siteid" class="form-control input-border "  />	
+					<label for="siteid" class="placeholder"><b>Site ID</b></label>
+	                <form:input id="siteIdInpt" path="siteid.siteid" name="siteIdInpt"  class="form-control input-border "  />	
 	                         
 	            	</div>
             	</div>
           		  <div id="exchangeExistDiv" >
 					<div class="form-group">
-					<label for="accesstype" class="placeholder">Access Type</label>
+					<label for="accesstype" class="placeholder"><b>Access Type</b></label>
 	                <form:select id="accesstype"  path="accessType" name="accesstype" class="form-control input-border ">
 	                <form:option value="" >Select</form:option>
 	                <form:option value="Road">Road</form:option>
@@ -342,7 +311,7 @@ label {
 
 				  <div id="exchangeExistDiv" >
 					<div class="form-group">
-					<label for="condition" class="placeholder">Road Condition</label>
+					<label for="condition" class="placeholder"><b>Road Condition</b></label>
 	                <form:select id="condition"  path="roadCondition" name="condition" class="form-control input-border " >
 	                <form:option  value="" >Select</form:option>
 	                <form:option value="Notassessed">Not assessed(Note why not assessed in observation)</form:option>
@@ -359,7 +328,7 @@ label {
 				
 				<div id="exchangeExistDiv">
 					<div class="form-group">
-					<label for="obsrvcommnts" class="placeholder">Observations/Comments</label>
+					<label for="obsrvcommnts" class="placeholder"><b>Observations/Comments</b></label>
 	                <form:input id="obsrvcommnts" path="comments" name="obsrvcommnts" class="form-control input-border " />	   
 	                <!-- <span id="commntsspan" style="color:red">*Please Enter Comments*</span>-->                  
 	            	</div>
@@ -367,16 +336,16 @@ label {
                 
                 <div id="exchangeExistDiv">
 					<div class="form-group">
-					<label for="photo1up" class="placeholder">Upload Image1(Photo 1) </label>
-	                <input type="file" id="photo1up" name="file" accept="image/*" class="form-control input-border" />	
+					<label for="photo1up" class="placeholder"><b>Photo 1</b></label>
+	                <input type="file" id="photo1up" name="file" accept="image/*" onchange="return ValidateFileUpload(this.id)" class="form-control input-border" />	
 	                <!--<span id="image1sspan" style="color:red">*Please Upload Image*</span> -->         
 	            	</div>
 	            
             	</div>
 				 <div id="exchangeExistDiv">
 					<div class="form-group">
-					<label for="photo2up" class="placeholder">Upload Image2(Photo 2) </label>
-	                <input type="file" id="photo2up" name="file" accept="image/*" class="form-control input-border" />	
+					<label for="photo2up" class="placeholder"><b>Photo 2</b></label>
+	                <input type="file" id="photo2up" name="file" accept="image/*" onchange="return ValidateFileUpload(this.id)" class="form-control input-border" />	
 	                <!--<span id="image2sspan" style="color:red">*Please Upload Image*</span> -->              
 	            	</div>
 	            
@@ -385,7 +354,7 @@ label {
                  
 				<div class="form-action" id="typeDiv">	
 				    <input type="submit" id="submit" name="clickBtn" value="Save" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-					<input  type="submit" id="submit1" name="clickBtn" value="Save & Continue" class="btn btn-rounded btn-login" onclick="redirectToOther();" style="background-color: #012169;color: white;">
+					<input  type="submit" id="submit1" name="clickBtn" value="Save & Continue" class="btn btn-rounded btn-login"  style="background-color: #012169;color: white;">
 					
 				</div>
 			</div>

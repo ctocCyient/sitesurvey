@@ -246,11 +246,11 @@ label {
 				<label for="Site ID" class="placeholder">Site ID</label>
 				<form:input id="siteid" path="siteid" class="form-control input-full filled" />
 				<br>
-				<label for="latitude" class="placeholder">latitude</label>
+				<label for="latitude" class="placeholder">Latitude</label>
 				<form:input id="latitude" path="latitude" class="form-control input-full filled"     />
 				<br>
 				
-				<label for="longitude" class="placeholder">longitude</label> 
+				<label for="longitude" class="placeholder">Longitude</label> 
 				<form:input id="longitude" path="longitude" autocomplete="new-password" name="longitude"  class="form-control input-full filled"  />
 				<br>
                

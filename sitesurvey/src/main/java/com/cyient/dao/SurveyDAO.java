@@ -16,9 +16,10 @@ import com.cyient.model.Site_Battery_Bank;
 import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
+import com.cyient.model.Site_Wiring;
+import com.cyient.model.Survey_Team_PPE;
 import com.cyient.model.Site_Safety;
 import com.cyient.model.Site_Security;
-import com.cyient.model.Site_Wiring;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
@@ -44,7 +45,11 @@ public interface SurveyDAO {
 	public void addSiteAccess(Site_Access siteacc);
 	
 	@Transactional
+	public void updateSiteAccess(Site_Access upsiteacc);
+	
+	@Transactional
 	public void addSiteArea(Site_Area sitearea);
+	
 	
 	@Transactional
 	public void addSitePowering(Site_Wiring powerwire);
@@ -100,7 +105,8 @@ public interface SurveyDAO {
 
 	@Transactional
 	public List<TechnicianTicketInfo> assignedTicketsData();
-
+	
+	
 	@Transactional
 	public List<TechnicianTicketInfo> historyTicketsData();
 
@@ -166,41 +172,69 @@ public interface SurveyDAO {
 		
 	@Transactional
 	public void addCabinet(String updatetype,Site_Cabinet BB);
-		
+	
+	@Transactional
+	public String saveTowerInstallation(Tower_Installation tower);
 
-	 
-		@Transactional
-		public String saveTowerInstallation(Tower_Installation tower);
+	@Transactional
+	public List<Ticketing> getCustomerlist();
 
-		@Transactional
-		public List<Ticketing> getCustomerlist();
+	@Transactional
+	public String storeSitesecurity(Site_Security ss);
+	
+	@Transactional
+	public String storeSiteSafety(Site_Safety sf);
+	
+	@Transactional
+	public String storeSiteAdditional(Site_Additional_Notes sa);
+	
+	@Transactional
+	public List<Tower_Installation> fetchTowerDetails(String siteid);
+		
+	 @Transactional
+	public void updateSiteDetails(String state,String siteId,String lati,String longi);
 
-		@Transactional
-		public String storeSitesecurity(Site_Security ss);
-		@Transactional
-		public String storeSiteSafety(Site_Safety sf);
-		@Transactional
-		public String storeSiteAdditional(Site_Additional_Notes sa);
-		
-		@Transactional
-		public List<Tower_Installation> fetchTowerDetails(String siteid);
-		
+	 @Transactional
+	public void addSiteSurveyPPE(Survey_Team_PPE surveyTeamPPPE);
+
+	 @Transactional
+	public List<Survey_Team_PPE> getSurveyTeamDetails(String selectedSiteId);
+
 	 @Transactional
 	 public List<Site_SMPS> getSMPSDetails(String siteId);
 	 
 	 @Transactional
 	 public List<Site_Generator> getGeneratorDetails(String siteId);
-	
+	 
+	 @Transactional
+	 public List<Site_Access>  getSiteAccDetails(String siteId);
+	 
+	 @Transactional
+	 public List<Site_Wiring> getPowerWiringDetails(String siteId);
+	 
+	 @Transactional
+	 public List<Site_Area> getSiteArDetails(String siteId);
 	 @Transactional
 	 public List<Site_Battery_Bank> getBB(String Siteid);
 
 	 @Transactional
 	 public List<Site_Cabinet> getCabinet(String Siteid);
 
-		@Transactional
-		public List<Site_Safety> getSafetyDetails(String siteId);
-		@Transactional
-		public List<Site_Safety> getSecurityDetails(String siteId);
-		@Transactional
-		public List<Site_Additional_Notes> getSiteAddDetails(String siteId);
+	 @Transactional
+	public List<TechnicianTicketInfo> managerAssignedTickets(String username);
+
+	 @Transactional
+	public String updateSiteStatus(String siteId,String ticketId);
+
+	@Transactional
+	public List<Site_Safety> getSafetyDetails(String siteId);
+	
+	@Transactional
+	public List<Site_Security> getSecurityDetails(String siteId);
+	
+	@Transactional
+	public List<Site_Additional_Notes> getSiteAddDetails(String siteId);
+
+	@Transactional
+	public String updateClosedSurveyStatus(String ticketId, String siteId);
 }

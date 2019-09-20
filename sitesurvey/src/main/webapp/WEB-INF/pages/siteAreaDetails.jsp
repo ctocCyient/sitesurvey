@@ -38,8 +38,9 @@
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 	
 	<link rel="stylesheet" href="<c:url value='resources/css/jquery-ui.css' />">	
-	<!--<script type="text/javascript">
-	role=sessionStorage.getItem("role");
+	
+<script type="text/javascript">	   
+
 	   if(sessionStorage.getItem("username")==null)
    	{
 		//window.location.href = "/sitesurvey/";
@@ -47,18 +48,13 @@
 		   url = "/sitesurvey/";
 		      $( location ).attr("href", url);
    	}
-	   else if(role=="Admin" | role=="SuperAdmin")
-		   {
-		   
-		   }
 	   else
-		   {
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-		   }
-	   
-
-</script>-->
+	   {
+	   role=sessionStorage.getItem("role");
+	   siteId=sessionStorage.getItem("siteId");
+	
+	   }
+</script>
 
 
 		
@@ -79,16 +75,21 @@ WebFont.load({
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 
 	//  getRegions();
 		//getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
 		 $("input").attr("required", "true");
-			
+		 $("#siteArea :input").attr("required",'');
+		 getSiteAreaDetails(siteId);
 		 $("select").attr("required","true");
 		 $("select option:contains('Select')").attr("disabled","disabled");
+		 document.getElementById("image1spanMSG").style.display = "none";
+		 document.getElementById("image1span").style.display = "none";
+		 document.getElementById('siteid').value=siteId;
+	     $('#siteid').prop('readonly', true);
 });
 
 
@@ -97,6 +98,71 @@ function redirectToOther()
 	window.location.href = "/sitesurvey/siteWiring";
 } 
 
+function ValidateFileUpload(id) {
+    var fuData = document.getElementById(id);
+    var FileUploadPath = fuData.value;
+
+//To check if user upload any file
+    if (FileUploadPath == '') {
+    	 document.getElementById("image1spanMSG").style.display ="block";
+
+    } else {
+        var Extension = FileUploadPath.substring(
+                FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+
+//The file uploaded is an image
+
+if (Extension == "gif" || Extension == "png" || Extension == "bmp"
+                || Extension == "jpeg" || Extension == "jpg") {
+
+//To Display
+            if (fuData.files && fuData.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(fuData.files[0]);
+            }
+
+        } 
+
+//The file upload is NOT an image
+else {
+	        document.getElementById("image1span").style.display ="block";
+            document.getElementById(id).value="";
+        }
+    }
+}
+
+
+function getSiteAreaDetails(siteId)
+{
+
+	 $.ajax({
+         type: "get",
+         url: "getSiteAreaDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteId},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            console.log("fasf"+JSON.stringify(jsonData));
+            if(jsonData.length==0)
+            {
+            	
+            }
+            else
+            {
+            	$("#id").val(jsonData[0].id);
+            	$("#siteCondition").val(jsonData[0].siteCondition);
+            	
+            	$("#obsrvcommnts").val(jsonData[0].comments);
+         }
+         }					
+		 }); 
+}
 
 
 </script>
@@ -243,26 +309,27 @@ label {
 		</div>
 
 		<!-- Sidebar -->
-<div id="superAdminSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-            <span class="isa_success" style="color:green;font-size:14px;">${status}</span>
+<%--             <span class="isa_success" style="color:green;font-size:14px;">${status}</span> --%>
 			<h3 class="text-center">Site Area</h3>
-			
+			<span id="image1span" style="color:red">*Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. *</span>
+			<span id="image1spanMSG" style="color:red">*Please Upload an Image*</span>
 			<form:form method="post" action="saveArea" modelAttribute="Site_Area" id="siteArea"  enctype="multipart/form-data">
 			<div class="login-form">	
 			<form:hidden path="id"/>
 					<div class="form-group">
-					<label for="siteid" class="placeholder">Site ID</label>
+					<label for="siteid" class="placeholder"><b>Site ID</b></label>
 	                <form:input id="siteid" path="siteid.siteid" name="siteid" class="form-control input-border" />	                
 	            	</div>
  
             	
 					<div class="form-group">
-					<label for="siteCondition">Condition Of The Site</label>
+					<label for="siteCondition"><b>Condition Of The Site</b></label>
 	                <form:select id="siteCondition" path="siteCondition" name="siteCondition" class="form-control">
 	                <form:option value="">Select</form:option>
 	                <form:option value="Not assessed">Not assessed (Note why not assessed in observation)</form:option>
@@ -277,13 +344,13 @@ label {
 				
 			
 					<div class="form-group">
-					<label for="obsrvcommnts" class="placeholder">Observations/Comments</label>
+					<label for="obsrvcommnts" class="placeholder"><b>Observations/Comments</b></label>
 	                <form:input id="obsrvcommnts" path="comments" name="obsrvcommnts" class="form-control input-border"/>	                
 	            	</div>
                 
 					<div class="form-group">
-					<label for="photo1up" class="placeholder">Upload Image1(Photo 1) </label>
-	                <input type="file" id="photo1up" name="file" accept="image/*"  class="form-control input-border"/>	                
+					<label for="photo1up" class="placeholder"><b>Photo 1</b></label>
+	                <input type="file" id="photo1up" name="file" accept="image/*"  onchange="return ValidateFileUpload(this.id)"  class="form-control input-border"/>	                
 	            
 	            
             	</div>
@@ -291,7 +358,7 @@ label {
                  
 				<div class="form-action" id="typeDiv">	
 				    <input type="submit" id="submit" name="clickBtn" value="Save"  class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-					<input  type="submit" id="submit1" name="clickBtn" value="Save & Continue" onclick="redirectToOther();" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input  type="submit" id="submit1" name="clickBtn" value="Save & Continue"class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 					
 				</div>
 			</div>

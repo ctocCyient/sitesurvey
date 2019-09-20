@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,13 +53,23 @@ public class ManagerFTController {
 		System.out.println("ManagerFTController()");
 		 
 	}
+	
+	   Gson gsonBuilder = new GsonBuilder().create();
 
 	@Autowired
 	private SurveyDAO surveyDAO;
+	
+	
 		
 	 @RequestMapping(value = "/managerOpenTickets")
 		public ModelAndView managerOpenTickets(ModelAndView model) throws IOException {
 			model.setViewName("managerOpenTickets");
+			return model;
+		}
+	 
+	 @RequestMapping(value = "/managerAssignedTickets")
+		public ModelAndView managerAssignedTickets(ModelAndView model) throws IOException {
+			model.setViewName("managerAssignedTickets");
 			return model;
 		}
 	 
@@ -91,23 +103,27 @@ public class ManagerFTController {
 				List<Ticketing> listOpen =  surveyDAO.managerOpenTickets(username,region,city);   
 				Set ticketSet = new HashSet<Object>();
 				 listOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-			      List<TechnicianTicketInfo> listClosed = surveyDAO.managerClosedTickets(username);
+				 List<TechnicianTicketInfo> listAssigned = surveyDAO.managerAssignedTickets(username);
 			      Set ticketSet1 = new HashSet<Object>();
-			      listClosed.removeIf(p -> !ticketSet1.add(p.getTicketNum()));
-			      List<TechnicianTicketInfo> listNotAccepted = surveyDAO.managerNotAcceptedTickets(username);
+			      listAssigned.removeIf(p -> !ticketSet1.add(p.getTicketNum()));
+			      List<TechnicianTicketInfo> listClosed = surveyDAO.managerClosedTickets(username);
 			      Set ticketSet2 = new HashSet<Object>();
-					listNotAccepted.removeIf(p -> !ticketSet2.add(p.getTicketNum()));
+			      listClosed.removeIf(p -> !ticketSet2.add(p.getTicketNum()));
+			      List<TechnicianTicketInfo> listNotAccepted = surveyDAO.managerNotAcceptedTickets(username);
+			      Set ticketSet3 = new HashSet<Object>();
+					listNotAccepted.removeIf(p -> !ticketSet3.add(p.getTicketNum()));
 
 			     
 				   JSONObject countData=new JSONObject();
 				   countData.put("OpenTickets",listOpen.size());
+				   countData.put("AssignedTickets",listAssigned.size());
 				   countData.put("ClosedTickets",listClosed.size());
 				   countData.put("NotAcceptedTickets",listNotAccepted.size());
 				   System.out.println(countData);			   
 			          return countData.toString();
 			}
 		 
-		 @SuppressWarnings("unchecked")
+		 @SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping(value="getManagerOpenTickets", method = RequestMethod.GET)
 		    @ResponseBody
 		    public String getManagerTotalTickets(ModelAndView model,HttpServletRequest request) {
@@ -126,7 +142,26 @@ public class ManagerFTController {
 		        	   String openJson = gsonBuilder.toJson(listOpen);
 			              return openJson.toString();
 		    }
+		    
+		    
+		    @SuppressWarnings({ "unchecked", "rawtypes" })
+			@RequestMapping(value="getManagerAssignedTickets", method = RequestMethod.GET)
+			    @ResponseBody
+			    public String getManagerAssignedTickets(ModelAndView model,HttpServletRequest request) {
+					String username=request.getParameter("username");
+					
+					System.out.println("USER"+username);
+
+					List<TechnicianTicketInfo> listAssigned = surveyDAO.managerAssignedTickets(username);
+					Set ticketSet = new HashSet<Object>();
+					listAssigned.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+
+				
+			        	   String assignedJson = gsonBuilder.toJson(listAssigned);
+				              return assignedJson.toString();
+			    }
 			
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@RequestMapping(value="getManagerNotAcceptedTickets", method = RequestMethod.GET)
 		    @ResponseBody
 		    public String getManagerNotAcceptedTickets(ModelAndView model,HttpServletRequest request) {
@@ -136,9 +171,7 @@ public class ManagerFTController {
 				List<TechnicianTicketInfo> listNotAccepted = surveyDAO.managerNotAcceptedTickets(username);
 				Set ticketSet = new HashSet<Object>();
 				listNotAccepted.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-
-				  	   Gson gsonBuilder = new GsonBuilder().create();
-		        	   String notAcceptedJson = gsonBuilder.toJson(listNotAccepted);
+				String notAcceptedJson = gsonBuilder.toJson(listNotAccepted);
 			              return notAcceptedJson.toString();
 		    }
 			
@@ -182,6 +215,7 @@ public class ManagerFTController {
 		return model;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="getTechnicianAssignedTickets", method = RequestMethod.GET)
     @ResponseBody
     public String  getTechnicianAssignedTicketsData(HttpServletRequest request) {
@@ -193,24 +227,58 @@ public class ManagerFTController {
         	   Gson gsonBuilder = new GsonBuilder().create();
         	   String techOpenJson = gsonBuilder.toJson(listTechOpen);
         	   System.out.println(techOpenJson);
-	              return techOpenJson.toString();
+	              return techOpenJson;
     }
 	
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings( { "rawtypes", "unchecked" } )
 	@RequestMapping(value="getTechnicianAcceptedTickets", method = RequestMethod.GET)
     @ResponseBody
     public String  getTechnicianAcceptedTickets(HttpServletRequest request) {
 		String username=request.getParameter("username");
-		System.out.println("username:"+username);
+		//System.out.println("username:"+username);
 		List<TechnicianTicketInfo> listTechAccept = surveyDAO.techAcceptedTicketsData(username);	
+		List<TechnicianTicketInfo> listTechAccept2=surveyDAO.techAcceptedTicketsData(username);
+		
 		Set ticketSet = new HashSet<Object>();
-		listTechAccept.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-
-        	   Gson gsonBuilder = new GsonBuilder().create();
-        	   String techAcceptJson = gsonBuilder.toJson(listTechAccept);
-        	   System.out.println(techAcceptJson);
-	              return techAcceptJson.toString();
+		listTechAccept2.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+		String techAcceptJson = gsonBuilder.toJson(listTechAccept2);
+		
+		
+		Map<Object, List<TechnicianTicketInfo>> studlistGrouped =
+				listTechAccept.stream().collect(Collectors.groupingBy(w -> w.getTicketNum()));
+		
+			System.out.println("HASHMAP"+studlistGrouped);
+		 JSONArray JSONArrFinal=new JSONArray();
+		 
+		 JSONArray jsonArr=new JSONArray();
+		
+			
+		 for (Map.Entry<Object, List<TechnicianTicketInfo>> entry : studlistGrouped.entrySet())  
+		 {
+			 JSONObject jsonObjFinal=new JSONObject();
+			
+			 jsonObjFinal.accumulate("TicketID",entry.getKey());
+			List<TechnicianTicketInfo> listFinal=studlistGrouped.get(entry.getKey());
+			
+			for(TechnicianTicketInfo list1:listFinal)
+			{			
+				
+				JSONObject jsonSites=new JSONObject(); 
+				jsonSites.accumulate("SiteName", list1.getSiteid());
+				jsonSites.accumulate("SiteNames", list1.getSiteids());
+				jsonSites.accumulate("Status", list1.getSurveyStatus());
+				jsonSites.accumulate("TicketDesc", list1.getTicketDescription());
+				
+				jsonObjFinal.accumulate("SITES", jsonSites);
+				jsonArr.put(jsonObjFinal);
+			}
+		 }
+		 System.out.println("jsonArr"+jsonArr);
+		 JSONArrFinal.put(jsonArr);
+		 JSONArrFinal.put(techAcceptJson);
+		 
+	              return JSONArrFinal.toString();
     }
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })

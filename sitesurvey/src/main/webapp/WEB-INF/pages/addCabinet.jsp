@@ -20,12 +20,13 @@
 
 <script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/js/validations.js' />"></script>
+<script src="<c:url value='resources/js/base64js.min.js' />"></script>
+
 
 <link rel="stylesheet"
 	href="<c:url value='resources/css/jquery-ui.css' />">
-
-<!-- <script type="text/javascript">
-	role=sessionStorage.getItem("role");
+<script type="text/javascript">
+	
 	   if(sessionStorage.getItem("username")==null)
    	{
 		//window.location.href = "/sitesurvey/";
@@ -33,18 +34,14 @@
 		   url = "/sitesurvey/";
 		      $( location ).attr("href", url);
    	}
-	   else if(role=="Admin" | role=="SuperAdmin")
-		   {
-		   
-		   }
 	   else
 		   {
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
+		   role=sessionStorage.getItem("role");
+			siteId=sessionStorage.getItem("siteId");
+			ticketId=sessionStorage.getItem("ticketId");
 		   }
-
-</script>-->
-
+	
+</script>
 
 
 
@@ -68,18 +65,47 @@ WebFont.load({
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 
-	//  getRegions();
-		//getSiteId();
-		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
-		 $(".isa_success").fadeOut(10000);
+		// $(".isa_success").fadeOut(10000);
 		 getCabinet();
 		 $("input").attr("required", "true");
 		 $("select").attr("required", "true");
          $("select option:contains('Select')").attr("disabled","disabled");
+         $('#photo_1_checkbox').prop('checked', true);
+         $('#photo_2_checkbox').prop('checked', true);
+    	 $("#photo_1_checkbox").removeAttr("required");                    	 
+    	 $("#photo_2_checkbox").removeAttr("required");                    	 
+    	 $("#photo_1").attr("disabled","disabled");
+    	 $("#photo_2").attr("disabled","disabled");
 
+
+                 
+         $('#photo_1_checkbox').change(function() {       	 
+             if(this.checked) {
+            	 $("#photo_1").attr("disabled","disabled");
+             }
+             else
+            	 {
+            	 $("#photo_1").removeAttr("disabled");                    	 
+            	 }        
+         });
+         
+         
+         $('#photo_2_checkbox').change(function() {       	 
+                 if(this.checked) {
+                	 $("#photo_2").attr("disabled","disabled");
+
+                 }
+                 else
+                	 {
+                	 $("#photo_2").removeAttr("disabled");                    	 
+                	 }        
+             });
 });
+
+
+
 
 function populateDropdown(data,id)
 {
@@ -94,114 +120,12 @@ function populateDropdown(data,id)
 
 
 
-function getState(region)
-{
-	//alert(region)
-	 $.ajax({
-		 	type:"get",
-		 	url:"getStates",
-		 	contentType:'application/json',
-		 	datatype:"json",
-		 	data:{"selectedRegion":region},
-		 	success:function(res){
-		 		//alert(JSON.parse(res))
-		 		console.log(res);
-		 		jsonData=JSON.parse(res);
-		 		populateDropdown(jsonData,"state");
-		 	},
-		 	error:function()
-		 	{
-		 		console.log("Error");	
-		 	}
-	 });
-}
-	
-function getDistrict(state)
-{ 
-	var selectedRegion=$("#regions").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getDistricts",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":state},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"districts");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
-function getCity(district)
-{ 
-	
-	var selectedRegion=$("#regions").val();
-	var selectedState=$("#state").val();
-	 $.ajax({
-	         type:"get",
-	         url:"getCities",
-	         contentType: 'application/json',
-	         datatype : "json",
-	         data:{"selectedRegion":selectedRegion,"selectedState":selectedState,"selectedDistrict":district},
-	         success:function(data1) {
-	         	jsonData = JSON.parse(data1);
-	         	populateDropdown(jsonData,"city");
-	         },
-	         error:function()
-	         {
-	         	console.log("Error");
-	         }
-	 	});
-}
 
-
-	function getSiteId()
-	{
-		var jsonArr1;
-			$.ajax({
-		        type:"get",
-		        url:"getLastSiteId",
-		        contentType: 'application/json',
-		        datatype : "json",
-		        success:function(data) {
-		        	var jsonArr=JSON.parse(data);	
-//		        	alert(jsonArr)
-		        	 if(jsonArr.length==0){
-			        		jsonArr1="IND001";
-			        	}  	
-		        	 else{
-			        	var dataSplit=jsonArr[0].split("D");
-			        	console.log(dataSplit[0]);
-			        	var dataSplitInt=parseInt(dataSplit[1]);
-			        	console.log(dataSplitInt+1);
-			        	dataSplitInt=dataSplitInt+1;
-			        	
-			        	if(dataSplitInt>0&&dataSplitInt<=9)
-			        		jsonArr1="IND00"+dataSplitInt;
-			        	else if(dataSplitInt>9&&dataSplitInt<99)
-			        		jsonArr1="IND0"+dataSplitInt;
-			        	else if(dataSplitInt>99)
-			        		jsonArr1="IND"+dataSplitInt;        	
-	        		}	        	
-		        	$('#siteid').val(jsonArr1);	 
-		        	$('#siteid').attr('readonly', true);
-		        },
-		        error:function()
-		        {
-		        	console.log("Error");
-		        }
-			});
-	}
-	
-	
-	
 
 
 	 
-	 
+	 jsonLen = 0;
+	 Unqid = 0;
 	 function getCabinet()
 	 {
 	 	 $.ajax({
@@ -209,23 +133,41 @@ function getCity(district)
 	 		 	url:"getCabinetData",
 	 		 	contentType:'application/json',
 	 		 	datatype:"json",
-	 		 	data:{"siteid":"IND001"},
+	 		 	data:{"siteid":siteId},
 	 		 	success:function(res){
 	 	         	jsonData = JSON.parse(res)[0];
+	 	         	jsonLen=JSON.parse(res).length;
 	 	         	if(JSON.parse(res).length==0)
 	 	         		{
+		 	         	document.getElementById("siteid").value=siteId;
 		 	         	document.getElementById("updatetype").value="New;"+"1";
+			 	           $('#photo_1_checkbox').prop('checked', false);
+				 	          $('#photo_2_checkbox').prop('checked', false);
+				 	         	$("#photo_1").removeAttr("disabled");     
+				 	         	$("#photo_2").removeAttr("disabled");     
 	 	         		}
 	 		 		//alert(jsonData.id)	
 	 		 		else
 	 		 			{
 	 	         	document.getElementById("siteid").value=jsonData.siteid.siteid;
+	 	         	Unqid = jsonData.id;
 	 	         	document.getElementById("cabinetManufacturer").value=jsonData.cabinetManufacturer;
 	 	         	document.getElementById("type").value=jsonData.type;
 	 	         	document.getElementById("dimensions").value=jsonData.dimensions;
 	 	         	document.getElementById("cabinetCondition").value=jsonData.cabinetCondition;
  	 	         	document.getElementById("comments").value=jsonData.comments;
-	 	         	document.getElementById("updatetype").value="Existing;"+jsonData.id;	 	         	
+	 	         	document.getElementById("updatetype").value="Existing;"+jsonData.id;
+ 	 	         	//document.getElementById("photo_1").value='data:image/jpeg;base64,' + base64;
+
+	 	         	
+	 	         	//document.getElementById("ItemPreview").src = "data:image/png;base64," + jsonData.photo_1;
+	 	         	
+var base64 = base64js.fromByteArray(jsonData.photo_1);
+//console.log(base64);
+//$("#ItemPreview").attr('src', 'data:image/jpeg;base64,' + base64);
+
+
+
 	 		 			}
 	 		 	},
 	 		 	error:function()
@@ -235,8 +177,22 @@ function getCity(district)
 	 	 });
 	 }	
 	 
-	 
-	 
+
+function submit_logic()
+{
+	var updatetype= $('#updatetype').val();
+	$('#updatetype').val(" ");
+	filestate = ";"+$('#photo_1_checkbox').prop('checked')+";"+$('#photo_2_checkbox').prop('checked');
+	if(jsonLen==0)
+		{
+		$('#updatetype').val("New;1"+filestate);		
+		}
+	else
+		{
+		$('#updatetype').val("Existing;"+Unqid+filestate);		
+		}
+	//alert($('#updatetype').val());
+}
 
 </script>
 <style>
@@ -283,15 +239,16 @@ label {
 	</div>
 
 	<!-- Sidebar -->
-	<div id="superAdminSidebar"></div>
+	<div id="technicianSidebar"></div>
 	<!-- End Sidebar -->
 
 	<div class="wrapper wrapper-login">
+	
 		<div class="container container-login animated fadeIn">
-			<div align="center">
-				<span class="isa_success" style="color: #35B234; font-size: 20px">${status}</span>
-			</div>
-			<br> <br>
+<!-- 			<div align="center"> -->
+<%-- 				<span class="isa_success" style="color: #35B234; font-size: 20px">${status}</span> --%>
+<!-- 			</div> -->
+<!-- 			<br> <br> -->
 
 			<h3 class="text-center">Add Cabinet</h3>
 			<span id="msg" style="color: red; font-size: 12px;">*All
@@ -302,29 +259,29 @@ label {
 							<input type="hidden" id="updatetype" name="updatetype"/>
 				
 
-					<br> <label for="Site ID" class="placeholder">Site ID</label>
-					<form:input id="siteid" path="siteid.siteid"
-						class="form-control input-full filled" value="IND001" />
-					<br> <label for="cabinetManufacturer" class="placeholder">Cabinet
-						Manufacturer</label>
+					<br><label for="Site ID" class="placeholder"> <b>Site ID</b></label>
+					<form:input id="siteid" path="siteid.siteid" readonly="true"
+						class="form-control input-full filled"  />
+					<br> <label for="cabinetManufacturer" class="placeholder"><b>Cabinet
+						Manufacturer</b></label>
 					<form:select id="cabinetManufacturer" path="cabinetManufacturer"
 						name="cabinetManufacturer" class="form-control input-full filled">
 						<form:option value="">Select</form:option>
 						<form:options items="${CabinetManufacturer}"></form:options>
 					</form:select>
-					<br> <label for="type" class="placeholder">Type</label>
+					<br> <label for="type" class="placeholder"><b>Type</b></label>
 					<form:select id="type" path="type" name="type"
 						class="form-control input-full filled">
 						<form:option value="">Select</form:option>
 						<form:options items="${CabinetType}"></form:options>
 					</form:select>
 
-					<br> <label for="dimensions" class="placeholder">Dimensions</label>
+					<br> <label for="dimensions" class="placeholder"><b>Dimensions</b></label>
 					<form:input id="dimensions" path="dimensions" name="dimensions" onkeypress="return isNumber(event)"
 						class="form-control input-full filled" />
 
-					<br> <label for="cabinetCondition" class="placeholder">Cabinet
-						Condition</label>
+					<br> <label for="cabinetCondition" class="placeholder"><b>Cabinet
+						Condition</b></label>
 					<form:select id="cabinetCondition" path="cabinetCondition"
 						name="cabinetCondition" class="form-control input-full filled">
 						<form:option value="">Select</form:option>
@@ -339,31 +296,51 @@ label {
 						<form:option value="Not applicable">Not applicable</form:option>
 					</form:select>
 
-					<br> <label for="comments" class="placeholder">Observation/Comments</label>
+					<br> <label for="comments" class="placeholder"><b>Observation/Comments</b></label>
 					<form:input id="comments" path="comments" name="comments" onkeypress="return isCharacters(event)" 
 						class="form-control input-full filled" />
-					<br> <label for="Photo_1" class="placeholder">photo_1</label>
+					<br> <label for="Photo_1" class="placeholder" style="float:left"><b>photo 1</b></label><input id="photo_1_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
 					<input type="file" id="photo_1" name="tag_photo"
 						class="form-control input-full filled" accept="image/*"
 						onchange="ValidateFileUpload(this.id)" /> <br> <br>
-					<label for="photo_2" class="placeholder">photo_2</label>
+					<label for="photo_2" class="placeholder"><b>photo 2</b></label><input id="photo_2_checkbox" type="checkbox" style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
 					<input type="file" id="photo_2" name="tag_photo"
 						onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> <br>
+						
+						<img id="ItemPreview" src="" />
+
+
+
+						
 
 
 <div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
-					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #E4002B;color: white;">
+					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
 				</div>
 				</div>
 			</form:form>
 
 		</div>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<script
 		src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 	<script

@@ -103,7 +103,7 @@
 			        	{title: "Ticket Id" },
 						{title: "Site Id" },
 						{title: "Ticket Description" },									
-						{title: "Action" },						
+// 						{title: "Action" },						
 			        ]
 			    } );
 			 

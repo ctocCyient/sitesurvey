@@ -85,10 +85,7 @@
 					
                     for(var i=0;i<assignTicketsList.length;i++)
          		   {
-	dataSet.push([assignTicketsList[i].ticketNum,assignTicketsList[i].siteids,assignTicketsList[i].technicianName]);
-
-
-         			   
+						dataSet.push([assignTicketsList[i].ticketNum,assignTicketsList[i].siteids,assignTicketsList[i].technicianName,assignTicketsList[i].ticketStatus]);
          		   }
                    
                     
@@ -101,7 +98,8 @@
 			        columns: [
 						{title: "Ticket Id" },
 						{title: "Site Id" },
-						{title: "Technician Name" }			
+						{title: "Technician Name" },
+						{title: "Status" }		
 
 			        ]
 			    });			 
