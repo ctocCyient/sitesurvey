@@ -220,8 +220,8 @@ public class HomeController {
 			 ticketing.setOpenDate(ticket.getOpenDate());
 			 ticketing.setOpenTime(ticket.getOpenTime());
 			 ticketing.setSiteids(ticket.getSiteid());
-			 ticketing.setStatus("Open");
-			 ticketing.setSiteFlag("-1");
+			 ticketing.setTicketStatus("Open");	
+			 ticketing.setSurveyStatus("Open");
 			 ticketing.setTicketDescription(ticket.getTicketDescription());
 			 surveyDAO.addTicket(ticketing);
 		 }
@@ -281,8 +281,9 @@ public class HomeController {
 	    	 technicianTicket.setDistrict(technicianData.getDistrict());
 	    	 technicianTicket.setManager(technicianData.getManager());
 	    	 technicianTicket.setCity(technicianData.getCity());
-	    	 technicianTicket.setStatus("Assigned");
-	    	 technicianTicket.setStatus("-1");
+	    	 technicianTicket.setTicketStatus("Assigned");
+	    	 technicianTicket.setSurveyStatus("Open");
+	    	
 	    	 
     	 
     		 ticketId=ticket.getTicketNum();
@@ -408,7 +409,7 @@ public class HomeController {
 	@RequestMapping(value="/saveSMPS" , method=RequestMethod.POST)
 	public ModelAndView saveSMPS(@ModelAttribute("Site_SMPS") Site_SMPS smps, @RequestParam("file") MultipartFile[] multipart ,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,ModelAndView model){
 		
-		int id=smps.getId();
+		//int id=smps.getId();
 		try {
 			
 			smps.setObservation_1(multipart[0].getBytes());

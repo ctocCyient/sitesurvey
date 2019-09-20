@@ -176,17 +176,21 @@ function getTowerInstallationDetails(sid){
 
 
  function ValidateImage(id){
+	 	var i=id[id.length-1];
 		  var fuData = document.getElementById(id);
       var FileUploadPath = fuData.value;
 //To check if user upload any file
       if (FileUploadPath == '') {
-          alert("Please upload an image");
+    	//  $("#image"+i)[0].innerHTML="Please upload an image";  
+         // alert("Please upload an image");
      } else {
+    	 
           var Extension = FileUploadPath.substring(
                   FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
 //The file uploaded is an image
 if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
 //To Display
+				 $("#image"+i)[0].innerHTML=""
               if (fuData.files && fuData.files[0]) {
                  var reader = new FileReader();
                  reader.onload = function(e) {
@@ -197,7 +201,8 @@ if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension =
          }
 //The file upload is NOT an image
 else {
-             alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+           //  alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+             $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
              document.getElementById(id).value="";
           }
       }
@@ -368,28 +373,28 @@ else {
 							<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
-							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);" required /> 
-					<span class="isa_failure" id="image0">${errMsg}</span>
+							<input type="file"  class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);" required /> 
+					<span class="isa_failure" id="image1">${errMsg}</span>
   </div>
  	
 				<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b></label>
-							<input type="file" path="tower_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
-					<span class="isa_failure" id="image1">${errMsg}</span>
+							<input type="file"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
+					<span class="isa_failure" id="image2">${errMsg}</span>
   		</div>
  	
 				<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" ><b>Photo 3</b> </label>
-							<input type="file"  path="tower_photo3" class="form-control input-border-bottom" id="img3"   name="file" onchange="ValidateImage(this.id);"  /> 
-					<span class="isa_failure" id="image2">${errMsg}</span>
+							<input type="file" class="form-control input-border-bottom" id="img3"   name="file" onchange="ValidateImage(this.id);"  /> 
+					<span class="isa_failure" id="image3">${errMsg}</span>
 					</div>
 					<div class="form-group ">
 				
 				<label for="Upload Image" class="placeholder" ><b>Photo 4</b></label>
-							<input type="file"  path="tower_photo4" class="form-control input-border-bottom" id="img4"   name="file"  onchange="ValidateImage(this.id);"  /> 
-					<span class="isa_failure" id="image3">${errMsg}</span>
+							<input type="file"  class="form-control input-border-bottom" id="img4"   name="file"  onchange="ValidateImage(this.id);"  /> 
+					<span class="isa_failure" id="image4">${errMsg}</span>
 					</div>
  
  

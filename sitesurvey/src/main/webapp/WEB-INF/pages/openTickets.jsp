@@ -102,7 +102,7 @@ color: #fff!important;
                     for(var i=0;i<openTicketsList.length;i++)
          		   {
                     	arr.push(openTicketsList[i].ticketNum);
-                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids,openTicketsList[i].status,openTicketsList[i].region,openTicketsList[i].city]);
+                    	dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids,openTicketsList[i].region,openTicketsList[i].city]);
 
          			   
          		   }
@@ -118,7 +118,6 @@ color: #fff!important;
 			        columns: [
 						{title: "Ticket Id" },
 						{title: "Site Id" },
-						{title: "Status" },
 						{title: "Region"},
 						{title: "City"}						
 			        ]

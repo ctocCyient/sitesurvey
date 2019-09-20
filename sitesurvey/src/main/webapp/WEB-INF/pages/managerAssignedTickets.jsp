@@ -136,7 +136,7 @@ max-width:100%;
 					
                     for(var i=0;i<assignedTicketsList.length;i++)
          		   {
-                    	dataSet.push([assignedTicketsList[i].ticketNum,assignedTicketsList[i].siteids,assignedTicketsList[i].technicianName,assignedTicketsList[i].status]);
+                    	dataSet.push([assignedTicketsList[i].ticketNum,assignedTicketsList[i].siteids,assignedTicketsList[i].technicianName,assignedTicketsList[i].ticketStatus]);
          			   
          		   }
                     

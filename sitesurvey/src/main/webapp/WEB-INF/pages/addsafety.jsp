@@ -131,6 +131,37 @@ $(document).ready(function(){
 	
 });
 
+function ValidateImage(id){
+	var i=id[id.length-1];
+	  var fuData = document.getElementById(id);
+  var FileUploadPath = fuData.value;
+//To check if user upload any file
+  if (FileUploadPath == '') {
+      alert("Please upload an image");
+ } else {
+      var Extension = FileUploadPath.substring(
+              FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+//The file uploaded is an image
+if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
+//To Display
+		  $("#image"+i)[0].innerHTML="";
+          if (fuData.files && fuData.files[0]) {
+             var reader = new FileReader();
+             reader.onload = function(e) {
+                 // $('#blah').attr('src', e.target.result);
+              }
+             reader.readAsDataURL(fuData.files[0]);
+          }
+     }
+//The file upload is NOT an image
+else {
+       //  alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+         $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";  
+       document.getElementById(id).value="";
+      }
+  }
+}
+
 
 function getSafetyDetails(siteId)
 {
@@ -267,7 +298,7 @@ function getSafetyDetails(siteId)
 						
 				<div class="form-group ">
 				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
-				<input type="file"   path="safety_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
+				<input type="file"   class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
   				
@@ -312,7 +343,7 @@ function getSafetyDetails(siteId)
   				
  				<div class="form-group ">
 				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b> </label>
-				<input type="file" path="safety_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id)"/> 
+				<input type="file"   class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id)"/> 
 					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
   				
@@ -331,7 +362,7 @@ function getSafetyDetails(siteId)
 					
 					<div class="form-group ">
 						<label for="Upload Image" class="placeholder" ><b>Photo 3 </b> </label>
-						<input type="file" path="safety_photo3"  class="form-control input-border-bottom"  id="img3"  name="file"  onchange="ValidateImage(this.id);"/> 
+						<input type="file"   class="form-control input-border-bottom"  id="img3"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image3">${errMsg}</span>
   					</div>
 					
@@ -373,7 +404,7 @@ function getSafetyDetails(siteId)
 					</div>
 					<div class="form-group ">
 						<label for="Upload Image" class="placeholder" ><b>Photo 4 </b></label>
-						<input type="file" path="safety_photo4"  class="form-control input-border-bottom"  id="img4"  name="file"  onchange="ValidateImage(this.id);"/> 
+						<input type="file" class="form-control input-border-bottom"  id="img4"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image4">${errMsg}</span>
   					</div>
   					
@@ -404,7 +435,7 @@ function getSafetyDetails(siteId)
 					</div>
 					<div class="form-group ">
 						<label for="Upload Image" class="placeholder" ><b>Photo 5 </b> </label>
-						<input type="file" path="safety_photo5"  class="form-control input-border-bottom"  id="img5"  name="file"  onchange="ValidateImage(this.id);"/> 
+						<input type="file"  class="form-control input-border-bottom"  id="img5"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image5">${errMsg}</span>
   					</div>
 					<div class="form-group ">
@@ -418,13 +449,13 @@ function getSafetyDetails(siteId)
   				
   					<div class="form-group ">
 						<label for="Upload Image" class="placeholder" ><b>Photo 6 </b> </label>
-						<input type="file" path="safety_photo6"  class="form-control input-border-bottom"  id="img6"  name="file"  onchange="ValidateImage(this.id);"/> 
+						<input type="file" class="form-control input-border-bottom"  id="img6"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image6">${errMsg}</span>
   					</div>
   					<div class="form-group ">
 						<label for="Upload Image" class="placeholder" ><b>Photo 7 </b></label>
-						<input type="file" path="safety_photo6"  class="form-control input-border-bottom"  id="img6"  name="file"  onchange="ValidateImage(this.id);"/> 
-						<span class="isa_failure" id="image6">${errMsg}</span>
+						<input type="file" class="form-control input-border-bottom"  id="img7"  name="file"  onchange="ValidateImage(this.id);"/> 
+						<span class="isa_failure" id="image7">${errMsg}</span>
   					</div>
   				
   				

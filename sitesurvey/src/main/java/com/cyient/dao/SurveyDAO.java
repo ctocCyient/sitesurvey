@@ -234,4 +234,7 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public List<Site_Safety> getSiteAddDetails(String siteId);
+
+	@Transactional
+	public String updateClosedSurveyStatus(String ticketId, String siteId);
 }

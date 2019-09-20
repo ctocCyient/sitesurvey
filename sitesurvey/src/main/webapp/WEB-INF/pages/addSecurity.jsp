@@ -165,6 +165,7 @@ function getSiteSecurityDetails(siteId){
 
 
 function ValidateImage(id){
+		var i=id[id.length-1];
 		  var fuData = document.getElementById(id);
       var FileUploadPath = fuData.value;
 //To check if user upload any file
@@ -176,6 +177,7 @@ function ValidateImage(id){
 //The file uploaded is an image
 if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
 //To Display
+			  $("#image"+i)[0].innerHTML="";
               if (fuData.files && fuData.files[0]) {
                  var reader = new FileReader();
                  reader.onload = function(e) {
@@ -186,8 +188,9 @@ if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension =
          }
 //The file upload is NOT an image
 else {
-             alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
-             document.getElementById(id).value="";
+           //  alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+             $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";  
+           document.getElementById(id).value="";
           }
       }
   }
@@ -290,12 +293,12 @@ else {
 						
 				<div class="form-group ">
 				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
-				<input type="file"   path="security_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
+				<input type="file"  class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
  				<div class="form-group ">
 				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b> </label>
-				<input type="file" path="security_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
+				<input type="file" class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
   				</div>
   				
