@@ -8,7 +8,7 @@
 <% String status=(String)request.getAttribute("status"); %>
 
 <% String btnClick=(String)request.getAttribute("btnClick"); 
-  System.out.println("btnclck>>>>>>>"+btnClick);%> 
+  System.out.println("btnclck>>>>>>>"+btnClick);%>
 <!DOCTYPE html >
 <html lang="en">
 
@@ -35,28 +35,9 @@
 	<script src="${jqueryJs}"></script>
     <script src="${jqueryuiJs}"></script>
     <script src="${validationsJs}"></script>
-<<<<<<< HEAD
 
   <script src="<c:url value='resources/js/base64js.min.js' />"></script>
 
-=======
-      <script type="text/javascript">
-	
-   if(sessionStorage.getItem("username")==null) 
-   	{ 
-		   url = "/sitesurvey/"; 
-		      $( location ).attr("href", url);
-  	}
-  
- 	   else 
- 		   { 
- 		  role=sessionStorage.getItem("role"); 
- 			siteId=sessionStorage.getItem("siteId");
- 			ticketId=sessionStorage.getItem("ticketId");
-		   } 
-
- </script> 
->>>>>>> branch 'Madhuri' of https://github.com/ctocCyient/sitesurvey.git
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
@@ -95,14 +76,20 @@ $(document).ready(function(){
 	var status='<%=status%>';
 
 	var btnClick='<%=btnClick%>';
-	
+	//alert(status);
 	 if(status=='Saved')
 
      {
-                         
+                  var nextUrl;
+              if(btnClick=="Save"){
+                    nextUrl="/sitesurvey/home";
+              }
+              else if(btnClick=="Save & Continue"){
+                    nextUrl="/sitesurvey/gotoAdditional";
+              }
               swal({
                          //title: 'Are you sure?',
-                         text: "Details Saved and Ticket Closed Succesfully",
+                         text: "Details Saved Successfully",
                          type: 'info',
                          buttons:{
                                 confirm: {
@@ -112,7 +99,7 @@ $(document).ready(function(){
                          }
                   }).then((Delete) => {
                          if (Delete) {
-                                window.location.href = "/sitesurvey/home";
+                                window.location.href = nextUrl;
                          }
                   });
             }
@@ -123,17 +110,15 @@ $(document).ready(function(){
 	 $("#additionalNotes :input").attr("required", '');
 	 
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	$("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
+	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
 	//alert(jsonDetails)
 	var ticketDetails=JSON.parse(JSON.stringify(jsonDetails));
-	$('#selectedTicketId')[0].value=ticketId;
 	//alert(ticketDetails);
 	//$("#siteid")[0].value=ticketDetails.split(",")[1];
 	//alert(ticketDetails.split(",")[1]);
 	  $("#json")[0].value=ticketDetails;
-
-	
+	  var siteId="IND005";
 		$("#siteid")[0].value=siteId;
 		  $("#json")[0].value=ticketDetails;
 		  //alert(siteId);
@@ -190,9 +175,9 @@ function getSiteAdditionalDetails(siteId){
             	//$("#securitycondition").val(jsonData[0].securityCondition);
             	//$("#site_photo1").attr('disabled','disabled');
             	//$("#site_photo2").attr('disabled','disabled');
-            	//$('#site_photo1').removeAttr('required');
-            	//$('#site_photo2').removeAttr('required');
-            	//$("#additionalNotes :input").removeAttr('required');
+            	$('#site_photo1').removeAttr('required');
+            	$('#site_photo2').removeAttr('required');
+            	$("#additionalNotes :input").removeAttr('required');
             }
          }					
 		 }); 
@@ -245,13 +230,9 @@ function ViewImage(id){
 
 
 function ValidateImage(id){
-<<<<<<< HEAD
 		//alert(typeof(id));
 			var i=id[id.length-1]
 			//alert(i)
-=======
-	var  i=id[id.length-1];
->>>>>>> branch 'Madhuri' of https://github.com/ctocCyient/sitesurvey.git
 		  var fuData = document.getElementById(id);
       var FileUploadPath = fuData.value;
 //To check if user upload any file
@@ -274,13 +255,8 @@ if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension =
          }
 //The file upload is NOT an image
 else {
-<<<<<<< HEAD
              alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
              $("#image"+i)[0].innerHTML=" Uploaded file Must be Image format"; 
-=======
-            // alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
-              $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
->>>>>>> branch 'Madhuri' of https://github.com/ctocCyient/sitesurvey.git
              document.getElementById(id).value="";
              //$(".isa_failure")[0].innerHTML="";
           }
@@ -343,20 +319,20 @@ else {
 		</div>
 
 		<!-- Sidebar -->
-<div id="technicianSidebar">
+<div id="execSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 	<div class="wrapper wrapper-login">
 	  <div class="container container-login animated fadeIn">
-	 
+	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
 				<h3 class="text-center">Additional Details</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				<form:form method="post" id="additionalNotes" modelAttribute="Site_Additional_Notes" action="additionalNotes" enctype="multipart/form-data" onsubmit="return ValiidateForm()">
 				<form:input type="hidden" path="id" id="siteaddid" />
 				<input type="hidden"   id="json" name="json" />
 				<div class="form-group ">
-						<label for="siteid" class="placeholder"><b>Site Id</b>
+						<label for="siteid" class="placeholder">Site ID
 				
 						</label>
 						 
@@ -365,22 +341,16 @@ else {
 					</div>
 								
 					<div class="form-group ">
-<<<<<<< HEAD
 						<label for="observations" class="observations">Observations</label>
 						<form:input  id="observations" path="observations" class="form-control input-full"   />				
-=======
-						<label for="observations" class="observations"><b>Observations</b></label>
-						<form:input  id="observations" path="observations" class="form-control input-full"  />				
->>>>>>> branch 'Madhuri' of https://github.com/ctocCyient/sitesurvey.git
 						<form:errors path="observations" cssClass="error" />	
 					</div>
 						
 				
-
-				<div class="form-group ">
-				<label for="site_photo2" class="placeholder" ><b>Photo 1 </b></label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="ValidateImage(this.id);"/> 
-
+				<div class="form-group " id="imagediv1"> 
+				<label for="site_photo1" class="placeholder" >Site Photo1</label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="ValidateImage(this.id)"/> 
+				
 					<span class="isa_failure" id="image1">${errMsg}</span>
 						
   				</div>
@@ -396,7 +366,6 @@ else {
   						<form:input type="button" id="imageb1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
   						<!-- <img id="imageId" src="" style="display:none" />-->
   				
-
   					</div>
   					
   				</div>
@@ -412,11 +381,11 @@ else {
                   </div>
                       
   				
-  			
+  				
 				<div class="form-group " id="imagediv2">
-				<label for="site_photo1" class="placeholder" ><b>Photo 2 </b></label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="ValidateImage(this.id);"/> 
-
+				<label for="site_photo2" class="placeholder" >Site Photo2</label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="ValidateImage(this.id)"/> 
+				
 					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
   				<div class="form-group" id="imaged2">
@@ -448,12 +417,12 @@ else {
   				
   				
  						<div class="form-action" id="new_submit" >
-				 		<input type="submit"  class="btn btn-rounded btn-login" value="Finish Survey" name="btn" style="background-color: #012169;color: white;">  
+				 		<input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #012169;color: white;">  
 					
- 						 <input id="selectedTicketId" name="selectedTicketId" value="" type="hidden"> 
+ 						<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				
  				
-<!-- 				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">   -->
+				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">  
 					
  							<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  							</div>
