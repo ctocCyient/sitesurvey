@@ -465,7 +465,12 @@ public class HomeController {
 		System.out.println("save bb calling" + tag_photo);
 		String status = "Battery Bank Added Successfully";
 		Site_Battery_Bank obj = new Site_Battery_Bank();
-
+		/*System.out.println(updatetype);
+		System.out.println(updatetype.split(";")[0]);
+		System.out.println(updatetype.split(";")[1]);
+		System.out.println(updatetype.split(";")[2]);
+		System.out.println(updatetype.split(";")[3]);
+		System.out.println(tag_photo.length);*/
 		//update type condition check
 		if(updatetype.split(";")[0].contains("New"))
 		{
@@ -476,7 +481,7 @@ public class HomeController {
 		}
 		
 		// saggrigation of files
-		if(updatetype.split(";")[2].contains("false"))
+		if(updatetype.split(";")[2].contains("Yes"))
 		{
 		BB.setTag_photo(tag_photo[0].getBytes());
 		BB.setTag_photo_Name(tag_photo[0].getOriginalFilename());
@@ -487,7 +492,7 @@ public class HomeController {
 			BB.setTag_photo_Name(obj.getTag_photo_Name());
 		}
 		
-		if(updatetype.split(";")[3].contains("false"))
+		if(updatetype.split(";")[3].contains("Yes"))
 		{
 			BB.setTag_photo1(tag_photo[1].getBytes());
 			BB.setTag_photo1_Name(tag_photo[1].getOriginalFilename());
@@ -498,7 +503,7 @@ public class HomeController {
 			BB.setTag_photo1_Name(obj.getTag_photo1_Name());
 		}
 		
-		if(updatetype.split(";")[4].contains("false"))
+		if(updatetype.split(";")[4].contains("Yes"))
 		{
 			BB.setTag_photo_2(tag_photo[2].getBytes());
 			BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());
@@ -508,7 +513,7 @@ public class HomeController {
 			BB.setTag_photo_2(obj.getTag_photo_2());
 			BB.setTag_photo2_Name(obj.getTag_photo2_Name());
 		}
-		surveyDAO.addBB(updatetype, BB);
+		surveyDAO.addBB(updatetype,	BB);
 		redirectAttributes.addFlashAttribute("status", status);
 		if (submit.equals("Save")) {
 			return new ModelAndView("redirect:/home");
@@ -527,12 +532,12 @@ public class HomeController {
 			@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException {
 		String status = "Battery Bank Added Successfully";
 		Site_Cabinet obj = new Site_Cabinet();
-		System.out.println(updatetype);
+		/*System.out.println(updatetype);
 		System.out.println(updatetype.split(";")[0]);
 		System.out.println(updatetype.split(";")[1]);
 		System.out.println(updatetype.split(";")[2]);
 		System.out.println(updatetype.split(";")[3]);
-System.out.println(updatetype.split(";")[0]=="New");
+System.out.println(updatetype.split(";")[0]=="New");*/
 		if(updatetype.split(";")[0].contains("New"))
 		{
 			
@@ -542,7 +547,7 @@ System.out.println(updatetype.split(";")[0]=="New");
 			obj= surveyDAO.getCabinet(BB.getSiteid().getSiteid()).get(0);
 		}
 
-		if(updatetype.split(";")[2].contains("false"))
+		if(updatetype.split(";")[2].contains("Yes"))
 		{
 		BB.setPhoto_1(tag_photo[0].getBytes());
 		BB.setPhoto_1_Name(tag_photo[0].getOriginalFilename());
@@ -553,7 +558,7 @@ System.out.println(updatetype.split(";")[0]=="New");
 			BB.setPhoto_1_Name(obj.getPhoto_1_Name());
 		}
 		
-		if(updatetype.split(";")[3].contains("false"))
+		if(updatetype.split(";")[3].contains("Yes"))
 		{
 			BB.setPhoto_2(tag_photo[1].getBytes());
 			BB.setPhoto_2_Name(tag_photo[1].getOriginalFilename());
