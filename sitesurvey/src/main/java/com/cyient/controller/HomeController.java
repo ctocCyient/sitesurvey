@@ -461,7 +461,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/saveBB", method = RequestMethod.POST)
-	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "photos") MultipartFile[] tag_photo) throws IOException {
+	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("updatetype") String updatetype,@RequestParam("photos") MultipartFile[] tag_photo,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes) throws IOException {
 		System.out.println("save bb calling" + tag_photo);
 		String status = "Battery Bank Added Successfully";
 		Site_Battery_Bank obj = new Site_Battery_Bank();
@@ -470,8 +470,9 @@ public class HomeController {
 		System.out.println(updatetype.split(";")[1]);
 		System.out.println(updatetype.split(";")[2]);
 		System.out.println(updatetype.split(";")[3]);
-		System.out.println(tag_photo.length);*/
-		//update type condition check
+		System.out.println(updatetype.split(";")[4]);
+		System.out.println("upload length...........................................................sss"+tag_photo.length);*/
+	
 		if(updatetype.split(";")[0].contains("New"))
 		{
 		}
@@ -505,14 +506,15 @@ public class HomeController {
 		
 		if(updatetype.split(";")[4].contains("Yes"))
 		{
-			BB.setTag_photo_2(tag_photo[2].getBytes());
-			BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());
+			BB.setTag_photo_2(tag_photo[tag_photo.length-1].getBytes());
+			BB.setTag_photo2_Name(tag_photo[tag_photo.length-1].getOriginalFilename());
 		}
 		else
 		{
 			BB.setTag_photo_2(obj.getTag_photo_2());
 			BB.setTag_photo2_Name(obj.getTag_photo2_Name());
 		}
+		
 		surveyDAO.addBB(updatetype,	BB);
 		redirectAttributes.addFlashAttribute("status", status);
 		if (submit.equals("Save")) {
@@ -530,7 +532,7 @@ public class HomeController {
 	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB, @RequestParam("updatetype") String updatetype,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,
 			@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException {
-		String status = "Battery Bank Added Successfully";
+		String status = "Cabinet Added Successfully";
 		Site_Cabinet obj = new Site_Cabinet();
 		/*System.out.println(updatetype);
 		System.out.println(updatetype.split(";")[0]);
@@ -560,8 +562,8 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		
 		if(updatetype.split(";")[3].contains("Yes"))
 		{
-			BB.setPhoto_2(tag_photo[1].getBytes());
-			BB.setPhoto_2_Name(tag_photo[1].getOriginalFilename());
+			BB.setPhoto_2(tag_photo[tag_photo.length-1].getBytes());
+			BB.setPhoto_2_Name(tag_photo[tag_photo.length-1].getOriginalFilename());
 		}
 		else
 		{

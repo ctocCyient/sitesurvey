@@ -71,14 +71,14 @@ $(document).ready(function(){
          $('#photo_1_checkbox').prop('checked', true);
          $('#photo_2_checkbox').prop('checked', true);
          $('#photo_3_checkbox').prop('checked', true);
-    	 $("#photo_1_checkbox").removeAttr("required");                    	 
-    	 $("#photo_2_checkbox").removeAttr("required");    
-    	 $("#photo_3_checkbox").removeAttr("required");                    	 
-    	 $("#tag_photo1").attr("disabled","disabled");
+    	 $("#tag_photo1").removeAttr("required");                    	 
+    	 $("#tag_photo2").removeAttr("required");    
+    	 $("#tag_photo3").removeAttr("required");                    	 
+    	 /*$("#tag_photo1").attr("disabled","disabled");
     	 $("#tag_photo2").attr("disabled","disabled");
-    	 $("#tag_photo3").attr("disabled","disabled");
+    	 $("#tag_photo3").attr("disabled","disabled");*/
 
-    	 $('#photo_1_checkbox').change(function() {       	 
+    	/* $('#photo_1_checkbox').change(function() {       	 
              if(this.checked) {
             	 $("#tag_photo1").attr("disabled","disabled");
              }
@@ -109,7 +109,7 @@ $(document).ready(function(){
             	 {
             	 $("#tag_photo3").removeAttr("disabled");                    	 
             	 }        
-         });
+         });*/
     	 
 });
 
@@ -149,9 +149,7 @@ function getBB()
 	 	           $('#photo_1_checkbox').prop('checked', false);
 	 	          $('#photo_2_checkbox').prop('checked', false);
 	 	          $('#photo_3_checkbox').prop('checked', false);
-	 	         	$("#tag_photo1").removeAttr("disabled");     
-	 	         	$("#tag_photo2").removeAttr("disabled");     
-	 	         	$("#tag_photo3").removeAttr("disabled");     
+   
 	         		}
 		 		//alert(jsonData.id)	
 		 		else
@@ -211,7 +209,8 @@ function submit_logic()
 		{
 		$('#updatetype').val("Existing;"+Unqid+filestate);		
 		}
-	alert($('#updatetype').val());
+	//alert($('#updatetype').val());
+
 }
 
 
@@ -252,18 +251,15 @@ function upload_files(id)
     	switch(id.name) {
     	  case "photo_1_text_div_radio":
     	    $("#photo_1_div").show();
-   	        $("#tag_photo1").removeAttr("disabled"); 
          	$("#photo_1_text_div").hide();
     	    break;   
     	    
     	  case "photo_2_text_div_radio":     	    
-     	    $("#tag_photo2").removeAttr("disabled"); 
            	$("#photo_2_text_div").hide();
            	$("#photo_2_div").show();
       	    break;     
       	    
     	  case "photo_3_text_div_radio":     	    
-       	    $("#tag_photo3").removeAttr("disabled"); 
              	$("#photo_3_text_div").hide();
              	$("#photo_3_div").show();
         	    break;     
@@ -278,19 +274,16 @@ function upload_files(id)
     	switch(id.name) {    	   
     	 case "photo_1_text_div_radio":
       	    $("#photo_1_div").hide();
-     	    $("#photo_1").removeAttr("disabled"); 
            	$("#photo_1_text_div").show();
       	    break;    
       	    
     	  case "photo_2_text_div_radio":
         	    $("#photo_2_div").hide();
-       	        $("#photo_2").removeAttr("disabled"); 
              	$("#photo_2_text_div").show();
         	    break; 
         	    
     	  case "photo_3_text_div_radio":
       	    $("#photo_3_div").hide();
-     	        $("#photo_2").removeAttr("disabled"); 
            	$("#photo_3_text_div").show();
       	    break; 
         	    
@@ -300,9 +293,6 @@ function upload_files(id)
     	}
     	}
 	}
-
-	
-	
 
 	 
 </script>
