@@ -341,7 +341,21 @@ public class HomeController {
 		return model;
 	}
 	
-	
+	@RequestMapping(value = "/ValidateLatLong", method = RequestMethod.GET)
+	@ResponseBody
+	public String ValidateLatLong(ModelAndView model,HttpServletRequest request){
+		if(surveyDAO.ValidateLatLong(request.getParameter("latitude"), request.getParameter("longitude")).size()<0)
+		{
+			return "New";
+		}
+		else
+		{
+			return "Exisiting";
+		}
+		
+		
+		
+	}
 	
 	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
 	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {

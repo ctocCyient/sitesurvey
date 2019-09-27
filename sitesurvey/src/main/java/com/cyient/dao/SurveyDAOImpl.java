@@ -566,5 +566,14 @@ public class SurveyDAOImpl implements SurveyDAO {
 		 
 		return "Updated";
 	}
+
+	@Override
+	public List<Site> ValidateLatLong(String latitude, String longitude) {
+		// TODO Auto-generated method stub
+		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site.class);
+        c.add(Restrictions.eq("latitude",latitude));
+        c.add(Restrictions.eq("longitude",longitude));
+        return c.list();
+	}
 	
 }

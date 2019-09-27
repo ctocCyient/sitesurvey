@@ -32,6 +32,7 @@
 		      $( location ).attr("href", url);
 		   }
 
+		   
 </script>
 
 <script src="<c:url value='resources/js/jquery.min.js' />"></script>
@@ -127,6 +128,8 @@ function getCity(district)
 	
 	var selectedRegion=$("#regions").val();
 	var selectedState=$("#state").val();
+	
+	
 	 $.ajax({
 	         type:"get",
 	         url:"getCities",
@@ -136,6 +139,29 @@ function getCity(district)
 	         success:function(data1) {
 	         	jsonData = JSON.parse(data1);
 	         	populateDropdown(jsonData,"city");
+	         },
+	         error:function()
+	         {
+	         	console.log("Error");
+	         }
+	 	});
+}
+
+function ValidateLatLong()
+{ 	
+	var latitude=$("#latitude").val();
+	var longitude=$("#longitude").val();
+
+	 $.ajax({
+	         type:"get",
+	         url:"ValidateLatLong",
+	         contentType: 'application/json',
+	         datatype : "json",
+	         data:{"latitude":latitude,"longitude":longitude},
+	         success:function(data1) {
+			 alert(data1);
+	         	jsonData = JSON.parse(data1);
+				alert(jsonData)
 	         },
 	         error:function()
 	         {
@@ -251,7 +277,7 @@ label {
 				<br>
 				
 				<label for="longitude" class="placeholder">Longitude</label> 
-				<form:input id="longitude" path="longitude" autocomplete="new-password" name="longitude"  class="form-control input-full filled"  />
+				<form:input id="longitude" path="longitude" autocomplete="new-password" name="longitude"  class="form-control input-full filled" onchange="ValidateLatLong()" />
 				<br>
                
 				<label for="Region" class="region">Region</label>

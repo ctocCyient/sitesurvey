@@ -237,4 +237,7 @@ public interface SurveyDAO {
 
 	@Transactional
 	public String updateClosedSurveyStatus(String ticketId, String siteId);
+		
+	@Transactional
+	public List<Site> ValidateLatLong(String latitude, String longitude);
 }
