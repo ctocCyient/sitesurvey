@@ -220,7 +220,8 @@ public class HomeController {
 			 ticketing.setOpenDate(ticket.getOpenDate());
 			 ticketing.setOpenTime(ticket.getOpenTime());
 			 ticketing.setSiteids(ticket.getSiteid());
-			 ticketing.setStatus("Open");
+			 ticketing.setTicketStatus("Open");	
+			 ticketing.setSurveyStatus("Open");
 			 ticketing.setTicketDescription(ticket.getTicketDescription());
 			 surveyDAO.addTicket(ticketing);
 		 }
@@ -280,7 +281,9 @@ public class HomeController {
 	    	 technicianTicket.setDistrict(technicianData.getDistrict());
 	    	 technicianTicket.setManager(technicianData.getManager());
 	    	 technicianTicket.setCity(technicianData.getCity());
-	    	 technicianTicket.setStatus("Assigned");
+	    	 technicianTicket.setTicketStatus("Assigned");
+	    	 technicianTicket.setSurveyStatus("Open");
+	    	
 	    	 
     	 
     		 ticketId=ticket.getTicketNum();
@@ -338,7 +341,21 @@ public class HomeController {
 		return model;
 	}
 	
-	
+	@RequestMapping(value = "/ValidateLatLong", method = RequestMethod.GET)
+	@ResponseBody
+	public String ValidateLatLong(ModelAndView model,HttpServletRequest request){
+			if(surveyDAO.ValidateLatLong(request.getParameter("latitude"), request.getParameter("longitude")).size()>0)
+		{
+			return "Existing";
+		}
+		else
+		{
+			return "New";
+		}
+		
+		
+		
+	}
 	
 	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
 	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
@@ -354,9 +371,6 @@ public class HomeController {
 	public ModelAndView saveGenerator(@Valid @ModelAttribute("Site_Generator") Site_Generator generator , BindingResult br , ModelAndView model, @RequestParam("file") MultipartFile[] multipart,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,HttpServletRequest request) throws IOException{
 		
-		System.out.println(generator.getSiteid().getSiteid());
-		String siteId=generator.getSiteid().getSiteid();
-		String ticketId=request.getParameter("ticketId");
 		
 		if(br.hasErrors())
 		{
@@ -391,10 +405,9 @@ public class HomeController {
 		
 		if(submit.equals("Save & Continue"))
 		{
-			model.addObject("siteId", siteId);
-			model.setViewName("redirect:/newSMPS");
-			//return new ModelAndView("redirect:/newSMPS?siteId="+siteId+"&ticketId="+ticketId);
-			return model;
+			/*model.addObject("siteId", siteId);
+			model.setViewName("redirect:/newSMPS");*/
+			return new ModelAndView("redirect:/newSMPS");
 			
 		}
 		else if(submit.equals("Save") || submit.equals("Add"))
@@ -410,7 +423,7 @@ public class HomeController {
 	@RequestMapping(value="/saveSMPS" , method=RequestMethod.POST)
 	public ModelAndView saveSMPS(@ModelAttribute("Site_SMPS") Site_SMPS smps, @RequestParam("file") MultipartFile[] multipart ,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,ModelAndView model){
 		
-		int id=smps.getId();
+		//int id=smps.getId();
 		try {
 			
 			smps.setObservation_1(multipart[0].getBytes());
@@ -428,7 +441,7 @@ public class HomeController {
 
 		if(submit.equals("Save"))
 		{
-			return new ModelAndView("redirect:/newSMPS");
+			return new ModelAndView("redirect:/home");
 		}
 		else if(submit.equals("Save & Continue"))
 		{
@@ -460,83 +473,140 @@ public class HomeController {
 		String siteGeneratorJson=gson.toJson(siteGeneratorList);
 		return siteGeneratorJson.toString();
 	}
-    
+
+	@RequestMapping(value = "/saveBB", method = RequestMethod.POST)
+	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("photos") MultipartFile[] tag_photo,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes) throws IOException {
+		System.out.println("save bb calling" + tag_photo.length);
+		String status = "Battery Bank Added Successfully";
+		Site_Battery_Bank obj = new Site_Battery_Bank();
+
 	
-	@RequestMapping(value="/saveBB", method=RequestMethod.POST)
-	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
-		System.out.println("save bb calling"+tag_photo);
-		String status="Battery Bank Added Successfully";
-		BB.setTag_photo1(tag_photo[0].getBytes());
-		BB.setTag_photo1(tag_photo[1].getBytes());
-		BB.setTag_photo_2(tag_photo[2].getBytes());
-		BB.setTag_photo1_Name(tag_photo[1].getOriginalFilename());
-		BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());
-		surveyDAO.addBB(updatetype,BB);
-		redirectAttributes.addFlashAttribute("status",status);
+if(BB.getId()!=0){
+	obj= surveyDAO.getBB(BB.getSiteid().getSiteid()).get(0);
+}
+	
 		
-		if(submit.equals("Save"))
-		  {
-			return new ModelAndView("redirect:/newBB");		 
-			}
-		  else if(submit.equals("Save & Continue"))
-		  {
-			  return new ModelAndView("redirect:/newCabinet");		 
+		// saggrigation of files
+		if(tag_photo[0].isEmpty())
+		{
+			BB.setTag_photo(obj.getTag_photo());
+			BB.setTag_photo_Name(obj.getTag_photo_Name());
 		}
-		  else
-		  {
-			  return new ModelAndView("redirect:/");		 
-		  }
+		else
+		{
+			BB.setTag_photo(tag_photo[0].getBytes());
+			BB.setTag_photo_Name(tag_photo[0].getOriginalFilename());
+			
+		}
+		
+		if(tag_photo[1].isEmpty())
+		{
+			BB.setTag_photo1(obj.getTag_photo1());
+			BB.setTag_photo1_Name(obj.getTag_photo1_Name());	
+		}
+		else
+		{
+			BB.setTag_photo1(tag_photo[1].getBytes());
+			BB.setTag_photo1_Name(tag_photo[1].getOriginalFilename());
+			
+		}
+		
+		if(tag_photo[2].isEmpty())
+		{
+			BB.setTag_photo_2(obj.getTag_photo_2());
+			BB.setTag_photo2_Name(obj.getTag_photo2_Name());
+		}
+		else
+		{
+			BB.setTag_photo_2(tag_photo[2].getBytes());
+			BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());			
+		}
+		System.out.println("BB id"+BB.getId());
+		surveyDAO.addBB(BB);
+		redirectAttributes.addFlashAttribute("status", status);
+		if (submit.equals("Save")) {
+			return new ModelAndView("redirect:/home");
+		} else if (submit.equals("Save & Continue")) {
+			return new ModelAndView("redirect:/newCabinet");
+		} else {
+			return new ModelAndView("redirect:/");
+		}
 
 	}
-	
-	
 
-	
-	@RequestMapping(value="/saveCabinet" , method=RequestMethod.POST)
-	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException{	
-		String status="Battery Bank Added Successfully";
-		BB.setPhoto_1(tag_photo[0].getBytes());
-		BB.setPhoto_2(tag_photo[1].getBytes());
-		BB.setPhoto_1_Name(tag_photo[0].getOriginalFilename());
-		BB.setPhoto_2_Name(tag_photo[1].getOriginalFilename());
-		surveyDAO.addCabinet(updatetype,BB);
-		redirectAttributes.addFlashAttribute("status",status);
-		
-		if(submit.equals("Save"))
-		  {
-			return new ModelAndView("redirect:/newCabinet");
-			}
-		  else if(submit.equals("Save & Continue"))
-		  {
-				return new ModelAndView("redirect:/newCabinet");
+
+	@RequestMapping(value = "/saveCabinet", method = RequestMethod.POST)
+	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB, @RequestParam("updatetype") String updatetype,
+			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,
+			@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException {
+		String status = "Cabinet Added Successfully";
+		Site_Cabinet obj = new Site_Cabinet();
+		/*System.out.println(updatetype);
+		System.out.println(updatetype.split(";")[0]);
+		System.out.println(updatetype.split(";")[1]);
+		System.out.println(updatetype.split(";")[2]);
+		System.out.println(updatetype.split(";")[3]);
+System.out.println(updatetype.split(";")[0]=="New");*/
+		if(updatetype.split(";")[0].contains("New"))
+		{
+			
 		}
-		  else
-		  {
-			  return new ModelAndView("redirect:/");		 
-		  }
-	}	
+		else
+		{
+			obj= surveyDAO.getCabinet(BB.getSiteid().getSiteid()).get(0);
+		}
 
-	
-	@RequestMapping(value="/getBBData",method=RequestMethod.GET)
-	 @ResponseBody
-	public String getBB(HttpServletRequest request)
-	{
-		List <Site_Battery_Bank> obj = surveyDAO.getBB(request.getParameter("siteid"));
-		String siteSMPSJson=gson.toJson(obj);
+		if(updatetype.split(";")[2].contains("Yes"))
+		{
+		BB.setPhoto_1(tag_photo[0].getBytes());
+		BB.setPhoto_1_Name(tag_photo[0].getOriginalFilename());
+		}
+		else
+		{
+			BB.setPhoto_1(obj.getPhoto_1());
+			BB.setPhoto_1_Name(obj.getPhoto_1_Name());
+		}
+		
+		if(updatetype.split(";")[3].contains("Yes"))
+		{
+			BB.setPhoto_2(tag_photo[tag_photo.length-1].getBytes());
+			BB.setPhoto_2_Name(tag_photo[tag_photo.length-1].getOriginalFilename());
+		}
+		else
+		{
+			BB.setPhoto_2(obj.getPhoto_2());
+			BB.setPhoto_2_Name(obj.getPhoto_2_Name());
+		}
+		
+		surveyDAO.addCabinet(updatetype,BB);
+		redirectAttributes.addFlashAttribute("status", status);
+
+		if (submit.equals("Save")) {
+			return new ModelAndView("redirect:/home");
+		} else if (submit.equals("Save & Continue")) {
+			return new ModelAndView("redirect:/fetchtowerinstallation");
+		} else {
+			return new ModelAndView("redirect:/");
+		}
+	}
+
+	@RequestMapping(value = "/getBBData", method = RequestMethod.GET)
+	@ResponseBody
+	public String getBB(HttpServletRequest request) {
+		List<Site_Battery_Bank> obj = surveyDAO.getBB(request.getParameter("siteid"));
+		String siteSMPSJson = gson.toJson(obj);
 		return siteSMPSJson.toString();
 
-	}	
-	
-	@RequestMapping(value="/getCabinetData",method=RequestMethod.GET)
-	 @ResponseBody
-	public String getCabinetData(HttpServletRequest request)
-	{
-		List <Site_Cabinet> obj = surveyDAO.getCabinet(request.getParameter("siteid"));
-		String siteSMPSJson=gson.toJson(obj);
+	}
+
+	@RequestMapping(value = "/getCabinetData", method = RequestMethod.GET)
+	@ResponseBody
+	public String getCabinetData(HttpServletRequest request) {
+		List<Site_Cabinet> obj = surveyDAO.getCabinet(request.getParameter("siteid"));
+		String siteSMPSJson = gson.toJson(obj);
 		return siteSMPSJson.toString();
 
-	}		
-	
+	}
 	
 	
 	
@@ -715,7 +785,7 @@ public class HomeController {
 	    
 		
 	    
-	    @SuppressWarnings("unchecked")
+	    @SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping("ticketsCount")
 	    @ResponseBody
 	    public String  ticketsCountData(ModelAndView model) {
@@ -741,7 +811,7 @@ public class HomeController {
 		          return countData.toString();
 	    }
 	 
-	    @SuppressWarnings("unchecked")
+	    @SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping("getOpenTickets")
 	    @ResponseBody
 	    public String  getOpenTicketsData(ModelAndView model) {
@@ -829,6 +899,7 @@ public class HomeController {
 	  
 	  }
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping("getTotalTickets")
 		@ResponseBody
 		public String  getTotalTicketsData(ModelAndView model) {

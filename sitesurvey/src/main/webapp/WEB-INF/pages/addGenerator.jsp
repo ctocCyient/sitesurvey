@@ -3,8 +3,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%String siteId=request.getParameter("siteId"); %>
-
 <!DOCTYPE html >
 <html lang="en">
 
@@ -19,16 +17,20 @@
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<script type="text/javascript">
 	
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-   	}
-	 
-	   else
-		   {
-		   role=sessionStorage.getItem("role");
-		   }
+	 if(sessionStorage.getItem("username")==null)
+	   	{
+			//window.location.href = "/sitesurvey/";
+			//alert(sessionStorage.getItem("username"));
+			   url = "/sitesurvey/";
+			      $( location ).attr("href", url);
+	   	}
+		   else
+			   {
+			   role=sessionStorage.getItem("role");
+				siteId=sessionStorage.getItem("siteId");
+				ticketId=sessionStorage.getItem("ticketId");
+			   }
+		
 
 </script>
 
@@ -62,7 +64,7 @@ $(document).ready(function(){
 	  $("#addGenerator :input").attr("required", '');
 	  $("select option[value='Select']").attr('disabled','disabled');
 		 $(".isa_success").fadeOut(10000);
-		 var siteID='<%=siteId%>';
+		 var siteID=siteId;
 		 $("#siteId").val(siteID);
 		getGeneratorDetails(siteID);
 });
@@ -158,7 +160,7 @@ label {
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-    <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
+<%--     <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br> --%>
     
 			<h3 class="text-center">Add Generator</h3>${siteId}
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
@@ -167,64 +169,63 @@ label {
 			<div class="login-form">
 			<!-- <span id="addMsg" style="font-size:18px;margin-left:221px;"><b>Add New</b><button type="submit" value="Add" name="submit"><i class="fa fa-plus-square" aria-hidden="true"></i></button></span><br><br>-->
 			 <form:hidden path="id" id="id"/>
-			<label for="siteid" class="placeholder">Site Id</label>
+			<label for="siteid" class="placeholder"><b>Site Id</b></label>
 				<form:input id="siteId" path="siteid.siteid" name="siteId" class="form-control input-full filled" readonly="true" />
 				<form:errors path="siteid.siteid" cssClass="error"/>
 			
 				 <br>
-				<form:hidden path="" id="ticketId" name="ticketId" />
-				<label for="Manufacturer" class="placeholder">Manufacturer</label>
+				
+				<label for="Manufacturer" class="placeholder"><b>Manufacturer</b></label>
 				<form:input id="dgManufacturer" path="dgManufacturer" class="form-control input-full filled" onkeypress="return isCharacters(event);"/>
 				<form:errors path="dgManufacturer" cssClass="error"/>
 				
 				<br>
-				<label for="date" class="placeholder">Date of Manufacturer/Installation</label>
+				<label for="date" class="placeholder"><b>Date of Manufacturer/Installation</b></label>
 				 <form:input id="date" type="date"  placeholder="mm/dd/yyyy" value="" path="manufacturedDate" class="form-control input-full filled" max="9999-12-31"/>
 				 <form:errors path="manufacturedDate" cssClass="error"/>
 				<br>
 				
-				<label for="capacity" class="placeholder">Generator Capacity Rating(kVA)</label> 
+				<label for="capacity" class="placeholder"><b>Generator Capacity Rating(kVA)</b></label> 
 				<form:input id="capacity" path="capacity"  name="capacity"  class="form-control input-full filled" onkeypress="return isNumber(event)" />
 				<form:errors path="capacity" cssClass="error"/>
 				<br>
                
-				<label for="DGrunhours" class="DGrunhours">DG Run hours(hrs)</label>
+				<label for="DGrunhours" class="DGrunhours"><b>DG Run hours(hrs)</b></label>
                <form:input id="DGrunhours" path="DGrunhours"  name="DGrunhours"  class="form-control input-full filled"  onkeypress="return isNumber(event)"/>
                <form:errors  path="DGrunhours" cssClass="error" />
                
                 <br>
                 <span class="isa_failure" style="color:red">${errMsg}</span>
-                <label for="" class="">Photos of Generator Control Unit(GCU)</label>
+                <label for="" class=""><b>Photos of Generator Control Unit(GCU)</b></label>
                <input type="file" id="GCUPhoto"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)"/>
                 <br>
                 
-                <label for="fuellevel" class="fuellevel">Fuel Level at Site(%)</label>
+                <label for="fuellevel" class="fuellevel"><b>Fuel Level at Site(%)</b></label>
                 	 <form:input id="fuellevel" path="fuellevel"  name="fuellevel"  class="form-control input-full filled"  onkeypress="return isNumber(event)"/>
                	<br>
               
-           	 	<label for="" class="">Photos of Fuel Level Sensor</label>
+           	 	<label for="" class=""><b>Photos of Fuel Level Sensor</b></label>
                	<input type="file" id="FLSPhoto"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)" />
                 <br> 
               
-              	<label for="" class="">Photo1 of the site(Which is not in proper condition)</label>
+              	<label for="" class=""><b>Photo1 of the site(Which is not in proper condition)</b></label>
                	<input type="file" id="photo1"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)" />
                 <br> 
                 
-                <label for="" class="">Photo2 of the site(Which is not in proper condition)</label>
+                <label for="" class=""><b>Photo2 of the site(Which is not in proper condition)</b></label>
                	<input type="file" id="photo2"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br> 
               
-              	<label for="tagNumber" class="placeholder">Asset Tag Number</label>
-				<!--<form:input id="assettagnumber" path="assettagnumber"  name="assettagnumber"  class="form-control input-full filled"  />-->
+              	<label for="tagNumber" class="placeholder"><b>Asset Tag Number</b></label>
 				 <form:radiobutton path="assettagnumber" name="assettagnumber" value="Yes"/> Yes 
         		 <form:radiobutton path="assettagnumber" name="assettagnumber" value="No"/>  No
 				<br>
 				<br>
-				<label for="" class="">Asset Tag Photo</label>
+				<label for="" class=""><b>Asset Tag Photo</b></label>
                	<input type="file" id="tagPhoto"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br> 
 				
-              	<label for="Condition" class="Condition">Condition</label>
+              	<label for="Condition" class="Condition"><b>Condition</b></label>
               	 <form:select id="generatorCondition" path="generatorCondition"  name="generatorCondition"  class="form-control input-full filled" >
               	 <form:option value="Select">Select</form:option>
               	 <form:option value="Not assessed">Not assessed (Note why not assessed in observation)</form:option>
@@ -237,13 +238,13 @@ label {
               	 </form:select>
                 <br>
                 
-                <label for="comments" class="placeholder">Comments</label> 
+                <label for="comments" class="placeholder"><b>Comments</b></label> 
 				<form:input id="comments" path="comments"  name="comments"  class="form-control input-full filled"  />
 				<br>
                 
 				<div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit" value="Save" name="submit" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input type="submit" value="Save" name="submit" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
 					<input type="submit" value="Save & Continue" name="submit" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 				</div>
 			</div>

@@ -2,7 +2,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%-- <% String status=(String)request.getAttribute("PPEStatus"); %> --%>
+<%-- <% String btnClick=(String)request.getAttribute("btnClick"); %> --%>
 <!DOCTYPE html >
 <html lang="en">
 
@@ -14,9 +15,6 @@
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />" type="image/x-icon"/>
 <title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-
-	
-
 
 	<script src="<c:url value='resources/js/jquery.min.js' />"></script>
 	
@@ -34,26 +32,22 @@
      
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 
-	<!-- <script type="text/javascript">
-	role=sessionStorage.getItem("role"); 
+	 <script type="text/javascript">
+	
    if(sessionStorage.getItem("username")==null) 
    	{ 
-		//window.location.href = "/sitesurvey/";
-	//alert(sessionStorage.getItem("username"));
 		   url = "/sitesurvey/"; 
 		      $( location ).attr("href", url);
   	}
-   else if(role=="Admin" || role=="SuperAdmin")
-		   { 
-		   
-		   } 
+  
  	   else 
  		   { 
- 		   url = "/sitesurvey/"; 
- 		      $( location ).attr("href", url);
+ 		  role=sessionStorage.getItem("role"); 
+ 			siteId=sessionStorage.getItem("siteId");
+ 			ticketId=sessionStorage.getItem("ticketId");
 		   } 
 
- </script> -->
+ </script> 
  
  
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
@@ -92,15 +86,120 @@ WebFont.load({
 $(document).ready(function(){	
 	$("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	 $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
+	 $("#siteid")[0].value=siteId;
+	  $('#siteid').attr('readonly','readonly');
+	  $("#technicianName,#rigger_Name,#img1,#img2,#img0").attr('required', '');  
+	 getSurveyTeamPPEDetails();
 
+<%-- 	 var status='<%=status%>'; --%>
+<%-- 	 var btnClick='<%=btnClick%>'; --%>
+// 		// $(".isa_success").fadeOut(10000);
 		
-		 $(".isa_success").fadeOut(10000);
+		
+// 		 if(status=='Saved')
+// 		{
+// 			 	var nextUrl;
+// 			  if(btnClick=="Save"){
+// 				  nextUrl="/sitesurvey/home";
+// 			  }
+// 			  else if(btnClick=="Save & Continue"){
+// 				  nextUrl="/sitesurvey/siteAccess";
+// 			  }
+// 			  swal({
+// 					//title: 'Are you sure?',
+// 					text: "Details Saved Successfully",
+// 					type: 'info',
+// 					buttons:{
+// 						confirm: {
+// 							text : 'Ok',
+// 							className : 'btn btn-success'
+// 						}
+// 					}
+// 				}).then((Delete) => {
+// 					if (Delete) {
+// 						window.location.href = nextUrl;
+// 					} 
+// 				});
+// 			}
 	
 });
 
 
+function getSurveyTeamPPEDetails()
+{
+	$.ajax({
+        type:"get",
+        url:"getSurveyTeamPPEDetails",
+        contentType: 'application/json',
+        datatype : "json",
+        data:{"selectedSiteId":siteId},
+        success:function(result) {
+        	var surveyTeamDetails= JSON.parse(result);    
+           if(surveyTeamDetails.length!=0)
+        	{        	   
+        		$("#ppeId")[0].value=surveyTeamDetails[0].id;
+ 			  	$("#ppe").val(surveyTeamDetails[0].ppe);
+ 			  	$("#technicianName")[0].value=surveyTeamDetails[0].technicianName;
+ 			 	$("#rigger_Name")[0].value=surveyTeamDetails[0].rigger_Name;
+ 			
+	 			$.each(surveyTeamDetails[0].rigger_Wearing.split(','), function(i, val){
+	 			   $("input[name='rigger_Wearing'][value='" + val + "']").prop('checked', true);
+	 			});
+	 			
+	 			$.each(surveyTeamDetails[0].technicianWearing.split(','), function(i, val){
+	  			   $("input[name='technicianWearing'][value='" + val + "']").prop('checked', true);
+	  			});
+			  
+        	  }
+        }
+	});
+}
+
+
+
+function ValidateImage(id){
+	
+	var  i=id[id.length-1];
+		  var fuData = document.getElementById(id);
+      var FileUploadPath = fuData.value;
+//To check if user upload any file
+      if (FileUploadPath == '') {
+          alert("Please upload an image");
+     } else {
+          var Extension = FileUploadPath.substring(
+                  FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+//The file uploaded is an image
+if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
+//To Display
+			 $("#image"+i)[0].innerHTML="";
+              if (fuData.files && fuData.files[0]) {
+                 var reader = new FileReader();
+                 reader.onload = function(e) {
+                     // $('#blah').attr('src', e.target.result);
+                  }
+                 reader.readAsDataURL(fuData.files[0]);
+              }
+         }
+//The file upload is NOT an image
+else {
+           // alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+              $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
+             document.getElementById(id).value="";
+          }
+      }
+  }
+
+
 </script>
 <style>
+.isa_failure{
+    color:red;
+}
+.error {
+ color: #ff0000;
+ font-style: italic;
+ font-weight: bold;
+}
 .login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
     width: 700px;
     background: #fff;
@@ -114,15 +213,9 @@ $(document).ready(function(){
 }
 
 
-input[type=file]::-webkit-file-upload-button {
-  border: 1px solid grey;
-  background: #FFFAAA;
-}
-
 </style>
 
 <body  class="login">
-
     <div class="main-header" style="background-color: #00B1BF;">
 			<!-- Logo Header -->
 			<div class="logo-header">
@@ -159,22 +252,30 @@ input[type=file]::-webkit-file-upload-button {
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
 			
-			 <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
+			
     
 			<h3 class="text-center">PPE(PERSONAL PROTECTIVE EQUIPMENT)</h3>
 				
-			<form:form action="saveSurveyPPE" method="post" modelAttribute="SurveyTeamPPE">
+			<form:form action="saveSurveyPPE" method="post" modelAttribute="SurveyTeamPPE"  enctype = 'multipart/form-data' id="ppeForm">
 			<div class="login-form">
-			
+			<form:hidden path="id" id="ppeId"/>
+				<label for=siteid class="placeholder"><b>Site Id</b></label>
+					<form:input id="siteid" path="siteid.siteid"  name="siteid"  class="form-control input-full filled"  />
 				 <br>
 				<label for="ppe" class="placeholder"><b>All members of survey team wearing PPE(safety boots, high visibility vest, hard hat)</b></label>
-				<form:input id="ppe" path="ppe" class="form-control input-full filled" />
+<%-- 				<form:input id="ppe" path="ppe" class="form-control input-full filled" /> --%>
+				<form:select id="ppe" path="ppe"  name="ppe"  class="form-control input-full filled" >
+              	<form:option value="Yes">Yes</form:option>
+              	<form:option value="No">No</form:option>              	
+              	 </form:select>
 				<br>
+				
 				<label for="photoSurveyTeam" class="placeholder"><b>Photo of survey team</b></label>
-				<input type="file"  class="form-control input-border-bottom"  id="photoSurveyTeam" name="photoSurveyTeam"  path="photoSurveyTeam" required/> 
+				<input type="file"  class="form-control input-border-bottom" name="file" id="img0" onchange="ValidateImage(this.id)"/> 
+				<span class="isa_failure" id="image0">${errMsg}</span>
 				<br>
 				<label for="technicianName" class="placeholder"><b>Technician name/s</b></label> 
-				<form:input id="technicianName" path="technicianName"  name="technicianName"  class="form-control input-full filled"  />
+				<form:input id="technicianName" path="technicianName"  name="technicianName"  class="form-control input-full filled"  onkeypress="isCharacters(event)"/>
 				<br>
                
 				<label for="technicianWearing" class="placeholder"><b>Technician/s wearing PPE</b></label><br><br>
@@ -184,7 +285,8 @@ input[type=file]::-webkit-file-upload-button {
                 <br>
                 
                 <label for="photoTechnicianTeam" class="placeholder"><b>Photo of technician/s</b></label>            
-				<input type="file"  class="form-control input-border-bottom"  id="photoTechnicianTeam" name="photoTechnicianTeam"  path="photoTechnicianTeam" required/> 
+				<input type="file"  class="form-control input-border-bottom"  name="file"  id="img1" onchange="ValidateImage(this.id)"/> 
+				<span class="isa_failure" id="image1">${errMsg}</span>
                 <br>
           
 				<label for="rigger_Name" class="placeholder"><b>Rigger Name/s</b></label>
@@ -195,12 +297,12 @@ input[type=file]::-webkit-file-upload-button {
 				<form:checkboxes items="${riggerPPEList}" path="rigger_Wearing" id="rigger_Wearing"  element="p" name="rigger_Wearing"/><br>
 				<br>
 				<label for="photoRiggerTeam" class="placeholder"><b>Photo of Rigger/s</b></label>
-				<input type="file"  class="form-control input-border-bottom"  id="photoRiggerTeam" name="photoRiggerTeam"  path="photoRiggerTeam" required/> 
+				<input type="file"  class="form-control input-border-bottom"  name="file" id="img2" onchange="ValidateImage(this.id)"/> 
+				<span class="isa_failure" id="image2">${errMsg}</span>
 				<br>
 				<div class="form-action">
-					<input type="submit" id="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-<!-- 					<input type="submit" id="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;"> -->
-<a href="siteAccess" class="btn btn-rounded btn-login" >Next</a>
+					<input type="submit" id="clickBtn" value="Save" class="btn btn-rounded btn-login" name="clickBtn" style="background-color: #E4002B;color: white;">
+					<input type="submit" id="clickBtn1" value="Save & Continue" class="btn btn-rounded btn-login" name="clickBtn" style="background-color: #012169;color: white;"> 
 				</div>
 			</div>
 			</form:form>	
@@ -212,17 +314,13 @@ input[type=file]::-webkit-file-upload-button {
 	<script src="<c:url value='resources/assets/css/bootstrap.min.css' />"></script>
 	<script src="<c:url value='resources/assets/js/ready.js' />"></script>
 	
+
 	<!--   Core JS Files   -->
-
-
-
 <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
 
 <!-- jQuery UI -->
-
-
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' />"></script>
 
@@ -232,8 +330,11 @@ input[type=file]::-webkit-file-upload-button {
 
 
 
-<!-- jQuery Sparkline -->
+<!-- Sweet Alert -->
+<script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
+
+<!-- jQuery Sparkline -->
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
 
 

@@ -1,5 +1,6 @@
 package com.cyient.dao;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -18,9 +19,10 @@ import com.cyient.model.Site_Additional_Notes;
 import com.cyient.model.Site_Area;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
+import com.cyient.model.Site_Wiring;
+import com.cyient.model.Survey_Team_PPE;
 import com.cyient.model.Site_Safety;
 import com.cyient.model.Site_Security;
-import com.cyient.model.Site_Wiring;
 import com.cyient.model.Site_Battery_Bank;
 import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Technician;
@@ -178,7 +180,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Site> getSiteId() {
-		// TODO Auto-generated method stub
 		  return sessionFactory.getCurrentSession().createQuery("select siteid from Site where siteid=(select max(siteid) from Site)").list();
 
 	} 
@@ -219,19 +220,19 @@ public class SurveyDAOImpl implements SurveyDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<Ticketing> openTicketsData() {
-		return sessionFactory.getCurrentSession().createQuery("FROM Ticketing where status='Open'").list();
+		return sessionFactory.getCurrentSession().createQuery("FROM Ticketing where ticketStatus='Open'").list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> assignedTicketsData() {
-		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='Assigned'").list();
+		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where ticketStatus='Assigned' or ticketStatus='Accepted' or ticketStatus='InProgress'").list();
 	}
 	
 	
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> historyTicketsData() {
-		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where status='Closed'").list();
+		return sessionFactory.getCurrentSession().createQuery("FROM TechnicianTicketInfo where ticketStatus='Closed'").list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -247,17 +248,17 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Ticketing> managerOpenTickets(String username,String region,String city) {
-		return sessionFactory.getCurrentSession().createQuery("from Ticketing where status='Open' or status='Not Accepted' and region='"+region+"' and city ='"+city+"'").list();	
+		return sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketStatus='Open' or ticketStatus='Not Accepted' and region='"+region+"' and city ='"+city+"'").list();	
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> managerClosedTickets(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='Closed'").list();	
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and ticketStatus='Closed'").list();	
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> managerNotAcceptedTickets(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and status='Not Accepted'").list();	
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and ticketStatus='Not Accepted'").list();	
 	}
 
 	@SuppressWarnings("unchecked")
@@ -267,17 +268,17 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techAssignedTicketsData(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='Assigned' and technicianId='"+username+"'").list();
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where ticketStatus='Assigned' and technicianId='"+username+"'").list();
 	}	
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techAcceptedTicketsData(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='Accepted' and technicianId='"+username+"'").list();
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where technicianId='"+username+"' and (ticketStatus='Accepted' or ticketStatus='InProgress')").list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techClosedTicketsData(String username) {
-		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where status='Closed' and technicianId='"+username+"'").list();
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where ticketStatus='Closed' and technicianId='"+username+"'").list();
 	}
 
 	public String assignTechnician(TechnicianTicketInfo technicianTicket) {
@@ -290,11 +291,13 @@ public class SurveyDAOImpl implements SurveyDAO {
 		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"' and siteid='"+siteId+"'");
 		
 		// System.out.println("Tcoetknknf123"+(Ticketing)q1.list().get(0));
-		 
+		// for(int i=0;i<q1.list().size();i++){
 		 Ticketing ticketing = (Ticketing)q1.list().get(0);		
 		// System.out.println("ticketId"+ticketing.getId());
-		 ticketing.setStatus("Assigned");	
-		 sessionFactory.getCurrentSession().update(ticketing);		
+		 ticketing.setTicketStatus("Assigned");	
+		 
+		 sessionFactory.getCurrentSession().update(ticketing);	
+		// }
 		return "Assigned";
 	}
 
@@ -322,7 +325,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
 		 for(int i=0;i<q1.list().size();i++){
 			 Ticketing ticketing = (Ticketing)q1.list().get(i);
-			 ticketing.setStatus(techStatus);
+			 ticketing.setTicketStatus(techStatus);
 			 ticketing.setComments(commentsData);
 			 ticketing.setRemarks(remarksData);
 		
@@ -336,7 +339,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		 for(int i=0;i<q2.list().size();i++){
 		 TechnicianTicketInfo technicianTicketInfo = (TechnicianTicketInfo)q2.list().get(i);
 		 
-		 technicianTicketInfo.setStatus(techStatus);
+		 technicianTicketInfo.setTicketStatus(techStatus);
 		 technicianTicketInfo.setComments(commentsData);
 		 technicianTicketInfo.setRemarks(remarksData);
 	
@@ -351,22 +354,14 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	}
 
-	public void addBB(String updatetype,Site_Battery_Bank BB) {
-		// TODO Auto-generated method stub
-		if(updatetype.split(";")[0]=="Existing")
-		{		
-		BB.setId(Integer.parseInt(updatetype.split(";")[1]));
+	public void addBB(Site_Battery_Bank BB) {
+		System.out.println("DAO BB id"+BB.getId());
 		sessionFactory.getCurrentSession().saveOrUpdate(BB);
-		}
-		else
-		{
-			sessionFactory.getCurrentSession().saveOrUpdate(BB);
-		}
+		
 	}
 
 	public void addCabinet(String updatetype,Site_Cabinet BB) {
-		// TODO Auto-generated method stub
-		if(updatetype.split(";")[0]=="Existing")
+		if(updatetype.split(";")[0].contains("Existing"))
 		{		
 		BB.setId(Integer.parseInt(updatetype.split(";")[1]));
 		sessionFactory.getCurrentSession().saveOrUpdate(BB);
@@ -378,7 +373,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 
 	public List<Site_Battery_Bank> getBB(String Siteid) {
-		// TODO Auto-generated method stub
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site_Battery_Bank.class);
 		Site s = new Site();
 		s.setSiteid(Siteid);
@@ -388,7 +382,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 	
 	public List<Site_Cabinet> getCabinet(String Siteid) {
-		// TODO Auto-generated method stub
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site_Cabinet.class);
 		Site s = new Site();
 		s.setSiteid(Siteid);
@@ -410,40 +403,117 @@ public class SurveyDAOImpl implements SurveyDAO {
 		return sessionFactory.getCurrentSession().createQuery("from Site_Generator where siteid='"+siteId+"'").list();
 	}
 	
-	
-
-	public String saveTowerInstallation(Tower_Installation tower) {
-		sessionFactory.getCurrentSession().saveOrUpdate(tower);
-			return "Saved";	
-	}
 
 	@SuppressWarnings("unchecked")
 	public List<Ticketing> getCustomerlist() {
 		return sessionFactory.getCurrentSession().createQuery("from Ticketing").list();
 	}
 
+	@Override
+	public void updateSiteDetails(String state,String siteId,String lati,String longi) {
+
+		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Site where siteid ='"+siteId+"'");
+
+		 Site siteData = (Site)q1.list().get(0);
+		 
+		siteData.setState(state);
+		siteData.setLatitude(lati);		
+		siteData.setLongitude(longi);
+	
+		 sessionFactory.getCurrentSession().update(siteData);
+		
+	}
+
+	@Override
+	public void addSiteSurveyPPE(Survey_Team_PPE surveyTeamPPE) {
+		sessionFactory.getCurrentSession().saveOrUpdate(surveyTeamPPE);			
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Survey_Team_PPE> getSurveyTeamDetails(String selectedSiteId) {
+		return sessionFactory.getCurrentSession().createQuery("from Survey_Team_PPE where siteid='"+selectedSiteId+"'").list();		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TechnicianTicketInfo> managerAssignedTickets(String username) {
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where manager='"+username+"' and (ticketStatus='Assigned' or ticketStatus='Accepted' or ticketStatus='InProgress')").list();	
+	}
+
+	@Override
+	public String updateSiteStatus(String siteId,String ticketId) {
+
+		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where siteid ='"+siteId+"' and ticketNum='"+ticketId+"'");
+
+		
+		 for(int i=0;i<q1.list().size();i++){
+			 Ticketing ticket = (Ticketing)q1.list().get(i);
+			
+				ticket.setTicketStatus("InProgress");
+				ticket.setSurveyStatus("InProgress");
+	
+				sessionFactory.getCurrentSession().update(ticket);
+		 }
+		 
+		 Query q2 = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where siteid ='"+siteId+"' and ticketNum='"+ticketId+"'");
+
+		
+		 for(int i=0;i<q2.list().size();i++){
+			 TechnicianTicketInfo ticketInfo = (TechnicianTicketInfo)q2.list().get(i);
+			
+				ticketInfo.setTicketStatus("InProgress");
+				ticketInfo.setSurveyStatus("InProgress");
+	
+				sessionFactory.getCurrentSession().update(ticketInfo);
+		 }
+		return "Updated";
+	}	
+	
+
+
+	public String saveTowerInstallation(Tower_Installation tower) {
+		sessionFactory.getCurrentSession().saveOrUpdate(tower);
+			return "Saved";	
+	}
+
 	public String storeSitesecurity(Site_Security ss) {
-		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().saveOrUpdate(ss);
 		return "Saved";
 	}
 
 	public String storeSiteSafety(Site_Safety sf) {
-		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().saveOrUpdate(sf);
 		return "Saved";
-		}
+	}
 
 	public String storeSiteAdditional(Site_Additional_Notes sa) {
-		// TODO Auto-generated method stub
 		sessionFactory.getCurrentSession().saveOrUpdate(sa);
 		return "Saved";
 	}
 
+
 	@SuppressWarnings("unchecked")
-	public List<Site_Safety> getSafetyDetails(String siteId){
-		
+	@Override
+	public List<Tower_Installation> fetchTowerDetails(String siteid) {
+		return sessionFactory.getCurrentSession().createQuery("from Tower_Installation  where siteid ='"+siteid+"'").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Site_Security> getSecurityDetails(String siteId) {
+		return sessionFactory.getCurrentSession().createQuery("from Site_Security where siteid='"+siteId+"'").list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Site_Safety> getSafetyDetails(String siteId){		
 		return sessionFactory.getCurrentSession().createQuery("from Site_Safety where siteid='"+siteId+"'").list();
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+
+	public List<Site_Additional_Notes> getSiteAddDetails(String siteId) {
+		return sessionFactory.getCurrentSession().createQuery("from Site_Additional_Notes where siteid='"+siteId+"'").list();
 	}
 
 	
@@ -451,20 +521,54 @@ public class SurveyDAOImpl implements SurveyDAO {
 	@SuppressWarnings("unchecked")
 	
 	public List<Site_Access> getSiteAccDetails(String siteId) {
-		// TODO Auto-generated method stub
 		return sessionFactory.getCurrentSession().createQuery("from Site_Access where siteid='"+siteId+"'").list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Site_Area> getSiteArDetails(String siteId) {
-		// TODO Auto-generated method stub
 		return sessionFactory.getCurrentSession().createQuery("from Site_Area where siteid='"+siteId+"'").list();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Site_Wiring> getPowerWiringDetails(String siteId) {
-		// TODO Auto-generated method stub
 		return sessionFactory.getCurrentSession().createQuery("from Site_Wiring where siteid='"+siteId+"'").list();
+	}
+	
+	
+	@Override
+	public String updateClosedSurveyStatus(String ticketId,String siteId) {
+	//	System.out.println("TICKET "+ticketId);
+		
+		Calendar cal = Calendar.getInstance();
+		 Query q = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where siteid ='"+siteId+"' and ticketNum='"+ticketId+"'");
+		 TechnicianTicketInfo technicianTicket = (TechnicianTicketInfo)q.list().get(0);
+		 
+		 technicianTicket.setSurveyStatus("Closed");
+//		 technicianTicket.setClosedDate(cal.getTime());
+//		 technicianTicket.setClosedTime(cal.getTime());
+		
+		 sessionFactory.getCurrentSession().update(technicianTicket);
+		 
+		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"' and siteid ='"+siteId+"'");
+		 Ticketing ticketing = (Ticketing)q1.list().get(0);
+		 
+		 ticketing.setSurveyStatus("Closed");
+//		ticketing.setClosedDate(cal.getTime());
+//		ticketing.setClosedTime(cal.getTime());
+	
+		
+		 sessionFactory.getCurrentSession().update(ticketing);
+		 
+		return "Updated";
+	}
+
+	@Override
+	public List<Site> ValidateLatLong(String latitude, String longitude) {
+		// TODO Auto-generated method stub
+		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site.class);
+        c.add(Restrictions.eq("latitude",latitude));
+        c.add(Restrictions.eq("longitude",longitude));
+        return c.list();
 	}
 	
 }

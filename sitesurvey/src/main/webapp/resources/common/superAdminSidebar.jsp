@@ -7,6 +7,11 @@
 <head >
 
 </head>
+<script>
+
+$('#currentUser')[0].innerHTML=sessionStorage.getItem("username");
+
+</script>
 <body>
 
 <div class="sidebar"  >
@@ -22,7 +27,7 @@
 						<div class="info">
 							<a data-toggle="collapse"  aria-expanded="">
 								<span>
-								<span class="user-level1" id="result"></span>
+								<span class="user-level1" id="currentUser"></span>
 									<span class="user-level">Logged in as</span>
 									<span class="user-level">Super Admin</span>									
 								</span>
@@ -55,7 +60,8 @@
 						</li>
 								<li class="nav-item">
 								<a  href="newSite">&nbsp;&nbsp;
-								<span class="fas fa-user" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Site</span></a>
+								<span style="font-size:14px" class="fas fa-map-marked">
+								 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Site</span></a>
 						</li>
 						
 					</ul>

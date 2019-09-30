@@ -63,8 +63,11 @@ public class Ticketing implements Serializable {
 	@Temporal(TemporalType.TIME)
 	private Date closedTime;
 	
-	@Column(name="Status")
-	private String status;
+	@Column(name="Survey_Status")
+	private String surveyStatus;
+	
+	@Column(name="Ticket_Status")
+	private String ticketStatus;
 	
 	@Column(name="Comments")
 	private String comments;
@@ -177,14 +180,22 @@ public class Ticketing implements Serializable {
 		this.closedTime = closedTime;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getSurveyStatus() {
+		return surveyStatus;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setSurveyStatus(String surveyStatus) {
+		this.surveyStatus = surveyStatus;
 	}
-	
+
+	public String getTicketStatus() {
+		return ticketStatus;
+	}
+
+	public void setTicketStatus(String ticketStatus) {
+		this.ticketStatus = ticketStatus;
+	}
+
 	public String getComments() {
 		return comments;
 	}

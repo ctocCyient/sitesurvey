@@ -2,8 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
- <%String siteId=request.getParameter("siteId");
-	String ticketId=request.getParameter("ticketId"); %>
+
 <!DOCTYPE html >
 <html lang="en">
 
@@ -15,23 +14,22 @@
 <title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<script type="text/javascript">
-	role=sessionStorage.getItem("role");
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		//window.location.href = "/sitesurvey/";
-		//alert(sessionStorage.getItem("username"));
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-   	}
-	   else if(role=="Admin" | role=="SuperAdmin")
-		   {
-		   
-		   }
-	   else
-		   {
-		   url = "/sitesurvey/";
-		      $( location ).attr("href", url);
-		   }
+	
+	
+	 if(sessionStorage.getItem("username")==null)
+	   	{
+			//window.location.href = "/sitesurvey/";
+			//alert(sessionStorage.getItem("username"));
+			   url = "/sitesurvey/";
+			      $( location ).attr("href", url);
+	   	}
+		   else
+			   {
+			   role=sessionStorage.getItem("role");
+				siteId=sessionStorage.getItem("siteId");
+				
+			   }
+		
 
 </script>
 
@@ -61,26 +59,15 @@ WebFont.load({
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	  $("#addSMPS :input").attr("required", '');
-	  var siteID='<%=siteId%>';
-	  var ticketId='<%=ticketId%>;'
+	  var siteID=siteId;	 
 	$("#siteId").val(siteID);
-	$("#ticketId").val(ticketId);
 	$(".isa_success").fadeOut(10000);
 	getSMPSDetails(siteID);
 });
 
-/* function populateDropdown(data,id)
-{
-	var	catOptions="<option value=''>Select</option>";
- 	for (i in data) {
- 		
-   	 	 catOptions += "<option>" + data[i] + "</option>";
- 		}
- 		document.getElementById(id).innerHTML = catOptions;
- 		 $("select option[value='']").attr('disabled','disabled');
-} */
+
 
 function getSMPSDetails(siteID)
 {
@@ -158,13 +145,13 @@ label {
 		</div>
 
 		<!-- Sidebar -->
-<div id="superAdminSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
-    <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
+<%--     <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br> --%>
     
 			<h3 class="text-center">Add SMPS</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
@@ -172,50 +159,50 @@ label {
 			<div class="login-form">
 				 <br>
 				 <form:hidden path="id" id="id"/>
-				<label for="siteId" class=siteId>Site Id</label>
+				<label for="siteId" class=siteId><b>Site Id</b></label>
 				<form:input id="siteId" path="siteid.siteid" class="form-control input-full filled" readonly="true"/>
 				<br>
-				<form:hidden id="ticketId" path=""/>
+				
 				 <br>
-				<label for="Manufacturer" class="placeholder">Manufacturer</label>
+				<label for="Manufacturer" class="placeholder"><b>Manufacturer</b></label>
 				<form:input id="Manufacturer" path="Manufacturer" class="form-control input-full filled" onkeypress="return isCharacters(event);"/>
 				<br>
 				
-				<label for="model" class="placeholder">Model(Rack Capacity kW)</label> 
+				<label for="model" class="placeholder"><b>Model(Rack Capacity kW)</b></label> 
 				<form:input id="model" path="model"  name="model"  class="form-control input-full filled" onkeypress="return isNumber(event)"  />
 				<br>
 				
-				<label for="date" class="placeholder">Date of Manufacturer/Installation</label>
+				<label for="date" class="placeholder"><b>Date of Manufacturer/Installation</b></label>
 				 <form:input type="date" id="manufacturerDate" placeholder="mm/dd/yyyy" value="" path="manufacturedDate" class="form-control input-full filled" max="9999-12-31"/>
 				<br>
 				
-				<label for="module_rating" class="module_rating">Modules Rating(kW)</label>
+				<label for="module_rating" class="module_rating"><b>Modules Rating(kW)</b></label>
                <form:input id="module_rating" path="module_rating"  name="module_rating"  class="form-control input-full filled"  onkeypress="return isNumber(event)" />
                 <br>
                 
-                 <label for="fuellevel" class="fuellevel">Number of Working modules available</label>
+                 <label for="fuellevel" class="fuellevel"><b>Number of Working modules available</b></label>
                 	 <form:input id="workingModules" path="number_of_working_Module_rating"  name="number_of_working_Module_rating"  class="form-control input-full filled" onkeypress="return isNumber(event)"  />
               	<br>
               	
-              	<label for="smpsCondition" class="smpsCondition">Overall Condition of SMPS Equipment</label>
+              	<label for="smpsCondition" class="smpsCondition"><b>Overall Condition of SMPS Equipment</b></label>
               	 <form:input id="smpsCondition" path="smpsCondition"  name="smpsCondition"  class="form-control input-full filled"  />
                 <br>
                 
-                <label for="comments" class="comments">Observation/Comments</label>
+                <label for="comments" class="comments"><b>Observation/Comments</b></label>
               	 <form:input id="comments" path="comments"  name="comments"  class="form-control input-full filled"  />
                 <br>
                               
-                <label for="" class="">Photo1 : GPS Accuracy of Photo</label>
+                <label for="" class=""><b>Photo1 : GPS Accuracy of Photo</b></label>
                <input type="file" id="photos"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br>
                                
-              	<label for="" class="">Photo 2 : GPS Accuracy of Photo</label>
+              	<label for="" class=""><b>Photo 2 : GPS Accuracy of Photo</b></label>
                <input type="file"  id="photos"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br>
                               
 				<div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
 					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 
 				</div>

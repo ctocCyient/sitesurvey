@@ -142,8 +142,6 @@ function populateDropdown(data,id)
 	 		 	datatype:"json",
 	 		 	data:{"siteid":siteId},
 	 		 	success:function(res){
-	 		 		
-	 		 	console.log(res);
 	 	         	jsonData = JSON.parse(res)[0];
 	 	         	jsonLen=JSON.parse(res).length;
 	 	         	if(JSON.parse(res).length==0)
@@ -153,9 +151,7 @@ function populateDropdown(data,id)
 			 	           $('#photo_1_checkbox').prop('checked', false);
 				 	          $('#photo_2_checkbox').prop('checked', false);
 				 	         	$("#photo_1").removeAttr("disabled");     
-				 	         	$("#photo_2").removeAttr("disabled"); 
-			 	 	         	$("#photo_1_div").show();
-			 	 	         	$("#photo_2_div").show();
+				 	         	$("#photo_2").removeAttr("disabled");     
 	 	         		}
 	 		 		//alert(jsonData.id)	
 	 		 		else
@@ -169,17 +165,7 @@ function populateDropdown(data,id)
 	 	         	document.getElementById("cabinetCondition").value=jsonData.cabinetCondition;
  	 	         	document.getElementById("comments").value=jsonData.comments;
 	 	         	document.getElementById("updatetype").value="Existing;"+jsonData.id;
-	 	         	document.getElementById("photo_1_text").value=jsonData.Photo_1_Name;
-	 	         	document.getElementById("photo_2_text").value=jsonData.Photo_2_Name;
-
-	 	         	
  	 	         	//document.getElementById("photo_1").value='data:image/jpeg;base64,' + base64;
- 	 	         	$("#photo_1_div").hide();
- 	 	         	$("#photo_2_div").hide();
- 	 	         	$("#photo_1_text_div").show();
- 	 	         	$("#photo_2_text_div").show();
- 	 	         	$("#photo_1_text").attr("disabled","disabled");
- 	 	     	    $("#photo_2_text").attr("disabled","disabled");
 
 	 	         	
 	 	         	//document.getElementById("ItemPreview").src = "data:image/png;base64," + jsonData.photo_1;
@@ -192,6 +178,10 @@ function populateDropdown(data,id)
 
 
 //image_popup(base64);
+
+
+
+
 
 
 	 		 			}
@@ -208,7 +198,7 @@ function submit_logic()
 {
 	var updatetype= $('#updatetype').val();
 	$('#updatetype').val(" ");
-	filestate = ";"+$("input[name='photo_1_text_div_radio']:checked").val()+";"+$("input[name='photo_2_text_div_radio']:checked").val();
+	filestate = ";"+$('#photo_1_checkbox').prop('checked')+";"+$('#photo_2_checkbox').prop('checked');
 	if(jsonLen==0)
 		{
 		$('#updatetype').val("New;1"+filestate);		
@@ -217,7 +207,7 @@ function submit_logic()
 		{
 		$('#updatetype').val("Existing;"+Unqid+filestate);		
 		}
-	alert($('#updatetype').val());
+	//alert($('#updatetype').val());
 }
 
 
@@ -244,56 +234,15 @@ function photohover(obj)
 		}
 }
 
-
+$("#photo_1").hover(function(){
+	image_popup("Photo_1",base64_1);
+});
 
 function outmouse(obj)
 {
 	swal.close();
 }
 
-function upload_files(id)
-{
-	var Value = $("input[name='"+id.name+"']:checked").val();
-	var name = $("input[name='"+id.name+"']:checked").val();	
-	//split text field file_
-	 //$(#id)).show();
-    if(Value=="Yes"){ 
-    	switch(id.name) {
-    	  case "photo_1_text_div_radio":
-    	    $("#photo_1_div").show();
-   	        $("#photo_1").removeAttr("disabled"); 
-         	$("#photo_1_text_div").hide();
-    	    break;   
-    	    
-    	  case "photo_2_text_div_radio":     	    
-     	    $("#photo_2").removeAttr("disabled"); 
-           	$("#photo_2_text_div").hide();
-           	$("#photo_2_div").show();
-      	    break;     
-
-    	  default:
-    	    // code block
-    	}
-    	}
-    
-    if(Value=="No"){ 
-    	switch(id.name) {    	   
-    	 case "photo_1_text_div_radio":
-      	    $("#photo_1_div").hide();
-     	    $("#photo_1").removeAttr("disabled"); 
-           	$("#photo_1_text_div").show();
-      	    break;    
-      	    
-    	  case "photo_2_text_div_radio":
-        	    $("#photo_2_div").hide();
-       	        $("#photo_2").removeAttr("disabled"); 
-             	$("#photo_2_text_div").show();
-        	    break; 
-    	  default:
-    	    // code block
-    	}
-    	}
-	}
 
 </script>
 <style>
@@ -354,7 +303,7 @@ label {
 			<h3 class="text-center">Add Cabinet</h3>
 			<span id="msg" style="color: red; font-size: 12px;">*All
 				Fields are Mandatory*</span><br>
-				
+				<span id="msg" style="color: red; font-size: 12px;">*Hover Your mouse pointer on image label to see existing images*</span>
 			<form:form action="saveCabinet" method="post"
 				modelAttribute="Site_Cabinet" enctype="multipart/form-data">
 				<div class="login-form">
@@ -401,80 +350,18 @@ label {
 					<br> <label for="comments" class="placeholder"><b>Observation/Comments</b></label>
 					<form:input id="comments" path="comments" name="comments" onkeypress="return isCharacters(event)" 
 						class="form-control input-full filled" />
-					
-					<div id="photo_1_div">
-					<br>
-					 <label for="Photo_1" class="placeholder" style="float:left" id="picture_1"  ><b>photo 1</b></label>
+					<br> <label for="Photo_1" class="placeholder" style="float:left" id="picture_1" onmouseover="photohover(this);" onmouseout="outmouse(this);" ><b>photo 1</b></label><input id="photo_1_checkbox" type="checkbox"  style="float:right;bottom: 1px;" data-toggle="tooltip" title="Uncheck to upload Image"/><label style="float:right">Enable/Disable</label>
 					<%--                <form:input id="tag_photo" path="tag_photo"  name="tag_photo"  class="form-control input-full filled"  /> --%>
 					<input type="file" id="photo_1" name="tag_photo" 
 						class="form-control input-full filled" accept="image/*" 
-						onchange="ValidateFileUpload(this.id)" />
-												<div class="row mt-1">	<div class="col-md-7">
-						<!--  <label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes"  name="photo_1_text_div_radio_update" onclick="upload_files(this)" checked/></div><div class="col-md-2">No<input type="radio"  onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio_update" />-->
-						</div>
-						</div>
-						</div>
-						 
-
-						
-						
-				
-											
-					<div id="photo_1_text_div">
-					<br>
-					 <label for="Photo_1" class="placeholder" style="float:left" ><b>photo 1</b></label><br>
-					 					<div class="row mt-1">				
-					 
-					 <div class="col-md-9">
-					<input type="text" id="photo_1_text" 
-						class="form-control input-full filled" 
-						 /></div>
-						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_1" onclick="photohover(this);" value="View"/>
-
-						</div>
-						</div>
-
-						</div>
-												<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" id="defaultChecked" name="photo_1_text_div_radio" onclick="upload_files(this)" /></div><div class="col-md-2">No<input type="radio" onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio" checked/>
-						</div>
-						</div>
-						
-<br>
-						 <div id="photo_2_div">
-					<label for="photo_2" class="placeholder" id="picture_2"><b>photo 2</b></label>
+						onchange="ValidateFileUpload(this.id)" /> <br> <br>
+					<label for="photo_2" class="placeholder" id="picture_2" onmouseover="photohover(this);" onmouseout="outmouse(this);"><b>photo 2</b></label><input id="photo_2_checkbox" type="checkbox" style="float:right;bottom: 1px;" data-toggle="tooltip" title="Uncheck to upload Image"/><label style="float:right">Enable/Disable</label>
 					<input type="file" id="photo_2" name="tag_photo"
 						onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> 
-											<!--  	<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" onclick="upload_files(this)" name="photo_2_text_div_radio_update"  checked/></div><div class="col-md-2">No<input type="radio" value="No" onclick="upload_files(this)" name="photo_2_text_div_radio_update" />
-						</div>-->
-						</div>
-						</div>
-<div id="photo_2_text_div">
-					 <label for="Photo_2" class="placeholder" style="float:left" ><b>photo 2</b></label><br>
-					 					<div class="row mt-1">									 
-					 <div class="col-md-9">
-					<input type="text" id="photo_2_text" 
-						class="form-control input-full filled" 
-						 /></div>
-						 <div class="col-md-3">												
-										<input class="btn btn-info" type="button" id="picture_2" onclick="photohover(this);" value="View"/>
-						</div>
-						</div>
-
 						
+						<br>
 						
-						</div>
-											<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" onclick="upload_files(this)" name="photo_2_text_div_radio"  /></div><div class="col-md-2">No<input type="radio" value="No" onclick="upload_files(this)" name="photo_2_text_div_radio" checked/>
-						</div>
-						</div>	
 
 <!--  <img id="ItemPreview">-->
 						

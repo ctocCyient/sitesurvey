@@ -204,7 +204,7 @@ label {
 				<form:input id="username" path="username" class="form-control input-full filled" onkeypress="return isCharacters(event);" onblur="getUserName();"/>
 				<span id="unameMsg" style="color:red;display:none;font-size:15px">Username already Exists</span>
 				 <br>
-				<label for="name" class="placeholder">FullName</label>
+				<label for="name" class="placeholder">Full Name</label>
 				<form:input id="name" path="name" class="form-control input-full filled" onkeypress="return isCharacters(event);"/>
 				<span id="unameMsg" style="color:red;display:none;font-size:15px">Username already Exists</span>				
 				<br>
