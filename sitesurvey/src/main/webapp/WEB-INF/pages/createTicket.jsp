@@ -343,7 +343,7 @@ var jsonData=[];
 <div id="adminSidebar">
 </div>
 		<!-- End Sidebar -->
-		  <div class="wrapper wrapper-login">
+		  <div class="wrapper wrapper-login" >
 		<div class="container container-login animated fadeIn">
 		 <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
 		 <span id="errorMsg" style="color:red;display:none;font-size:15px">Please enter all details</span>

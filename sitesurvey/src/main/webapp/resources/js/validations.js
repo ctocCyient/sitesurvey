@@ -149,4 +149,25 @@ else {
         }
     }
 
+	function Validate_latlong(text_box)
+	{
+	var text_value = document.getElementById(text_box.id).value;
+
+	var reg = new RegExp("^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}");
+
+	if( reg.exec(text_value) ) {
+	 //do nothing
+	} else {
+		swal("Invalid "+text_box.id+" Format", {
+			icon : "error",
+			buttons: {        			
+				confirm: {
+					className : 'btn btn-danger'
+				}
+			},
+		});
+	}
+
+
+	}
  

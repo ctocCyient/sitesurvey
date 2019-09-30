@@ -8,7 +8,7 @@
 <% String status=(String)request.getAttribute("status"); %>
 
 <% String btnClick=(String)request.getAttribute("btnClick"); 
-  System.out.println("btnclck>>>>>>>"+btnClick);%> 
+  System.out.println("btnclck>>>>>>>"+btnClick);%>
 <!DOCTYPE html >
 <html lang="en">
 
@@ -35,22 +35,9 @@
 	<script src="${jqueryJs}"></script>
     <script src="${jqueryuiJs}"></script>
     <script src="${validationsJs}"></script>
-      <script type="text/javascript">
-	
-   if(sessionStorage.getItem("username")==null) 
-   	{ 
-		   url = "/sitesurvey/"; 
-		      $( location ).attr("href", url);
-  	}
-  
- 	   else 
- 		   { 
- 		  role=sessionStorage.getItem("role"); 
- 			siteId=sessionStorage.getItem("siteId");
- 			ticketId=sessionStorage.getItem("ticketId");
-		   } 
 
- </script> 
+  <script src="<c:url value='resources/js/base64js.min.js' />"></script>
+
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
@@ -89,14 +76,20 @@ $(document).ready(function(){
 	var status='<%=status%>';
 
 	var btnClick='<%=btnClick%>';
-	
+	//alert(status);
 	 if(status=='Saved')
 
      {
-                         
+                  var nextUrl;
+              if(btnClick=="Save"){
+                    nextUrl="/sitesurvey/home";
+              }
+              else if(btnClick=="Save & Continue"){
+                    nextUrl="/sitesurvey/gotoAdditional";
+              }
               swal({
                          //title: 'Are you sure?',
-                         text: "Details Saved and Ticket Closed Succesfully",
+                         text: "Details Saved Successfully",
                          type: 'info',
                          buttons:{
                                 confirm: {
@@ -106,7 +99,7 @@ $(document).ready(function(){
                          }
                   }).then((Delete) => {
                          if (Delete) {
-                                window.location.href = "/sitesurvey/home";
+                                window.location.href = nextUrl;
                          }
                   });
             }
@@ -115,24 +108,33 @@ $(document).ready(function(){
 	$("select option[value='Select']").attr('disabled','disabled');
 	//$("#additionalNotes : input").attr("required",'');
 	 $("#additionalNotes :input").attr("required", '');
+	 
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	$("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
+	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
 	//alert(jsonDetails)
 	var ticketDetails=JSON.parse(JSON.stringify(jsonDetails));
-	$('#selectedTicketId')[0].value=ticketId;
 	//alert(ticketDetails);
 	//$("#siteid")[0].value=ticketDetails.split(",")[1];
 	//alert(ticketDetails.split(",")[1]);
 	  $("#json")[0].value=ticketDetails;
-	
+	  var siteId="IND005";
 		$("#siteid")[0].value=siteId;
 		  $("#json")[0].value=ticketDetails;
 		  //alert(siteId);
 		  getSiteAdditionalDetails(siteId);
+		  
+		  
+		  
+		  /* $("#imageb1").click(function(){
+			  alert("The paragraph was clicked.");
+			  $("#imageId").show();
+			}) */
+		 
 	
 });
-
+var base64_1;
+var jsonData1;
 function getSiteAdditionalDetails(siteId){
 	
 	 $.ajax({
@@ -142,28 +144,95 @@ function getSiteAdditionalDetails(siteId){
          data:{"siteId":siteId},
          datatype: "json",
          success: function(result) {
+        	 jsonData1=JSON.parse(result);
             jsonData = JSON.parse(result);
             console.log("jsonDa"+jsonData);
             if(jsonData.length==0)
             {
-            	
+            	$("#siteimage1").hide();
+            	$("#imagediv1").show();
+            	$("#imagediv2").show();
+            	$("#imaged1").hide();
+            	$("#imaged2").hide();
             }
             else
             {
+            	$("#imaged1").show();
+            	$("#imaged2").show();
+            	$("#imagediv1").hide();
+            	$("#imagediv2").hide();
+            	//$("#site_photo1").hide();
+            	//$("#site_photo2").hide();
+            //	$("#siteimage1").show();
             	$("#siteaddid").val(jsonData[0].id);
             	$("#observations").val(jsonData[0].observations);
-            	$("#site_photo1").val(jsonData[0].site_photo1_name);
+            	$("#imaget1").val(jsonData[0].site_photo1_name);
+            	$("#imaget2").val(jsonData[0].site_photo2_name);
+            	base64_1 = base64js.fromByteArray(jsonData[0].site_photo1);
+            	//alert(base64_1)
+            	 //$("#imageId").attr("src", 'data:image/jpg;base64,'+base64_2);
+            	//alert("pic"+jsonData[0].site_photo1_name);
             	//$("#securitycondition").val(jsonData[0].securityCondition);
-            	
-            	
+            	//$("#site_photo1").attr('disabled','disabled');
+            	//$("#site_photo2").attr('disabled','disabled');
+            	$('#site_photo1').removeAttr('required');
+            	$('#site_photo2').removeAttr('required');
+            	$("#additionalNotes :input").removeAttr('required');
             }
          }					
 		 }); 
 }
+function upload_files(id){
+	
+	var rdBtnid=id.id
+	//var Value = $("input[name='"+id.name+"']:checked").val();
+    //var name = $("input[name='"+id.name+"']:checked").val();
+	var i=rdBtnid[rdBtnid.length-1];
+	
+	if(id.value=="Yes"){
+		$("#imaged"+i).hide();
+		$("#imagediv"+i).show();
+		//$("#site_photo1").attr('disabled',false);
+    	//$("#site_photo2").attr('disabled',false);
+	}else if(id.value=="No"){
+		$("#imaged"+i).show();
+		$("#imagediv"+i).hide();
+		//$("#site_photo1").attr('disabled',true);
+    	//$("#site_photo2").attr('disabled',true);
+	}
+	
+	
+	
+}
+ 
+function ViewImage(id){
+	
+	//alert(jsonData1)
+	var i=id[id.length-1];
+	//var i=2
+	var pid="site_photo"+i
+	console.log(jsonData[0].pid);
+	console.log(jsonData[0].site_photo2)
+	var imageData= base64js.fromByteArray(jsonData1[0][pid])
+	
+	
+	//alert(imageData);
+	var imageNum="Photo"+i;
+	  var htmlstring = "<img id='ItemPreview' 'src=data:image/jpeg;base64,"+imageData+"' width='104' height='142'>";
+    //$("#ItemPreview").attr('src', 'data:image/jpeg;base64,' + base64);
+       Swal.fire({
+                title: "<i>"+imageNum+"</i>",
+                html: "<center><table border='0'><tr><td><img id='ItemPreview' src='data:image/jpeg;base64,"+imageData+"' width='300' height='300'></td></tr></table><center>", 
+                timer: 1000,
+              });  
+	
+}
 
 
 function ValidateImage(id){
-	var  i=id[id.length-1];
+		//alert(typeof(id));
+			var i=id[id.length-1]
+			//alert(i)
 		  var fuData = document.getElementById(id);
       var FileUploadPath = fuData.value;
 //To check if user upload any file
@@ -186,9 +255,10 @@ if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension =
          }
 //The file upload is NOT an image
 else {
-            // alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
-              $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
+             alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+             $("#image"+i)[0].innerHTML=" Uploaded file Must be Image format"; 
              document.getElementById(id).value="";
+             //$(".isa_failure")[0].innerHTML="";
           }
       }
   }
@@ -249,20 +319,20 @@ else {
 		</div>
 
 		<!-- Sidebar -->
-<div id="technicianSidebar">
+<div id="execSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 	<div class="wrapper wrapper-login">
 	  <div class="container container-login animated fadeIn">
-	 
+	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
 				<h3 class="text-center">Additional Details</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				<form:form method="post" id="additionalNotes" modelAttribute="Site_Additional_Notes" action="additionalNotes" enctype="multipart/form-data" onsubmit="return ValiidateForm()">
 				<form:input type="hidden" path="id" id="siteaddid" />
 				<input type="hidden"   id="json" name="json" />
 				<div class="form-group ">
-						<label for="siteid" class="placeholder"><b>Site Id</b>
+						<label for="siteid" class="placeholder">Site ID
 				
 						</label>
 						 
@@ -271,32 +341,88 @@ else {
 					</div>
 								
 					<div class="form-group ">
-						<label for="observations" class="observations"><b>Observations</b></label>
-						<form:input  id="observations" path="observations" class="form-control input-full"  />				
+						<label for="observations" class="observations">Observations</label>
+						<form:input  id="observations" path="observations" class="form-control input-full"   />				
 						<form:errors path="observations" cssClass="error" />	
 					</div>
 						
 				
-				<div class="form-group ">
-				<label for="site_photo2" class="placeholder" ><b>Photo 1 </b></label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="ValidateImage(this.id);"/> 
+				<div class="form-group " id="imagediv1"> 
+				<label for="site_photo1" class="placeholder" >Site Photo1</label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="ValidateImage(this.id)"/> 
+				
 					<span class="isa_failure" id="image1">${errMsg}</span>
+						
   				</div>
   				
+  				<div class="form-group" id="imaged1">
+  				<label for="Site photo1" class="placeholder" >Site Photo1</label>
+  				<div class="row mt-1" >
+  					<div class="col-md-9">
+  						
+  						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
+  					</div>	
+  					<div class="col-md-3 " >
+  						<form:input type="button" id="imageb1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<!-- <img id="imageId" src="" style="display:none" />-->
   				
-				<div class="form-group ">
-				<label for="site_photo1" class="placeholder" ><b>Photo 2 </b></label>
-				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="ValidateImage(this.id);"/> 
+  					</div>
+  					
+  				</div>
+  				</div>
+  				<div class="row mt-1">   
+  				 <div class="col-md-7">
+                  <label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  </div>
+                  <div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
+                  </div>
+                  <div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
+                 </div>
+                  </div>
+                      
+  				
+  				
+				<div class="form-group " id="imagediv2">
+				<label for="site_photo2" class="placeholder" >Site Photo2</label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="ValidateImage(this.id)"/> 
+				
 					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
+  				<div class="form-group" id="imaged2">
+  				<label for="Site photo2" class="placeholder" >Site Photo2</label>
+  				<div class="row mt-1" >
+  					<div class="col-md-9">
+  						
+  						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
+  					</div>	
+  					<div class="col-md-3 " >
+  						<form:input type="button" id="imageb2" path="" value="View Image " onclick="ViewImage(this.id,this)"  class="form-control input-full"   />	
+  						<!-- <img id="imageId" src="" style="display:none" />-->
+  				
+  					</div>
+  					
+  				</div>
+  				</div>
+  				<div class="row mt-1">   
+  				 <div class="col-md-7">
+                  <label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  </div>
+                  <div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
+                  </div>
+                  <div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno2" value="No"  name="rdbtn2"  checked/>
+                 </div>
+                  </div>
+  				
+  				
+  				
   				
  						<div class="form-action" id="new_submit" >
-				 		<input type="submit"  class="btn btn-rounded btn-login" value="Finish Survey" name="btn" style="background-color: #012169;color: white;">  
+				 		<input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #012169;color: white;">  
 					
- 						 <input id="selectedTicketId" name="selectedTicketId" value="" type="hidden"> 
+ 						<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				
  				
-<!-- 				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">   -->
+				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">  
 					
  							<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  							</div>
@@ -339,7 +465,7 @@ else {
 
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 </body>
 

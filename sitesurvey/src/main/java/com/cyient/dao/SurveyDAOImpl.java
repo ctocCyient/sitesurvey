@@ -501,7 +501,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Site_Safety> getSecurityDetails(String siteId) {
+	public List<Site_Security> getSecurityDetails(String siteId) {
 		return sessionFactory.getCurrentSession().createQuery("from Site_Security where siteid='"+siteId+"'").list();
 	}
 	
@@ -511,7 +511,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Site_Safety> getSiteAddDetails(String siteId) {
+
+	public List<Site_Additional_Notes> getSiteAddDetails(String siteId) {
 		return sessionFactory.getCurrentSession().createQuery("from Site_Additional_Notes where siteid='"+siteId+"'").list();
 	}
 
@@ -559,6 +560,15 @@ public class SurveyDAOImpl implements SurveyDAO {
 		 sessionFactory.getCurrentSession().update(ticketing);
 		 
 		return "Updated";
+	}
+
+	@Override
+	public List<Site> ValidateLatLong(String latitude, String longitude) {
+		// TODO Auto-generated method stub
+		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site.class);
+        c.add(Restrictions.eq("latitude",latitude));
+        c.add(Restrictions.eq("longitude",longitude));
+        return c.list();
 	}
 	
 }

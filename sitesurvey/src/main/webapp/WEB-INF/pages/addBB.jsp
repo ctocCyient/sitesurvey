@@ -8,7 +8,6 @@
 <html lang="en">
 
 <head>
-
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />"
 	type="image/x-icon" />
@@ -53,7 +52,6 @@ if(sessionStorage.getItem("username")==null)
 		siteId=sessionStorage.getItem("siteId");
 		ticketId=sessionStorage.getItem("ticketId");
 	   }
-
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
