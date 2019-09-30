@@ -31,6 +31,7 @@
 
      
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
+ <script src="<c:url value='resources/js/base64js.min.js' />"></script>
 
 	 <script type="text/javascript">
 	
@@ -82,7 +83,7 @@ WebFont.load({
 		sessionStorage.fonts = true;
 	}
 });
-
+var surveyTeamDetails;
 $(document).ready(function(){	
 	$("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	 $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
@@ -134,9 +135,28 @@ function getSurveyTeamPPEDetails()
         datatype : "json",
         data:{"selectedSiteId":siteId},
         success:function(result) {
-        	var surveyTeamDetails= JSON.parse(result);    
-           if(surveyTeamDetails.length!=0)
-        	{        	   
+        	 surveyTeamDetails= JSON.parse(result);   
+        	console.log("xzv"+JSON.stringify(surveyTeamDetails));
+       	  if(surveyTeamDetails.length==0){
+       	        $("#imagediv1").hide();
+       	        $("#imagediv2").hide();
+       	        $("#imagediv3").hide();
+       	        $("#fileupload1").show();
+       	        $("#fileupload2").show();
+       	        $("#fileupload3").show();
+       	        $("#cnfrmr1").hide();
+       	        $("#cnfrmr2").hide();
+       	        $("#cnfrmr3").hide();
+       	        }
+       	  else{
+       		 
+       		$("#imagediv1").show();
+            $("#imagediv2").show();
+            $("#imagediv3").show();
+            $("#fileupload1").hide();
+            $("#fileupload2").hide();
+            $("#fileupload3").hide();
+            
         		$("#ppeId")[0].value=surveyTeamDetails[0].id;
  			  	$("#ppe").val(surveyTeamDetails[0].ppe);
  			  	$("#technicianName")[0].value=surveyTeamDetails[0].technicianName;
@@ -150,6 +170,12 @@ function getSurveyTeamPPEDetails()
 	  			   $("input[name='technicianWearing'][value='" + val + "']").prop('checked', true);
 	  			});
 			  
+	 			
+	 			$("#imaget1").val(surveyTeamDetails[0].photoSurveyTeamName);
+	        	$("#imaget2").val(surveyTeamDetails[0].photoTechnicianTeamName);
+	        	$("#imaget3").val(surveyTeamDetails[0].photoRiggerTeamName);
+	        	
+	        	
         	  }
         }
 	});
@@ -157,37 +183,121 @@ function getSurveyTeamPPEDetails()
 
 
 
-function ValidateImage(id){
+// function ValidateImage(id){
 	
-	var  i=id[id.length-1];
+// 	var  i=id[id.length-1];
+// 		  var fuData = document.getElementById(id);
+//       var FileUploadPath = fuData.value;
+// //To check if user upload any file
+//       if (FileUploadPath == '') {
+//           alert("Please upload an image");
+//      } else {
+//           var Extension = FileUploadPath.substring(
+//                   FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+// //The file uploaded is an image
+// if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
+// //To Display
+// 			 $("#image"+i)[0].innerHTML="";
+//               if (fuData.files && fuData.files[0]) {
+//                  var reader = new FileReader();
+//                  reader.onload = function(e) {
+//                      // $('#blah').attr('src', e.target.result);
+//                   }
+//                  reader.readAsDataURL(fuData.files[0]);
+//               }
+//          }
+// //The file upload is NOT an image
+// else {
+//            // alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+//               $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
+//              document.getElementById(id).value="";
+//           }
+//       }
+//   }
+  
+  
+  
+
+function ValidateImage(id){
+	 	var i=id[id.length-1];
 		  var fuData = document.getElementById(id);
-      var FileUploadPath = fuData.value;
-//To check if user upload any file
-      if (FileUploadPath == '') {
-          alert("Please upload an image");
-     } else {
-          var Extension = FileUploadPath.substring(
-                  FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-//The file uploaded is an image
-if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
-//To Display
-			 $("#image"+i)[0].innerHTML="";
-              if (fuData.files && fuData.files[0]) {
-                 var reader = new FileReader();
-                 reader.onload = function(e) {
-                     // $('#blah').attr('src', e.target.result);
-                  }
-                 reader.readAsDataURL(fuData.files[0]);
-              }
-         }
-//The file upload is NOT an image
-else {
-           // alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
-              $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
-             document.getElementById(id).value="";
-          }
-      }
-  }
+	     var FileUploadPath = fuData.value;
+	//To check if user upload any file
+	     if (FileUploadPath == '') {
+	   	//  $("#image"+i)[0].innerHTML="Please upload an image";  
+	        // alert("Please upload an image");
+	    } else {
+   	 
+         var Extension = FileUploadPath.substring(
+                 FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+		//The file uploaded is an image
+		if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
+		//To Display
+				 $("#image"+i)[0].innerHTML=""
+             if (fuData.files && fuData.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    // $('#blah').attr('src', e.target.result);
+                 }
+                reader.readAsDataURL(fuData.files[0]);
+             }
+        }
+	//The file upload is NOT an image
+	else {
+	          //  alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+	            $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
+	            document.getElementById(id).value="";
+	         }
+	     }
+ }
+
+
+
+function upload_files(id){
+	
+	var rdBtnid=id.id
+	//var Value = $("input[name='"+id.name+"']:checked").val();
+    //var name = $("input[name='"+id.name+"']:checked").val();
+	var i=rdBtnid[rdBtnid.length-1];
+	
+	if(id.value=="Yes"){
+		$("#imagediv"+i).hide();
+		$("#fileupload"+i).show();
+		//$("#site_photo1").attr('disabled',false);
+    	//$("#site_photo2").attr('disabled',false);
+	}else if(id.value=="No"){
+		$("#imagediv"+i).show();
+		$("#fileupload"+i).hide();
+		//$("#site_photo1").attr('disabled',true);
+    	//$("#site_photo2").attr('disabled',true);
+	}
+	
+	
+	
+}
+ 
+function ViewImage(id){
+	
+	//alert(jsonData1)
+	var i=id[id.length-1];
+	//var i=2
+	var pid=id
+	console.log(surveyTeamDetails[0].pid);
+	console.log(surveyTeamDetails[0].tower_photo1)
+	var imageData= base64js.fromByteArray(surveyTeamDetails[0][pid])
+	
+	
+	//alert(imageData);
+	var imageNum="Photo"+i;
+	  var htmlstring = "<img id='ItemPreview' 'src=data:image/jpeg;base64,"+imageData+"' width='104' height='142'>";
+    //$("#ItemPreview").attr('src', 'data:image/jpeg;base64,' + base64);
+       Swal.fire({
+                title: "<i>"+imageNum+"</i>",
+                html: "<center><table border='0'><tr><td><img id='ItemPreview' src='data:image/jpeg;base64,"+imageData+"' width='300' height='300'></td></tr></table><center>", 
+                timer: 1000,
+              });  
+	
+}
 
 
 </script>
@@ -270,9 +380,39 @@ else {
               	 </form:select>
 				<br>
 				
-				<label for="photoSurveyTeam" class="placeholder"><b>Photo of survey team</b></label>
-				<input type="file"  class="form-control input-border-bottom" name="file" id="img0" onchange="ValidateImage(this.id)"/> 
-				<span class="isa_failure" id="image0">${errMsg}</span>
+<!-- 				<label for="photoSurveyTeam" class="placeholder"><b>Photo of survey team</b></label> -->
+<!-- 				<input type="file"  class="form-control input-border-bottom" name="file" id="img0" onchange="ValidateImage(this.id)"/>  -->
+<%-- 				<span class="isa_failure" id="image0">${errMsg}</span> --%>
+				
+				
+				
+ 				<div id="imagediv1">
+ 					<div class="form-group" >
+  						<label for="surveyPhoto1" class="placeholder"><b>Photo of survey team</b></label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="photoSurveyTeamName1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  				</div>
+  				<div id="cnfrmr1">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
+ 				
+ 				
 				<br>
 				<label for="technicianName" class="placeholder"><b>Technician name/s</b></label> 
 				<form:input id="technicianName" path="technicianName"  name="technicianName"  class="form-control input-full filled"  onkeypress="isCharacters(event)"/>
@@ -284,9 +424,36 @@ else {
 				
                 <br>
                 
-                <label for="photoTechnicianTeam" class="placeholder"><b>Photo of technician/s</b></label>            
-				<input type="file"  class="form-control input-border-bottom"  name="file"  id="img1" onchange="ValidateImage(this.id)"/> 
-				<span class="isa_failure" id="image1">${errMsg}</span>
+<!--                 <label for="photoTechnicianTeam" class="placeholder"><b>Photo of technician/s</b></label>             -->
+<!-- 				<input type="file"  class="form-control input-border-bottom"  name="file"  id="img1" onchange="ValidateImage(this.id)"/>  -->
+<%-- 				<span class="isa_failure" id="image1">${errMsg}</span> --%>
+
+				<div id="imagediv2">
+ 					<div class="form-group" >
+  						<label for="photo2" class="placeholder"><b>Photo of technician/s</b></label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="photoTechnicianTeamName2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  					</div>
+  				<div id="cnfrmr2">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno2"  value="No"  name="rdbtn2" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
+ 				
                 <br>
           
 				<label for="rigger_Name" class="placeholder"><b>Rigger Name/s</b></label>
@@ -296,9 +463,35 @@ else {
 <%-- 				<form:input id="rigger_Wearing" path="rigger_Wearing" class="form-control input-full filled" /> --%>
 				<form:checkboxes items="${riggerPPEList}" path="rigger_Wearing" id="rigger_Wearing"  element="p" name="rigger_Wearing"/><br>
 				<br>
-				<label for="photoRiggerTeam" class="placeholder"><b>Photo of Rigger/s</b></label>
-				<input type="file"  class="form-control input-border-bottom"  name="file" id="img2" onchange="ValidateImage(this.id)"/> 
-				<span class="isa_failure" id="image2">${errMsg}</span>
+<!-- 				<label for="photoRiggerTeam" class="placeholder"><b>Photo of Rigger/s</b></label> -->
+<!-- 				<input type="file"  class="form-control input-border-bottom"  name="file" id="img2" onchange="ValidateImage(this.id)"/>  -->
+<%-- 				<span class="isa_failure" id="image2">${errMsg}</span> --%>
+
+				<div id="imagediv3">
+ 					<div class="form-group" >
+  						<label for=" photo3" class="placeholder"><b>Photo of Rigger/s</b></label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget3" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="photoRiggerTeamName3" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  				</div>
+  				<div id="cnfrmr3">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_3" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes3" name="rdbtn3" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno3"  value="No"  name="rdbtn3" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
 				<br>
 				<div class="form-action">
 					<input type="submit" id="clickBtn" value="Save" class="btn btn-rounded btn-login" name="clickBtn" style="background-color: #E4002B;color: white;">
@@ -329,16 +522,13 @@ else {
 <script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
 
 
-
 <!-- Sweet Alert -->
 <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
-
-
 <!-- jQuery Sparkline -->
+
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
 
-
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 </body>
 
 </html>
