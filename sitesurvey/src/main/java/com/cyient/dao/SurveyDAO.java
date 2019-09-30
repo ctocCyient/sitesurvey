@@ -58,7 +58,7 @@ public interface SurveyDAO {
 	public void addSMPS(Site_SMPS smps);
 	
 	@Transactional
-	public void addBB(String updatetype,Site_Battery_Bank BB);
+	public void addBB(Site_Battery_Bank BB);
 	
 	@Transactional
 	public List<Regions> getRegions();

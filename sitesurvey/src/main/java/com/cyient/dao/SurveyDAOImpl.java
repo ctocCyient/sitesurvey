@@ -354,16 +354,10 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	}
 
-	public void addBB(String updatetype,Site_Battery_Bank BB) {
-		if(updatetype.split(";")[0].contains("Existing"))
-		{		
-		BB.setId(Integer.parseInt(updatetype.split(";")[1]));
+	public void addBB(Site_Battery_Bank BB) {
+		System.out.println("DAO BB id"+BB.getId());
 		sessionFactory.getCurrentSession().saveOrUpdate(BB);
-		}
-		else
-		{
-			sessionFactory.getCurrentSession().saveOrUpdate(BB);
-		}
+		
 	}
 
 	public void addCabinet(String updatetype,Site_Cabinet BB) {

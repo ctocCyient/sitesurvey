@@ -78,38 +78,7 @@ $(document).ready(function(){
     	 $("#tag_photo2").attr("disabled","disabled");
     	 $("#tag_photo3").attr("disabled","disabled");*/
 
-    	/* $('#photo_1_checkbox').change(function() {       	 
-             if(this.checked) {
-            	 $("#tag_photo1").attr("disabled","disabled");
-             }
-             else
-            	 {
-            	 $("#tag_photo1").removeAttr("disabled");                    	 
-            	 }        
-         });
-         
-         
-         $('#photo_2_checkbox').change(function() {       	 
-                 if(this.checked) {
-                	 $("#tag_photo2").attr("disabled","disabled");
 
-                 }
-                 else
-                	 {
-                	 $("#tag_photo2").removeAttr("disabled");                    	 
-                	 }        
-             });
-         
-         $('#photo_3_checkbox').change(function() {       	 
-             if(this.checked) {
-            	 $("#tag_photo3").attr("disabled","disabled");
-
-             }
-             else
-            	 {
-            	 $("#tag_photo3").removeAttr("disabled");                    	 
-            	 }        
-         });*/
     	 
 });
 
@@ -145,10 +114,23 @@ function getBB()
 	         	if(JSON.parse(res).length==0)
 	         		{
 		         	document.getElementById("siteid").value=siteId;
-	 	         	document.getElementById("updatetype").value="New;"+"1";
-	 	           $('#photo_1_checkbox').prop('checked', false);
-	 	          $('#photo_2_checkbox').prop('checked', false);
-	 	          $('#photo_3_checkbox').prop('checked', false);
+		         	//document.getElementById("id").value=0;
+
+		         	//$("#photo_1_text_div_radio").prop("checked", true);
+		         	$('input[name="photo_1_text_div_radio"][value="Yes"]').attr('checked', true); 
+		         	$('input[name="photo_2_text_div_radio"][value="Yes"]').attr('checked', true);
+		         	$('input[name="photo_3_text_div_radio"][value="Yes"]').attr('checked', true);
+		         	//$("#photo_2_text_div_radio").prop("checked", true);
+		         	//$("#photo_3_text_div_radio").prop("checked", true);
+ 				//	$("input").attr("required", "false");
+	         	    $("#photo_1_div").show();
+	 	         	$("#photo_2_div").show();
+	 	         	$("#photo_3_div").show();
+	 	         	$("#photo_1_text_div").hide();
+	 	         	$("#photo_2_text_div").hide();
+	 	         	$("#photo_3_text_div").hide();
+	 	         	
+	 	         	
    
 	         		}
 		 		//alert(jsonData.id)	
@@ -156,6 +138,7 @@ function getBB()
 		 			{
 	 	         	Unqid = jsonData.id;
 	         	document.getElementById("siteid").value=jsonData.siteid.siteid;
+	         	document.getElementById("id").value=jsonData.id;
 	         	document.getElementById("Manufacturer").value=jsonData.Manufacturer;
 	         	document.getElementById("type").value=jsonData.type;
 	         	document.getElementById("manufacturedDate").value=jsonData.manufacturedDate;
@@ -165,7 +148,6 @@ function getBB()
 	         	document.getElementById("number_of_batteries").value=jsonData.number_of_batteries;
 				document.getElementById("tag_observed").value=jsonData.tag_observed;
 	         	document.getElementById("comments").value=jsonData.comments;
-	         	document.getElementById("updatetype").value="Existing;"+jsonData.id;
 	         	document.getElementById("photo_1_text").value=jsonData.tag_photo_Name;
  	         	document.getElementById("photo_2_text").value=jsonData.tag_photo1_Name;
  	         	document.getElementById("photo_3_text").value=jsonData.tag_photo2_Name;
@@ -178,9 +160,9 @@ function getBB()
 	 	         	$("#photo_1_text_div").show();
 	 	         	$("#photo_2_text_div").show();
 	 	         	$("#photo_3_text_div").show();
-	 	         	$("#photo_1_text").attr("disabled","disabled");
+	 	         	 $("#photo_1_text").attr("disabled","disabled");
 	 	     	    $("#photo_2_text").attr("disabled","disabled");
-	 	     	    $("#photo_3_text").attr("disabled","disabled");
+	 	     	    $("#photo_3_text").attr("disabled","disabled"); 
 	 	         	
 	 	     	  base64_1 = base64js.fromByteArray(jsonData.tag_photo);
 	 	     	  base64_2 = base64js.fromByteArray(jsonData.tag_photo1);	         	
@@ -196,22 +178,7 @@ function getBB()
 	 });
 }	
 
-function submit_logic()
-{
-	var updatetype= $('#updatetype').val();
-	$('#updatetype').val(" ");
-	filestate = ";"+$("input[name='photo_1_text_div_radio']:checked").val()+";"+$("input[name='photo_2_text_div_radio']:checked").val()+";"+$("input[name='photo_3_text_div_radio']:checked").val();
-	if(jsonLen==0)
-		{
-		$('#updatetype').val("New;1"+filestate);		
-		}
-	else
-		{
-		$('#updatetype').val("Existing;"+Unqid+filestate);		
-		}
-	//alert($('#updatetype').val());
 
-}
 
 
 function image_popup(phototext,base64)
@@ -245,8 +212,6 @@ function upload_files(id)
 {
 	var Value = $("input[name='"+id.name+"']:checked").val();
 	var name = $("input[name='"+id.name+"']:checked").val();	
-	//split text field file_
-	 //$(#id)).show();
     if(Value=="Yes"){ 
     	switch(id.name) {
     	  case "photo_1_text_div_radio":
@@ -274,17 +239,22 @@ function upload_files(id)
     	switch(id.name) {    	   
     	 case "photo_1_text_div_radio":
       	    $("#photo_1_div").hide();
+      	  $("#photo_1_text").attr("disabled","disabled");
+    	   
            	$("#photo_1_text_div").show();
       	    break;    
       	    
     	  case "photo_2_text_div_radio":
         	    $("#photo_2_div").hide();
+        	    $("#photo_2_text").attr("disabled","disabled");
              	$("#photo_2_text_div").show();
         	    break; 
         	    
     	  case "photo_3_text_div_radio":
       	    $("#photo_3_div").hide();
            	$("#photo_3_text_div").show();
+    	    $("#photo_3_text").attr("disabled","disabled");
+
       	    break; 
         	    
         	    
@@ -357,7 +327,8 @@ label {
 			<form:form action="saveBB" method="post"
 				modelAttribute="Site_Battery_Bank" enctype="multipart/form-data">
 				<div class="login-form">
-<input type="hidden" id="updatetype" name="updatetype"/>
+
+				<form:input type="hidden" path="id" id="id"/>
 					<br> <label for="Site ID" class="placeholder"><b>Site ID</b></label>
 					<form:input id="siteid" path="siteid.siteid"
 						class="form-control input-full filled" readonly="true"/>
@@ -525,8 +496,8 @@ label {
 
 <div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #E4002B;color: white;">
-					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login"  style="background-color: #E4002B;color: white;">
+					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login"  style="background-color: #012169;color: white;">
 				</div>
 				</div>
 			</form:form>
