@@ -49,6 +49,7 @@ import com.cyient.model.Survey_Team_PPE;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
+import com.cyient.model.Tower_Installation;
 import com.cyient.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -183,24 +184,63 @@ public class FTSurveyController {
 	   }
 	 
 		@RequestMapping(value="/saveSurveyPPE" , method=RequestMethod.POST)
-		public String saveSurveyPPE(@ModelAttribute("Survey_Team_PPE") Survey_Team_PPE surveyTeamPPPE,RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile[] multipart,ModelAndView model,@RequestParam("clickBtn") String clickBtn)throws IOException{
+		public String saveSurveyPPE(@ModelAttribute("Survey_Team_PPE") Survey_Team_PPE surveyTeamPPE,RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile[] multipart,ModelAndView model,@RequestParam("clickBtn") String clickBtn)throws IOException{
 		
 			
 			String status="Saved";
 			try
 			  {
-				surveyTeamPPPE.setPhotoSurveyTeam(multipart[0].getBytes());
-				surveyTeamPPPE.setPhotoSurveyTeamName(multipart[0].getOriginalFilename());
-				surveyTeamPPPE.setPhotoTechnicianTeam(multipart[1].getBytes());
-				surveyTeamPPPE.setPhotoTechnicianTeamName(multipart[1].getOriginalFilename());
-				surveyTeamPPPE.setPhotoRiggerTeam(multipart[2].getBytes());
-				surveyTeamPPPE.setPhotoRiggerTeamName(multipart[2].getOriginalFilename());
+//				surveyTeamPPPE.setPhotoSurveyTeam(multipart[0].getBytes());
+//				surveyTeamPPPE.setPhotoSurveyTeamName(multipart[0].getOriginalFilename());
+//				surveyTeamPPPE.setPhotoTechnicianTeam(multipart[1].getBytes());
+//				surveyTeamPPPE.setPhotoTechnicianTeamName(multipart[1].getOriginalFilename());
+//				surveyTeamPPPE.setPhotoRiggerTeam(multipart[2].getBytes());
+//				surveyTeamPPPE.setPhotoRiggerTeamName(multipart[2].getOriginalFilename());
+				
+				System.out.println(" upload length........"+multipart.length);
+				for(int i=0;i<multipart.length;i++){
+					
+					if(multipart[i].isEmpty()){
+						
+						//Object s="setSite_photo"+i;
+						List<Survey_Team_PPE> surveyPPEList=surveyDAO.getSurveyTeamDetails(surveyTeamPPE.getSiteid().getSiteid());
+						if(i==0){
+							System.out.println("in i=1");
+							surveyTeamPPE.setPhotoSurveyTeam(surveyPPEList.get(0).getPhotoSurveyTeam());
+							surveyTeamPPE.setPhotoSurveyTeamName(surveyPPEList.get(0).getPhotoSurveyTeamName());
+							}
+						else if(i==1){
+							System.out.println("in i=2");
+							surveyTeamPPE.setPhotoTechnicianTeam(surveyPPEList.get(0).getPhotoTechnicianTeam());
+							surveyTeamPPE.setPhotoTechnicianTeamName(surveyPPEList.get(0).getPhotoTechnicianTeamName());
+						}
+						else if(i==2){
+							System.out.println("in i=3");
+							surveyTeamPPE.setPhotoRiggerTeam(surveyPPEList.get(0).getPhotoRiggerTeam());
+							surveyTeamPPE.setPhotoRiggerTeamName(surveyPPEList.get(0).getPhotoRiggerTeamName());
+						}
+					}
+					else{
+						if(i==0){
+							surveyTeamPPE.setPhotoSurveyTeam(multipart[0].getBytes());
+							surveyTeamPPE.setPhotoSurveyTeamName(multipart[0].getOriginalFilename());
+						}
+						else if(i==1){
+							surveyTeamPPE.setPhotoTechnicianTeam(multipart[1].getBytes());
+							surveyTeamPPE.setPhotoTechnicianTeamName(multipart[1].getOriginalFilename());
+						}
+						else if(i==2){
+							surveyTeamPPE.setPhotoRiggerTeam(multipart[2].getBytes());
+							surveyTeamPPE.setPhotoRiggerTeamName(multipart[2].getOriginalFilename());
+						}
+						}
+				}
 			  }
 			  catch(Exception e)
 			  {
 			   System.out.println(e.toString());
 			  }
-			surveyDAO.addSiteSurveyPPE(surveyTeamPPPE);
+			surveyDAO.addSiteSurveyPPE(surveyTeamPPE);
 //			redirectAttributes.addFlashAttribute("PPEStatus",status);
 //			redirectAttributes.addFlashAttribute("btnClick",clickBtn);
 			if(clickBtn.equals("Save")){

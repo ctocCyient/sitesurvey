@@ -5,25 +5,7 @@
 
 <!DOCTYPE html >
 <html lang="en">
-<style>
-.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
-    width: 700px;
-    background: #fff;
-    padding: 74px 40px ;
-   
-    border-radius: 5px;
-    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
-    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
-    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
-    border: 1px solid #ebecec;
-}
 
-.error {
-	color: #ff0000;
-	font-style: italic;
-	font-weight: bold;
-}
-</style>
 <head>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -236,6 +218,24 @@ color: #fff!important;
 label {
     color: #495057!important;
     font-size: 13px!important;
+}
+
+.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
+    width: 700px;
+    background: #fff;
+    padding: 74px 40px ;
+   
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    border: 1px solid #ebecec;
+}
+
+.error {
+	color: #ff0000;
+	font-style: italic;
+	font-weight: bold;
 }
 </style>
 

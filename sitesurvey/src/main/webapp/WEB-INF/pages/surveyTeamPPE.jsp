@@ -71,6 +71,18 @@ label {
 /*                 background-color: #00ae42; */
             }
   
+  .login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
+    width: 700px;
+    background: #fff;
+    padding: 74px 40px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    border: 1px solid #ebecec;
+}
+  
+  
 </style>
 
 <script type="text/javascript">
@@ -89,7 +101,7 @@ $(document).ready(function(){
 	 $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	 $("#siteid")[0].value=siteId;
 	  $('#siteid').attr('readonly','readonly');
-	  $("#technicianName,#rigger_Name,#img1,#img2,#img0").attr('required', '');  
+	  $("#technicianName,#rigger_Name").attr('required', '');  
 	 getSurveyTeamPPEDetails();
 
 <%-- 	 var status='<%=status%>'; --%>
@@ -259,7 +271,7 @@ function upload_files(id){
 	//var Value = $("input[name='"+id.name+"']:checked").val();
     //var name = $("input[name='"+id.name+"']:checked").val();
 	var i=rdBtnid[rdBtnid.length-1];
-	
+	//alert("i"+i);
 	if(id.value=="Yes"){
 		$("#imagediv"+i).hide();
 		$("#fileupload"+i).show();
@@ -279,22 +291,23 @@ function upload_files(id){
 function ViewImage(id){
 	
 	//alert(jsonData1)
-	var i=id[id.length-1];
+	//var i=id[id.length-1];
 	//var i=2
-	var pid=id
-	console.log(surveyTeamDetails[0].pid);
-	console.log(surveyTeamDetails[0].tower_photo1)
-	var imageData= base64js.fromByteArray(surveyTeamDetails[0][pid])
+	//var pid=id
+	//console.log(surveyTeamDetails[0].pid);
+	//console.log(surveyTeamDetails[0].tower_photo1)
+	var imageData= base64js.fromByteArray(surveyTeamDetails[0][id])
+	
 	
 	
 	//alert(imageData);
-	var imageNum="Photo"+i;
+	var imageNum="Photo";
 	  var htmlstring = "<img id='ItemPreview' 'src=data:image/jpeg;base64,"+imageData+"' width='104' height='142'>";
     //$("#ItemPreview").attr('src', 'data:image/jpeg;base64,' + base64);
        Swal.fire({
                 title: "<i>"+imageNum+"</i>",
                 html: "<center><table border='0'><tr><td><img id='ItemPreview' src='data:image/jpeg;base64,"+imageData+"' width='300' height='300'></td></tr></table><center>", 
-                timer: 1000,
+                timer: 3000,
               });  
 	
 }
@@ -380,24 +393,25 @@ function ViewImage(id){
               	 </form:select>
 				<br>
 				
-<!-- 				<label for="photoSurveyTeam" class="placeholder"><b>Photo of survey team</b></label> -->
-<!-- 				<input type="file"  class="form-control input-border-bottom" name="file" id="img0" onchange="ValidateImage(this.id)"/>  -->
-<%-- 				<span class="isa_failure" id="image0">${errMsg}</span> --%>
-				
+				  <div id="fileupload1">
+				<label for="photoSurveyTeam" class="placeholder"><b>Photo of survey team</b></label>
+				<input type="file"  class="form-control input-border-bottom" name="file" id="img0" onchange="ValidateImage(this.id)"/> 
+				<span class="isa_failure" id="image0">${errMsg}</span>
+				</div>
 				
 				
  				<div id="imagediv1">
- 					<div class="form-group" >
+ 					
   						<label for="surveyPhoto1" class="placeholder"><b>Photo of survey team</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="photoSurveyTeamName1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="photoSurveyTeam" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full  btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  					
   				</div>
   				<div id="cnfrmr1">
   				   <div class="row mt-1">   
@@ -423,23 +437,23 @@ function ViewImage(id){
 <%--                <form:input id="technicianWearing" path="technicianWearing"  name="technicianWearing"  class="form-control input-full filled"  /> --%>
 				
                 <br>
-                
-<!--                 <label for="photoTechnicianTeam" class="placeholder"><b>Photo of technician/s</b></label>             -->
-<!-- 				<input type="file"  class="form-control input-border-bottom"  name="file"  id="img1" onchange="ValidateImage(this.id)"/>  -->
-<%-- 				<span class="isa_failure" id="image1">${errMsg}</span> --%>
-
+                <div id="fileupload2">
+                <label for="photoTechnicianTeam" class="placeholder"><b>Photo of technician/s</b></label>            
+				<input type="file"  class="form-control input-border-bottom"  name="file"  id="img1" onchange="ValidateImage(this.id)"/> 
+				<span class="isa_failure" id="image1">${errMsg}</span>
+				</div>
 				<div id="imagediv2">
- 					<div class="form-group" >
+ 					
   						<label for="photo2" class="placeholder"><b>Photo of technician/s</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="photoTechnicianTeamName2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="photoTechnicianTeam" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full  btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  					
   					</div>
   				<div id="cnfrmr2">
   				   <div class="row mt-1">   
@@ -463,22 +477,25 @@ function ViewImage(id){
 <%-- 				<form:input id="rigger_Wearing" path="rigger_Wearing" class="form-control input-full filled" /> --%>
 				<form:checkboxes items="${riggerPPEList}" path="rigger_Wearing" id="rigger_Wearing"  element="p" name="rigger_Wearing"/><br>
 				<br>
-<!-- 				<label for="photoRiggerTeam" class="placeholder"><b>Photo of Rigger/s</b></label> -->
-<!-- 				<input type="file"  class="form-control input-border-bottom"  name="file" id="img2" onchange="ValidateImage(this.id)"/>  -->
-<%-- 				<span class="isa_failure" id="image2">${errMsg}</span> --%>
-
+				
+				<div id="fileupload3">
+				  
+				<label for="photoRiggerTeam" class="placeholder"><b>Photo of Rigger/s</b></label>
+				<input type="file"  class="form-control input-border-bottom"  name="file" id="img2" onchange="ValidateImage(this.id)"/> 
+				<span class="isa_failure" id="image2">${errMsg}</span>
+				</div>
 				<div id="imagediv3">
- 					<div class="form-group" >
+ 					
   						<label for=" photo3" class="placeholder"><b>Photo of Rigger/s</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget3" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="photoRiggerTeamName3" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="photoRiggerTeam" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  					
   				</div>
   				<div id="cnfrmr3">
   				   <div class="row mt-1">   

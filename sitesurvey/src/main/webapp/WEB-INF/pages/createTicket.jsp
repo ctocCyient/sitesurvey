@@ -343,13 +343,19 @@ var jsonData=[];
 <div id="adminSidebar">
 </div>
 		<!-- End Sidebar -->
+		
+		
 		  <div class="wrapper wrapper-login" >
 		<div class="container container-login animated fadeIn">
+		
 		 <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
 		 <span id="errorMsg" style="color:red;display:none;font-size:15px">Please enter all details</span>
+		 
 			<h3 class="text-center">Create Ticket</h3>
 					<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
         <form:form action="saveCreatedTicket" method="post" modelAttribute="Ticketing" onsubmit="return validateTicketForm();">
+        
+        
         <div class="login-form">
         <form:hidden path="id"/>
       			<label for="ticketId" class="placeholder">Ticket ID</label>
