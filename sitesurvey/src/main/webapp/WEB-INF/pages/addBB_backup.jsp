@@ -71,14 +71,45 @@ $(document).ready(function(){
          $('#photo_1_checkbox').prop('checked', true);
          $('#photo_2_checkbox').prop('checked', true);
          $('#photo_3_checkbox').prop('checked', true);
-    	 $("#tag_photo1").removeAttr("required");                    	 
-    	 $("#tag_photo2").removeAttr("required");    
-    	 $("#tag_photo3").removeAttr("required");                    	 
-    	 /*$("#tag_photo1").attr("disabled","disabled");
+    	 $("#photo_1_checkbox").removeAttr("required");                    	 
+    	 $("#photo_2_checkbox").removeAttr("required");    
+    	 $("#photo_3_checkbox").removeAttr("required");                    	 
+    	 $("#tag_photo1").attr("disabled","disabled");
     	 $("#tag_photo2").attr("disabled","disabled");
-    	 $("#tag_photo3").attr("disabled","disabled");*/
+    	 $("#tag_photo3").attr("disabled","disabled");
 
+    	 $('#photo_1_checkbox').change(function() {       	 
+             if(this.checked) {
+            	 $("#tag_photo1").attr("disabled","disabled");
+             }
+             else
+            	 {
+            	 $("#tag_photo1").removeAttr("disabled");                    	 
+            	 }        
+         });
+         
+         
+         $('#photo_2_checkbox').change(function() {       	 
+                 if(this.checked) {
+                	 $("#tag_photo2").attr("disabled","disabled");
 
+                 }
+                 else
+                	 {
+                	 $("#tag_photo2").removeAttr("disabled");                    	 
+                	 }        
+             });
+         
+         $('#photo_3_checkbox').change(function() {       	 
+             if(this.checked) {
+            	 $("#tag_photo3").attr("disabled","disabled");
+
+             }
+             else
+            	 {
+            	 $("#tag_photo3").removeAttr("disabled");                    	 
+            	 }        
+         });
     	 
 });
 
@@ -97,9 +128,6 @@ function populateDropdown(data,id)
 
 jsonLen = 0;
 Unqid = 0;
-base64_1=0;
-base64_2=0;
-base64_3=0;
 function getBB()
 {
 	 $.ajax({
@@ -114,31 +142,19 @@ function getBB()
 	         	if(JSON.parse(res).length==0)
 	         		{
 		         	document.getElementById("siteid").value=siteId;
-		         	//document.getElementById("id").value=0;
-
-		         	//$("#photo_1_text_div_radio").prop("checked", true);
-		         	$('input[name="photo_1_text_div_radio"][value="Yes"]').attr('checked', true); 
-		         	$('input[name="photo_2_text_div_radio"][value="Yes"]').attr('checked', true);
-		         	$('input[name="photo_3_text_div_radio"][value="Yes"]').attr('checked', true);
-		         	//$("#photo_2_text_div_radio").prop("checked", true);
-		         	//$("#photo_3_text_div_radio").prop("checked", true);
- 				//	$("input").attr("required", "false");
-	         	    $("#photo_1_div").show();
-	 	         	$("#photo_2_div").show();
-	 	         	$("#photo_3_div").show();
-	 	         	$("#photo_1_text_div").hide();
-	 	         	$("#photo_2_text_div").hide();
-	 	         	$("#photo_3_text_div").hide();
-	 	         	
-	 	         	
-   
+	 	         	document.getElementById("updatetype").value="New;"+"1";
+	 	           $('#photo_1_checkbox').prop('checked', false);
+	 	          $('#photo_2_checkbox').prop('checked', false);
+	 	          $('#photo_3_checkbox').prop('checked', false);
+	 	         	$("#tag_photo1").removeAttr("disabled");     
+	 	         	$("#tag_photo2").removeAttr("disabled");     
+	 	         	$("#tag_photo3").removeAttr("disabled");     
 	         		}
 		 		//alert(jsonData.id)	
 		 		else
 		 			{
 	 	         	Unqid = jsonData.id;
 	         	document.getElementById("siteid").value=jsonData.siteid.siteid;
-	         	document.getElementById("id").value=jsonData.id;
 	         	document.getElementById("Manufacturer").value=jsonData.Manufacturer;
 	         	document.getElementById("type").value=jsonData.type;
 	         	document.getElementById("manufacturedDate").value=jsonData.manufacturedDate;
@@ -148,27 +164,7 @@ function getBB()
 	         	document.getElementById("number_of_batteries").value=jsonData.number_of_batteries;
 				document.getElementById("tag_observed").value=jsonData.tag_observed;
 	         	document.getElementById("comments").value=jsonData.comments;
-	         	document.getElementById("photo_1_text").value=jsonData.tag_photo_Name;
- 	         	document.getElementById("photo_2_text").value=jsonData.tag_photo1_Name;
- 	         	document.getElementById("photo_3_text").value=jsonData.tag_photo2_Name;
-
-	         	
-	         	
-	         	    $("#photo_1_div").hide();
-	 	         	$("#photo_2_div").hide();
-	 	         	$("#photo_3_div").hide();
-	 	         	$("#photo_1_text_div").show();
-	 	         	$("#photo_2_text_div").show();
-	 	         	$("#photo_3_text_div").show();
-	 	         	 $("#photo_1_text").attr("disabled","disabled");
-	 	     	    $("#photo_2_text").attr("disabled","disabled");
-	 	     	    $("#photo_3_text").attr("disabled","disabled"); 
-	 	         	
-	 	     	  base64_1 = base64js.fromByteArray(jsonData.tag_photo);
-	 	     	  base64_2 = base64js.fromByteArray(jsonData.tag_photo1);	         	
-	 	     	  base64_3 = base64js.fromByteArray(jsonData.tag_photo_2);	         	
-	         	
-	         	
+	         	document.getElementById("updatetype").value="Existing;"+jsonData.id;
 		 			}
 		 	},
 		 	error:function()
@@ -178,7 +174,21 @@ function getBB()
 	 });
 }	
 
-
+function submit_logic()
+{
+	var updatetype= $('#updatetype').val();
+	$('#updatetype').val(" ");
+	filestate = ";"+$("input[name='photo_1_text_div_radio']:checked").val()+";"+$("input[name='photo_2_text_div_radio']:checked").val();
+	if(jsonLen==0)
+		{
+		$('#updatetype').val("New;1"+filestate);		
+		}
+	else
+		{
+		$('#updatetype').val("Existing;"+Unqid+filestate);		
+		}
+	alert($('#updatetype').val());
+}
 
 
 function image_popup(phototext,base64)
@@ -196,73 +206,17 @@ function photohover(obj)
 {
 	if(obj.id=="picture_1")
 		{
-		image_popup("Tag photo",base64_1);
+		image_popup("Photo_1",base64_1);
 		}
-	else if(obj.id=="picture_2")
+	else
 		{
-		image_popup("Battery Bank Photo 1",base64_2);
+		image_popup("Photo_2",base64_2);
 		}
-	else if(obj.id=="picture_3")
-	{
-	image_popup("Battery Bank Photo 2",base64_3);
-	}
 }
 
-function upload_files(id)
-{
-	var Value = $("input[name='"+id.name+"']:checked").val();
-	var name = $("input[name='"+id.name+"']:checked").val();	
-    if(Value=="Yes"){ 
-    	switch(id.name) {
-    	  case "photo_1_text_div_radio":
-    	    $("#photo_1_div").show();
-         	$("#photo_1_text_div").hide();
-    	    break;   
-    	    
-    	  case "photo_2_text_div_radio":     	    
-           	$("#photo_2_text_div").hide();
-           	$("#photo_2_div").show();
-      	    break;     
-      	    
-    	  case "photo_3_text_div_radio":     	    
-             	$("#photo_3_text_div").hide();
-             	$("#photo_3_div").show();
-        	    break;     
-      	    
 
-    	  default:
-    	    // code block
-    	}
-    	}
-    
-    if(Value=="No"){ 
-    	switch(id.name) {    	   
-    	 case "photo_1_text_div_radio":
-      	    $("#photo_1_div").hide();
-      	  $("#photo_1_text").attr("disabled","disabled");
-    	   
-           	$("#photo_1_text_div").show();
-      	    break;    
-      	    
-    	  case "photo_2_text_div_radio":
-        	    $("#photo_2_div").hide();
-        	    $("#photo_2_text").attr("disabled","disabled");
-             	$("#photo_2_text_div").show();
-        	    break; 
-        	    
-    	  case "photo_3_text_div_radio":
-      	    $("#photo_3_div").hide();
-           	$("#photo_3_text_div").show();
-    	    $("#photo_3_text").attr("disabled","disabled");
-
-      	    break; 
-        	    
-        	    
-    	  default:
-    	    // code block
-    	}
-    	}
-	}
+	
+	
 
 	 
 </script>
@@ -327,8 +281,7 @@ label {
 			<form:form action="saveBB" method="post"
 				modelAttribute="Site_Battery_Bank" enctype="multipart/form-data">
 				<div class="login-form">
-
-				<form:input type="hidden" path="id" id="id"/>
+<input type="hidden" id="updatetype" name="updatetype"/>
 					<br> <label for="Site ID" class="placeholder"><b>Site ID</b></label>
 					<form:input id="siteid" path="siteid.siteid"
 						class="form-control input-full filled" readonly="true"/>
@@ -388,116 +341,29 @@ label {
 						<form:option value="No">No</form:option>
 
 					</form:select>
-					
 					<br> <label for="comments" class="placeholder"><b>Observation/Comments</b></label>
 					<form:input id="comments" path="comments" name="comments" onkeypress="return isCharacters(event)"  
 						class="form-control input-full filled" />
-					<br> 
-					<div id="photo_1_div">
-					<label for="tag_photo1" class="placeholder"><b>Tag
-						photo</b></label>
+					<br> <label for="tag_photo1" class="placeholder"><b>Tag
+						photo</b></label><input id="photo_1_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
 					<input type="file" id="tag_photo1"  name="photos" onchange="ValidateFileUpload(this.id)" accept="image/*"
-						class="form-control input-full filled" /></div>
-																		
-						
-						
-											<div id="photo_1_text_div">
-					 <label for="Photo_1" class="placeholder" style="float:left" ><b>Tag
-						photo</b></label><br>
-					 					<div class="row mt-1">				
-					 
-					 <div class="col-md-9">
-					<input type="text" id="photo_1_text" 
-						class="form-control input-full filled" 
-						 /></div>
-						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_1" onclick="photohover(this);" value="View"/>
+						class="form-control input-full filled" /> <br>
 
-						</div>
-						</div>
-
-						</div>
-						<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" id="defaultChecked" name="photo_1_text_div_radio" onclick="upload_files(this)" /></div><div class="col-md-2">No<input type="radio" onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio" checked/>
-						<br>
-						</div>
-						</div>
-<br>
-					<div id="photo_2_div">
-					
-					<label for="tag_photo1" class="placeholder"><b>Battery Bank Photo 1</b></label>
+					<br> <label for="tag_photo1" class="placeholder"><b>Battery Bank Photo 1</b></label><input id="photo_2_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
 					<input type="file" id="tag_photo2"  name="photos" onchange="ValidateFileUpload(this.id)" accept="image/*"
-						class="form-control input-full filled" /> 
-						</div>
-																		
+						class="form-control input-full filled" /> <br>
 						
-						
-											<div id="photo_2_text_div">
-					 <label for="Photo_2" class="placeholder" style="float:left" ><b>Battery Bank Photo 1</b></label><br>
-					 					<div class="row mt-1">				
-					 
-					 <div class="col-md-9">
-					<input type="text" id="photo_2_text" 
-						class="form-control input-full filled" 
-						 /></div>
-						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_2" onclick="photohover(this);" value="View"/>
-
-						</div>
-						</div>
-
-						</div>
-						<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" id="defaultChecked" name="photo_2_text_div_radio" onclick="upload_files(this)" /></div><div class="col-md-2">No<input type="radio" onclick="upload_files(this)" value="No"  name="photo_2_text_div_radio" checked/>
-						</div>
-						</div>
-						
-						
-						
-
-											<div id="photo_3_div">
-											<br>
-											<label for="tag_photo_2" class="placeholder"><b>Battery Bank Photo 2</b></label>
+											<br> <label for="tag_photo_2" class="placeholder"><b>Battery Bank Photo 2</b></label><input id="photo_3_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
 					<input type="file" id="tag_photo3"  name="photos" onchange="ValidateFileUpload(this.id)" accept="image/*"
-						class="form-control input-full filled" /> 
-						
-						
-						
-																		
-						</div>
-						
-						
-											<div id="photo_3_text_div">
-					<br>
-					 <label for="Photo_3" class="placeholder" style="float:left" ><b>Battery Bank Photo 2</b></label><br>
-					 					<div class="row mt-1">				
-					 
-					 <div class="col-md-9">
-					<input type="text" id="photo_3_text" 
-						class="form-control input-full filled" 
-						 /></div>
-						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_3" onclick="photohover(this);" value="View"/>
-
-						</div>
-						</div>
-
-						</div>
-						<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" id="defaultChecked" name="photo_3_text_div_radio" onclick="upload_files(this)" /></div><div class="col-md-2">No<input type="radio" onclick="upload_files(this)" value="No"  name="photo_3_text_div_radio" checked/>
-						</div>
-						</div>
+						class="form-control input-full filled" /> <br>
 
 
 
 
 <div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login"  style="background-color: #E4002B;color: white;">
-					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login"  style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #E4002B;color: white;">
+					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
 				</div>
 				</div>
 			</form:form>
@@ -536,13 +402,12 @@ label {
 		src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
 
 
+
 	<!-- jQuery Sparkline -->
 
 	<script
 		src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<script src="<c:url value='resources/js/base64js.min.js' />"></script>
 
 
 </body>

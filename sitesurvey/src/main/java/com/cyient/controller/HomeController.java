@@ -475,54 +475,54 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/saveBB", method = RequestMethod.POST)
-	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "photos") MultipartFile[] tag_photo) throws IOException {
-		System.out.println("save bb calling" + tag_photo);
+	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("photos") MultipartFile[] tag_photo,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes) throws IOException {
+		System.out.println("save bb calling" + tag_photo.length);
 		String status = "Battery Bank Added Successfully";
 		Site_Battery_Bank obj = new Site_Battery_Bank();
 
-		//update type condition check
-		if(updatetype.split(";")[0].contains("New"))
-		{
-		}
-		else
-		{
-			obj= surveyDAO.getBB(BB.getSiteid().getSiteid()).get(0);
-		}
+	
+if(BB.getId()!=0){
+	obj= surveyDAO.getBB(BB.getSiteid().getSiteid()).get(0);
+}
+	
 		
 		// saggrigation of files
-		if(updatetype.split(";")[2].contains("false"))
-		{
-		BB.setTag_photo(tag_photo[0].getBytes());
-		BB.setTag_photo_Name(tag_photo[0].getOriginalFilename());
-		}
-		else
+		if(tag_photo[0].isEmpty())
 		{
 			BB.setTag_photo(obj.getTag_photo());
 			BB.setTag_photo_Name(obj.getTag_photo_Name());
 		}
+		else
+		{
+			BB.setTag_photo(tag_photo[0].getBytes());
+			BB.setTag_photo_Name(tag_photo[0].getOriginalFilename());
+			
+		}
 		
-		if(updatetype.split(";")[3].contains("false"))
+		if(tag_photo[1].isEmpty())
+		{
+			BB.setTag_photo1(obj.getTag_photo1());
+			BB.setTag_photo1_Name(obj.getTag_photo1_Name());	
+		}
+		else
 		{
 			BB.setTag_photo1(tag_photo[1].getBytes());
 			BB.setTag_photo1_Name(tag_photo[1].getOriginalFilename());
-		}
-		else
-		{
-			BB.setTag_photo1(obj.getTag_photo1());
-			BB.setTag_photo1_Name(obj.getTag_photo1_Name());
+			
 		}
 		
-		if(updatetype.split(";")[4].contains("false"))
-		{
-			BB.setTag_photo_2(tag_photo[2].getBytes());
-			BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());
-		}
-		else
+		if(tag_photo[2].isEmpty())
 		{
 			BB.setTag_photo_2(obj.getTag_photo_2());
 			BB.setTag_photo2_Name(obj.getTag_photo2_Name());
 		}
-		surveyDAO.addBB(updatetype, BB);
+		else
+		{
+			BB.setTag_photo_2(tag_photo[2].getBytes());
+			BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());			
+		}
+		System.out.println("BB id"+BB.getId());
+		surveyDAO.addBB(BB);
 		redirectAttributes.addFlashAttribute("status", status);
 		if (submit.equals("Save")) {
 			return new ModelAndView("redirect:/home");
@@ -539,14 +539,14 @@ public class HomeController {
 	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB, @RequestParam("updatetype") String updatetype,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,
 			@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException {
-		String status = "Battery Bank Added Successfully";
+		String status = "Cabinet Added Successfully";
 		Site_Cabinet obj = new Site_Cabinet();
-		System.out.println(updatetype);
+		/*System.out.println(updatetype);
 		System.out.println(updatetype.split(";")[0]);
 		System.out.println(updatetype.split(";")[1]);
 		System.out.println(updatetype.split(";")[2]);
 		System.out.println(updatetype.split(";")[3]);
-System.out.println(updatetype.split(";")[0]=="New");
+System.out.println(updatetype.split(";")[0]=="New");*/
 		if(updatetype.split(";")[0].contains("New"))
 		{
 			
@@ -556,7 +556,7 @@ System.out.println(updatetype.split(";")[0]=="New");
 			obj= surveyDAO.getCabinet(BB.getSiteid().getSiteid()).get(0);
 		}
 
-		if(updatetype.split(";")[2].contains("false"))
+		if(updatetype.split(";")[2].contains("Yes"))
 		{
 		BB.setPhoto_1(tag_photo[0].getBytes());
 		BB.setPhoto_1_Name(tag_photo[0].getOriginalFilename());
@@ -567,10 +567,10 @@ System.out.println(updatetype.split(";")[0]=="New");
 			BB.setPhoto_1_Name(obj.getPhoto_1_Name());
 		}
 		
-		if(updatetype.split(";")[3].contains("false"))
+		if(updatetype.split(";")[3].contains("Yes"))
 		{
-			BB.setPhoto_2(tag_photo[1].getBytes());
-			BB.setPhoto_2_Name(tag_photo[1].getOriginalFilename());
+			BB.setPhoto_2(tag_photo[tag_photo.length-1].getBytes());
+			BB.setPhoto_2_Name(tag_photo[tag_photo.length-1].getOriginalFilename());
 		}
 		else
 		{
