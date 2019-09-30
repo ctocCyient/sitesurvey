@@ -76,10 +76,7 @@ $(document).ready(function(){
     	 $("#tag_photo3").removeAttr("required");                    	 
     	 /*$("#tag_photo1").attr("disabled","disabled");
     	 $("#tag_photo2").attr("disabled","disabled");
-    	 $("#tag_photo3").attr("disabled","disabled");*/
-
-
-    	 
+    	 $("#tag_photo3").attr("disabled","disabled");*/	 
 });
 
 function populateDropdown(data,id)
