@@ -487,10 +487,36 @@ public class HomeController {
 		int id=smps.getId();
 		try {
 			
-			smps.setObservation_1(multipart[0].getBytes());
-			smps.setObservation_1_Name(multipart[0].getOriginalFilename());
-			smps.setObservation_2(multipart[1].getBytes());
-			smps.setObservation_2_Name(multipart[1].getOriginalFilename());
+			for(int i=0;i<multipart.length;i++){
+				
+				if(multipart[i].isEmpty()){
+					
+					//Object s="setSite_photo"+i;
+					List<Site_SMPS> smpsList=surveyDAO.getSMPSDetails(smps.getSiteid().getSiteid());
+					if(i==0){
+						System.out.println("in i=1");
+						smps.setObservation_1(smpsList.get(0).getObservation_1());
+						smps.setObservation_1_Name(smpsList.get(0).getObservation_1_Name());
+						}
+					else if(i==1){
+						System.out.println("in i=2");
+						smps.setObservation_2(smpsList.get(0).getObservation_2());
+						smps.setObservation_2_Name(smpsList.get(0).getObservation_2_Name());
+					}
+				}
+				else{
+					if(i==0){
+						smps.setObservation_1(multipart[0].getBytes());
+						smps.setObservation_1_Name(multipart[0].getOriginalFilename());
+						
+					}
+					else if(i==1){
+						smps.setObservation_2(multipart[1].getBytes());
+						smps.setObservation_2_Name(multipart[1].getOriginalFilename());
+						
+					}
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -499,6 +525,7 @@ public class HomeController {
 		String status="SMPS Added Successfully";
 		redirectAttributes.addFlashAttribute("status",status);
 
+		
 
 		if(submit.equals("Save"))
 		{
