@@ -107,6 +107,19 @@ $(document).ready(function(){
 		 document.getElementById("image1span").style.display = "none";
 		 document.getElementById('siteid').value=siteId;
 	     $('#siteid').prop('readonly', true);
+	     $("#photo1up").attr("disabled", "disabled");
+		
+});
+
+$(function () {
+    $("#chkImg").click(function () {
+        if ($(this).is(":checked")) {
+            $("#photo1up").removeAttr("disabled");
+            $("#photo1up").focus();
+        } else {
+            $("#photo1up").attr("disabled", "disabled");
+        }
+    });
 });
 
 
@@ -366,6 +379,11 @@ label {
 	            	</div>
                 
 					<div class="form-group">
+					<label for="chkImage">
+                     <input type="checkbox" id="chkImg" >
+                      Enable/Disable
+                     </label>
+                      <br />
 					<label for="photo1up" class="placeholder">Upload Image1(Photo 1) </label>
 	                <input type="file" id="photo1up" name="file" accept="image/*"  onchange="return ValidateFileUpload(this.id)"  class="form-control input-border"/>	                
 	            

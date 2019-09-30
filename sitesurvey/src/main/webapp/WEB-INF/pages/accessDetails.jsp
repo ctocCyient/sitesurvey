@@ -88,18 +88,43 @@ $(document).ready(function(){
 	  //document.getElementById("image2sspan").style.display = "none";
 	//  getRegions();
 		//getSiteId();
+		$("#chkImg").prop('checked', false);  // Checks the box
+
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
 		 //$("input").attr("required", "true");
 		document.getElementById('siteIdInpt').value=siteId;
 		$('#siteIdInpt').prop('readonly', true);
-		
+		$("#photo1up").attr("disabled", "disabled");
+		$("#photo2up").attr("disabled", "disabled");
 		 $("select option:contains('Select')").attr("disabled","disabled");
 		 document.getElementById("image1spanMSG").style.display = "none";
 		 document.getElementById("image1span").style.display = "none";
+		
 		 
 });
 
+$(function () {
+    $("#chkImg").click(function () {
+        if ($(this).is(":checked")) {
+            $("#photo1up").removeAttr("disabled");
+            $("#photo1up").focus();
+        } else {
+            $("#photo1up").attr("disabled", "disabled");
+        }
+    });
+});
+
+$(function () {
+    $("#chkImg2").click(function () {
+        if ($(this).is(":checked")) {
+            $("#photo2up").removeAttr("disabled");
+            $("#photo2up").focus();
+        } else {
+            $("#photo2up").attr("disabled", "disabled");
+        }
+    });
+});
 function getSiteAccessDetails(siteId)
 {
 
@@ -223,6 +248,8 @@ else {
 }*/
 
 
+
+
 </script>
 <style>
 .fa-bars,
@@ -329,9 +356,14 @@ label {
 	                <form:input id="obsrvcommnts" path="comments" name="obsrvcommnts" class="form-control input-border " />	   
 	                <!-- <span id="commntsspan" style="color:red">*Please Enter Comments*</span>-->                  
 	            	</div>
-            	</div>
-                
+            	 </div>
+               
                 <div id="exchangeExistDiv">
+                     <label for="chkImage">
+                     <input type="checkbox" id="chkImg" >
+                      Enable/Disable
+                     </label>
+                      <br />
 					<div class="form-group">
 					<label for="photo1up" class="placeholder">Upload Image1(Photo 1) </label>
 	                <input type="file" id="photo1up" name="file" accept="image/*" onchange="return ValidateFileUpload(this.id)" class="form-control input-border" />	
@@ -339,7 +371,13 @@ label {
 	            	</div>
 	            
             	</div>
+            	
 				 <div id="exchangeExistDiv">
+				 <label for="chkImage2">
+                     <input type="checkbox" id="chkImg2" >
+                      Enable/Disable
+                     </label>
+                      <br />
 					<div class="form-group">
 					<label for="photo2up" class="placeholder">Upload Image2(Photo 2) </label>
 	                <input type="file" id="photo2up" name="file" accept="image/*" onchange="return ValidateFileUpload(this.id)" class="form-control input-border" />	

@@ -89,6 +89,8 @@ $(document).ready(function(){
 	//  getRegions();
 		//getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
+		 $("#site_photo1").attr("disabled", "disabled");
+		 $("#site_photo2").attr("disabled", "disabled");
 		 $(".isa_success").fadeOut(10000);
 		 $("input").attr("required", "true");
 		 getSiteWiringDetails(siteId);
@@ -223,7 +225,27 @@ function getSiteWiringDetails(siteId)
 		 
 	}
 }*/
+$(function () {
+    $("#chkImg").click(function () {
+        if ($(this).is(":checked")) {
+            $("#site_photo1").removeAttr("disabled");
+            $("#site_photo1").focus();
+        } else {
+            $("#site_photo1").attr("disabled", "disabled");
+        }
+    });
+});
 
+$(function () {
+    $("#chkImg2").click(function () {
+        if ($(this).is(":checked")) {
+            $("#site_photo2").removeAttr("disabled");
+            $("#site_photo2").focus();
+        } else {
+            $("#site_photo2").attr("disabled", "disabled");
+        }
+    });
+});
 
 </script>
 <style>
@@ -420,6 +442,11 @@ label {
             	</div>
                 
                 <div id="exchangeExistDiv">
+                <label for="chkImage">
+                     <input type="checkbox" id="chkImg" >
+                      Enable/Disable
+                     </label>
+                      <br />
 					<div class="form-group">
 					<label for="photo1up" class="placeholder">Upload Image1(Photo 1) </label>
 	                <input type="file" id="site_photo1" name="file" accept="image/*" onchange="return ValidateFileUpload(this.id)" class="form-control input-border" />	
@@ -428,9 +455,14 @@ label {
 	            
             	</div>
 				 <div id="exchangeExistDiv">
+				<label for="chkImage2">
+                     <input type="checkbox" id="chkImg2" >
+                      Enable/Disable
+                     </label>
+                      <br />
 					<div class="form-group">
 					<label for="photo2up" class="placeholder">Upload Image2(Photo 2) </label>
-	                <input type="file" id="site_photo1" name="file" accept="image/*" onchange="return ValidateFileUpload(this.id)" class="form-control input-border" />	
+	                <input type="file" id="site_photo2" name="file" accept="image/*" onchange="return ValidateFileUpload(this.id)" class="form-control input-border" />	
 	                <!--<span id="image2sspan" style="color:red">*Please Upload Image*</span> -->              
 	            	</div>
 	            
