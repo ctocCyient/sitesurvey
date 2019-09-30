@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -225,24 +227,58 @@ public class ManagerFTController {
         	   Gson gsonBuilder = new GsonBuilder().create();
         	   String techOpenJson = gsonBuilder.toJson(listTechOpen);
         	   System.out.println(techOpenJson);
-	              return techOpenJson.toString();
+	              return techOpenJson;
     }
 	
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings( { "rawtypes", "unchecked" } )
 	@RequestMapping(value="getTechnicianAcceptedTickets", method = RequestMethod.GET)
     @ResponseBody
     public String  getTechnicianAcceptedTickets(HttpServletRequest request) {
 		String username=request.getParameter("username");
-		System.out.println("username:"+username);
+		//System.out.println("username:"+username);
 		List<TechnicianTicketInfo> listTechAccept = surveyDAO.techAcceptedTicketsData(username);	
+		List<TechnicianTicketInfo> listTechAccept2=surveyDAO.techAcceptedTicketsData(username);
+		
 		Set ticketSet = new HashSet<Object>();
-		listTechAccept.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-
-        	   Gson gsonBuilder = new GsonBuilder().create();
-        	   String techAcceptJson = gsonBuilder.toJson(listTechAccept);
-        	   System.out.println(techAcceptJson);
-	              return techAcceptJson.toString();
+		listTechAccept2.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+		String techAcceptJson = gsonBuilder.toJson(listTechAccept2);
+		
+		
+		Map<Object, List<TechnicianTicketInfo>> studlistGrouped =
+				listTechAccept.stream().collect(Collectors.groupingBy(w -> w.getTicketNum()));
+		
+			System.out.println("HASHMAP"+studlistGrouped);
+		 JSONArray JSONArrFinal=new JSONArray();
+		 
+		 JSONArray jsonArr=new JSONArray();
+		
+			
+		 for (Map.Entry<Object, List<TechnicianTicketInfo>> entry : studlistGrouped.entrySet())  
+		 {
+			 JSONObject jsonObjFinal=new JSONObject();
+			
+			 jsonObjFinal.accumulate("TicketID",entry.getKey());
+			List<TechnicianTicketInfo> listFinal=studlistGrouped.get(entry.getKey());
+			
+			for(TechnicianTicketInfo list1:listFinal)
+			{			
+				
+				JSONObject jsonSites=new JSONObject(); 
+				jsonSites.accumulate("SiteName", list1.getSiteid());
+				jsonSites.accumulate("SiteNames", list1.getSiteids());
+				jsonSites.accumulate("Status", list1.getSurveyStatus());
+				jsonSites.accumulate("TicketDesc", list1.getTicketDescription());
+				
+				jsonObjFinal.accumulate("SITES", jsonSites);
+				jsonArr.put(jsonObjFinal);
+			}
+		 }
+		 System.out.println("jsonArr"+jsonArr);
+		 JSONArrFinal.put(jsonArr);
+		 JSONArrFinal.put(techAcceptJson);
+		 
+	              return JSONArrFinal.toString();
     }
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })

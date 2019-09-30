@@ -47,6 +47,7 @@
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
+  <script src="<c:url value='resources/js/base64js.min.js' />"></script>
 
 <script type="text/javascript">
 
@@ -102,6 +103,149 @@ function getGeneratorDetails(siteID)
             }
          }					
 		 }); 
+}
+
+
+function ValidateImage(id){
+	var i=id[id.length-1];
+	  var fuData = document.getElementById(id);
+  var FileUploadPath = fuData.value;
+//To check if user upload any file
+  if (FileUploadPath == '') {
+	  
+      alert("Please upload an image");
+ } else {
+      var Extension = FileUploadPath.substring(
+              FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+//The file uploaded is an image
+if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
+//To Display
+		  $("#image"+i)[0].innerHTML="";
+          if (fuData.files && fuData.files[0]) {
+             var reader = new FileReader();
+             reader.onload = function(e) {
+                 // $('#blah').attr('src', e.target.result);
+              }
+             reader.readAsDataURL(fuData.files[0]);
+          }
+     }
+//The file upload is NOT an image
+else {
+       //  alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+         $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";  
+       document.getElementById(id).value="";
+      }
+  }
+}
+var base64_1,jsonData;
+
+function getGeneratorDetails(siteID)
+{
+	//alert("ji")
+
+	 $.ajax({
+         type: "get",
+         url: "getGeneratorDetails",
+         contentType: 'application/json',
+         data:{"siteId":siteID},
+         datatype: "json",
+         success: function(result) {
+            jsonData = JSON.parse(result);
+            if(jsonData.length==0)
+            {
+            	 $("#imagediv1").hide();
+                 $("#imagediv2").hide();
+                 $("#imagediv3").hide();
+                 $("#imagediv4").hide();
+                 $("#imagediv5").hide();
+                 $("#fileupload1").show();
+                 $("#fileupload2").show();
+                 $("#fileupload3").show();
+                 $("#fileupload4").show();
+                 $("#fileupload5").show();
+                 $("#cnfrmr1").hide();
+                 $("#cnfrmr2").hide();
+                 $("#cnfrmr3").hide();
+                 $("#cnfrmr4").hide();
+                 $("#cnfrmr5").hide();
+                
+            }
+            else
+            {
+            	$("#imagediv1").show();
+                $("#imagediv2").show();
+                $("#imagediv3").show();
+                $("#imagediv4").show();
+                $("#imagediv5").show();
+                $("#fileupload1").hide();
+                $("#fileupload2").hide();
+                $("#fileupload3").hide();
+                $("#fileupload4").hide();
+                $("#fileupload5").hide();
+               
+                $("#id").val(jsonData[0].id);
+            	$("#dgManufacturer").val(jsonData[0].dgManufacturer);
+            	$("#date").val(jsonData[0].manufacturedDate);
+            	$("#capacity").val(jsonData[0].capacity);
+            	$("#DGrunhours").val(jsonData[0].DGrunhours);
+            	$("#fuellevel").val(jsonData[0].fuellevel);
+               	$("[name=assettagnumber]").val([jsonData[0].assettagnumber]);
+            	$("#generatorCondition").val(jsonData[0].generatorCondition);
+            	$("#comments").val(jsonData[0].comments);
+            	$("#imaget1").val(jsonData[0].dg_photo_name);
+            	$("#imaget2").val(jsonData[0].fuel_level_name);
+            	$("#imaget3").val(jsonData[0].dg_inproper_1_name);
+            	$("#imaget4").val(jsonData[0].dg_inproper_2_name);
+            	$("#imaget5").val(jsonData[0].tag_photo_name);
+            	
+            	$("#addGenerator :input").removeAttr('required');
+            }
+         }					
+		 }); 
+}
+
+
+function upload_files(id){
+	
+	var rdBtnid=id.id
+	//var Value = $("input[name='"+id.name+"']:checked").val();
+    //var name = $("input[name='"+id.name+"']:checked").val();
+	var i=rdBtnid[rdBtnid.length-1];
+	
+	if(id.value=="Yes"){
+		$("#imagediv"+i).hide();
+		$("#fileupload"+i).show();
+		//$("#site_photo1").attr('disabled',false);
+    	//$("#site_photo2").attr('disabled',false);
+	}else if(id.value=="No"){
+		$("#imagediv"+i).show();
+		$("#fileupload"+i).hide();
+		//$("#site_photo1").attr('disabled',true);
+    	//$("#site_photo2").attr('disabled',true);
+	}
+	
+	
+	
+}
+ 
+function ViewImage(pid){
+	
+	
+	console.log(jsonData[0].pid);
+	console.log(jsonData[0].tower_photo1)
+	var imageData= base64js.fromByteArray(jsonData[0][pid])
+	
+	
+	//alert(imageData);
+	var imageNum="Photo"+i;
+	  var htmlstring = "<img id='ItemPreview' 'src=data:image/jpeg;base64,"+imageData+"' width='104' height='142'>";
+    //$("#ItemPreview").attr('src', 'data:image/jpeg;base64,' + base64);
+       Swal.fire({
+                title: "<i>"+imageNum+"</i>",
+                html: "<center><table border='0'><tr><td><img id='ItemPreview' src='data:image/jpeg;base64,"+imageData+"' width='300' height='300'></td></tr></table><center>", 
+                timer: 1000,
+              });  
+	
 }
 
 
@@ -196,17 +340,59 @@ label {
                <form:input id="DGrunhours" path="DGrunhours"  name="DGrunhours"  class="form-control input-full filled"  onkeypress="return isNumber(event)"/>
                <form:errors  path="DGrunhours" cssClass="error" />
                
-                <br>
+               <br>
+               
+ 				  	<label for="tagNumber" class="placeholder"><b>Asset Tag Number</b></label>
+				 <form:radiobutton path="assettagnumber" name="assettagnumber" value="Yes"/> Yes 
+        		 <form:radiobutton path="assettagnumber" name="assettagnumber" value="No"/>  No
+				<br>
+				
+               
+               <!--  <br>
                 <span class="isa_failure" style="color:red">${errMsg}</span>
                 <label for="" class=""><b>Photos of Generator Control Unit(GCU)</b></label>
                <input type="file" id="GCUPhoto"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)"/>
-                <br>
+                <br> -->
+                
+                <!--  -->                
+                
+           		<div class="form-group " id="fileupload1">
+				<label for="Upload Image" class="placeholder" ><b>Photos of Generator Control Unit (GCU)</b></label>
+				<input type="file"  class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
+				<span class="isa_failure" id="image0">${errMsg}</span>
+  				</div>
+  				<div id="imagediv1">
+ 					<div class="form-group" >
+  						<label for="Site photo1" class="placeholder" >Photos of Generator Control Unit</label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="gdphoto" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  				</div>
+  				<div id="cnfrmr1">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
+                <!--  -->
                 
                 <label for="fuellevel" class="fuellevel"><b>Fuel Level at Site(%)</b></label>
                 	 <form:input id="fuellevel" path="fuellevel"  name="fuellevel"  class="form-control input-full filled"  onkeypress="return isNumber(event)"/>
                	<br>
               
-           	 	<label for="" class=""><b>Photos of Fuel Level Sensor</b></label>
+           	 <!-- 	<label for="" class=""><b>Photos of Fuel Level Sensor</b></label>
                	<input type="file" id="FLSPhoto"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)" />
                 <br> 
               
@@ -217,15 +403,145 @@ label {
                 <label for="" class=""><b>Photo2 of the site(Which is not in proper condition)</b></label>
                	<input type="file" id="photo2"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br> 
+              -->
               
-              	<label for="tagNumber" class="placeholder"><b>Asset Tag Number</b></label>
-				 <form:radiobutton path="assettagnumber" name="assettagnumber" value="Yes"/> Yes 
-        		 <form:radiobutton path="assettagnumber" name="assettagnumber" value="No"/>  No
-				<br>
-				<br>
+              <!--  -->
+              
+                		<div class="form-group " id="fileupload2">
+				<label for="Upload Image" class="placeholder" ><b>Photos of Fuel Level Sensor</b></label>
+				<input type="file"  class="form-control input-border-bottom"  id="img2" name="file" onchange="ValidateImage(this.id);"  /> 
+				<span class="isa_failure" id="image1">${errMsg}</span>
+  				</div>
+  				<div id="imagediv2">
+ 					<div class="form-group" >
+  						<label for="Site photo2" class="placeholder" >Photos of Fuel Level Sensor</label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="fuellevel_photo" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  				</div>
+  				<div id="cnfrmr2">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno2"  value="No"  name="rdbtn2" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
+ 				
+ 				  		<div class="form-group " id="fileupload3">
+				<label for="Upload Image" class="placeholder" ><b>Photo1 of the site(Which is not in proper condition)</b></label>
+				<input type="file"  class="form-control input-border-bottom"  id="img3" name="file" onchange="ValidateImage(this.id);"  /> 
+				<span class="isa_failure" id="image2">${errMsg}</span>
+  				</div>
+  				<div id="imagediv3">
+ 					<div class="form-group" >
+  						<label for="Site photo3" class="placeholder" >Photo1 of the site(Which is not in proper condition)</label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget3" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="dg_inproper_1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  				</div>
+  				<div id="cnfrmr3">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_3" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes3" name="rdbtn3" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno3"  value="No"  name="rdbtn3" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
+ 				
+ 				  		<div class="form-group " id="fileupload4">
+				<label for="Upload Image" class="placeholder" ><b>Photo2 of the site(Which is not in proper condition)</b></label>
+				<input type="file"  class="form-control input-border-bottom"  id="img4" name="file" onchange="ValidateImage(this.id);"  /> 
+				<span class="isa_failure" id="image3">${errMsg}</span>
+  				</div>
+  				<div id="imagediv4">
+ 					<div class="form-group" >
+  						<label for="Site photo4" class="placeholder" >Photo2 of the site(Which is not in proper condition)</label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget4" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="dg_inproper_2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  				</div>
+  				<div id="cnfrmr4">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_4" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes4" name="rdbtn4" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno4"  value="No"  name="rdbtn4" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
+              
+              <!--  -->
+              
+            
+				<!-- <br>
 				<label for="" class=""><b>Asset Tag Photo</b></label>
                	<input type="file" id="tagPhoto"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
-                <br> 
+                <br> -->
+                
+         <!--  -->
+           		<div class="form-group " id="fileupload5">
+				<label for="Upload Image" class="placeholder" ><b>Tag Photo</b></label>
+				<input type="file"  class="form-control input-border-bottom"  id="img5" name="file" onchange="ValidateImage(this.id);"  /> 
+				<span class="isa_failure" id="image4">${errMsg}</span>
+  				</div>
+  				<div id="imagediv5">
+ 					<div class="form-group" >
+  						<label for="Site photo5" class="placeholder" >Tag Photo</label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget5" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="tag_photo" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  				</div>
+  				<div id="cnfrmr5">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_5" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes5" name="rdbtn5" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno5"  value="No"  name="rdbtn5" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
+ 				
+ 				<!--  -->
+ 				<br>
 				
               	<label for="Condition" class="Condition"><b>Condition</b></label>
               	 <form:select id="generatorCondition" path="generatorCondition"  name="generatorCondition"  class="form-control input-full filled" >
@@ -284,6 +600,15 @@ label {
 <!-- jQuery Sparkline -->
 
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
+
+<!-- Sweet Alert -->
+
+<script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
+<!-- jQuery Sparkline -->
+
+<script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 
 

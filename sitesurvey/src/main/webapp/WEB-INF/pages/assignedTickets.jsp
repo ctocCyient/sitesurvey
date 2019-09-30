@@ -85,7 +85,7 @@
 					
                     for(var i=0;i<assignTicketsList.length;i++)
          		   {
-						dataSet.push([assignTicketsList[i].ticketNum,assignTicketsList[i].siteids,assignTicketsList[i].technicianName,assignTicketsList[i].status]);
+						dataSet.push([assignTicketsList[i].ticketNum,assignTicketsList[i].siteids,assignTicketsList[i].technicianName,assignTicketsList[i].ticketStatus]);
          		   }
                    
                     

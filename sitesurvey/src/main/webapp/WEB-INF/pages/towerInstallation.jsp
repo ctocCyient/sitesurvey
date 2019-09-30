@@ -55,7 +55,7 @@
 		   } 
 
  </script> 
- 
+  <script src="<c:url value='resources/js/base64js.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
@@ -137,6 +137,8 @@ $(document).ready(function(){
 	getTowerInstallationDetails(sid);  
 	
 });
+var base64_1;
+var jsonData1;
 
 function getTowerInstallationDetails(sid){
 	
@@ -147,11 +149,32 @@ function getTowerInstallationDetails(sid){
 		    data:{"siteid":sid},
         success: function(result) {
         	//alert(result)
-        	
+        	jsonData1=JSON.parse(result);
        towerjsonData=JSON.parse(result);
         console.log("json"+towerjsonData);
-        if(towerjsonData.length!=0){
-        	
+        if(towerjsonData.length==0){
+        $("#imagediv1").hide();
+        $("#imagediv2").hide();
+        $("#imagediv3").hide();
+        $("#imagediv4").hide();
+        $("#fileupload1").show();
+        $("#fileupload2").show();
+        $("#fileupload3").show();
+        $("#fileupload4").show();
+        $("#cnfrmr1").hide();
+        $("#cnfrmr2").hide();
+        $("#cnfrmr3").hide();
+        $("#cnfrmr4").hide();
+        }else
+        {
+        	 $("#imagediv1").show();
+             $("#imagediv2").show();
+             $("#imagediv3").show();
+             $("#imagediv4").show();
+             $("#fileupload1").hide();
+             $("#fileupload2").hide();
+             $("#fileupload3").hide();
+             $("#fileupload4").hide();
         	$("#tid")[0].value=towerjsonData[0].id;
         	$("#towertype")[0].value=towerjsonData[0].towerType;
         	$("#obnotes")[0].value=towerjsonData[0].observationNotes;
@@ -162,8 +185,14 @@ function getTowerInstallationDetails(sid){
         	$("#tirfantennae")[0].value=towerjsonData[0].noofRFAntennas;
         	$("#timwantennae")[0].value=towerjsonData[0].noofMWAntenna;
         	$("#tirrh")[0].value=towerjsonData[0].noofRRH;
+        //	alert(towerjsonData[0].tower_photo1_name)
+        	$("#imaget1").val(towerjsonData[0].tower_photo1_name);
+        	$("#imaget2").val(towerjsonData[0].tower_photo2_name);
+        	$("#imaget3").val(towerjsonData[0].tower_photo3_name);
+        	$("#imaget4").val(towerjsonData[0].tower_photo4_name);
+        
         	
-        	
+        	$("#towerInstallationForm :input").removeAttr('required');
         	
         }
         
@@ -175,18 +204,69 @@ function getTowerInstallationDetails(sid){
 }
 
 
+function upload_files(id){
+	
+	var rdBtnid=id.id
+	//var Value = $("input[name='"+id.name+"']:checked").val();
+    //var name = $("input[name='"+id.name+"']:checked").val();
+	var i=rdBtnid[rdBtnid.length-1];
+	
+	if(id.value=="Yes"){
+		$("#imagediv"+i).hide();
+		$("#fileupload"+i).show();
+		//$("#site_photo1").attr('disabled',false);
+    	//$("#site_photo2").attr('disabled',false);
+	}else if(id.value=="No"){
+		$("#imagediv"+i).show();
+		$("#fileupload"+i).hide();
+		//$("#site_photo1").attr('disabled',true);
+    	//$("#site_photo2").attr('disabled',true);
+	}
+	
+	
+	
+}
+ 
+function ViewImage(id){
+	
+	//alert(jsonData1)
+	var i=id[id.length-1];
+	//var i=2
+	var pid="tower_photo"+i
+	console.log(jsonData[0].pid);
+	console.log(jsonData[0].tower_photo1)
+	var imageData= base64js.fromByteArray(jsonData1[0][pid])
+	
+	
+	//alert(imageData);
+	var imageNum="Photo"+i;
+	  var htmlstring = "<img id='ItemPreview' 'src=data:image/jpeg;base64,"+imageData+"' width='104' height='142'>";
+    //$("#ItemPreview").attr('src', 'data:image/jpeg;base64,' + base64);
+       Swal.fire({
+                title: "<i>"+imageNum+"</i>",
+                html: "<center><table border='0'><tr><td><img id='ItemPreview' src='data:image/jpeg;base64,"+imageData+"' width='300' height='300'></td></tr></table><center>", 
+                timer: 1000,
+              });  
+	
+}
+
+
  function ValidateImage(id){
+	 	var i=id[id.length-1];
 		  var fuData = document.getElementById(id);
       var FileUploadPath = fuData.value;
 //To check if user upload any file
       if (FileUploadPath == '') {
-          alert("Please upload an image");
+    	//  $("#image"+i)[0].innerHTML="Please upload an image";  
+         // alert("Please upload an image");
      } else {
+    	 
           var Extension = FileUploadPath.substring(
                   FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
 //The file uploaded is an image
 if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
 //To Display
+				 $("#image"+i)[0].innerHTML=""
               if (fuData.files && fuData.files[0]) {
                  var reader = new FileReader();
                  reader.onload = function(e) {
@@ -197,7 +277,8 @@ if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension =
          }
 //The file upload is NOT an image
 else {
-             alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+           //  alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+             $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
              document.getElementById(id).value="";
           }
       }
@@ -365,33 +446,138 @@ else {
 						<form:errors path="noofRRH" cssClass="error" />		
 					</div>
 					
-							<div class="form-group ">
+							<div class="form-group " id="fileupload1">
 				
-				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
-							<input type="file"   path="tower_photo1" class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);" required /> 
-					<span class="isa_failure" id="image0">${errMsg}</span>
-  </div>
+							<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
+							<input type="file"  class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);" required /> 
+					<span class="isa_failure" id="image1">${errMsg}</span>
+ 				 </div>
  	
-				<div class="form-group ">
+ 				<div id="imagediv1">
+ 					<div class="form-group" >
+  						<label for="Site photo1" class="placeholder" > Photo1</label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="imageb1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  				</div>
+  				<div id="cnfrmr1">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
+				<div class="form-group " id="fileupload2">
 				
 				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b></label>
-							<input type="file" path="tower_photo2"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
-					<span class="isa_failure" id="image1">${errMsg}</span>
-  		</div>
+							<input type="file"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
+					<span class="isa_failure" id="image2">${errMsg}</span>
+  				</div>
+  				
+  				<div id="imagediv2">
+ 					<div class="form-group" >
+  						<label for="photo2" class="placeholder" > Photo2</label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="imageb2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  					</div>
+  				<div id="cnfrmr2">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno2"  value="No"  name="rdbtn2" checked/>
+                 	</div>
+                  </div>
  	
-				<div class="form-group ">
+ 				</div>
+ 	
+				<div class="form-group " id="fileupload3" >
 				
 				<label for="Upload Image" class="placeholder" ><b>Photo 3</b> </label>
-							<input type="file"  path="tower_photo3" class="form-control input-border-bottom" id="img3"   name="file" onchange="ValidateImage(this.id);"  /> 
-					<span class="isa_failure" id="image2">${errMsg}</span>
-					</div>
-					<div class="form-group ">
-				
-				<label for="Upload Image" class="placeholder" ><b>Photo 4</b></label>
-							<input type="file"  path="tower_photo4" class="form-control input-border-bottom" id="img4"   name="file"  onchange="ValidateImage(this.id);"  /> 
+							<input type="file" class="form-control input-border-bottom" id="img3"   name="file" onchange="ValidateImage(this.id);"  /> 
 					<span class="isa_failure" id="image3">${errMsg}</span>
 					</div>
- 
+					
+					<div id="imagediv3">
+ 					<div class="form-group" >
+  						<label for=" photo3" class="placeholder" > Photo3</label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget3" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="imageb3" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  					</div>
+  				<div id="cnfrmr3">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_3" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes3" name="rdbtn3" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno3"  value="No"  name="rdbtn3" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
+					
+					
+					
+					
+					<div class="form-group " id="fileupload4">
+				
+				<label for="Upload Image" class="placeholder" ><b>Photo 4</b></label>
+							<input type="file"  class="form-control input-border-bottom" id="img4"   name="file"  onchange="ValidateImage(this.id);"  /> 
+					<span class="isa_failure" id="image4">${errMsg}</span>
+					</div>
+ 				<div id="imagediv4">
+ 					<div class="form-group" >
+  						<label for="photo4" class="placeholder" > Photo4</label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget4" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="imageb4" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  					</div>
+  				<div id="cnfrmr4">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_4" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes4" name="rdbtn4" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno4"  value="No"  name="rdbtn4" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
  
 		
  					
@@ -437,12 +623,11 @@ else {
 <!-- Sweet Alert -->
 
 <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
-
 <!-- jQuery Sparkline -->
 
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 </body>
 

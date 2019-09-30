@@ -86,6 +86,7 @@ public class SiteSurveyController {
 		return model;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/validateUser", method = RequestMethod.POST)
 
     public ModelAndView checkUser(@ModelAttribute User user,ModelAndView model, HttpSession session,HttpServletRequest request) throws SocketException {
@@ -219,6 +220,7 @@ public class SiteSurveyController {
 	 }
 	
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/fetchSiteInformation", method = RequestMethod.GET)
 	@ResponseBody
 	public String fetchsiteinformation(ModelAndView model,HttpServletRequest request){
@@ -250,7 +252,7 @@ public class SiteSurveyController {
 			BindingResult bir,
 			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
 		
-		ModelMap map= new ModelMap();
+	//	ModelMap map= new ModelMap();
 		
 		 String json=(String) request.getParameter("json");
 		System.out.println("json>>>>------------------------"+json);
@@ -260,7 +262,7 @@ public class SiteSurveyController {
 		String action= request.getParameter("btn");
 		System.out.println("bts value>>>> "+action);
 	//	System.out.println("json>>>>>>>>"+jsonarr);
-		String message = "";
+		//String message = "";
 		if(bir.hasErrors()){
 			System.out.println(" Got error");
 			model.setViewName("towerInstallation");
@@ -268,8 +270,54 @@ public class SiteSurveyController {
 		}
 		else{
 		try {
-			System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
-			towerinstallation.setTower_photo1(multipart[0].getBytes());
+			System.out.println(" upload length........"+multipart.length);
+			for(int i=0;i<multipart.length;i++){
+				
+				if(multipart[i].isEmpty()){
+					
+					//Object s="setSite_photo"+i;
+					List<Tower_Installation> towerInstallationlist=surveyDAO.fetchTowerDetails(towerinstallation.getSiteid().getSiteid());
+					if(i==0){
+						System.out.println("in i=1");
+						towerinstallation.setTower_photo1(towerInstallationlist.get(0).getTower_photo1());
+						towerinstallation.setTower_photo1_name(towerInstallationlist.get(0).getTower_photo1_name());
+						}
+					else if(i==1){
+						System.out.println("in i=2");
+						towerinstallation.setTower_photo2(towerInstallationlist.get(0).getTower_photo2());
+						towerinstallation.setTower_photo2_name(towerInstallationlist.get(0).getTower_photo2_name());
+					}
+					else if(i==2){
+						System.out.println("in i=3");
+						towerinstallation.setTower_photo3(towerInstallationlist.get(0).getTower_photo3());
+						towerinstallation.setTower_photo3_name(towerInstallationlist.get(0).getTower_photo3_name());
+					}else if(i==3){
+						System.out.println("in i=4");
+						towerinstallation.setTower_photo4(towerInstallationlist.get(0).getTower_photo4());
+						towerinstallation.setTower_photo4_name(towerInstallationlist.get(0).getTower_photo4_name());
+					}
+				}
+				else{
+					if(i==0){
+						towerinstallation.setTower_photo1(multipart[0].getBytes());
+						towerinstallation.setTower_photo1_name(multipart[0].getOriginalFilename());
+					}
+					else if(i==1){
+						towerinstallation.setTower_photo2(multipart[1].getBytes());
+						towerinstallation.setTower_photo2_name(multipart[1].getOriginalFilename());
+					}
+					else if(i==2){
+						towerinstallation.setTower_photo3(multipart[2].getBytes());
+						towerinstallation.setTower_photo3_name(multipart[2].getOriginalFilename());
+					}else if(i==3){
+						towerinstallation.setTower_photo4(multipart[3].getBytes());
+						towerinstallation.setTower_photo4_name(multipart[3].getOriginalFilename());
+					}
+					}
+			}
+			
+		//	System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
+			/*towerinstallation.setTower_photo1(multipart[0].getBytes());
 			towerinstallation.setTower_photo1_name(multipart[0].getOriginalFilename());
 			towerinstallation.setTower_photo2(multipart[1].getBytes());
 			towerinstallation.setTower_photo2_name(multipart[1].getOriginalFilename());
@@ -280,7 +328,7 @@ public class SiteSurveyController {
 			//Site s = new Site();
 		//	//s.setSiteid("IND001");
 			//towerinstallation.setSiteid(s);
-			System.out.println("towerphoto1>>"+towerinstallation.getTower_photo1());
+			System.out.println("towerphoto1>>"+towerinstallation.getTower_photo1());*/
 			String status=surveyDAO.saveTowerInstallation(towerinstallation);
 			
 			
@@ -384,18 +432,54 @@ public class SiteSurveyController {
 		System.out.println("siteid>>>>"+sitesecurity.getSiteid().getSiteid());
 		System.out.println("observations"+sitesecurity.getObservations());
 		String action= request.getParameter("btn");
+		System.out.println(" Multi Part Length"+multipart.length);
 		try{
-			System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
-			sitesecurity.setSecurity_photo1(multipart[0].getBytes());
-			sitesecurity.setSecurity_photo1_name(multipart[0].getOriginalFilename());
-			sitesecurity.setTower_photo2(multipart[1].getBytes());
-			sitesecurity.setTower_photo2_name(multipart[1].getOriginalFilename());
+			//System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
+			for(int i=0;i<multipart.length;i++){
+				
+				
+				//System.out.println("multi>>>>>>>>>>>>>>>>>>>>"+multipart[i]);
+					if(multipart[i].isEmpty()){
+						
+						//Object s="setSite_photo"+i;
+						List<Site_Security> siteSecurityList=surveyDAO.getSecurityDetails(sitesecurity.getSiteid().getSiteid());
+						if(i==0){
+							System.out.println("in i=0");
+							sitesecurity.setSecurity_photo1(siteSecurityList.get(0).getSecurity_photo1());
+							sitesecurity.setSecurity_photo1_name(siteSecurityList.get(0).getSecurity_photo1_name());}
+						else if(i==1){
+							System.out.println("in i=1");
+							sitesecurity.setSecurity_photo2(siteSecurityList.get(0).getSecurity_photo2());
+							sitesecurity.setSecurity_photo2_name(siteSecurityList.get(0).getSecurity_photo2_name());
+						}	
+					}
+					else{
+						if(i==0){
+							System.out.println("  uploaded file 1");
+							System.out.println(" file 1 name"+multipart[0].getOriginalFilename());
+							sitesecurity.setSecurity_photo1(multipart[0].getBytes());
+							sitesecurity.setSecurity_photo1_name(multipart[0].getOriginalFilename());
+						}
+						else if(i==1){
+							sitesecurity.setSecurity_photo2(multipart[1].getBytes());
+							sitesecurity.setSecurity_photo2_name(multipart[1].getOriginalFilename());
+						}
+						}
+			
+			}
+			
+			
+			//sitesecurity.setSecurity_photo1(multipart[0].getBytes());
+			//sitesecurity.setSecurity_photo1_name(multipart[0].getOriginalFilename());
+			//sitesecurity.setTower_photo2(multipart[1].getBytes());
+			//sitesecurity.setTower_photo2_name(multipart[1].getOriginalFilename());
 			
 			String status=surveyDAO.storeSitesecurity(sitesecurity);
 			System.out.println("site security status............................"+status);
 			 redirectAttributes.addFlashAttribute("status",status);
 			// model.addObject("ticketDetails",json);
            redirectAttributes.addFlashAttribute("btnClick",action);
+           model.setViewName("redirect:/gotositesecurity");
 /*			Gson gsonBuilder = new GsonBuilder().create();
             String sitesecurityJson = gsonBuilder.toJson(sitesecurity);
             URL url = new URL("http://localhost:8080/SiteSurveyRest/sitesurvey/saveSiteSecurity");
@@ -484,7 +568,83 @@ public class SiteSurveyController {
 		System.out.println("observations"+sitesafety.getObservations());
 		String action= request.getParameter("btn");
 		try{
-			System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
+			
+			System.out.println(" upload length........"+multipart.length);
+			for(int i=0;i<multipart.length;i++){
+				
+				if(multipart[i].isEmpty()){
+					
+					//Object s="setSite_photo"+i;
+					List<Site_Safety> siteSafetyList=surveyDAO.getSafetyDetails(sitesafety.getSiteid().getSiteid());
+					if(i==0){
+						System.out.println("in i=1");
+						sitesafety.setSafety_photo1(siteSafetyList.get(0).getSafety_photo1());
+						sitesafety.setSafety_photo1_name(siteSafetyList.get(0).getSafety_photo1_name());
+						}
+					else if(i==1){
+						System.out.println("in i=2");
+						sitesafety.setSafety_photo2(siteSafetyList.get(0).getSafety_photo2());
+						sitesafety.setSafety_photo2_name(siteSafetyList.get(0).getSafety_photo2_name());
+					}
+					else if(i==2){
+						System.out.println("in i=3");
+						sitesafety.setSafety_photo3(siteSafetyList.get(0).getSafety_photo3());
+						sitesafety.setSafety_photo3_name(siteSafetyList.get(0).getSafety_photo3_name());
+					}else if(i==3){
+						System.out.println("in i=4");
+						sitesafety.setSafety_photo4(siteSafetyList.get(0).getSafety_photo4());
+						sitesafety.setSafety_photo4_name(siteSafetyList.get(0).getSafety_photo4_name());
+					}
+					else if(i==4){
+						System.out.println("in i=5");
+						sitesafety.setSafety_photo5(siteSafetyList.get(0).getSafety_photo5());
+						sitesafety.setSafety_photo5_name(siteSafetyList.get(0).getSafety_photo5_name());
+					}
+					else if(i==5){
+						System.out.println("in i=6");
+						sitesafety.setSafety_photo6(siteSafetyList.get(0).getSafety_photo6());
+						sitesafety.setSafety_photo6_name(siteSafetyList.get(0).getSafety_photo6_name());
+					}
+					else if(i==6){
+						System.out.println("in i=7");
+						sitesafety.setSafety_photo7(siteSafetyList.get(0).getSafety_photo7());
+						sitesafety.setSafety_photo7_name(siteSafetyList.get(0).getSafety_photo7_name());
+					}
+				}
+				else{
+					if(i==0){
+						sitesafety.setSafety_photo1(multipart[0].getBytes());
+						sitesafety.setSafety_photo1_name(multipart[0].getOriginalFilename());
+						
+					}
+					else if(i==1){
+						sitesafety.setSafety_photo2(multipart[1].getBytes());
+						sitesafety.setSafety_photo2_name(multipart[1].getOriginalFilename());
+						
+					}
+					else if(i==2){
+						sitesafety.setSafety_photo3(multipart[2].getBytes());
+						sitesafety.setSafety_photo3_name(multipart[2].getOriginalFilename());
+						
+					}else if(i==3){
+						sitesafety.setSafety_photo4(multipart[3].getBytes());
+						sitesafety.setSafety_photo4_name(multipart[3].getOriginalFilename());
+					}
+					else if(i==4){
+						sitesafety.setSafety_photo5(multipart[4].getBytes());
+						sitesafety.setSafety_photo5_name(multipart[4].getOriginalFilename());
+					}
+					else if(i==5){
+						sitesafety.setSafety_photo6(multipart[5].getBytes());
+						sitesafety.setSafety_photo6_name(multipart[5].getOriginalFilename());
+					}
+					else if(i==6){
+						sitesafety.setSafety_photo7(multipart[6].getBytes());
+						sitesafety.setSafety_photo7_name(multipart[6].getOriginalFilename());
+					}
+					}
+			}
+			/*System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
 			sitesafety.setSafety_photo1(multipart[0].getBytes());
 			sitesafety.setSafety_photo1_name(multipart[0].getOriginalFilename());
 			
@@ -505,15 +665,15 @@ public class SiteSurveyController {
 			sitesafety.setSafety_photo6_name(multipart[1].getOriginalFilename());
 			
 			sitesafety.setSafety_photo7(multipart[1].getBytes());
-			sitesafety.setSafety_photo7_name(multipart[1].getOriginalFilename());
+			sitesafety.setSafety_photo7_name(multipart[1].getOriginalFilename());*/
 			
 			
 			
 			String status=surveyDAO.storeSiteSafety(sitesafety);
 				System.out.println("dsafety status............................"+status);
-			 redirectAttributes.addFlashAttribute("status",status);
+			// redirectAttributes.addFlashAttribute("status",status);
 			 //model.addObject("ticketDetails",json);
-             redirectAttributes.addFlashAttribute("btnClick",action);
+            // redirectAttributes.addFlashAttribute("btnClick",action);
              if(action.equals("Save")){
          		model.setViewName("redirect:/home");
          		}
@@ -589,26 +749,58 @@ public class SiteSurveyController {
 		System.out.println();
 		Site_Additional_Notes sa= new Site_Additional_Notes();	
 		model.addObject("Site_Additional_Notes",sa);
-		model.setViewName("addSiteAdditional");
-		return model;
+		model.setViewName("addSiteAdditional");		return model;
 	}
 
 	@RequestMapping(params = "btn",value = "/additionalNotes",  method = RequestMethod.POST)
 	public ModelAndView savesitesafety(@Valid @ModelAttribute("Site_Additional_Notes") Site_Additional_Notes siteaddtional,
-			BindingResult bir,
-			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
+			BindingResult bir,			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
 		 String json=(String) request.getParameter("json");
 		 System.out.println("json site safety>>>>>>>>>"+json);
 		System.out.println("siteid>>>>"+siteaddtional.getSiteid().getSiteid());
 		System.out.println("observations"+siteaddtional.getObservations());
 		String action= request.getParameter("btn");
 		try{
-			System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
-			siteaddtional.setSite_photo1(multipart[0].getBytes());
-			siteaddtional.setSite_photo1_name(multipart[0].getOriginalFilename());
+			for(int i=0;i<multipart.length;i++){
 			
-			siteaddtional.setSite_photo2(multipart[1].getBytes());
-			siteaddtional.setSite_photo2_name(multipart[1].getOriginalFilename());
+				System.out.println(" Multi Part Length"+multipart[i].isEmpty());
+				//System.out.println("multi>>>>>>>>>>>>>>>>>>>>"+multipart[i]);
+					if(multipart[i].isEmpty()){
+						
+						//Object s="setSite_photo"+i;
+						List<Site_Additional_Notes> siteAdditionalList=surveyDAO.getSiteAddDetails(siteaddtional.getSiteid().getSiteid());
+						if(i==0){
+							System.out.println("in i=0");
+						siteaddtional.setSite_photo1(siteAdditionalList.get(0).getSite_photo1());
+						siteaddtional.setSite_photo1_name(siteAdditionalList.get(0).getSite_photo1_name());}
+						else if(i==1){
+							System.out.println("in i=1");
+						siteaddtional.setSite_photo2(siteAdditionalList.get(0).getSite_photo2());
+						siteaddtional.setSite_photo2_name(siteAdditionalList.get(0).getSite_photo2_name());
+						}	
+					}
+					else{
+						if(i==0){
+						siteaddtional.setSite_photo1(multipart[0].getBytes());
+						siteaddtional.setSite_photo1_name(multipart[0].getOriginalFilename());
+						}
+						else if(i==1){
+						siteaddtional.setSite_photo2(multipart[1].getBytes());
+						siteaddtional.setSite_photo2_name(multipart[1].getOriginalFilename());
+						}
+						}
+			
+			}
+		/*	if(multipart.length==0){
+				
+				List<Site_Additional_Notes> siteAdditionalList=surveyDAO.getSiteAddDetails(siteaddtional.getSiteid().getSiteid());
+				System.out.println("site>>>>>>>>>>>>>>>>>>>>>>>>>> "+(multipart.length==0));
+				siteaddtional.setSite_photo1(siteAdditionalList.get(0).getSite_photo1());
+				siteaddtional.setSite_photo1_name(siteAdditionalList.get(0).getSite_photo1_name());
+				siteaddtional.setSite_photo2(siteAdditionalList.get(0).getSite_photo2());
+				siteaddtional.setSite_photo2_name(siteAdditionalList.get(0).getSite_photo2_name());
+			}else{*/
+			//System.out.println("image Details>>>>>>>>>>>>>"+multipart[0].getBytes()+" image name"+multipart[0].getOriginalFilename());
 			
 			String status=surveyDAO.storeSiteAdditional(siteaddtional);
 			System.out.println("site additional status............................"+status);
@@ -670,14 +862,16 @@ public class SiteSurveyController {
                	}
             }*/
 		}catch(Exception e){
-			
+			System.out.println("Exception"+e);
 		}
-		if(action.equals("Save")){
-			model.setViewName("redirect:/home");
-			}
-			else if(action.equals("Save & Continue")){
-		model.setViewName("redirect:/gotoAdditional");
-			}
+		
+	//	String status=surveyDAO.updateClosedSurveyStatus(selectedTicketId,siteaddtional.getSiteid().getSiteid());
+//		if(action.equals("Finish Survey")){
+//			model.setViewName("redirect:/home");
+//			}
+//			else if(action.equals("Save & Continue")){
+		//model.setViewName("redirect:/gotoAdditional");
+//			}
 		return model;
 	}
 
@@ -702,10 +896,11 @@ public class SiteSurveyController {
 	public String getSecurityDetails(HttpServletRequest request)
 	{
 		String siteId=request.getParameter("siteId");
-		List<Site_Safety> siteSecurityList=surveyDAO.getSecurityDetails(siteId);
+		List<Site_Security> siteSecurityList=surveyDAO.getSecurityDetails(siteId);
+	//	System.out.println("site security list>>>>>"+siteSecurityList.get(0).getTower_photo2_name());
 		Gson gson=new GsonBuilder().create();
-		String siteSafetyJson=gson.toJson(siteSecurityList);
-		return siteSafetyJson.toString();
+		String sitesecurityJson=gson.toJson(siteSecurityList);
+		return sitesecurityJson.toString();
 	}
 
 	@RequestMapping(value="/getSafetyDetails", method=RequestMethod.GET)
@@ -727,11 +922,13 @@ public class SiteSurveyController {
 	public String getSiteAdditionalDetails(HttpServletRequest request)
 	{
 		String siteId=request.getParameter("siteId");
-		List<Site_Safety> siteAdditionalList=surveyDAO.getSiteAddDetails(siteId);
+		List<Site_Additional_Notes> siteAdditionalList=surveyDAO.getSiteAddDetails(siteId);
 		Gson gson=new GsonBuilder().create();
 		String siteSafetyJson=gson.toJson(siteAdditionalList);
 		return siteSafetyJson.toString();
 	}
+	
+	
 	
 	
 }

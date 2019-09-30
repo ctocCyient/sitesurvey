@@ -193,8 +193,7 @@ color: #fff!important;
                 datatype : "json",
                  data:{"username":username},
                 success:function(data1) {
-                    openTicketsList = JSON.parse(data1);                    
-                    console.log(openTicketsList[0]);					
+                    openTicketsList = JSON.parse(data1);				
  					for(var i=0;i<openTicketsList.length;i++)
          		   {
  						dataSet.push([openTicketsList[i].ticketNum,openTicketsList[i].siteids,openTicketsList[i].ticketDescription]);
@@ -212,9 +211,6 @@ color: #fff!important;
 						{title: "Ticket Id" },
 						{title: "Site Id" },
 						{title: "Ticket Description" },
-						{title: "Status"},
-						{title: "Site Id" },	
-						{title: "Ticket Description" },	
 						{title: "Accept", width:"180px"}
 			        ]
 			    } );

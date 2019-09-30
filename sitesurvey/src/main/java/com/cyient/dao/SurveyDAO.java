@@ -58,7 +58,7 @@ public interface SurveyDAO {
 	public void addSMPS(Site_SMPS smps);
 	
 	@Transactional
-	public void addBB(String updatetype,Site_Battery_Bank BB);
+	public void addBB(Site_Battery_Bank BB);
 	
 	@Transactional
 	public List<Regions> getRegions();
@@ -230,8 +230,14 @@ public interface SurveyDAO {
 	public List<Site_Safety> getSafetyDetails(String siteId);
 	
 	@Transactional
-	public List<Site_Safety> getSecurityDetails(String siteId);
+	public List<Site_Security> getSecurityDetails(String siteId);
 	
 	@Transactional
-	public List<Site_Safety> getSiteAddDetails(String siteId);
+	public List<Site_Additional_Notes> getSiteAddDetails(String siteId);
+
+	@Transactional
+	public String updateClosedSurveyStatus(String ticketId, String siteId);
+		
+	@Transactional
+	public List<Site> ValidateLatLong(String latitude, String longitude);
 }

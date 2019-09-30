@@ -32,6 +32,7 @@
 		      $( location ).attr("href", url);
 		   }
 
+		   
 </script>
 
 <script src="<c:url value='resources/js/jquery.min.js' />"></script>
@@ -127,6 +128,8 @@ function getCity(district)
 	
 	var selectedRegion=$("#regions").val();
 	var selectedState=$("#state").val();
+	
+	
 	 $.ajax({
 	         type:"get",
 	         url:"getCities",
@@ -142,6 +145,40 @@ function getCity(district)
 	         	console.log("Error");
 	         }
 	 	});
+}
+
+function ValidateLatLong()
+{ 	
+	var latitude=$("#Latitude").val();
+	var longitude=$("#Longitude").val();
+
+	 $.ajax({
+         type:"get",
+         url:"ValidateLatLong",
+         contentType: 'application/json',
+         datatype : "json",
+         data:{"latitude":latitude,"longitude":longitude},
+         success:function(data1) {
+        	 console.log(data1);
+         	if(data1=="Existing")
+         		{
+         		$("#latitude").val(" ");
+            	$("#longitude").val(" ");
+         		swal("Sorry!", "Entered Latitude and Longitude assigned to another Site", {
+					icon : "error",
+					buttons: {        			
+						confirm: {
+							className : 'btn btn-danger'
+						}
+					},
+				});
+         		}
+         	
+         	
+         }
+         
+ 	});
+	 
 }
 
 
@@ -183,7 +220,28 @@ function getCity(district)
 			});
 	}
 
+	function Validate_latlong(text_box)
+	{
+	var text_value = document.getElementById(text_box.id).value;
 
+	var reg = new RegExp("^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}");
+
+	if( reg.exec(text_value) ) {
+	 //do nothing
+	} else {
+		$("#"+text_box.id).val(" ");
+		swal("Invalid "+text_box.id+" Format", {
+			icon : "error",
+			buttons: {        			
+				confirm: {
+					className : 'btn btn-danger'
+				}
+			},
+		});
+	}
+
+
+	}
 
 </script>
 <style>
@@ -247,11 +305,11 @@ label {
 				<form:input id="siteid" path="siteid" class="form-control input-full filled" />
 				<br>
 				<label for="latitude" class="placeholder">Latitude</label>
-				<form:input id="latitude" path="latitude" class="form-control input-full filled"     />
+				<form:input id="Latitude" path="latitude" class="form-control input-full filled"     />
 				<br>
 				
 				<label for="longitude" class="placeholder">Longitude</label> 
-				<form:input id="longitude" path="longitude" autocomplete="new-password" name="longitude"  class="form-control input-full filled"  />
+				<form:input id="Longitude" path="longitude" autocomplete="new-password" name="longitude"  class="form-control input-full filled" onchange="ValidateLatLong();" />
 				<br>
                
 				<label for="Region" class="region">Region</label>
@@ -312,7 +370,7 @@ label {
 
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 </body>
 

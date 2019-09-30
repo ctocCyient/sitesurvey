@@ -44,16 +44,16 @@ public class Site_Security implements Serializable {
 	private String security_photo1_longitude;
 	
 	@Column(name="Security_Photo2", unique = false, nullable = false, length = 16777215)
-	private byte[] tower_photo2;
+	private byte[] security_photo2;
 	
 	@Column(name="Security_Photo2_Name")
-	private String tower_photo2_name;	
+	private String security_photo2_name;	
 
 	@Column(name="Security_Photo2_Latitude")
-	private String tower_photo2_latitude;
+	private String security_photo2_latitude;
 
 	@Column(name="Security_Photo2_Longitude")
-	private String tower_photo2_longitude;
+	private String security_photo2_longitude;
 
 	public int getId() {
 		return id;
@@ -119,36 +119,38 @@ public class Site_Security implements Serializable {
 		this.security_photo1_longitude = security_photo1_longitude;
 	}
 
-	public byte[] getTower_photo2() {
-		return tower_photo2;
+	public byte[] getSecurity_photo2() {
+		return security_photo2;
 	}
 
-	public void setTower_photo2(byte[] tower_photo2) {
-		this.tower_photo2 = tower_photo2;
+	public void setSecurity_photo2(byte[] security_photo2) {
+		this.security_photo2 = security_photo2;
 	}
 
-	public String getTower_photo2_name() {
-		return tower_photo2_name;
+	public String getSecurity_photo2_name() {
+		return security_photo2_name;
 	}
 
-	public void setTower_photo2_name(String tower_photo2_name) {
-		this.tower_photo2_name = tower_photo2_name;
+	public void setSecurity_photo2_name(String security_photo2_name) {
+		this.security_photo2_name = security_photo2_name;
 	}
 
-	public String getTower_photo2_latitude() {
-		return tower_photo2_latitude;
+	public String getSecurity_photo2_latitude() {
+		return security_photo2_latitude;
 	}
 
-	public void setTower_photo2_latitude(String tower_photo2_latitude) {
-		this.tower_photo2_latitude = tower_photo2_latitude;
+	public void setSecurity_photo2_latitude(String security_photo2_latitude) {
+		this.security_photo2_latitude = security_photo2_latitude;
 	}
 
-	public String getTower_photo2_longitude() {
-		return tower_photo2_longitude;
+	public String getSecurity_photo2_longitude() {
+		return security_photo2_longitude;
 	}
 
-	public void setTower_photo2_longitude(String tower_photo2_longitude) {
-		this.tower_photo2_longitude = tower_photo2_longitude;
-	}	
+	public void setSecurity_photo2_longitude(String security_photo2_longitude) {
+		this.security_photo2_longitude = security_photo2_longitude;
+	}
+
+		
 
 }

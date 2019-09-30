@@ -67,6 +67,12 @@ $(document).ready(function(){
 	$(".isa_success").fadeOut(10000);
 	getSMPSDetails(siteID);
 	
+	$(".photoLabel").hover(function(){
+		$(".photoDiv").show();
+	/*},function(){
+		$(".photoDiv").hide('slow');*/
+	});
+	
 });
 
 
@@ -115,7 +121,6 @@ label {
     color: #495057!important;
     font-size: 13px!important;
 }
-
 
 
 </style>
@@ -200,11 +205,10 @@ label {
                 <label for="" class=""><b>Photo1 : GPS Accuracy of Photo</b></label>
                <input type="file" id="photos"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br>
-     
+                               
               	<label for="" class=""><b>Photo 2 : GPS Accuracy of Photo</b></label>
                <input type="file"  id="photos"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
                 <br>
-                
                 
                               
 				<div class="form-action">
@@ -215,9 +219,7 @@ label {
 				</div>
 			</div>
 			</form:form>			
-			
-		</div>
-	
+		
 </div>
    <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 	<script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>

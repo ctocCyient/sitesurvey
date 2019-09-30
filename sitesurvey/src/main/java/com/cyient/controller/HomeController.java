@@ -52,6 +52,7 @@ import com.cyient.model.Site;
 import com.cyient.model.Site_Access;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
+import com.cyient.model.Site_Safety;
 import com.cyient.model.Site_Battery_Bank;
 import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Technician;
@@ -220,8 +221,8 @@ public class HomeController {
 			 ticketing.setOpenDate(ticket.getOpenDate());
 			 ticketing.setOpenTime(ticket.getOpenTime());
 			 ticketing.setSiteids(ticket.getSiteid());
-			 ticketing.setStatus("Open");
-			 ticketing.setSiteFlag("-1");
+			 ticketing.setTicketStatus("Open");	
+			 ticketing.setSurveyStatus("Open");
 			 ticketing.setTicketDescription(ticket.getTicketDescription());
 			 surveyDAO.addTicket(ticketing);
 		 }
@@ -281,8 +282,9 @@ public class HomeController {
 	    	 technicianTicket.setDistrict(technicianData.getDistrict());
 	    	 technicianTicket.setManager(technicianData.getManager());
 	    	 technicianTicket.setCity(technicianData.getCity());
-	    	 technicianTicket.setStatus("Assigned");
-	    	 technicianTicket.setStatus("-1");
+	    	 technicianTicket.setTicketStatus("Assigned");
+	    	 technicianTicket.setSurveyStatus("Open");
+	    	
 	    	 
     	 
     		 ticketId=ticket.getTicketNum();
@@ -340,7 +342,21 @@ public class HomeController {
 		return model;
 	}
 	
-	
+	@RequestMapping(value = "/ValidateLatLong", method = RequestMethod.GET)
+	@ResponseBody
+	public String ValidateLatLong(ModelAndView model,HttpServletRequest request){
+			if(surveyDAO.ValidateLatLong(request.getParameter("latitude"), request.getParameter("longitude")).size()>0)
+		{
+			return "Existing";
+		}
+		else
+		{
+			return "New";
+		}
+		
+		
+		
+	}
 	
 	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
 	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
@@ -351,13 +367,14 @@ public class HomeController {
 		redirectAttributes.addFlashAttribute("status", status);
 		return new ModelAndView("redirect:/newSite");
 	}
+	
 
 	@RequestMapping(value="/saveGenerator" , method=RequestMethod.POST)
 	public ModelAndView saveGenerator(@Valid @ModelAttribute("Site_Generator") Site_Generator generator , BindingResult br , ModelAndView model, @RequestParam("file") MultipartFile[] multipart,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,HttpServletRequest request) throws IOException{
 		
 		
-		if(br.hasErrors())
+		/*if(br.hasErrors())
 		{
 			System.out.println("errorss-----------"+br.getAllErrors());
 
@@ -382,6 +399,63 @@ public class HomeController {
 			catch(Exception e)
 			{
 				System.out.println(e.toString());
+			}
+		}*/
+		
+		for(int i=0;i<multipart.length;i++){
+			
+			if(multipart[i].isEmpty()){
+				
+				//Object s="setSite_photo"+i;
+				List<Site_Generator> generatorList=surveyDAO.getGeneratorDetails(generator.getSiteid().getSiteid());
+				if(i==0){
+					System.out.println("in i=1");
+					generator.setGdphoto(generatorList.get(0).getGdphoto());
+					generator.setDg_photo_name(generatorList.get(0).getDg_photo_name());
+					}
+				else if(i==1){
+					System.out.println("in i=2");
+					generator.setFuellevel_photo(generatorList.get(0).getFuellevel_photo());
+					generator.setFuel_level_name(generatorList.get(0).getFuel_level_name());
+				}
+				else if(i==2){
+					System.out.println("in i=3");
+					generator.setDg_inproper_1(generatorList.get(0).getDg_inproper_1());
+					generator.setDg_inproper_1_name(generatorList.get(0).getDg_inproper_1_name());
+				}else if(i==3){
+					System.out.println("in i=4");
+					generator.setDg_inproper_2(generatorList.get(0).getDg_inproper_2());
+					generator.setDg_inproper_2_name(generatorList.get(0).getDg_inproper_2_name());
+				}
+				else if(i==4){
+					System.out.println("in i=5");
+					generator.setTag_photo(generatorList.get(0).getTag_photo());
+					generator.setTag_photo_name(generatorList.get(0).getTag_photo_name());
+				}
+			}
+			else{
+				if(i==0){
+					generator.setGdphoto(multipart[0].getBytes());
+					generator.setDg_photo_name(multipart[0].getOriginalFilename());
+					
+				}
+				else if(i==1){
+					generator.setFuellevel_photo(multipart[1].getBytes());
+					generator.setFuel_level_name(multipart[1].getOriginalFilename());
+					
+				}
+				else if(i==2){
+					generator.setDg_inproper_1(multipart[2].getBytes());
+					generator.setDg_inproper_1_name(multipart[2].getOriginalFilename());
+					
+				}else if(i==3){
+					generator.setDg_inproper_2(multipart[3].getBytes());
+					generator.setDg_inproper_2_name(multipart[3].getOriginalFilename());
+				}
+				else if(i==4){
+					generator.setTag_photo(multipart[4].getBytes());
+					generator.setTag_photo_name(multipart[4].getOriginalFilename());
+				}
 			}
 		}
 		
@@ -409,9 +483,8 @@ public class HomeController {
 
 	@RequestMapping(value="/saveSMPS" , method=RequestMethod.POST)
 	public ModelAndView saveSMPS(@ModelAttribute("Site_SMPS") Site_SMPS smps, @RequestParam("file") MultipartFile[] multipart ,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,ModelAndView model){
-		
-		int id=smps.getId();
 
+		int id=smps.getId();
 		try {
 			
 			smps.setObservation_1(multipart[0].getBytes());
@@ -465,56 +538,53 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/saveBB", method = RequestMethod.POST)
-
-	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("updatetype") String updatetype,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,@RequestParam(name = "photos") MultipartFile[] tag_photo) throws IOException {
-
-		System.out.println("save bb calling" + tag_photo);
+	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("photos") MultipartFile[] tag_photo,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes) throws IOException {
+		System.out.println("save bb calling" + tag_photo.length);
 		String status = "Battery Bank Added Successfully";
 		Site_Battery_Bank obj = new Site_Battery_Bank();
 
-		//update type condition check
-		if(updatetype.split(";")[0].contains("New"))
-		{
-		}
-		else
-		{
-			obj= surveyDAO.getBB(BB.getSiteid().getSiteid()).get(0);
-		}
-		
-		// segregation of files
-		if(updatetype.split(";")[2].contains("false"))
-		{
-		BB.setTag_photo(tag_photo[0].getBytes());
-		BB.setTag_photo_Name(tag_photo[0].getOriginalFilename());
-		}
-		else
+	
+if(BB.getId()!=0){
+	obj= surveyDAO.getBB(BB.getSiteid().getSiteid()).get(0);
+}
+
+		// saggrigation of files
+		if(tag_photo[0].isEmpty())
 		{
 			BB.setTag_photo(obj.getTag_photo());
 			BB.setTag_photo_Name(obj.getTag_photo_Name());
 		}
+		else
+		{
+			BB.setTag_photo(tag_photo[0].getBytes());
+			BB.setTag_photo_Name(tag_photo[0].getOriginalFilename());
+			
+		}
 		
-		if(updatetype.split(";")[3].contains("false"))
+		if(tag_photo[1].isEmpty())
+		{
+			BB.setTag_photo1(obj.getTag_photo1());
+			BB.setTag_photo1_Name(obj.getTag_photo1_Name());	
+		}
+		else
 		{
 			BB.setTag_photo1(tag_photo[1].getBytes());
 			BB.setTag_photo1_Name(tag_photo[1].getOriginalFilename());
-		}
-		else
-		{
-			BB.setTag_photo1(obj.getTag_photo1());
-			BB.setTag_photo1_Name(obj.getTag_photo1_Name());
+			
 		}
 		
-		if(updatetype.split(";")[4].contains("false"))
-		{
-			BB.setTag_photo_2(tag_photo[2].getBytes());
-			BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());
-		}
-		else
+		if(tag_photo[2].isEmpty())
 		{
 			BB.setTag_photo_2(obj.getTag_photo_2());
 			BB.setTag_photo2_Name(obj.getTag_photo2_Name());
 		}
-		surveyDAO.addBB(updatetype, BB);
+		else
+		{
+			BB.setTag_photo_2(tag_photo[2].getBytes());
+			BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());			
+		}
+		System.out.println("BB id"+BB.getId());
+		surveyDAO.addBB(BB);
 		redirectAttributes.addFlashAttribute("status", status);
 		if (submit.equals("Save")) {
 			return new ModelAndView("redirect:/home");
@@ -531,14 +601,14 @@ public class HomeController {
 	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB, @RequestParam("updatetype") String updatetype,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,
 			@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException {
-		String status = "Battery Bank Added Successfully";
+		String status = "Cabinet Added Successfully";
 		Site_Cabinet obj = new Site_Cabinet();
-		System.out.println(updatetype);
+		/*System.out.println(updatetype);
 		System.out.println(updatetype.split(";")[0]);
 		System.out.println(updatetype.split(";")[1]);
 		System.out.println(updatetype.split(";")[2]);
 		System.out.println(updatetype.split(";")[3]);
-System.out.println(updatetype.split(";")[0]=="New");
+System.out.println(updatetype.split(";")[0]=="New");*/
 		if(updatetype.split(";")[0].contains("New"))
 		{
 			
@@ -548,7 +618,7 @@ System.out.println(updatetype.split(";")[0]=="New");
 			obj= surveyDAO.getCabinet(BB.getSiteid().getSiteid()).get(0);
 		}
 
-		if(updatetype.split(";")[2].contains("false"))
+		if(updatetype.split(";")[2].contains("Yes"))
 		{
 		BB.setPhoto_1(tag_photo[0].getBytes());
 		BB.setPhoto_1_Name(tag_photo[0].getOriginalFilename());
@@ -559,10 +629,10 @@ System.out.println(updatetype.split(";")[0]=="New");
 			BB.setPhoto_1_Name(obj.getPhoto_1_Name());
 		}
 		
-		if(updatetype.split(";")[3].contains("false"))
+		if(updatetype.split(";")[3].contains("Yes"))
 		{
-			BB.setPhoto_2(tag_photo[1].getBytes());
-			BB.setPhoto_2_Name(tag_photo[1].getOriginalFilename());
+			BB.setPhoto_2(tag_photo[tag_photo.length-1].getBytes());
+			BB.setPhoto_2_Name(tag_photo[tag_photo.length-1].getOriginalFilename());
 		}
 		else
 		{
