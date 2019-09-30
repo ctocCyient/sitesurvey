@@ -53,7 +53,6 @@ if(sessionStorage.getItem("username")==null)
 		ticketId=sessionStorage.getItem("ticketId");
 	   }
 
-
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
