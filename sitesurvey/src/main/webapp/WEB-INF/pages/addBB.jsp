@@ -8,7 +8,6 @@
 <html lang="en">
 
 <head>
-
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <link rel="icon" href="<c:url value='resources/assets/img/icon.ico' />"
 	type="image/x-icon" />
