@@ -344,13 +344,13 @@ public class HomeController {
 	@RequestMapping(value = "/ValidateLatLong", method = RequestMethod.GET)
 	@ResponseBody
 	public String ValidateLatLong(ModelAndView model,HttpServletRequest request){
-		if(surveyDAO.ValidateLatLong(request.getParameter("latitude"), request.getParameter("longitude")).size()<0)
+			if(surveyDAO.ValidateLatLong(request.getParameter("latitude"), request.getParameter("longitude")).size()>0)
 		{
-			return "New";
+			return "Existing";
 		}
 		else
 		{
-			return "Exisiting";
+			return "New";
 		}
 		
 		
