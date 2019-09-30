@@ -140,6 +140,7 @@ function ValidateImage(id){
   var FileUploadPath = fuData.value;
 //To check if user upload any file
   if (FileUploadPath == '') {
+	  
       alert("Please upload an image");
  } else {
       var Extension = FileUploadPath.substring(
@@ -190,7 +191,6 @@ function getSafetyDetails(siteId)
                  $("#imagediv5").hide();
                  $("#imagediv6").hide();
                  $("#imagediv7").hide();
-                 
                  $("#fileupload1").show();
                  $("#fileupload2").show();
                  $("#fileupload3").show();
@@ -250,8 +250,6 @@ function getSafetyDetails(siteId)
          }					
 		 }); 
 }
-
-
 
 
 function upload_files(id){
@@ -502,7 +500,6 @@ function ViewImage(id){
 		                <form:option value="Yes">Yes</form:option>
 		                <form:option value="No">No</form:option>
 		                <form:option value="Not Applicable">Not Applicable</form:option>
-		                
 		                </form:select>
 								<form:errors path="stairsLaddersCondition" cssClass="error" />
 										
@@ -527,6 +524,7 @@ function ViewImage(id){
   						</div>
   					</div>
   					</div>
+  					
   				<div id="cnfrmr3">
   				   <div class="row mt-1">   
   				 	<div class="col-md-7">
@@ -545,8 +543,6 @@ function ViewImage(id){
 		                <form:option value="Select">Select</form:option>
 		                <form:option value="Yes">Yes</form:option>
 		                <form:option value="No">No</form:option>
-		                
-		                
 		                </form:select>
 								<form:errors path="safeClimbDevice" cssClass="error" />
 										
@@ -612,10 +608,8 @@ function ViewImage(id){
 		                <form:option value="Yes">Yes</form:option>
 		                <form:option value="No">No</form:option>
 		                
-		                
 		                </form:select>
 								<form:errors path="oilSpillsDG" cssClass="error" />
-										
 					</div>
 					
 					<div class="form-group ">
@@ -635,19 +629,7 @@ function ViewImage(id){
 						<input type="file"  class="form-control input-border-bottom"  id="img5"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image5">${errMsg}</span>
   					</div>
-  					<div id="imagediv5">
- 					<div class="form-group" >
-  						<label for="photo5" class="placeholder" > Photo5</label>
-  						<div class="row mt-1" >
-  						<div class="col-md-9">
-  						<form:input type="text" id="imaget5" path="" class="form-control input-full"   readonly="true"  />
-  						</div>	
-  						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb5" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
-  						</div>
-  						</div>
-  					</div>
-  					</div>
+  					
   				<div id="cnfrmr5">
   				   <div class="row mt-1">   
   				 	<div class="col-md-7">

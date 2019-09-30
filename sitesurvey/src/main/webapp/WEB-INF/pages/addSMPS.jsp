@@ -15,7 +15,7 @@
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<script type="text/javascript">
 	
-	
+
 	 if(sessionStorage.getItem("username")==null)
 	   	{
 			//window.location.href = "/sitesurvey/";
@@ -31,6 +31,7 @@
 			   }
 		
 
+
 </script>
 
 <script src="<c:url value='resources/js/jquery.min.js' />"></script>
@@ -45,7 +46,7 @@
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
-
+  <script src="<c:url value='resources/js/base64js.min.js' />"></script>
 <script type="text/javascript">
 
 WebFont.load({
@@ -65,14 +66,54 @@ $(document).ready(function(){
 	$("#siteId").val(siteID);
 	$(".isa_success").fadeOut(10000);
 	getSMPSDetails(siteID);
+	
+	$(".photoLabel").hover(function(){
+		$(".photoDiv").show();
+	/*},function(){
+		$(".photoDiv").hide('slow');*/
+	});
+	
 });
+
+
+function ValidateImage(id){
+	var i=id[id.length-1];
+	  var fuData = document.getElementById(id);
+  var FileUploadPath = fuData.value;
+//To check if user upload any file
+  if (FileUploadPath == '') {
+	  
+      alert("Please upload an image");
+ } else {
+      var Extension = FileUploadPath.substring(
+              FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+//The file uploaded is an image
+if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
+//To Display
+		  $("#image"+i)[0].innerHTML="";
+          if (fuData.files && fuData.files[0]) {
+             var reader = new FileReader();
+             reader.onload = function(e) {
+                 // $('#blah').attr('src', e.target.result);
+              }
+             reader.readAsDataURL(fuData.files[0]);
+          }
+     }
+//The file upload is NOT an image
+else {
+       //  alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+         $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";  
+       document.getElementById(id).value="";
+      }
+  }
+}
+var base64_1,jsonData;
+
 
 
 
 function getSMPSDetails(siteID)
 {
-	var siteID=siteID;
-	
 	 $.ajax({
          type: "get",
          url: "getSMPSDetails",
@@ -80,14 +121,25 @@ function getSMPSDetails(siteID)
          data:{"siteId":siteID},
          datatype: "json",
          success: function(result) {
-             jsonData = JSON.parse(result);
-          	if(jsonData.length==0)
-          	{
-          		
-          	}
-          	else
-          	{
-          		$("#id").val(jsonData[0].id);
+            jsonData = JSON.parse(result);
+            if(jsonData.length==0)
+            {
+            	 $("#imagediv1").hide();
+                 $("#imagediv2").hide();
+                 $("#fileupload1").show();
+                 $("#fileupload2").show();
+	             $("#cnfrmr1").hide();
+                 $("#cnfrmr2").hide();
+                
+            }
+            else
+            {
+            	$("#imagediv1").show();
+                $("#imagediv2").show();
+                $("#fileupload1").hide();
+                $("#fileupload2").hide();
+                
+                $("#id").val(jsonData[0].id);
           		$("#Manufacturer").val(jsonData[0].Manufacturer);
           		$("#model").val(jsonData[0].model);
           		$("#manufacturerDate").val(jsonData[0].manufacturedDate);
@@ -95,11 +147,47 @@ function getSMPSDetails(siteID)
           		$("#workingModules").val(jsonData[0].number_of_working_Module_rating);
           		$("#smpsCondition").val(jsonData[0].smpsCondition);
           		$("#comments").val(jsonData[0].comments);
-          		
-          	}
+            	$("#imaget1").val(jsonData[0].Observation_1_Name);
+            	$("#imaget2").val(jsonData[0].observation_2_Name);
+            	
+            	$("#addSMPS :input").removeAttr('required');
+            }
          }					
 		 }); 
+}
+
+
+function upload_files(id){
 	
+	var rdBtnid=id.id
+	var i=rdBtnid[rdBtnid.length-1];
+	
+	if(id.value=="Yes"){
+		$("#imagediv"+i).hide();
+		$("#fileupload"+i).show();
+		
+	}else if(id.value=="No"){
+		$("#imagediv"+i).show();
+		$("#fileupload"+i).hide();
+		
+	}
+
+}
+ 
+function ViewImage(pid){
+	
+	console.log(jsonData[0].pid);
+	console.log(jsonData[0].tower_photo1)
+	var imageData= base64js.fromByteArray(jsonData[0][pid])
+	
+	var imageNum="Photo"+i;
+	  var htmlstring = "<img id='ItemPreview' 'src=data:image/jpeg;base64,"+imageData+"' width='104' height='142'>";
+    
+       Swal.fire({
+                title: "<i>"+imageNum+"</i>",
+                html: "<center><table border='0'><tr><td><img id='ItemPreview' src='data:image/jpeg;base64,"+imageData+"' width='300' height='300'></td></tr></table><center>", 
+                timer: 1000,
+              });  
 }
 	
 </script>
@@ -113,6 +201,8 @@ label {
     color: #495057!important;
     font-size: 13px!important;
 }
+
+
 </style>
 <body  class="login">
 
@@ -192,13 +282,77 @@ label {
               	 <form:input id="comments" path="comments"  name="comments"  class="form-control input-full filled"  />
                 <br>
                               
-                <label for="" class=""><b>Photo1 : GPS Accuracy of Photo</b></label>
+              <!-- 
+                   <label for="" class=""><b>Photo1 : GPS Accuracy of Photo</b></label>
                <input type="file" id="photos"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
+                <br> -->
+                
                 <br>
-                               
+                <div class="form-group " id="fileupload1">
+				<label for="Upload Image" class="placeholder" ><b>Photo1 : GPS Accuracy of Photo</b></label>
+				<input type="file"  class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
+				<span class="isa_failure" id="image0">${errMsg}</span>
+  				</div>
+  				<div id="imagediv1">
+ 					<div class="form-group" >
+  						<label for="Site photo1" class="placeholder" >Photo1 : GPS Accuracy of Photo</label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="observation_1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  				</div>
+  				<div id="cnfrmr1">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
+                 	</div>
+                  </div>
+ 	
+ 				</div>
+                 
+                 <!--               
               	<label for="" class=""><b>Photo 2 : GPS Accuracy of Photo</b></label>
                <input type="file"  id="photos"  name="file"  class="form-control input-full filled"  onchange="ValidateFileUpload(this.id)"/>
-                <br>
+                <br> -->
+                
+                	<div class="form-group " id="fileupload2">
+				<label for="Upload Image" class="placeholder" ><b>Photo 2 : GPS Accuracy of Photo</b></label>
+				<input type="file"  class="form-control input-border-bottom"  id="img2" name="file" onchange="ValidateImage(this.id);"  /> 
+				<span class="isa_failure" id="image1">${errMsg}</span>
+  				</div>
+  				<div id="imagediv2">
+ 					<div class="form-group" >
+  						<label for="Site photo2" class="placeholder" >Photo 2 : GPS Accuracy of Photo</label>
+  						<div class="row mt-1" >
+  						<div class="col-md-9">
+  						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
+  						</div>	
+  						<div class="col-md-3 " >
+  						<form:input type="button" id="observation_2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						</div>
+  						</div>
+  					</div>
+  				</div>
+  				<div id="cnfrmr2">
+  				   <div class="row mt-1">   
+  				 	<div class="col-md-7">
+                  		<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+                  	</div>
+                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
+                  	</div>
+                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno2"  value="No"  name="rdbtn2" checked/>
+                 	</div>
+                  </div>
+ 				</div>
                               
 				<div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
@@ -208,8 +362,7 @@ label {
 				</div>
 			</div>
 			</form:form>			
-			
-		</div>
+		
 </div>
    <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 	<script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
@@ -240,6 +393,15 @@ label {
 <!-- jQuery Sparkline -->
 
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
+
+<!-- Sweet Alert -->
+
+<script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
+<!-- jQuery Sparkline -->
+
+<script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 
 

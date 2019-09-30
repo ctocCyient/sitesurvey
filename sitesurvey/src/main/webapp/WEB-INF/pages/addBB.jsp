@@ -390,14 +390,19 @@ label {
 					<br> <label for="comments" class="placeholder"><b>Observation/Comments</b></label>
 					<form:input id="comments" path="comments" name="comments" onkeypress="return isCharacters(event)"  
 						class="form-control input-full filled" />
+
 					<br> 
 					<div id="photo_1_div">
 					<label for="tag_photo1" class="placeholder"><b>Tag
 						photo</b></label>
+
 					<input type="file" id="tag_photo1"  name="photos" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /></div>
 																		
-						
+<<<<<< HEAD
+
+											<br> <label for="tag_photo_2" class="placeholder"><b>Battery Bank Photo 2</b></label><input id="photo_3_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
+=======
 						
 											<div id="photo_1_text_div">
 					 <label for="Photo_1" class="placeholder" style="float:left" ><b>Tag
@@ -458,6 +463,7 @@ label {
 											<div id="photo_3_div">
 											<br>
 											<label for="tag_photo_2" class="placeholder"><b>Battery Bank Photo 2</b></label>
+
 					<input type="file" id="tag_photo3"  name="photos" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /> 
 						
@@ -491,6 +497,7 @@ label {
 
 
 
+>>>>>>> branch 'master' of https://github.com/ctocCyient/sitesurvey
 
 <div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
@@ -499,7 +506,6 @@ label {
 				</div>
 				</div>
 			</form:form>
-
 		</div>
 	</div>
 	<script
@@ -511,8 +517,6 @@ label {
 	<script src="<c:url value='resources/assets/js/ready.js' />"></script>
 
 	<!--   Core JS Files   -->
-
-
 
 	<script
 		src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>

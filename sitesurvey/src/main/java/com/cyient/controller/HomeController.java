@@ -52,6 +52,7 @@ import com.cyient.model.Site;
 import com.cyient.model.Site_Access;
 import com.cyient.model.Site_Generator;
 import com.cyient.model.Site_SMPS;
+import com.cyient.model.Site_Safety;
 import com.cyient.model.Site_Battery_Bank;
 import com.cyient.model.Site_Cabinet;
 import com.cyient.model.Technician;
@@ -367,14 +368,16 @@ public class HomeController {
 		return new ModelAndView("redirect:/newSite");
 	}
 	
+
 	@RequestMapping(value="/saveGenerator" , method=RequestMethod.POST)
 	public ModelAndView saveGenerator(@Valid @ModelAttribute("Site_Generator") Site_Generator generator , BindingResult br , ModelAndView model, @RequestParam("file") MultipartFile[] multipart,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,HttpServletRequest request) throws IOException{
 		
 		
-		if(br.hasErrors())
+		/*if(br.hasErrors())
 		{
 			System.out.println("errorss-----------"+br.getAllErrors());
+
 			model.setViewName("addGenerator");
 			return model;
 		}
@@ -397,14 +400,73 @@ public class HomeController {
 			{
 				System.out.println(e.toString());
 			}
+		}*/
+		
+		for(int i=0;i<multipart.length;i++){
+			
+			if(multipart[i].isEmpty()){
+				
+				//Object s="setSite_photo"+i;
+				List<Site_Generator> generatorList=surveyDAO.getGeneratorDetails(generator.getSiteid().getSiteid());
+				if(i==0){
+					System.out.println("in i=1");
+					generator.setGdphoto(generatorList.get(0).getGdphoto());
+					generator.setDg_photo_name(generatorList.get(0).getDg_photo_name());
+					}
+				else if(i==1){
+					System.out.println("in i=2");
+					generator.setFuellevel_photo(generatorList.get(0).getFuellevel_photo());
+					generator.setFuel_level_name(generatorList.get(0).getFuel_level_name());
+				}
+				else if(i==2){
+					System.out.println("in i=3");
+					generator.setDg_inproper_1(generatorList.get(0).getDg_inproper_1());
+					generator.setDg_inproper_1_name(generatorList.get(0).getDg_inproper_1_name());
+				}else if(i==3){
+					System.out.println("in i=4");
+					generator.setDg_inproper_2(generatorList.get(0).getDg_inproper_2());
+					generator.setDg_inproper_2_name(generatorList.get(0).getDg_inproper_2_name());
+				}
+				else if(i==4){
+					System.out.println("in i=5");
+					generator.setTag_photo(generatorList.get(0).getTag_photo());
+					generator.setTag_photo_name(generatorList.get(0).getTag_photo_name());
+				}
+			}
+			else{
+				if(i==0){
+					generator.setGdphoto(multipart[0].getBytes());
+					generator.setDg_photo_name(multipart[0].getOriginalFilename());
+					
+				}
+				else if(i==1){
+					generator.setFuellevel_photo(multipart[1].getBytes());
+					generator.setFuel_level_name(multipart[1].getOriginalFilename());
+					
+				}
+				else if(i==2){
+					generator.setDg_inproper_1(multipart[2].getBytes());
+					generator.setDg_inproper_1_name(multipart[2].getOriginalFilename());
+					
+				}else if(i==3){
+					generator.setDg_inproper_2(multipart[3].getBytes());
+					generator.setDg_inproper_2_name(multipart[3].getOriginalFilename());
+				}
+				else if(i==4){
+					generator.setTag_photo(multipart[4].getBytes());
+					generator.setTag_photo_name(multipart[4].getOriginalFilename());
+				}
+			}
 		}
 		
 		String status="Generator Added Successfully";
 		surveyDAO.addGenerator(generator);
+
 		redirectAttributes.addFlashAttribute("status",status);
 		
 		if(submit.equals("Save & Continue"))
 		{
+
 			/*model.addObject("siteId", siteId);
 			model.setViewName("redirect:/newSMPS");*/
 			return new ModelAndView("redirect:/newSMPS");
@@ -416,28 +478,54 @@ public class HomeController {
 			
 		}
 		return model;
-		
+
 	}
 
-	
 	@RequestMapping(value="/saveSMPS" , method=RequestMethod.POST)
 	public ModelAndView saveSMPS(@ModelAttribute("Site_SMPS") Site_SMPS smps, @RequestParam("file") MultipartFile[] multipart ,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,ModelAndView model){
-		
-		//int id=smps.getId();
+
+		int id=smps.getId();
 		try {
 			
-			smps.setObservation_1(multipart[0].getBytes());
-			smps.setObservation_1_Name(multipart[0].getOriginalFilename());
-			smps.setObservation_2(multipart[1].getBytes());
-			smps.setObservation_2_Name(multipart[1].getOriginalFilename());
+			for(int i=0;i<multipart.length;i++){
+				
+				if(multipart[i].isEmpty()){
+					
+					//Object s="setSite_photo"+i;
+					List<Site_SMPS> smpsList=surveyDAO.getSMPSDetails(smps.getSiteid().getSiteid());
+					if(i==0){
+						System.out.println("in i=1");
+						smps.setObservation_1(smpsList.get(0).getObservation_1());
+						smps.setObservation_1_Name(smpsList.get(0).getObservation_1_Name());
+						}
+					else if(i==1){
+						System.out.println("in i=2");
+						smps.setObservation_2(smpsList.get(0).getObservation_2());
+						smps.setObservation_2_Name(smpsList.get(0).getObservation_2_Name());
+					}
+				}
+				else{
+					if(i==0){
+						smps.setObservation_1(multipart[0].getBytes());
+						smps.setObservation_1_Name(multipart[0].getOriginalFilename());
+						
+					}
+					else if(i==1){
+						smps.setObservation_2(multipart[1].getBytes());
+						smps.setObservation_2_Name(multipart[1].getOriginalFilename());
+						
+					}
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		surveyDAO.addSMPS(smps);
 		String status="SMPS Added Successfully";
-		
 		redirectAttributes.addFlashAttribute("status",status);
+
+		
 
 		if(submit.equals("Save"))
 		{
@@ -447,6 +535,7 @@ public class HomeController {
 		{
 			return new ModelAndView("redirect:/newBB");
 		}
+
 	
 		return model;
 	}
@@ -472,6 +561,7 @@ public class HomeController {
 		Gson gson=new GsonBuilder().create();
 		String siteGeneratorJson=gson.toJson(siteGeneratorList);
 		return siteGeneratorJson.toString();
+
 	}
 
 	@RequestMapping(value = "/saveBB", method = RequestMethod.POST)
@@ -484,8 +574,7 @@ public class HomeController {
 if(BB.getId()!=0){
 	obj= surveyDAO.getBB(BB.getSiteid().getSiteid()).get(0);
 }
-	
-		
+
 		// saggrigation of files
 		if(tag_photo[0].isEmpty())
 		{

@@ -168,6 +168,7 @@ color: #fff!important;
       					                		 if(meta.row==i){
       						                         data1 += '<option value='+nameArr[j]+'>' + nameArr[j] + '</option>';		
 
+
       					                		 }
       					                	 }
       					                  });
