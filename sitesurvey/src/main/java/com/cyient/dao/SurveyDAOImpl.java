@@ -278,6 +278,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techNotAcceptedTickets(String username) {
+		System.out.println("not accepted : "+sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where technicianId='"+username+"' and ticketStatus='Not Accepted'").list());
 		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where technicianId='"+username+"' and ticketStatus='Not Accepted'").list();	
 	}
 	

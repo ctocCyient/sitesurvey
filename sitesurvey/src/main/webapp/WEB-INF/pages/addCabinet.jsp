@@ -294,6 +294,44 @@ function upload_files(id)
     	}
 	}
 
+
+function dimension(element)
+{
+	for(i = 0 ;i<(element.value).length;i++)
+		{
+		
+		if(isNumber(element)!==true)
+			{
+			if(element.value[i]!="X")
+				{
+			$("#"+element.id).val(" ");
+			swal("Invalid Dimensions", {
+				icon : "error",
+				buttons: {        			
+					confirm: {
+						className : 'btn btn-danger'
+					}
+				},
+			});
+			break;
+			}
+			}
+		}
+arr = (element.value).split("X");
+	if(arr.length<=1 || arr.length==2 ||arr.length>3)
+		{
+		
+		$("#"+element.id).val(" ");
+		swal("Invalid Dimensions", {
+			icon : "error",
+			buttons: {        			
+				confirm: {
+					className : 'btn btn-danger'
+				}
+			},
+		});
+		}
+	}
 </script>
 <style>
 .fa-bars, .fa-ellipsis-v {
@@ -377,10 +415,30 @@ label {
 						<form:options items="${CabinetType}"></form:options>
 					</form:select>
 
-					<br> <label for="dimensions" class="placeholder"><b>Dimensions</b></label>
-					<form:input id="dimensions" path="dimensions" name="dimensions" onkeypress="return isNumber(event)"
+					<br> <label for="dimensions" class="placeholder"><b>Dimensions (L X B X H) </b></label>
+					<form:input id="dimensions" path="dimensions" name="dimensions"  onchange="dimension(this);"
 						class="form-control input-full filled" />
-
+						<!-- <div class="row mt-1">
+						 <div class="col-md-2">
+						 <label for="Length" class="placeholder"><b>Length</b></label>
+						 </div>
+						 						 						 <div class="col-md-2">
+						 <input type="text" class="form-control input-full filled"/>
+						 </div>
+						 						 <div class="col-md-2">
+<label for="Length" class="placeholder"><b>breadth</b></label>						  
+						 </div>
+						 						 <div class="col-md-2">
+						 <input type="text" class="form-control input-full filled"/>
+						 </div>
+						 						 						 <div class="col-md-2">
+<label for="Length" class="placeholder"><b>height</b></label>						  
+						 </div>
+						 						 <div class="col-md-2">
+						 <input type="text" class="form-control input-full filled"/>
+						 </div>
+	
+							</div> -->
 					<br> <label for="cabinetCondition" class="placeholder"><b>Cabinet
 						Condition</b></label>
 					<form:select id="cabinetCondition" path="cabinetCondition"

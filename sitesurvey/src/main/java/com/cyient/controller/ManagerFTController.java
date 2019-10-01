@@ -214,7 +214,7 @@ public class ManagerFTController {
 
 	@RequestMapping(value = "/technicianNotAcceptedTickets")
 	public ModelAndView technicianNotAcceptedTickets(ModelAndView model) throws IOException {
-		model.setViewName("technicianNotAcceptedTickets");
+		model.setViewName("techinicanNotAcceptedTickets");
 		return model;
 	}
 	
@@ -337,12 +337,16 @@ public class ManagerFTController {
 		      List<TechnicianTicketInfo> listClosed = surveyDAO.techClosedTicketsData(username);
 		      Set ticketSet2 = new HashSet<Object>();
 		      listClosed.removeIf(p -> !ticketSet2.add(p.getTicketNum()));
+		      List<TechnicianTicketInfo> listNotAccepted = surveyDAO.techNotAcceptedTickets(username);
+		      Set ticketSet3 = new HashSet<Object>();
+		      listNotAccepted.removeIf(p -> !ticketSet2.add(p.getTicketNum()));
 
 		     
 			   JSONObject countData=new JSONObject();
 			   countData.put("AssignedTickets",listAssigned.size());
 			   countData.put("AcceptedTickets",listAccepted.size());
 			   countData.put("ClosedTickets",listClosed.size());
+			   countData.put("NotAcceptedTickets",listNotAccepted.size());
 			   System.out.println(countData);			   
 		          return countData.toString();
 		}
