@@ -48,7 +48,7 @@ $('#currentUser')[0].innerHTML=sessionStorage.getItem("username");
 							</span>
 							<h4 style="font-size:16px;color:grey">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Modules</b></h4>
 						</li>
-						<br>
+					
 						
 						<li class="nav-item">
 								<a  href="newUser">&nbsp;&nbsp;

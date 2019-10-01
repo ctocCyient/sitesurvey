@@ -390,9 +390,9 @@ label {
   				 	<div class="col-md-7">
                   		<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
+                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
                   	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
+                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
                  	</div>
                   </div>
  	
@@ -441,9 +441,9 @@ label {
   				 	<div class="col-md-7">
                   		<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
+                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
                   	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno2"  value="No"  name="rdbtn2" checked/>
+                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno2"  value="No"  name="rdbtn2" checked/>
                  	</div>
                   </div>
  	
@@ -472,9 +472,9 @@ label {
   				 	<div class="col-md-7">
                   		<label for="Radio_3" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes3" name="rdbtn3" onclick="upload_files(this)" />
+                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes3" name="rdbtn3" onclick="upload_files(this)" />
                   	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno3"  value="No"  name="rdbtn3" checked/>
+                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno3"  value="No"  name="rdbtn3" checked/>
                  	</div>
                   </div>
  	
@@ -503,9 +503,9 @@ label {
   				 	<div class="col-md-7">
                   		<label for="Radio_4" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes4" name="rdbtn4" onclick="upload_files(this)" />
+                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes4" name="rdbtn4" onclick="upload_files(this)" />
                   	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno4"  value="No"  name="rdbtn4" checked/>
+                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno4"  value="No"  name="rdbtn4" checked/>
                  	</div>
                   </div>
  	
@@ -543,9 +543,9 @@ label {
   				 	<div class="col-md-7">
                   		<label for="Radio_5" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes5" name="rdbtn5" onclick="upload_files(this)" />
+                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes5" name="rdbtn5" onclick="upload_files(this)" />
                   	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno5"  value="No"  name="rdbtn5" checked/>
+                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno5"  value="No"  name="rdbtn5" checked/>
                  	</div>
                   </div>
  	
@@ -572,9 +572,10 @@ label {
 				<br>
                 
 				<div class="form-action">
+				<a href="siteWiring" class="btn btn-rounded btn-login btn-warning">Previous</a>
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit" value="Save for Later" name="submit" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-					<input type="submit" value="Next" name="submit" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<input type="submit" value="Save for Later" name="submit" class="btn btn-rounded btn-login btn-danger" style="background-color: #E4002B;color: white;">
+					<input type="submit" value="Next" name="submit" class="btn btn-rounded btn-login btn-primary" style="background-color: #012169;color: white;">
 				</div>
 			</div>
 			</form:form>										

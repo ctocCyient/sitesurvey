@@ -480,24 +480,28 @@ label {
   				 	<div class="col-md-7">
                   		<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
+                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
                   	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
+                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
                  	</div>
                   </div>
  	
  				</div>
-				
+				<br>
                  
 				<div class="form-action" id="typeDiv">	
-				    <input type="submit" id="submit" name="clickBtn" value="Save for Later"  class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-					<input  type="submit" id="submit1" name="clickBtn" value="Next"class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+					<a href="siteAccess" class="btn btn-rounded btn-login btn-warning">Previous</a>
+				    <input type="submit" id="submit" name="clickBtn" value="Save for Later"  class="btn btn-rounded btn-login btn-danger" style="background-color: #E4002B;color: white;">
+					<input  type="submit" id="submit1" name="clickBtn" value="Next"class="btn btn-rounded btn-login btn-primary" style="background-color: #012169;color: white;">
 					
 				</div>
 			</div>
 			</form:form>			
 		</div>
 </div>
+
+
+
    <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 	<script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>

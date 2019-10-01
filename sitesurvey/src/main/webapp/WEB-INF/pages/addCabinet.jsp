@@ -449,8 +449,9 @@ label {
 
 						</div>
 												<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" id="defaultChecked" name="photo_1_text_div_radio" onclick="upload_files(this)" /></div><div class="col-md-2">No<input type="radio" onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio" checked/>
+						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div>
+						<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="defaultChecked" name="photo_1_text_div_radio" onclick="upload_files(this)" /></div>
+						<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio" checked/>
 						</div>
 						</div>
 						
@@ -482,19 +483,20 @@ label {
 						
 						</div>
 											<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" onclick="upload_files(this)" name="photo_2_text_div_radio"  /></div><div class="col-md-2">No<input type="radio" value="No" onclick="upload_files(this)" name="photo_2_text_div_radio" checked/>
-						</div>
+						<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br></div>
+						<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" onclick="upload_files(this)" name="photo_2_text_div_radio"  /></div>
+						<div class="col-md-2">No&nbsp;<input type="radio" value="No" onclick="upload_files(this)" name="photo_2_text_div_radio" checked/></div>
 						</div>	
 
 <!--  <img id="ItemPreview">-->
 						
-
+<br>
 
 				<div class="form-action">
+				<a href="newBB" class="btn btn-rounded btn-login btn-warning">Previous</a>
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save for Later" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #E4002B;color: white;">
-					<input type="submit"  name="submit" value="Next" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save for Later" class="btn btn-rounded btn-login btn-danger" onclick="submit_logic()" style="background-color: #E4002B;color: white;">
+					<input type="submit"  name="submit" value="Next" class="btn btn-rounded btn-login btn-primary" onclick="submit_logic()" style="background-color: #012169;color: white;">
 				</div>
 				</div>
 			</form:form>

@@ -118,12 +118,12 @@ $(document).ready(function(){
                          
               swal.fire({
                          //title: 'Are you sure?',
-                         text: "Details Saved and Ticket Closed Succesfully",
-                         type: 'info',
+                         text: "Details Saved",
+                         type: 'success',
                          buttons:{
                                 confirm: {
                                        text : 'Ok',
-                                       className : 'btn btn-success'
+                                      // className : 'btn btn-success'
                                 }
                          }
                   }).then((Delete) => {
@@ -412,9 +412,9 @@ label {
   				 <div class="col-md-7">
                   <label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   </div>
-                  <div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
+                  <div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
                   </div>
-                  <div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
+                  <div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
                  </div>
                   </div>
                       
@@ -445,18 +445,18 @@ label {
   				 <div class="col-md-7">
                   <label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   </div>
-                  <div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
+                  <div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
                   </div>
-                  <div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno2" value="No"  name="rdbtn2"  checked/>
+                  <div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno2" value="No"  name="rdbtn2"  checked/>
                  </div>
                   </div>
   				
   				
   				
-  				
+  				<br>
  						<div class="form-action" id="new_submit" >
- 						
- 						<input type="submit"  class="btn btn-rounded btn-login" value="Finish Survey" name="btn" style="background-color: #012169;color: white;">  
+ 						<a href="gotosafety" class="btn btn-rounded btn-login btn-warning">Previous</a>
+ 						<input type="submit"  class="btn btn-rounded btn-login btn-primary" value="Finish Survey" name="btn" style="background-color: #012169;color: white;">  
 					
  						 <input id="selectedTicketId" name="selectedTicketId" value="" type="hidden">
  						 
