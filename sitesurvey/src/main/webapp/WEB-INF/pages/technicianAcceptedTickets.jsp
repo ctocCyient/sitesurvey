@@ -186,7 +186,7 @@ color: #fff!important;
       							if (data[3] =='Open') {
       				                return "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Start Survey' />";
       				            }
-      				            else if (data[3] =='InProgress' || data[3] =='Closed') {
+      				            else if (data[3] =='InProgress' || data[3] =='Completed') {
       					                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Resume Survey' />";
       					            }
 //       				            else if (data[3] =='Closed') {
@@ -264,7 +264,7 @@ color: #fff!important;
 			if (siteStatus =='Open') {				
                 return "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Start Survey' />";
             }
-            else if (siteStatus =='InProgress' || siteStatus =='Closed') {            	
+            else if (siteStatus =='InProgress' || siteStatus =='Completed') {            	
 	                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Resume Survey' />";
 	        }
 //             else if (siteStatus =='Closed') {
