@@ -378,7 +378,9 @@ function ViewImage(id){
 			
     
 			<h3 class="text-center">PPE(PERSONAL PROTECTIVE EQUIPMENT)</h3>
+
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
+
 			<form:form action="saveSurveyPPE" method="post" modelAttribute="SurveyTeamPPE"  enctype = 'multipart/form-data' id="ppeForm">
 			<div class="login-form">
 			<form:hidden path="id" id="ppeId"/>

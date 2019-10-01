@@ -240,4 +240,7 @@ public interface SurveyDAO {
 		
 	@Transactional
 	public List<Site> ValidateLatLong(String latitude, String longitude);
+	
+	@Transactional
+	public List<TechnicianTicketInfo> techNotAcceptedTickets(String username);
 }

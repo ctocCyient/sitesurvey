@@ -217,7 +217,6 @@ function submit_logic()
 		{
 		$('#updatetype').val("Existing;"+Unqid+filestate);		
 		}
-	//alert($('#updatetype').val());
 }
 
 

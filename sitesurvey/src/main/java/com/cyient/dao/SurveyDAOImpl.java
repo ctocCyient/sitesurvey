@@ -275,6 +275,13 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public List<TechnicianTicketInfo> techAcceptedTicketsData(String username) {
 		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where technicianId='"+username+"' and (ticketStatus='Accepted' or ticketStatus='InProgress')").list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<TechnicianTicketInfo> techNotAcceptedTickets(String username) {
+		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where technicianId='"+username+"' and ticketStatus='Not Accepted'").list();	
+	}
+	
+	
 
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techClosedTicketsData(String username) {

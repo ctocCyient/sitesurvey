@@ -74,10 +74,7 @@ $(document).ready(function(){
     	 $("#tag_photo3").removeAttr("required");                    	 
     	 /*$("#tag_photo1").attr("disabled","disabled");
     	 $("#tag_photo2").attr("disabled","disabled");
-    	 $("#tag_photo3").attr("disabled","disabled");*/
-
-
-    	 
+    	 $("#tag_photo3").attr("disabled","disabled");*/	 
 });
 
 function populateDropdown(data,id)
@@ -361,7 +358,7 @@ label {
 						Manufacturer/Installation</b></label> 
 					<form:input type="date" id="manufacturedDate"
 						path="manufacturedDate" class="form-control input-full filled" />
-					<br> <label for="number_of_batteries" class="placeholder"><b>Number_of_batteries</b></label>
+					<br> <label for="number_of_batteries" class="placeholder"><b>Number of batteries</b></label>
 					<form:input id="number_of_batteries" path="number_of_batteries" onkeypress="return isNumber(event)"
 						name="number_of_batteries" class="form-control input-full filled" />
 					<br> <label for="number_of_working_Module_rating"
