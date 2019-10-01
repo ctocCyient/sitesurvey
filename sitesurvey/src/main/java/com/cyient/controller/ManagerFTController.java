@@ -85,6 +85,9 @@ public class ManagerFTController {
 			return model;
 		}
 		
+
+		
+		
 		@RequestMapping(value = "/techniciansList")
 		public ModelAndView techniciansList(ModelAndView model) throws IOException {
 			model.setViewName("techniciansList");
@@ -209,6 +212,12 @@ public class ManagerFTController {
 		return model;
 	}
 
+	@RequestMapping(value = "/technicianNotAcceptedTickets")
+	public ModelAndView technicianNotAcceptedTickets(ModelAndView model) throws IOException {
+		model.setViewName("technicianNotAcceptedTickets");
+		return model;
+	}
+	
 	@RequestMapping(value = "/technicianClosedTickets")
 	public ModelAndView technicianClosedTickets(ModelAndView model) throws IOException {
 		model.setViewName("technicianClosedTickets");
@@ -294,6 +303,24 @@ public class ManagerFTController {
         	   String techClosedJson = gsonBuilder.toJson(listTechClosed);
 	              return techClosedJson.toString();
     }
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="getTechncianNotAcceptedTickets", method = RequestMethod.GET)
+    @ResponseBody
+    public String getTechncianNotAcceptedTickets(ModelAndView model,HttpServletRequest request) {
+		String username=request.getParameter("username");
+		System.out.println("USER"+username);
+
+		List<TechnicianTicketInfo> listNotAccepted = surveyDAO.techNotAcceptedTickets(username);
+		Set ticketSet = new HashSet<Object>();
+		listNotAccepted.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+		String notAcceptedJson = gsonBuilder.toJson(listNotAccepted);
+	              return notAcceptedJson.toString();
+    }
+	
+	
+	
+	
 	
 	 @SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="getTechTicketsCount", method = RequestMethod.GET)
