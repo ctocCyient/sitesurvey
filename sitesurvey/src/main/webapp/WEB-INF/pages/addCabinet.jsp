@@ -442,7 +442,7 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_1" onclick="photohover(this);" value="View Image"/>
+										<input class="btn btn-info form-control input-full" type="button" id="picture_1" onclick="photohover(this);" value="View Image"/>
 
 						</div>
 						</div>
@@ -474,7 +474,7 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">												
-										<input class="btn btn-info" type="button" id="picture_2" onclick="photohover(this);" value="View Image"/>
+										<input class="btn btn-info form-control input-full" type="button" id="picture_2" onclick="photohover(this);" value="View Image"/>
 						</div>
 						</div>
 
@@ -493,8 +493,8 @@ label {
 
 				<div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #E4002B;color: white;">
-					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save for Later" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #E4002B;color: white;">
+					<input type="submit"  name="submit" value="Next" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
 				</div>
 				</div>
 			</form:form>

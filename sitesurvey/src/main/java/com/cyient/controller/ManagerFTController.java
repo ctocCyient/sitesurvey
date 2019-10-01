@@ -212,12 +212,7 @@ public class ManagerFTController {
 		return model;
 	}
 
-	@RequestMapping(value = "/technicianNotAcceptedTickets")
-	public ModelAndView technicianNotAcceptedTickets(ModelAndView model) throws IOException {
-		model.setViewName("technicianNotAcceptedTickets");
-		return model;
-	}
-	
+
 	@RequestMapping(value = "/technicianClosedTickets")
 	public ModelAndView technicianClosedTickets(ModelAndView model) throws IOException {
 		model.setViewName("technicianClosedTickets");

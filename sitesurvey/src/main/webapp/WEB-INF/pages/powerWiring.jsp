@@ -504,18 +504,16 @@ label {
 			<div class="login-form">	
 
 					                
-	          <div id="exchangeExistDiv">
+	       
 	          <form:hidden path="id"/>
-					<div class="form-group">
+					
 					<label for="siteid" class="placeholder"><b>Site ID</b></label>
 	                <form:input id="siteid" path="siteid.siteid" name="siteid" class="form-control input-border "  />	
-	                         
-	            	</div>
-            	</div>
+	              
+            	<br>
           		
 
-				  <div id="exchangeExistDiv" >
-					<div class="form-group">
+				 
 					<label for="condition" class="placeholder"><b>Condition</b></label>
 	                <form:select id="wiringCondition"  path="wiringCondition" name="wiringCondition" class="form-control input-border " >
 	                <form:option  value="" >Select</form:option>
@@ -528,16 +526,11 @@ label {
 	                <form:option value="Notapplicable">Not applicable</form:option>
 	                </form:select>	  
 	                 <!--<span id="roadcondspan" style="color:red">*Please Select Road Condition*</span> -->            
-	            	</div>
-            	</div>
-				
-				<div id="exchangeExistDiv">
-					<div class="form-group">
+	            	<br>
 					<label for="obsrvcommnts" class="placeholder"><b>Observations/Comments</b></label>
 	                <form:input id="obsrvcommnts" path="comments" name="obsrvcommnts" class="form-control input-border " />	   
 	                <!-- <span id="commntsspan" style="color:red">*Please Enter Comments*</span>-->                  
-	            	</div>
-            	</div>
+	            	
                 
             <!--     <div id="exchangeExistDiv">
                 <label for="chkImage">
@@ -553,23 +546,23 @@ label {
 	            
             	</div> -->
             	
-            	
-            		<div class="form-group " id="fileupload1">
+            	<br>
+            		<div  id="fileupload1">
 				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
 				<input type="file"   class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
   				<div id="imagediv1">
- 					<div class="form-group" >
-  						<label for="Site photo1" class="placeholder" > Photo1</label>
+ 					
+  						<label for="Site photo1" class="placeholder" ><b>Photo 1</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="site_photo1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="site_photo1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
-  						</div>
+  					
   					</div>
   				</div>
   				<div id="cnfrmr1">
@@ -599,22 +592,24 @@ label {
 	            
             	</div> -->
 				
-                <div class="form-group " id="fileupload2">
+				<br>
+				
+                <div id="fileupload2">
 				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b> </label>
 				<input type="file"   class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id)"/> 
 					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
   				<div id="imagediv2">
- 					<div class="form-group" >
-  						<label for="photo2" class="placeholder" > Photo2</label>
+ 					
+  						<label for="photo2" class="placeholder" ><b>Photo 2</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="site_photo2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="site_photo2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
-  						</div>
+  						
   					</div>
   				</div>
   				<div id="cnfrmr2">
@@ -630,8 +625,8 @@ label {
  	
  				</div> 
 				<div class="form-action" id="typeDiv">	
-				    <input type="submit" id="submit" name="clickBtn" value="Save" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-			 <input  type="submit" id="submit1" name="clickBtn" value="Save & Continue" class="btn btn-rounded btn-login"  style="background-color: #012169;color: white;"> 
+				    <input type="submit" id="submit" name="clickBtn" value="Save for Later" class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
+			 <input  type="submit" id="submit1" name="clickBtn" value="Next" class="btn btn-rounded btn-login"  style="background-color: #012169;color: white;"> 
 
 					
 				</div>

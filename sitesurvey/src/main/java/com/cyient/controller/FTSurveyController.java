@@ -244,7 +244,7 @@ public class FTSurveyController {
 			surveyDAO.addSiteSurveyPPE(surveyTeamPPE);
 //			redirectAttributes.addFlashAttribute("PPEStatus",status);
 //			redirectAttributes.addFlashAttribute("btnClick",clickBtn);
-			if(clickBtn.equals("Save")){
+			if(clickBtn.equals("Save for Later")){
 				return "redirect:/home";
 				}
 				else{
@@ -387,7 +387,7 @@ public class FTSurveyController {
 			String status="Site Access Details Added Successfully";
 			surveyDAO.addSiteAccess(siteacc);
 			redirectAttributes.addFlashAttribute("status",status);
-			if(clickBtn.equals("Save")){
+			if(clickBtn.equals("Save for Later")){
 			return "redirect:/home";
 			}
 			else{
@@ -448,7 +448,7 @@ public class FTSurveyController {
 			String status="Site Area Details Added Successfully";
 			surveyDAO.addSiteArea(sitearea);
 			redirectAttributes.addFlashAttribute("status",status);
-			if(clickBtn.equals("Save")){
+			if(clickBtn.equals("Save for Later")){
 				return new ModelAndView("redirect:/home");
 			}
 			else{
@@ -522,8 +522,8 @@ public class FTSurveyController {
 			String status="Site Power Wiring  Details Added Successfully";
 			surveyDAO.addSitePowering(sitewiring);
 			redirectAttributes.addFlashAttribute("status",status);
-			if(clickBtn.equals("Save")){
-			return "redirect:/siteWiring";
+			if(clickBtn.equals("Save for Later")){
+			return "redirect:/home";
 			}
 			else{
 				

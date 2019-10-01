@@ -401,10 +401,10 @@ public class SiteSurveyController {
 			        } catch (Exception e) {
 			            System.out.println("Exception in NetClientGet:- " + e);
 			        }
-		if(action.equals("Save")){
+		if(action.equals("Save for Later")){
 		model.setViewName("redirect:/home");
 		}
-		else if(action.equals("Save & Continue")){
+		else if(action.equals("Next")){
 			model.setViewName("redirect:/gotositesecurity");
 			}
 
@@ -536,10 +536,10 @@ public class SiteSurveyController {
             }*/
 		}catch(Exception e){
 			
-		}if(action.equals("Save")){
+		}if(action.equals("Save for Later")){
 			model.setViewName("redirect:/home");
 			}
-			else if(action.equals("Save & Continue")){
+			else if(action.equals("Next")){
 		model.setViewName("redirect:/gotosafety");
 			}
 		return model;
@@ -674,10 +674,10 @@ public class SiteSurveyController {
 			// redirectAttributes.addFlashAttribute("status",status);
 			 //model.addObject("ticketDetails",json);
             // redirectAttributes.addFlashAttribute("btnClick",action);
-             if(action.equals("Save")){
+             if(action.equals("Save for Later")){
          		model.setViewName("redirect:/home");
          		}
-         		else if(action.equals("Save & Continue")){
+         		else if(action.equals("Next")){
              model.setViewName("redirect:/gotoAdditional");
          		}
 		/*	Gson gsonBuilder = new GsonBuilder().create();

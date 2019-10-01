@@ -711,12 +711,12 @@ label {
  				</div>
   				
  						<div class="form-action" id="new_submit" >
-				 		<input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #E4002B;color: white;">  
+				 		<input type="submit"  class="btn btn-rounded btn-login" value="Save for Later" name="btn" style="background-color: #E4002B;color: white;">  
 					
  						<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				
  				
-				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">  
+				 		<input type="submit" class="btn btn-rounded btn-login" value="Next" name="btn" style="background-color: #012169;color: white;">  
 					
  							<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  							</div>

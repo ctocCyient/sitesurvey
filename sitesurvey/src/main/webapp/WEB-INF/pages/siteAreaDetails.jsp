@@ -422,13 +422,13 @@ label {
 			<form:form method="post" action="saveArea" modelAttribute="Site_Area" id="siteArea"  enctype="multipart/form-data">
 			<div class="login-form">	
 			<form:hidden path="id"/>
-					<div class="form-group">
+				
 					<label for="siteid" class="placeholder"><b>Site ID</b></label>
 	                <form:input id="siteid" path="siteid.siteid" name="siteid" class="form-control input-border" />	                
-	            	</div>
+	            	
  
-            	
-					<div class="form-group">
+            	<br>
+					
 					<label for="siteCondition"><b>Condition Of The Site</b></label>
 	                <form:select id="siteCondition" path="siteCondition" name="siteCondition" class="form-control">
 	                <form:option value="">Select</form:option>
@@ -440,13 +440,15 @@ label {
 	                <form:option value="Very Good">Very good (Well kept with no issues at all)</form:option>
 	                <form:option value="Not applicable">Not applicable</form:option>
 	                </form:select>	                
-	            	</div>
-				
+	            	
+				<br>
 			
-					<div class="form-group">
+					
 					<label for="obsrvcommnts" class="placeholder"><b>Observations/Comments</b></label>
 	                <form:input id="obsrvcommnts" path="comments" name="obsrvcommnts" class="form-control input-border"/>	                
-	            	</div>
+	            	
+	            	
+	            	<br>
                 
 					<!-- <div class="form-group">
 
@@ -455,23 +457,23 @@ label {
 	            
 	            
             	</div> -->
-            	<div class="form-group " id="fileupload1">
+            	<div id="fileupload1">
 				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
 				<input type="file"   class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
   				<div id="imagediv1">
- 					<div class="form-group" >
-  						<label for="Site photo1" class="placeholder" > Photo1</label>
+ 					
+  						<label for="Site photo1" class="placeholder" ><b>Photo 1</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="photo_inproper" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="photo_inproper" path="" value="View Image" onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  					
   				</div>
   				<div id="cnfrmr1">
   				   <div class="row mt-1">   
@@ -488,8 +490,8 @@ label {
 				
                  
 				<div class="form-action" id="typeDiv">	
-				    <input type="submit" id="submit" name="clickBtn" value="Save"  class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
-					<input  type="submit" id="submit1" name="clickBtn" value="Save & Continue"class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+				    <input type="submit" id="submit" name="clickBtn" value="Save for Later"  class="btn btn-rounded btn-login" style="background-color: #E4002B;color: white;">
+					<input  type="submit" id="submit1" name="clickBtn" value="Next"class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
 					
 				</div>
 			</div>

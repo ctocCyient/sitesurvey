@@ -464,7 +464,7 @@ public class HomeController {
 
 		redirectAttributes.addFlashAttribute("status",status);
 		
-		if(submit.equals("Save & Continue"))
+		if(submit.equals("Next"))
 		{
 
 			/*model.addObject("siteId", siteId);
@@ -472,9 +472,9 @@ public class HomeController {
 			return new ModelAndView("redirect:/newSMPS");
 			
 		}
-		else if(submit.equals("Save") || submit.equals("Add"))
+		else if(submit.equals("Save for Later") || submit.equals("Add"))
 		{
-			return new ModelAndView("redirect:/newGenerator");
+			return new ModelAndView("redirect:/home");
 			
 		}
 		return model;
@@ -527,11 +527,11 @@ public class HomeController {
 
 		
 
-		if(submit.equals("Save"))
+		if(submit.equals("Save for Later"))
 		{
 			return new ModelAndView("redirect:/home");
 		}
-		else if(submit.equals("Save & Continue"))
+		else if(submit.equals("Next"))
 		{
 			return new ModelAndView("redirect:/newBB");
 		}
@@ -613,9 +613,9 @@ if(BB.getId()!=0){
 		System.out.println("BB id"+BB.getId());
 		surveyDAO.addBB(BB);
 		redirectAttributes.addFlashAttribute("status", status);
-		if (submit.equals("Save")) {
+		if (submit.equals("Save for Later")) {
 			return new ModelAndView("redirect:/home");
-		} else if (submit.equals("Save & Continue")) {
+		} else if (submit.equals("Next")) {
 			return new ModelAndView("redirect:/newCabinet");
 		} else {
 			return new ModelAndView("redirect:/");
@@ -670,9 +670,9 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		surveyDAO.addCabinet(updatetype,BB);
 		redirectAttributes.addFlashAttribute("status", status);
 
-		if (submit.equals("Save")) {
+		if (submit.equals("Save for Later")) {
 			return new ModelAndView("redirect:/home");
-		} else if (submit.equals("Save & Continue")) {
+		} else if (submit.equals("Next")) {
 			return new ModelAndView("redirect:/fetchtowerinstallation");
 		} else {
 			return new ModelAndView("redirect:/");
