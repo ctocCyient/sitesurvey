@@ -44,6 +44,7 @@ import com.cyient.model.Site;
 import com.cyient.model.Site_Access;
 import com.cyient.model.Site_Area;
 import com.cyient.model.Site_SMPS;
+import com.cyient.model.Site_Safety;
 import com.cyient.model.Site_Wiring;
 import com.cyient.model.Survey_Team_PPE;
 import com.cyient.model.Technician;
@@ -322,9 +323,14 @@ public class FTSurveyController {
 			return siteAreaJson.toString();
 		}
 		@RequestMapping(value="/saveAccess" , method=RequestMethod.POST)
-		public String saveAccess(@ModelAttribute("Site_Access") Site_Access siteacc,RedirectAttributes redirectAttributes,@RequestParam("file") MultipartFile[] multipart, ModelAndView model,@RequestParam("clickBtn") String clickBtn)throws IOException{
+		public String saveAccess(@ModelAttribute("Site_Access") Site_Access siteacc,RedirectAttributes redirectAttributes,@RequestParam("file") MultipartFile[] multipart,HttpServletRequest request, ModelAndView model,@RequestParam("clickBtn") String clickBtn)throws IOException{
 	
-		
+			 String json=(String) request.getParameter("json");
+			 System.out.println("json site safety>>>>>>>>>"+json);
+			System.out.println("siteid>>>>"+siteacc.getSiteid().getSiteid());
+			System.out.println("observations"+siteacc.getComments());
+			String action= request.getParameter("btn");
+			
 		/*if(br.hasErrors())  
 	         {  
 			 
@@ -335,10 +341,38 @@ public class FTSurveyController {
 	        }  */
 				try
 				  {
-					siteacc.setPhoto_way(multipart[0].getBytes());
+					for(int i=0;i<multipart.length;i++){
+						if(multipart[i].isEmpty()){
+							List<Site_Access> siteAcc=surveyDAO.getSiteAccDetails(siteacc.getSiteid().getSiteid());
+							if(i==0){
+								System.out.println("in i=1");
+								siteacc.setPhoto_way(siteAcc.get(0).getPhoto_way());
+								siteacc.setPhoto_way_name(siteAcc.get(0).getPhoto_way_name());
+								}
+							else if(i==1){
+								System.out.println("in i=2");
+								siteacc.setPhoto_way2(siteAcc.get(0).getPhoto_way2());
+								siteacc.setPhoto_way_name2(siteAcc.get(0).getPhoto_way_name2());
+							}
+						}
+						else{
+							if(i==0){
+								siteacc.setPhoto_way(multipart[0].getBytes());
+								siteacc.setPhoto_way_name(multipart[0].getOriginalFilename());
+								
+							}
+							else if(i==1){
+								siteacc.setPhoto_way2(multipart[1].getBytes());
+								siteacc.setPhoto_way_name2(multipart[1].getOriginalFilename());
+								
+							}
+						}
+					/*siteacc.setPhoto_way(multipart[0].getBytes());
 					siteacc.setPhoto_way_name(multipart[0].getOriginalFilename());
 					siteacc.setPhoto_way2(multipart[1].getBytes());
-					siteacc.setPhoto_way_name2(multipart[1].getOriginalFilename());
+					siteacc.setPhoto_way_name2(multipart[1].getOriginalFilename());*/
+					
+					}
 				  }
 				  catch(Exception e)
 				  {
@@ -362,19 +396,49 @@ public class FTSurveyController {
 		}
 		
 		@RequestMapping(value="/saveArea" , method=RequestMethod.POST)
-		public ModelAndView saveSiteArea(@ModelAttribute("Site_Area") Site_Area sitearea,RedirectAttributes redirectAttributes,@RequestParam("file") MultipartFile[] multipart, ModelAndView model,@RequestParam("clickBtn")String clickBtn)throws IOException{
+		public ModelAndView saveSiteArea(@ModelAttribute("Site_Area") Site_Area sitearea,RedirectAttributes redirectAttributes,@RequestParam("file") MultipartFile[] multipart,HttpServletRequest request, ModelAndView model,@RequestParam("clickBtn")String clickBtn)throws IOException{
 		//System.out.println("PHOTOOOTOO"+multipart);
 		//System.out.println("CLICKKKK"+clickBtn);
 			 
 		System.out.println("sdgsdg"+sitearea.getId());
 		System.out.println("sdgsdg"+sitearea.getSiteCondition());
 		
-				try
+		
+		try
+		  {
+			for(int i=0;i<multipart.length;i++){
+				if(multipart[i].isEmpty()){
+					List<Site_Area> siteArea=surveyDAO.getSiteArDetails(sitearea.getSiteid().getSiteid());
+					if(i==0){
+						System.out.println("in i=1");
+						sitearea.setPhoto_inproper(siteArea.get(0).getPhoto_inproper());
+						sitearea.setPhoto_inproper_name(siteArea.get(0).getPhoto_inproper_name());
+						}
+					
+				}
+				else{
+					if(i==0){
+						sitearea.setPhoto_inproper(multipart[0].getBytes());
+						sitearea.setPhoto_inproper_name(multipart[0].getOriginalFilename());
+						
+					}
+					
+				}
+			/*siteacc.setPhoto_way(multipart[0].getBytes());
+			siteacc.setPhoto_way_name(multipart[0].getOriginalFilename());
+			siteacc.setPhoto_way2(multipart[1].getBytes());
+			siteacc.setPhoto_way_name2(multipart[1].getOriginalFilename());*/
+			
+			}
+		  }
+				/*try
 				  {
+					
+					
 					sitearea.setPhoto_inproper(multipart[0].getBytes());
 					sitearea.setPhoto_inproper_name(multipart[0].getOriginalFilename());
-					
-				  }
+				}	
+				  */
 				  catch(Exception e)
 				  {
 				   System.out.println(e.toString());
@@ -405,13 +469,50 @@ public class FTSurveyController {
 			
 			 return "accessDetails";
 	        }  */
-				try
+		
+		
+		try
+		  {
+			for(int i=0;i<multipart.length;i++){
+				if(multipart[i].isEmpty()){
+					List<Site_Wiring> siteWiring=surveyDAO.getPowerWiringDetails(sitewiring.getSiteid().getSiteid());
+					if(i==0){
+						System.out.println("in i=1");
+						sitewiring.setSite_photo1(siteWiring.get(0).getSite_photo1());
+						sitewiring.setSitePhotoName1(siteWiring.get(0).getSitePhotoName1());
+						}
+					else if(i==1){
+						System.out.println("in i=2");
+						sitewiring.setSite_photo2(siteWiring.get(0).getSite_photo2());
+						sitewiring.setSitePhotoName2(siteWiring.get(0).getSitePhotoName2());
+					}
+				}
+				else{
+					if(i==0){
+						sitewiring.setSite_photo1(multipart[0].getBytes());
+						sitewiring.setSitePhotoName1(multipart[0].getOriginalFilename());
+						
+					}
+					else if(i==1){
+						sitewiring.setSite_photo2(multipart[1].getBytes());
+						sitewiring.setSitePhotoName2(multipart[1].getOriginalFilename());
+						
+					}
+				}
+			/*siteacc.setPhoto_way(multipart[0].getBytes());
+			siteacc.setPhoto_way_name(multipart[0].getOriginalFilename());
+			siteacc.setPhoto_way2(multipart[1].getBytes());
+			siteacc.setPhoto_way_name2(multipart[1].getOriginalFilename());*/
+			
+			}
+		  }
+				/*try
 				  {
 					sitewiring.setSite_photo1(multipart[0].getBytes());
 					sitewiring.setSitePhotoName1(multipart[0].getOriginalFilename());
 					sitewiring.setSite_photo2(multipart[1].getBytes());
 					sitewiring.setSitePhotoName2(multipart[1].getOriginalFilename());
-				  }
+				  }*/
 				  catch(Exception e)
 				  {
 				   System.out.println(e.toString());
