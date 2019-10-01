@@ -273,6 +273,18 @@ label {
 	color: #495057 !important;
 	font-size: 13px !important;
 }
+
+.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
+    width: 700px;
+    background: #fff;
+    padding: 74px 40px ;
+   
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    border: 1px solid #ebecec;
+}
 </style>
 <body class="login">
 
@@ -378,7 +390,7 @@ label {
 						<form:option value="Very good - Looks almost new">Very good - Looks almost new</form:option>
 						<form:option value="Not applicable">Not applicable</form:option>
 					</form:select>
-					<br> <label for="tag_observed" class="placeholder"><b>Tag_observed</b></label>
+					<br> <label for="tag_observed" class="placeholder"><b>Tag Observed</b></label>
 					<form:select id="tag_observed" path="tag_observed"
 						name="tag_observed" class="form-control input-full filled">
 						<form:option value="">Select</form:option>
@@ -398,12 +410,7 @@ label {
 
 					<input type="file" id="tag_photo1"  name="photos" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /></div>
-																		
-<<<<<< HEAD
-
-											<br> <label for="tag_photo_2" class="placeholder"><b>Battery Bank Photo 2</b></label><input id="photo_3_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
-=======
-						
+			
 											<div id="photo_1_text_div">
 					 <label for="Photo_1" class="placeholder" style="float:left" ><b>Tag
 						photo</b></label><br>
@@ -414,7 +421,7 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_1" onclick="photohover(this);" value="View"/>
+										<input class="btn btn-info" type="button" id="picture_1" onclick="photohover(this);" value="View Image"/>
 
 						</div>
 						</div>
@@ -445,7 +452,7 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_2" onclick="photohover(this);" value="View"/>
+										<input class="btn btn-info" type="button" id="picture_2" onclick="photohover(this);" value="View Image"/>
 
 						</div>
 						</div>
@@ -483,7 +490,7 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_3" onclick="photohover(this);" value="View"/>
+										<input class="btn btn-info" type="button" id="picture_3" onclick="photohover(this);" value="View Image"/>
 
 						</div>
 						</div>
@@ -495,9 +502,6 @@ label {
 						</div>
 						</div>
 
-
-
->>>>>>> branch 'master' of https://github.com/ctocCyient/sitesurvey
 
 <div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->

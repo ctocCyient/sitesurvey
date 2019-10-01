@@ -509,17 +509,14 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public List<Site_Safety> getSafetyDetails(String siteId){		
 		return sessionFactory.getCurrentSession().createQuery("from Site_Safety where siteid='"+siteId+"'").list();
 	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
-
 	public List<Site_Additional_Notes> getSiteAddDetails(String siteId) {
 		return sessionFactory.getCurrentSession().createQuery("from Site_Additional_Notes where siteid='"+siteId+"'").list();
 	}
 
-	
-
-	@SuppressWarnings("unchecked")
-	
+	@SuppressWarnings("unchecked")	
 	public List<Site_Access> getSiteAccDetails(String siteId) {
 		return sessionFactory.getCurrentSession().createQuery("from Site_Access where siteid='"+siteId+"'").list();
 	}
@@ -540,26 +537,32 @@ public class SurveyDAOImpl implements SurveyDAO {
 	//	System.out.println("TICKET "+ticketId);
 		
 		Calendar cal = Calendar.getInstance();
-		 Query q = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where siteid ='"+siteId+"' and ticketNum='"+ticketId+"'");
-		 TechnicianTicketInfo technicianTicket = (TechnicianTicketInfo)q.list().get(0);
-		 
-		 technicianTicket.setSurveyStatus("Closed");
-//		 technicianTicket.setClosedDate(cal.getTime());
-//		 technicianTicket.setClosedTime(cal.getTime());
+		try{
+			 Query q = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where siteid ='"+siteId+"' and ticketNum='"+ticketId+"'");
+			 TechnicianTicketInfo technicianTicket = (TechnicianTicketInfo)q.list().get(0);
+			 
+			 technicianTicket.setSurveyStatus("Completed");
+	//		 technicianTicket.setClosedDate(cal.getTime());
+	//		 technicianTicket.setClosedTime(cal.getTime());
+			
+			 sessionFactory.getCurrentSession().update(technicianTicket);
+			 
+			 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"' and siteid ='"+siteId+"'");
+			 Ticketing ticketing = (Ticketing)q1.list().get(0);
+			 
+			 ticketing.setSurveyStatus("Completed");
+	//		ticketing.setClosedDate(cal.getTime());
+	//		ticketing.setClosedTime(cal.getTime());
 		
-		 sessionFactory.getCurrentSession().update(technicianTicket);
-		 
-		 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"' and siteid ='"+siteId+"'");
-		 Ticketing ticketing = (Ticketing)q1.list().get(0);
-		 
-		 ticketing.setSurveyStatus("Closed");
-//		ticketing.setClosedDate(cal.getTime());
-//		ticketing.setClosedTime(cal.getTime());
-	
-		
-		 sessionFactory.getCurrentSession().update(ticketing);
+			
+			 sessionFactory.getCurrentSession().update(ticketing);
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
 		 
 		return "Updated";
+	
 	}
 
 	@Override

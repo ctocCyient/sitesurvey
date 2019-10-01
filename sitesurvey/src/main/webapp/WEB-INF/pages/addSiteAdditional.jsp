@@ -38,22 +38,28 @@
 
   <script src="<c:url value='resources/js/base64js.min.js' />"></script>
 
+
+ <script type="text/javascript">
+	
+   if(sessionStorage.getItem("username")==null) 
+   	{ 
+		   url = "/sitesurvey/"; 
+		      $( location ).attr("href", url);
+  	}
+  
+ 	   else 
+ 		   { 
+ 		  role=sessionStorage.getItem("role"); 
+ 			siteId=sessionStorage.getItem("siteId");
+ 			ticketId=sessionStorage.getItem("ticketId");
+		   } 
+
+ </script> 
+ 
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
-	<style>		
-.fa-bars,		
-.fa-ellipsis-v		
-{		
-color: #fff!important;		
-}		
-
-label {
-    color: #495057!important;
-    font-size: 13px!important;
-}
-</style>
-
+	
 <script type="text/javascript">
 
 
@@ -73,23 +79,46 @@ var ticketStatus;
 
 var jsonDetails;
 $(document).ready(function(){	
+	$('#selectedTicketId')[0].value=ticketId;
 	var status='<%=status%>';
 
 	var btnClick='<%=btnClick%>';
 	//alert(status);
+// 	 if(status=='Saved')
+
+//      {
+//                   var nextUrl;
+//               if(btnClick=="Save"){
+//                     nextUrl="/sitesurvey/home";
+//               }
+//               else if(btnClick=="Save & Continue"){
+//                     nextUrl="/sitesurvey/gotoAdditional";
+//               }
+//               swal({
+//                          //title: 'Are you sure?',
+//                          text: "Details Saved Successfully",
+//                          type: 'info',
+//                          buttons:{
+//                                 confirm: {
+//                                        text : 'Ok',
+//                                        className : 'btn btn-success'
+//                                 }
+//                          }
+//                   }).then((Delete) => {
+//                          if (Delete) {
+//                                 window.location.href = nextUrl;
+//                          }
+//                   });
+//             }
+
+
 	 if(status=='Saved')
 
      {
-                  var nextUrl;
-              if(btnClick=="Save"){
-                    nextUrl="/sitesurvey/home";
-              }
-              else if(btnClick=="Save & Continue"){
-                    nextUrl="/sitesurvey/gotoAdditional";
-              }
-              swal({
+                         
+              swal.fire({
                          //title: 'Are you sure?',
-                         text: "Details Saved Successfully",
+                         text: "Details Saved and Ticket Closed Succesfully",
                          type: 'info',
                          buttons:{
                                 confirm: {
@@ -99,7 +128,7 @@ $(document).ready(function(){
                          }
                   }).then((Delete) => {
                          if (Delete) {
-                                window.location.href = nextUrl;
+                                window.location.href = "/sitesurvey/home";
                          }
                   });
             }
@@ -110,7 +139,7 @@ $(document).ready(function(){
 	 $("#additionalNotes :input").attr("required", '');
 	 
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	// $("#execSidebar").load('<c:url value="/resources/common/executiveSidebar.jsp" />'); 
+	 $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 	 jsonDetails='<%=jsondetails%>';
 	//alert(jsonDetails)
 	var ticketDetails=JSON.parse(JSON.stringify(jsonDetails));
@@ -266,6 +295,18 @@ else {
 
 </script>
 <style>
+
+.fa-bars,		
+.fa-ellipsis-v		
+{		
+color: #fff!important;		
+}		
+
+label {
+    color: #495057!important;
+    font-size: 13px!important;
+}
+
 .isa_failure{
     color:red;
 }
@@ -319,51 +360,48 @@ else {
 		</div>
 
 		<!-- Sidebar -->
-<div id="execSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
 		
 	<div class="wrapper wrapper-login">
 	  <div class="container container-login animated fadeIn">
-	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
+<%-- 	   <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br> --%>
 				<h3 class="text-center">Additional Details</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				<form:form method="post" id="additionalNotes" modelAttribute="Site_Additional_Notes" action="additionalNotes" enctype="multipart/form-data" onsubmit="return ValiidateForm()">
 				<form:input type="hidden" path="id" id="siteaddid" />
 				<input type="hidden"   id="json" name="json" />
-				<div class="form-group ">
-						<label for="siteid" class="placeholder">Site ID
 				
-						</label>
-						 
+						<label for="siteid" class="placeholder"><b>Site ID</b></label>						 
 						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full"  readonly="true" />				
 						<form:errors path="siteid.siteid" cssClass="error" />	
-					</div>
+					<br>
 								
-					<div class="form-group ">
-						<label for="observations" class="observations">Observations</label>
+				
+						<label for="observations" class="observations"><b>Observations</b></label>
 						<form:input  id="observations" path="observations" class="form-control input-full"   />				
 						<form:errors path="observations" cssClass="error" />	
-					</div>
+					<br>
 						
 				
-				<div class="form-group " id="imagediv1"> 
-				<label for="site_photo1" class="placeholder" >Site Photo1</label>
+				<div id="imagediv1"> 
+				<label for="site_photo1" class="placeholder" >Site Photo 1</label>
 				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file"  onchange="ValidateImage(this.id)"/> 
 				
 					<span class="isa_failure" id="image1">${errMsg}</span>
 						
   				</div>
   				
-  				<div class="form-group" id="imaged1">
-  				<label for="Site photo1" class="placeholder" >Site Photo1</label>
+  				<div  id="imaged1">
+  				<label for="Site photo1" class="placeholder" ><b>Site Photo 1</b></label>
   				<div class="row mt-1" >
   					<div class="col-md-9">
   						
   						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
   					</div>	
   					<div class="col-md-3 " >
-  						<form:input type="button" id="imageb1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						<!-- <img id="imageId" src="" style="display:none" />-->
   				
   					</div>
@@ -380,23 +418,23 @@ else {
                  </div>
                   </div>
                       
+  				<br>
   				
-  				
-				<div class="form-group " id="imagediv2">
-				<label for="site_photo2" class="placeholder" >Site Photo2</label>
+				<div id="imagediv2">
+				<label for="site_photo2" class="placeholder" ><b>Site Photo 2</b></label>
 				<input type="file" class="form-control input-border-bottom"  id="site_photo2"  name="file"  onchange="ValidateImage(this.id)"/> 
 				
 					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
-  				<div class="form-group" id="imaged2">
-  				<label for="Site photo2" class="placeholder" >Site Photo2</label>
+  				<div id="imaged2">
+  				<label for="Site photo2" class="placeholder" ><b>Site Photo 2</b></label>
   				<div class="row mt-1" >
   					<div class="col-md-9">
   						
   						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
   					</div>	
   					<div class="col-md-3 " >
-  						<form:input type="button" id="imageb2" path="" value="View Image " onclick="ViewImage(this.id,this)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb2" path="" value="View Image " onclick="ViewImage(this.id,this)"  class="form-control input-full btn btn-info"   />	
   						<!-- <img id="imageId" src="" style="display:none" />-->
   				
   					</div>
@@ -417,14 +455,19 @@ else {
   				
   				
  						<div class="form-action" id="new_submit" >
-				 		<input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #012169;color: white;">  
+ 						
+ 						<input type="submit"  class="btn btn-rounded btn-login" value="Finish Survey" name="btn" style="background-color: #012169;color: white;">  
 					
- 						<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
+ 						 <input id="selectedTicketId" name="selectedTicketId" value="" type="hidden">
+ 						 
+<!-- 				 		<input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #012169;color: white;">   -->
+					
+<!--  						<input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				
  				
-				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">  
+<!-- 				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">   -->
 					
- 							<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
+<!--  							<input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  							</div>
  						
  				</form:form>	

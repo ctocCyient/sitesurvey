@@ -261,6 +261,18 @@ label {
     font-size: 13px!important;
 }
 
+.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
+    width: 700px;
+    background: #fff;
+    padding: 74px 40px ;
+   
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    border: 1px solid #ebecec;
+}
+
 .error {
 	color: #ff0000;
 	font-style: italic;
@@ -347,32 +359,31 @@ label {
         		 <form:radiobutton path="assettagnumber" name="assettagnumber" value="No"/>  No
 				<br>
 				
-               
+               <br>
                <!--  <br>
                 <span class="isa_failure" style="color:red">${errMsg}</span>
                 <label for="" class=""><b>Photos of Generator Control Unit(GCU)</b></label>
                <input type="file" id="GCUPhoto"  name="file"  class="form-control input-full filled" onchange="ValidateFileUpload(this.id)"/>
                 <br> -->
+                            
                 
-                <!--  -->                
-                
-           		<div class="form-group " id="fileupload1">
+           		<div  id="fileupload1">
 				<label for="Upload Image" class="placeholder" ><b>Photos of Generator Control Unit (GCU)</b></label>
 				<input type="file"  class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
   				<div id="imagediv1">
- 					<div class="form-group" >
-  						<label for="Site photo1" class="placeholder" >Photos of Generator Control Unit</label>
+ 					
+  						<label for="Site photo1" class="placeholder" ><b>Photos of Generator Control Unit</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="gdphoto" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="gdphoto" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  					
   				</div>
   				<div id="cnfrmr1">
   				   <div class="row mt-1">   
@@ -386,7 +397,7 @@ label {
                   </div>
  	
  				</div>
-                <!--  -->
+                <br>
                 
                 <label for="fuellevel" class="fuellevel"><b>Fuel Level at Site(%)</b></label>
                 	 <form:input id="fuellevel" path="fuellevel"  name="fuellevel"  class="form-control input-full filled"  onkeypress="return isNumber(event)"/>
@@ -407,23 +418,23 @@ label {
               
               <!--  -->
               
-                		<div class="form-group " id="fileupload2">
+                		<div id="fileupload2">
 				<label for="Upload Image" class="placeholder" ><b>Photos of Fuel Level Sensor</b></label>
 				<input type="file"  class="form-control input-border-bottom"  id="img2" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image1">${errMsg}</span>
   				</div>
   				<div id="imagediv2">
- 					<div class="form-group" >
-  						<label for="Site photo2" class="placeholder" >Photos of Fuel Level Sensor</label>
+ 					
+  						<label for="Site photo2" class="placeholder" ><b>Photos of Fuel Level Sensor</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="fuellevel_photo" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="fuellevel_photo" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  					
   				</div>
   				<div id="cnfrmr2">
   				   <div class="row mt-1">   
@@ -437,24 +448,24 @@ label {
                   </div>
  	
  				</div>
- 				
- 				  		<div class="form-group " id="fileupload3">
+ 				<br>
+ 				  		<div id="fileupload3">
 				<label for="Upload Image" class="placeholder" ><b>Photo1 of the site(Which is not in proper condition)</b></label>
 				<input type="file"  class="form-control input-border-bottom"  id="img3" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
   				<div id="imagediv3">
- 					<div class="form-group" >
-  						<label for="Site photo3" class="placeholder" >Photo1 of the site(Which is not in proper condition)</label>
+ 					
+  						<label for="Site photo3" class="placeholder" ><b>Photo1 of the site(Which is not in proper condition)</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget3" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="dg_inproper_1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="dg_inproper_1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  					
   				</div>
   				<div id="cnfrmr3">
   				   <div class="row mt-1">   
@@ -468,24 +479,24 @@ label {
                   </div>
  	
  				</div>
- 				
- 				  		<div class="form-group " id="fileupload4">
+ 				<br>
+ 				  		<div id="fileupload4">
 				<label for="Upload Image" class="placeholder" ><b>Photo2 of the site(Which is not in proper condition)</b></label>
 				<input type="file"  class="form-control input-border-bottom"  id="img4" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image3">${errMsg}</span>
   				</div>
   				<div id="imagediv4">
- 					<div class="form-group" >
-  						<label for="Site photo4" class="placeholder" >Photo2 of the site(Which is not in proper condition)</label>
+ 					
+  						<label for="Site photo4" class="placeholder" ><b>Photo2 of the site(Which is not in proper condition)</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget4" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="dg_inproper_2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="dg_inproper_2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  					
   				</div>
   				<div id="cnfrmr4">
   				   <div class="row mt-1">   
@@ -499,7 +510,7 @@ label {
                   </div>
  	
  				</div>
-              
+              <br>
               <!--  -->
               
             
@@ -509,23 +520,23 @@ label {
                 <br> -->
                 
          <!--  -->
-           		<div class="form-group " id="fileupload5">
+           		<div id="fileupload5">
 				<label for="Upload Image" class="placeholder" ><b>Tag Photo</b></label>
 				<input type="file"  class="form-control input-border-bottom"  id="img5" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image4">${errMsg}</span>
   				</div>
   				<div id="imagediv5">
- 					<div class="form-group" >
-  						<label for="Site photo5" class="placeholder" >Tag Photo</label>
+ 				
+  						<label for="Site photo5" class="placeholder" ><b>Tag Photo</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget5" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
-  						<div class="col-md-3 " >
-  						<form:input type="button" id="tag_photo" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<div class="col-md-3 " > 
+  						<form:input type="button" id="tag_photo" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  				
   				</div>
   				<div id="cnfrmr5">
   				   <div class="row mt-1">   

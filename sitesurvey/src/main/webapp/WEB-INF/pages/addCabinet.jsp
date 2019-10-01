@@ -217,7 +217,7 @@ function submit_logic()
 		{
 		$('#updatetype').val("Existing;"+Unqid+filestate);		
 		}
-	alert($('#updatetype').val());
+	//alert($('#updatetype').val());
 }
 
 
@@ -304,6 +304,18 @@ function upload_files(id)
 label {
 	color: #495057 !important;
 	font-size: 13px !important;
+}
+
+.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
+    width: 700px;
+    background: #fff;
+    padding: 74px 40px ;
+   
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    border: 1px solid #ebecec;
 }
 </style>
 <body class="login">
@@ -431,7 +443,7 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_1" onclick="photohover(this);" value="View"/>
+										<input class="btn btn-info" type="button" id="picture_1" onclick="photohover(this);" value="View Image"/>
 
 						</div>
 						</div>
@@ -454,8 +466,8 @@ label {
 						  <input type="radio"  value="Yes" onclick="upload_files(this)" name="photo_2_text_div_radio_update"  checked/></div><div class="col-md-2">No<input type="radio" value="No" onclick="upload_files(this)" name="photo_2_text_div_radio_update" />
 						</div>-->
 						</div>
-						</div>
-<div id="photo_2_text_div">
+					
+					<div id="photo_2_text_div">
 					 <label for="Photo_2" class="placeholder" style="float:left" ><b>photo 2</b></label><br>
 					 					<div class="row mt-1">									 
 					 <div class="col-md-9">
@@ -463,7 +475,7 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">												
-										<input class="btn btn-info" type="button" id="picture_2" onclick="photohover(this);" value="View"/>
+										<input class="btn btn-info" type="button" id="picture_2" onclick="photohover(this);" value="View Image"/>
 						</div>
 						</div>
 
@@ -480,7 +492,7 @@ label {
 						
 
 
-<div class="form-action">
+				<div class="form-action">
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
 					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #E4002B;color: white;">
 					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">

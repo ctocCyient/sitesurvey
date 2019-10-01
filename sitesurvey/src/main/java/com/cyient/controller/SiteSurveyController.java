@@ -754,12 +754,12 @@ public class SiteSurveyController {
 
 	@RequestMapping(params = "btn",value = "/additionalNotes",  method = RequestMethod.POST)
 	public ModelAndView savesitesafety(@Valid @ModelAttribute("Site_Additional_Notes") Site_Additional_Notes siteaddtional,
-			BindingResult bir,			@RequestParam("file") MultipartFile[] multipart,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
+			BindingResult bir,@RequestParam("file") MultipartFile[] multipart,@RequestParam("selectedTicketId") String selectedTicketId,ModelAndView model,HttpServletRequest request,RedirectAttributes redirectAttributes) {
 		 String json=(String) request.getParameter("json");
 		 System.out.println("json site safety>>>>>>>>>"+json);
 		System.out.println("siteid>>>>"+siteaddtional.getSiteid().getSiteid());
 		System.out.println("observations"+siteaddtional.getObservations());
-		String action= request.getParameter("btn");
+		//String action= request.getParameter("btn");
 		try{
 			for(int i=0;i<multipart.length;i++){
 			
@@ -865,12 +865,14 @@ public class SiteSurveyController {
 			System.out.println("Exception"+e);
 		}
 		
-	//	String status=surveyDAO.updateClosedSurveyStatus(selectedTicketId,siteaddtional.getSiteid().getSiteid());
+		System.out.println("Ticket Add"+selectedTicketId);
+		System.out.println("Site Add"+siteaddtional.getSiteid().getSiteid());
+		String updatedStatus=surveyDAO.updateClosedSurveyStatus(selectedTicketId,siteaddtional.getSiteid().getSiteid());
 //		if(action.equals("Finish Survey")){
 //			model.setViewName("redirect:/home");
 //			}
 //			else if(action.equals("Save & Continue")){
-		//model.setViewName("redirect:/gotoAdditional");
+		model.setViewName("redirect:/gotoAdditional");
 //			}
 		return model;
 	}

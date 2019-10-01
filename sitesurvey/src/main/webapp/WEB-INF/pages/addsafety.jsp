@@ -54,18 +54,7 @@
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
-	<style>		
-.fa-bars,		
-.fa-ellipsis-v		
-{		
-color: #fff!important;		
-}		
 
-label {
-    color: #495057!important;
-    font-size: 13px!important;
-}
-</style>
 
 <script type="text/javascript">
 
@@ -320,6 +309,16 @@ function ViewImage(id){
     border: 1px solid #ebecec;
 }
 
+.fa-bars,		
+.fa-ellipsis-v		
+{		
+color: #fff!important;		
+}		
+
+label {
+    color: #495057!important;
+    font-size: 13px!important;
+}
 </style>
 
 <body  class="login">
@@ -366,15 +365,15 @@ function ViewImage(id){
 				<form:input type="hidden"  path="" id="json" name="json" />
 				
 				<form:input type="hidden" path="id" id="safetyid" />
-				<div class="form-group ">
+				
 						<label for="siteid" class="placeholder"><b>Site Id</b>
 				
 						</label>
 						 
 						<form:input type="text" id="siteid" path="siteid.siteid" class="form-control input-full" readonly="true"  />				
 						<form:errors path="siteid.siteid" cssClass="error" />	
-					</div>
-				<div class="form-group ">
+				
+				<br>
 						<label for="extinguishersAvailability" class="placeholder"><b>Are Fire extinguishers available (Non expired)?</b> </label>
 						<form:select id="securitycondition" path="extinguishersAvailability"  name="overallconditon"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -385,31 +384,31 @@ function ViewImage(id){
 		                </form:select>
 								<form:errors path="extinguishersAvailability" cssClass="error" />
 										
-					</div>
+				
+				<br>	
 					
-					<div class="form-group ">
 						<label for="edate" class="placeholder"><b>When are fire extinguishers due for a service?</b></label>
 						<form:input type="date" id="edate" path="extinguishersDueDate" class="form-control input-full"  />				
 						<form:errors path="extinguishersDueDate" cssClass="error" />	
-					</div>
+					<br>
 						
-				<div class="form-group " id="fileupload1">
+				<div id="fileupload1">
 				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
 				<input type="file"   class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
   				<div id="imagediv1">
- 					<div class="form-group" >
-  						<label for="Site photo1" class="placeholder" > Photo1</label>
+ 				
+  						<label for="Site photo1" class="placeholder" ><b>Photo 1</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  					
   				</div>
   				<div id="cnfrmr1">
   				   <div class="row mt-1">   
@@ -423,7 +422,9 @@ function ViewImage(id){
                   </div>
  	
  				</div>
-  				<div class="form-group ">
+ 				
+ 				<br>
+  				
 						<label for="aviationlight" class="placeholder"><b>Does the tower have a aviation lights?></b></label>
 						<form:select id="aviationlight" path="aviationLights"  name="aviationlight"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -434,8 +435,8 @@ function ViewImage(id){
 		                </form:select>
 								<form:errors path="aviationLights" cssClass="error" />
 										
-					</div>
-					<div class="form-group ">
+					<br>
+					
 						<label for="arrestor" class="placeholder"><b>Is the lighting arrestor spike and connection to tower or earthing available?</b></label>
 						<form:select id="arrestor" path="lightningArrestor"  name="arrestor"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -446,8 +447,7 @@ function ViewImage(id){
 		                </form:select>
 								<form:errors path="lightningArrestor" cssClass="error" />
 										
-					</div>
-					<div class="form-group ">
+					<br>
 						<label for="rttloc" class="placeholder"><b>For RTT/RTP loactions,are protection rails or parapet walls available </b></label>
 						<form:select id="rttloc" path="rtt_rtp_locations"  name="rttloc"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -458,27 +458,26 @@ function ViewImage(id){
 		                </form:select>
 								<form:errors path="rtt_rtp_locations" cssClass="error" />
 										
-					</div>
+					<br>
   				
   				
-  				
- 				<div class="form-group " id="fileupload2">
+ 				<div id="fileupload2">
 				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b> </label>
 				<input type="file"   class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id)"/> 
 					<span class="isa_failure" id="image2">${errMsg}</span>
   				</div>
   				<div id="imagediv2">
- 					<div class="form-group" >
-  						<label for="photo2" class="placeholder" > Photo2</label>
+ 					
+  						<label for="photo2" class="placeholder" ><b>Photo 2</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  				
   				</div>
   				<div id="cnfrmr2">
   				   <div class="row mt-1">   
@@ -492,8 +491,8 @@ function ViewImage(id){
                   </div>
  	
  				</div>
-  				
-  				<div class="form-group ">
+  				<br>
+  			
 						<label for="stairs" class="placeholder"><b>Stairs or ladders-are they in good condition with no missing rungs etc?</b></label>
 						<form:select id="stairs" path="stairsLaddersCondition"  name="stairs"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -503,27 +502,27 @@ function ViewImage(id){
 		                </form:select>
 								<form:errors path="stairsLaddersCondition" cssClass="error" />
 										
-					</div>
+				<br>
 					
-					<div class="form-group " id="fileupload3">
+					<div id="fileupload3">
 						<label for="Upload Image" class="placeholder" ><b>Photo 3 </b> </label>
 						<input type="file"   class="form-control input-border-bottom"  id="img3"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image3">${errMsg}</span>
   					</div>
 					
 					<div id="imagediv3">
- 					<div class="form-group" >
-  						<label for=" photo3" class="placeholder" > Photo3</label>
+ 					
+  						<label for=" photo3" class="placeholder" ><b>Photo 3</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget3" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb3" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb3" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
   					</div>
-  					</div>
+  					
   					
   				<div id="cnfrmr3">
   				   <div class="row mt-1">   
@@ -537,7 +536,8 @@ function ViewImage(id){
                   </div>
  	
  				</div>
-					<div class="form-group ">
+ 				<br>
+					
 						<label for="climbdevice" class="placeholder"><b>Is there safe climb device installed on ladder ? (Typically a cable or rail)</b></label>
 						<form:select id="climbdevice" path="safeClimbDevice"  name="climbdevice"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -546,7 +546,7 @@ function ViewImage(id){
 		                </form:select>
 								<form:errors path="safeClimbDevice" cssClass="error" />
 										
-					</div><div class="form-group ">
+				<br>
 						<label for="anticlimbdevice" class="placeholder"><b>Is the anti climb protection in place?</b></label>
 						<form:select id="anticlimbdevice" path="antiClimbProtection"  name="anticlimbdevice"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -557,8 +557,7 @@ function ViewImage(id){
 		                </form:select>
 								<form:errors path="antiClimbProtection" cssClass="error" />
 										
-					</div>
-						<div class="form-group ">
+					<br>
 						<label for="fireclear" class="placeholder"><b>Is the site clear of fire hazard rubble, installation material, released old equipment etc.?</b></label>
 						<form:select id="fireclear" path="siteFireClear"  name="fireclear"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -569,24 +568,24 @@ function ViewImage(id){
 		                </form:select>
 								<form:errors path="siteFireClear" cssClass="error" />
 										
-					</div>
-					<div class="form-group " id="fileupload4">
-						<label for="Upload Image" class="placeholder" ><b>Photo 4 </b></label>
+				<br>
+					<div  id="fileupload4">
+						<label for="Upload Image" class="placeholder" ><b>Photo 4</b></label>
 						<input type="file" class="form-control input-border-bottom"  id="img4"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image4">${errMsg}</span>
   					</div>
   					<div id="imagediv4">
- 					<div class="form-group" >
-  						<label for="photo4" class="placeholder" > Photo4</label>
+ 					
+  						<label for="photo4" class="placeholder" ><b>Photo 4</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget4" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb4" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb4" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  					
   					</div>
   				<div id="cnfrmr4">
   				   <div class="row mt-1">   
@@ -600,8 +599,8 @@ function ViewImage(id){
                   </div>
  	
  				</div>
-  					
-						<div class="form-group ">
+  					<br>
+					
 						<label for="oilspill" class="placeholder"><b>Are there oil spills in the DG area (Diesel + Engine oil etc. )?</b></label>
 						<form:select id="oilspill" path="oilSpillsDG"  name="oilspill"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -610,9 +609,7 @@ function ViewImage(id){
 		                
 		                </form:select>
 								<form:errors path="oilSpillsDG" cssClass="error" />
-					</div>
-					
-					<div class="form-group ">
+					<br>
 						<label for="safetysignage" class="placeholder"><b>Are safety and Hazard signage available?</b></label>
 						<form:select id="safetysignage" path="safetySignage"  name="safetysignage"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -623,9 +620,9 @@ function ViewImage(id){
 		                </form:select>
 								<form:errors path="safetySignage" cssClass="error" />
 										
-					</div>
-					<div class="form-group " id="fileupload5">
-						<label for="Upload Image" class="placeholder" ><b>Photo 5 </b> </label>
+					<br>
+					<div id="fileupload5">
+						<label for="Upload Image" class="placeholder" ><b>Photo 5</b></label>
 						<input type="file"  class="form-control input-border-bottom"  id="img5"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image5">${errMsg}</span>
   					</div>
@@ -642,29 +639,29 @@ function ViewImage(id){
                   </div>
  	
  				</div>
-					<div class="form-group ">
+				<br>
 						<label for="siteid" class="placeholder"><b>Observations</b>
 				
 						</label>
 						 
 						<form:input type="text" id="obv" path="observations" class="form-control input-full"  />				
 						<form:errors path="observations" cssClass="error" />	
-					</div>
+					<br>
   				
-  					<div class="form-group "id="fileupload6">
+  					<div id="fileupload6">
 						<label for="Upload Image" class="placeholder" ><b>Photo 6 </b> </label>
 						<input type="file" class="form-control input-border-bottom"  id="img6"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image6">${errMsg}</span>
   					</div>
   					<div id="imagediv6">
  					<div class="form-group" >
-  						<label for="photo6" class="placeholder" > Photo6</label>
+  						<label for="photo6" class="placeholder" ><b>Photo 6</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget6" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb6" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb6" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
   					</div>
@@ -681,24 +678,25 @@ function ViewImage(id){
                   </div>
  	
  				</div>
-  					<div class="form-group "id="fileupload7">
+ 				<br>
+  					<div id="fileupload7">
 						<label for="Upload Image" class="placeholder" ><b>Photo 7 </b></label>
 						<input type="file" class="form-control input-border-bottom"  id="img7"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image7">${errMsg}</span>
   					</div>
   				<div id="imagediv7">
- 					<div class="form-group" >
-  						<label for="photo7" class="placeholder" > Photo7</label>
+ 				
+  						<label for="photo7" class="placeholder" ><b>Photo7</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget7" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb7" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb7" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
   					</div>
-  					</div>
+  					
   				<div id="cnfrmr7">
   				   <div class="row mt-1">   
   				 	<div class="col-md-7">
