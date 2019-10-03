@@ -278,6 +278,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<TechnicianTicketInfo> techNotAcceptedTickets(String username) {
+		System.out.println("not accepted : "+sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where technicianId='"+username+"' and ticketStatus='Not Accepted'").list());
 		return sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where technicianId='"+username+"' and ticketStatus='Not Accepted'").list();	
 	}
 	
@@ -379,6 +380,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Site_Battery_Bank> getBB(String Siteid) {
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site_Battery_Bank.class);
 		Site s = new Site();
@@ -388,6 +390,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		return 	userlist;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Site_Cabinet> getCabinet(String Siteid) {
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site_Cabinet.class);
 		Site s = new Site();
@@ -543,7 +546,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public String updateClosedSurveyStatus(String ticketId,String siteId) {
 	//	System.out.println("TICKET "+ticketId);
 		
-		Calendar cal = Calendar.getInstance();
+		//Calendar cal = Calendar.getInstance();
 		try{
 			 Query q = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where siteid ='"+siteId+"' and ticketNum='"+ticketId+"'");
 			 TechnicianTicketInfo technicianTicket = (TechnicianTicketInfo)q.list().get(0);
@@ -572,9 +575,9 @@ public class SurveyDAOImpl implements SurveyDAO {
 	
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Site> ValidateLatLong(String latitude, String longitude) {
-		// TODO Auto-generated method stub
+	public List<Site> ValidateLatLong(String latitude, String longitude) {		
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site.class);
         c.add(Restrictions.eq("latitude",latitude));
         c.add(Restrictions.eq("longitude",longitude));

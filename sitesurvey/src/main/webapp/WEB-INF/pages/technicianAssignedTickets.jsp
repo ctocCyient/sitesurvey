@@ -178,7 +178,9 @@ color: #fff!important;
 	                	var jsonArr = $.parseJSON(result);
 	                	  $('#assignedTechTickets')[0].innerHTML=jsonArr.AssignedTickets;
 		                  $('#acceptedTechTickets')[0].innerHTML=jsonArr.AcceptedTickets;
-		                  $('#closedTechTickets')[0].innerHTML=jsonArr.ClosedTickets;	                    
+		                  $('#closedTechTickets')[0].innerHTML=jsonArr.ClosedTickets;	
+		                  $('#technicianNotAcceptedTickets')[0].innerHTML=jsonArr.NotAcceptedTickets;
+
 	                }
 				});
 			}
@@ -408,6 +410,28 @@ color: #fff!important;
 								</div>
 							</div>
 						</div>
+						
+						
+						
+												<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianNotAcceptedTickets'" style="cursor:pointer;">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#FCD12A;border-radius: 5px">
+											<img src="<c:url value='resources/assets/img/closed.svg' />" >
+											</div>
+										</div>
+										<div class="col col-stats ml-3 ml-sm-0">
+											<div class="numbers">
+												<p class="card-category" >Not Accepted</p>
+												<h4 class="card-title" id="technicianNotAcceptedTickets"  ></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
 								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianClosedTickets'" style="cursor:pointer;">
@@ -421,27 +445,6 @@ color: #fff!important;
 											<div class="numbers">
 												<p class="card-category">Closed</p>
 												<h4 class="card-title" id="closedTechTickets"></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						
-																		<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianNotAcceptedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/closed.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category"  style="color:#ffffff;">Not Accepted</p>
-												<h4 class="card-title" id="managerNotAcceptedTickets"  style="color:#ffffff;"></h4>
 											</div>
 										</div>
 									</div>
