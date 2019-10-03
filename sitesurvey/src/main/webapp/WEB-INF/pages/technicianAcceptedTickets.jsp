@@ -94,7 +94,7 @@ color: #fff!important;
 			  tableData();	
 		});	
 	
-		 var ticketId,ticketType,siteIds,selectedSite;
+		 var ticketId,ticketType,siteIds,selectedSite,rowToDelete;
 		 var  dataSet=[],times=[],openTicketsList=[],uniqueTicketsList=[],datatableList=[],ticketsNums=[];
 		 
 		 function getCount(){
@@ -191,8 +191,8 @@ color: #fff!important;
       				            else if (data[3] =='InProgress' || data[3] =='Completed') {
       					                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Resume Survey' />";
       					            }
-	      				          else if (siteStatus =='Closed') {
-	      			                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='closeBtn' value='Close Ticket' />";
+	      				          else if (data[3] =='Closed') {
+	      			                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='closeBtn' name='closeBtn' value='Close Ticket' />";
 	      			            	}
       				            }			            
       				        }],
@@ -245,6 +245,7 @@ color: #fff!important;
 
       					sessionStorage.setItem("ticketId", ticketId);
       					sessionStorage.setItem("siteId", selectedSite);
+      					
       					$.ajax({
       		                type: "get",
       		                url: "getSiteDetails",
@@ -266,8 +267,8 @@ color: #fff!important;
    		            ticketId=data2[0];
    		            
    		            selectedSite = $("#jsonStatusList"+ticketId+" option:selected").val();
-   		            rowIndex = $(this).parent().index();			          
-
+   		          //  rowIndex = $(this).parent().index();			          
+   		         	rowToDelete= table1.row($(this).parents('tr'));
    					
    					$.ajax({
    		                type: "get",
@@ -275,10 +276,25 @@ color: #fff!important;
    		                contentType: 'application/json',
    		                data:{"siteId":selectedSite,"ticketId":ticketId},
    		                datatype: "json",
-   		                success: function(result) {
-   		                    updateInfo = JSON.parse(result);
-   		                    
-   		                    alert("updateInfo "+updateInfo);
+   		                success: function(result) { 
+   		                	rowToDelete.remove().draw();
+   		                	if(result=="Updated"){
+   		                		content="Ticket Closed Successfully";
+   		                	}
+   		                	swal({
+   				  				text: content,
+   				  				type: 'info',
+   				  				buttons:{
+   				  					confirm: {
+   				  						text : 'Ok',
+   				  						className : 'btn btn-success'
+   				  					}
+   				  				}
+   				  			});
+   		                 var acceptedTicketCount=parseInt($('#acceptedTechTickets')[0].innerHTML); 
+   	                     $('#acceptedTechTickets')[0].innerHTML=acceptedTicketCount-1;   	                   
+                         var closedTicketCount=parseInt($('#closedTechTickets')[0].innerHTML); 
+                         $('#closedTechTickets')[0].innerHTML=closedTicketCount+1;
    		                  
    		                }					
    		       		 }); 
@@ -298,7 +314,7 @@ color: #fff!important;
 	                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Resume Survey' />";
 	        }
             else if (siteStatus =='Closed') {
-                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='closeBtn' value='Close Ticket' />";
+                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='closeBtn' name='closeBtn' value='Close Ticket' />";
             }
 		}
 	</script>
@@ -356,9 +372,7 @@ color: #fff!important;
 <div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
-<form style="display: hidden" action="sitesurvey/siteDetails" method="POST" id="form">
-  <input type="hidden" id="ticketDetails" name="ticketDetails" value=""/>
-</form>
+
 		<div class="main-panel">
 			<div class="content">
 				<div class="page-inner">
@@ -515,7 +529,6 @@ color: #fff!important;
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/jquery.vmap.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js' />"></script>
 
-
 <!-- Google Maps Plugin -->
 <script src="<c:url value='resources/assets/js/plugin/gmaps/gmaps.js' />"></script>
 
@@ -523,7 +536,6 @@ color: #fff!important;
 <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 <!-- Azzara JS -->
-
 <script src="<c:url value='resources/assets/js/ready.min.js' />"></script>
 
 

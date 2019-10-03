@@ -184,6 +184,8 @@ public class ManagerFTController {
 				String username=request.getParameter("username");
 				System.out.println("USER"+username);
 				List<TechnicianTicketInfo> listClosed = surveyDAO.managerClosedTickets(username);
+				Set ticketSet = new HashSet<Object>();
+				listClosed.removeIf(p -> !ticketSet.add(p.getTicketNum()));
 				  	   Gson gsonBuilder = new GsonBuilder().create();
 		        	   String closedJson = gsonBuilder.toJson(listClosed);
 			              return closedJson.toString();

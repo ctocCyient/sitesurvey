@@ -133,7 +133,7 @@ max-width:100%;
 					
                     for(var i=0;i<closedTicketsList.length;i++)
          		   {
-                    	dataSet.push([closedTicketsList[i].ticketNum,closedTicketsList[i].siteid,closedTicketsList[i].technicianName,closedTicketsList[i].status]);
+                    	dataSet.push([closedTicketsList[i].ticketNum,closedTicketsList[i].siteid,closedTicketsList[i].technicianName]);
          			   
          		   }
                    
@@ -147,8 +147,7 @@ max-width:100%;
 			        columns: [
 						{title: "Ticket Id" },
 						{title: "Site Id" },
-						{title: "Technician Name" },
-						{title: "Status" },	
+						{title: "Technician Name" }
 			        ]
 			    } );
 				

@@ -245,5 +245,5 @@ public interface SurveyDAO {
 	public List<TechnicianTicketInfo> techNotAcceptedTickets(String username);
 	
 	@Transactional
-	public String updateClosedStatus(String ticketId, String siteId);
+	public String updateClosedStatus(String ticketId);
 }

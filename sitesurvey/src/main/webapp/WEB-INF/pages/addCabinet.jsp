@@ -74,7 +74,7 @@ $(document).ready(function(){
 
 		// $(".isa_success").fadeOut(10000);
 		 getCabinet();
-		 $("input").attr("required", "true");
+		 //$("input").attr("required", "true");
 		 $("select").attr("required", "true");
          $("select option:contains('Select')").attr("disabled","disabled");
          $('#photo_1_checkbox').prop('checked', true);

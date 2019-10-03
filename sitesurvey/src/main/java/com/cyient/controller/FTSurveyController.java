@@ -537,9 +537,7 @@ public class FTSurveyController {
 		public String updateTicketStatus(HttpServletRequest request)
 		{
 			 String ticketId=request.getParameter("ticketId");
-			String siteId=request.getParameter("siteId");
-			System.out.println("safasfasff"+siteId);
-			String status=surveyDAO.updateClosedStatus(ticketId,siteId);			
+			String status=surveyDAO.updateClosedStatus(ticketId);			
 			return status;
 		}
 }
