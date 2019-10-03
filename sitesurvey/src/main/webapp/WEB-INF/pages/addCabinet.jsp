@@ -154,6 +154,8 @@ function populateDropdown(data,id)
 				 	          $('#photo_2_checkbox').prop('checked', false);
 				 	         	$("#photo_1").removeAttr("disabled");     
 				 	         	$("#photo_2").removeAttr("disabled"); 
+					         	$('input[name="photo_1_text_div_radio"][value="Yes"]').attr('checked', true); 
+					         	$('input[name="photo_2_text_div_radio"][value="Yes"]').attr('checked', true);
 			 	 	         	$("#photo_1_div").show();
 			 	 	         	$("#photo_2_div").show();
 			 	 	         	$("#photo_1_text_div").hide();
@@ -173,7 +175,8 @@ function populateDropdown(data,id)
 	 	         	document.getElementById("updatetype").value="Existing;"+jsonData.id;
 	 	         	document.getElementById("photo_1_text").value=jsonData.Photo_1_Name;
 	 	         	document.getElementById("photo_2_text").value=jsonData.Photo_2_Name;
-
+	 	         	$('input[name="photo_1_text_div_radio"][value="No"]').attr('checked', true); 
+		         	$('input[name="photo_2_text_div_radio"][value="No"]').attr('checked', true);
 	 	         	
  	 	         	//document.getElementById("photo_1").value='data:image/jpeg;base64,' + base64;
  	 	         	$("#photo_1_div").hide();
