@@ -156,6 +156,8 @@ function populateDropdown(data,id)
 				 	         	$("#photo_2").removeAttr("disabled"); 
 			 	 	         	$("#photo_1_div").show();
 			 	 	         	$("#photo_2_div").show();
+			 	 	         	$("#photo_1_text_div").hide();
+			 	 	         	$("#photo_2_text_div").hide();
 	 	         		}
 	 		 		//alert(jsonData.id)	
 	 		 		else
@@ -318,7 +320,7 @@ function dimension(element)
 			}
 		}
 arr = (element.value).split("X");
-	if(arr.length<=1 || arr.length==2 ||arr.length>3)
+	if(arr.length<=1 || arr.length==2 || arr.length>3)
 		{
 		
 		$("#"+element.id).val(" ");
