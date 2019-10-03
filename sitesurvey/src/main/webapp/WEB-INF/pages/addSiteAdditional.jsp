@@ -147,7 +147,7 @@ $(document).ready(function(){
 	//$("#siteid")[0].value=ticketDetails.split(",")[1];
 	//alert(ticketDetails.split(",")[1]);
 	  $("#json")[0].value=ticketDetails;
-	  var siteId="IND005";
+	
 		$("#siteid")[0].value=siteId;
 		  $("#json")[0].value=ticketDetails;
 		  //alert(siteId);

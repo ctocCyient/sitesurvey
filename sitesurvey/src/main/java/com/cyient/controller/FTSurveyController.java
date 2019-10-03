@@ -530,4 +530,16 @@ public class FTSurveyController {
 				return "redirect:/newGenerator?siteId="+siteId;
 			}
 		}
+		
+		
+		 @RequestMapping(value="/updateTicketStatus", method=RequestMethod.GET)
+		@ResponseBody
+		public String updateTicketStatus(HttpServletRequest request)
+		{
+			 String ticketId=request.getParameter("ticketId");
+			String siteId=request.getParameter("siteId");
+			System.out.println("safasfasff"+siteId);
+			String status=surveyDAO.updateClosedStatus(ticketId,siteId);			
+			return status;
+		}
 }

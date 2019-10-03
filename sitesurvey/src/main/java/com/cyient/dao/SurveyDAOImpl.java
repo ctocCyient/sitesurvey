@@ -566,6 +566,10 @@ public class SurveyDAOImpl implements SurveyDAO {
 		
 			
 			 sessionFactory.getCurrentSession().update(ticketing);
+			 
+			 
+			 List<Ticketing> statusList=sessionFactory.getCurrentSession().createQuery("select surveyStatus from Ticketing where ticketNum ='"+ticketId+"' and siteid ='"+siteId+"'").list();
+			 System.out.println("statusList "+statusList);
 		}
 		catch(Exception e){
 			System.out.println(e);
@@ -584,4 +588,43 @@ public class SurveyDAOImpl implements SurveyDAO {
         return c.list();
 	}
 	
+	@Override
+	public String updateClosedStatus(String ticketId,String siteId) {
+		System.out.println("TICKET "+ticketId);
+		System.out.println("SITEID "+siteId);
+		
+		Calendar cal = Calendar.getInstance();
+		try{
+			 Query q = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where siteid ='"+siteId+"' and ticketNum='"+ticketId+"'");
+			 
+			 for(int i=0;i<q.list().size();i++){
+				 TechnicianTicketInfo technicianTicket = (TechnicianTicketInfo)q.list().get(i);
+				 
+				 technicianTicket.setTicketStatus("Closed");
+				 technicianTicket.setClosedDate(cal.getTime());
+				 technicianTicket.setClosedTime(cal.getTime());
+				
+				 sessionFactory.getCurrentSession().update(technicianTicket);
+			 }
+			 
+			 Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"' and siteid ='"+siteId+"'");
+			 
+			 for(int i=0;i<q1.list().size();i++){
+				Ticketing ticketing = (Ticketing)q1.list().get(i);
+							 
+				 ticketing.setTicketStatus("Closed");
+				 ticketing.setClosedDate(cal.getTime());
+				 ticketing.setClosedTime(cal.getTime());
+
+				 sessionFactory.getCurrentSession().update(ticketing);
+			 }
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		 
+		return "Updated";
+	
+	}
+
 }

@@ -788,7 +788,7 @@ public class SiteSurveyController {
 						siteaddtional.setSite_photo2(multipart[1].getBytes());
 						siteaddtional.setSite_photo2_name(multipart[1].getOriginalFilename());
 						}
-						}
+					}
 			
 			}
 		/*	if(multipart.length==0){
@@ -865,15 +865,15 @@ public class SiteSurveyController {
 			System.out.println("Exception"+e);
 		}
 		
-		System.out.println("Ticket Add"+selectedTicketId);
-		System.out.println("Site Add"+siteaddtional.getSiteid().getSiteid());
+		System.out.println("Ticket Add "+selectedTicketId);
+		System.out.println("Site Add "+siteaddtional.getSiteid().getSiteid());
 		String updatedStatus=surveyDAO.updateClosedSurveyStatus(selectedTicketId,siteaddtional.getSiteid().getSiteid());
 //		if(action.equals("Finish Survey")){
 //			model.setViewName("redirect:/home");
-//			}
-//			else if(action.equals("Save & Continue")){
-		model.setViewName("redirect:/gotoAdditional");
-//			}
+//		}
+//		else if(action.equals("Save & Continue")){
+			model.setViewName("redirect:/gotoAdditional");
+//		}
 		return model;
 	}
 
@@ -916,9 +916,6 @@ public class SiteSurveyController {
 		return siteSafetyJson.toString();
 	}
 	
-	
-	
-	
 	@RequestMapping(value="/getSiteAdditionalDetails", method=RequestMethod.GET)
 	@ResponseBody
 	public String getSiteAdditionalDetails(HttpServletRequest request)
@@ -929,8 +926,4 @@ public class SiteSurveyController {
 		String siteSafetyJson=gson.toJson(siteAdditionalList);
 		return siteSafetyJson.toString();
 	}
-	
-	
-	
-	
 }

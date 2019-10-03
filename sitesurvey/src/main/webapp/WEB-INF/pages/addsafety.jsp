@@ -681,13 +681,13 @@ label {
  				</div>
  				<br>
   					<div id="fileupload7">
-						<label for="Upload Image" class="placeholder" ><b>Photo 7 </b></label>
+						<label for="Upload Image" class="placeholder" ><b>Photo 7</b></label>
 						<input type="file" class="form-control input-border-bottom"  id="img7"  name="file"  onchange="ValidateImage(this.id);"/> 
 						<span class="isa_failure" id="image7">${errMsg}</span>
   					</div>
   				<div id="imagediv7">
  				
-  						<label for="photo7" class="placeholder" ><b>Photo7</b></label>
+  						<label for="photo7" class="placeholder" ><b>Photo 7</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget7" path="" class="form-control input-full"   readonly="true"  />

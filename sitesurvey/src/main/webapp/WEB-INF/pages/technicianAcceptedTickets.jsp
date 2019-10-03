@@ -191,9 +191,9 @@ color: #fff!important;
       				            else if (data[3] =='InProgress' || data[3] =='Completed') {
       					                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Resume Survey' />";
       					            }
-//       				            else if (data[3] =='Closed') {
-//       				                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='Finished Survey' />";
-//       				            }
+	      				          else if (siteStatus =='Closed') {
+	      			                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='closeBtn' value='Close Ticket' />";
+	      			            	}
       				            }			            
       				        }],
       			        data: dataSet,
@@ -234,7 +234,7 @@ color: #fff!important;
       				      rowData[3] = selectedSiteStatus;
       				      table1.cell(row.index(), 4).data(resultHtml).draw();      				     
       			    });
-      			 
+      			
       			 $('#technicianAcceptedTickets tbody').on('click', '[name*=surveyBtn]', function () {
 
       		            data2 =  table1.row($(this).parents('tr')).data();
@@ -257,6 +257,34 @@ color: #fff!important;
       		                }					
       		       		 }); 
             	 	});
+      			
+      			
+      			
+      			 $('#technicianAcceptedTickets tbody').on('click', '[name*=closeBtn]', function () {
+
+   		            data2 =  table1.row($(this).parents('tr')).data();
+   		            ticketId=data2[0];
+   		            
+   		            selectedSite = $("#jsonStatusList"+ticketId+" option:selected").val();
+   		            rowIndex = $(this).parent().index();			          
+
+   					
+   					$.ajax({
+   		                type: "get",
+   		                url: "updateTicketStatus",
+   		                contentType: 'application/json',
+   		                data:{"siteId":selectedSite,"ticketId":ticketId},
+   		                datatype: "json",
+   		                success: function(result) {
+   		                    updateInfo = JSON.parse(result);
+   		                    
+   		                    alert("updateInfo "+updateInfo);
+   		                  
+   		                }					
+   		       		 }); 
+   					
+   					
+         	 	});
             
 				}
 			});
@@ -269,9 +297,9 @@ color: #fff!important;
             else if (siteStatus =='InProgress' || siteStatus =='Completed') {            	
 	                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Resume Survey' />";
 	        }
-//             else if (siteStatus =='Closed') {
-//                 return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='Finished Survey' />";
-//             }
+            else if (siteStatus =='Closed') {
+                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='closeBtn' value='Close Ticket' />";
+            }
 		}
 	</script>
 
