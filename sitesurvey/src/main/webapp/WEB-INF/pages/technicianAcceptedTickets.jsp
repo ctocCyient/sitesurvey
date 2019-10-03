@@ -321,8 +321,6 @@ color: #fff!important;
 
 
 	<!-- CSS Files -->
-
-	
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 
