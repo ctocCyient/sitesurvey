@@ -320,7 +320,7 @@ label {
   <div class="container container-login animated fadeIn">
 <%--     <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br> --%>
     
-			<h3 class="text-center">Add Generator</h3>${siteId}
+			<h3 class="text-center">Add Generator</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				
 			<form:form action="saveGenerator" id="addGenerator"  method="post" modelAttribute="Site_Generator" enctype = 'multipart/form-data' >
