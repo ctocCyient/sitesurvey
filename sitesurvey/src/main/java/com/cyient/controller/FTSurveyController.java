@@ -101,9 +101,15 @@ public class FTSurveyController {
 		String siteId=site.getSiteid();
 		String lati=site.getLatitude();
 		String longi=site.getLongitude();
+		try{
 		surveyDAO.updateSiteDetails(state,siteId,lati,longi);
 		redirectAttributes.addFlashAttribute("status",status);
 		redirectAttributes.addFlashAttribute("btnClick",clickBtn);
+		}
+		catch(Exception e){
+			
+			logger.error("In SaveSiteDetails "+e);
+		}
 //		if(clickBtn.equals("Save")){
 //			return "redirect:/home";
 //		}
