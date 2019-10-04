@@ -703,35 +703,48 @@ return data_list;
 	}
 
 	public String saveTechStatus(String ticketId, String techStatus,String techId,String commentsData,String remarksData) {
-		Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
-		for(int i=0;i<q1.list().size();i++){
-			Ticketing ticketing = (Ticketing)q1.list().get(i);
-			ticketing.setTicketStatus(techStatus);
-			ticketing.setComments(commentsData);
-			ticketing.setRemarks(remarksData);
+		try {
+			Query q1 = sessionFactory.getCurrentSession().createQuery("from Ticketing where ticketNum ='"+ticketId+"'");
+			for(int i=0;i<q1.list().size();i++){
+				Ticketing ticketing = (Ticketing)q1.list().get(i);
+				ticketing.setTicketStatus(techStatus);
+				ticketing.setComments(commentsData);
+				ticketing.setRemarks(remarksData);
 
-			sessionFactory.getCurrentSession().update(ticketing);
+				sessionFactory.getCurrentSession().update(ticketing);
 
+			}
+			Query q2 = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where ticketNum ='"+ticketId+"' and technicianId='"+techId+"'");
+
+			for(int i=0;i<q2.list().size();i++){
+				TechnicianTicketInfo technicianTicketInfo = (TechnicianTicketInfo)q2.list().get(i);
+
+				technicianTicketInfo.setTicketStatus(techStatus);
+				technicianTicketInfo.setComments(commentsData);
+				technicianTicketInfo.setRemarks(remarksData);
+				sessionFactory.getCurrentSession().update(technicianTicketInfo);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("Function : SurveyDAOImpl-saveTechStatus");	
+			logger.error(e);
 		}
 
-
-		Query q2 = sessionFactory.getCurrentSession().createQuery("from TechnicianTicketInfo where ticketNum ='"+ticketId+"' and technicianId='"+techId+"'");
-
-		for(int i=0;i<q2.list().size();i++){
-			TechnicianTicketInfo technicianTicketInfo = (TechnicianTicketInfo)q2.list().get(i);
-
-			technicianTicketInfo.setTicketStatus(techStatus);
-			technicianTicketInfo.setComments(commentsData);
-			technicianTicketInfo.setRemarks(remarksData);
-
-			sessionFactory.getCurrentSession().update(technicianTicketInfo);
-		}
 		return techStatus;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Site> getSiteDetails(String siteId) {
-		return sessionFactory.getCurrentSession().createQuery("from Site where siteid='"+siteId+"'").list();
+		List<Site> data_list = null;
+try {
+	data_list= sessionFactory.getCurrentSession().createQuery("from Site where siteid='"+siteId+"'").list();
+
+} catch (Exception e) {
+	// TODO: handle exception
+	logger.info("Function : SurveyDAOImpl-getSiteDetails");	
+	logger.error(e);
+}
+return data_list;
 
 	}
 
@@ -742,34 +755,64 @@ return data_list;
 	}
 
 	public void addCabinet(String updatetype,Site_Cabinet BB) {
-		if(updatetype.split(";")[0].contains("Existing"))
-		{		
-			BB.setId(Integer.parseInt(updatetype.split(";")[1]));
-			sessionFactory.getCurrentSession().saveOrUpdate(BB);
+		try {
+			if(updatetype.split(";")[0].contains("Existing"))
+			{		
+				BB.setId(Integer.parseInt(updatetype.split(";")[1]));
+				sessionFactory.getCurrentSession().saveOrUpdate(BB);
+			}
+			else
+			{
+				sessionFactory.getCurrentSession().saveOrUpdate(BB);
+			}
+			logger.info("Function : SurveyDAOImpl-addCabinet"+BB.getId()+BB.getSiteid().getSiteid());	
+
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("Function : SurveyDAOImpl-addCabinet");	
+			logger.error(e);
 		}
-		else
-		{
-			sessionFactory.getCurrentSession().saveOrUpdate(BB);
-		}
+		
+
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Site_Battery_Bank> getBB(String Siteid) {
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site_Battery_Bank.class);
-		Site s = new Site();
-		s.setSiteid(Siteid);
-		c.add(Restrictions.eq("siteid",s));
-		List<Site_Battery_Bank> userlist = c.list();
+		List<Site_Battery_Bank> userlist =null;
+		try {
+			Site s = new Site();
+			s.setSiteid(Siteid);
+			c.add(Restrictions.eq("siteid",s));
+			 userlist = c.list();
+			logger.info("List From getBB"+userlist.get(0).getId()+"SiteID"+userlist.get(0).getSiteid().getSiteid());	
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("Function : SurveyDAOImpl-getBB");	
+			logger.error(e);
+		}
+
 		return 	userlist;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Site_Cabinet> getCabinet(String Siteid) {
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(Site_Cabinet.class);
-		Site s = new Site();
-		s.setSiteid(Siteid);
-		c.add(Restrictions.eq("siteid",s));
-		List<Site_Cabinet> userlist = c.list();
+		List<Site_Cabinet> userlist = null;
+		try {
+			Site s = new Site();
+			s.setSiteid(Siteid);
+			c.add(Restrictions.eq("siteid",s));
+			 userlist = c.list();
+			 
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("Function : SurveyDAOImpl-getCabinet");	
+			logger.error(e);
+		}
+		
 		return 	userlist;
 	}
 
@@ -777,39 +820,85 @@ return data_list;
 	@SuppressWarnings("unchecked")
 	public List<Site_SMPS> getSMPSDetails(String siteId)
 	{
-		return sessionFactory.getCurrentSession().createQuery("from Site_SMPS where siteid='"+siteId+"'").list();
+		List<Site_SMPS> userlist = null;
+
+		try {
+			userlist =  sessionFactory.getCurrentSession().createQuery("from Site_SMPS where siteid='"+siteId+"'").list();
+			logger.info("Function : SurveyDAOImpl-getSMPSDetails Executed for"+siteId);	
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("Function : SurveyDAOImpl-getSMPSDetails");	
+			logger.error(e);
+		}
+		return userlist;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Site_Generator> getGeneratorDetails(String siteId)
 	{
-		return sessionFactory.getCurrentSession().createQuery("from Site_Generator where siteid='"+siteId+"'").list();
+		List<Site_Generator> userlist = null;
+try {
+	userlist = sessionFactory.getCurrentSession().createQuery("from Site_Generator where siteid='"+siteId+"'").list();
+
+} catch (Exception e) {
+	// TODO: handle exception
+	logger.error("Function : SurveyDAOImpl-getGeneratorDetails");	
+	logger.error(e);
+}
+return userlist;
 	}
 
 
 	@SuppressWarnings("unchecked")
 	public List<Ticketing> getCustomerlist() {
-		return sessionFactory.getCurrentSession().createQuery("from Ticketing").list();
+		List<Ticketing> userlist = null;
+try {
+	userlist= sessionFactory.getCurrentSession().createQuery("from Ticketing").list();
+
+} catch (Exception e) {
+	// TODO: handle exception
+	logger.error("Function : SurveyDAOImpl-getGeneratorDetails");	
+	logger.error(e);
+	
+}
+return userlist;
 	}
 
 	@Override
 	public void updateSiteDetails(String state,String siteId,String lati,String longi) {
+try {
+	Query q1 = sessionFactory.getCurrentSession().createQuery("from Site where siteid ='"+siteId+"'");
 
-		Query q1 = sessionFactory.getCurrentSession().createQuery("from Site where siteid ='"+siteId+"'");
+	Site siteData = (Site)q1.list().get(0);
 
-		Site siteData = (Site)q1.list().get(0);
+	siteData.setState(state);
+	siteData.setLatitude(lati);		
+	siteData.setLongitude(longi);
 
-		siteData.setState(state);
-		siteData.setLatitude(lati);		
-		siteData.setLongitude(longi);
+	sessionFactory.getCurrentSession().update(siteData);
+	logger.info("updateSiteDetails executed for"+siteId);	
 
-		sessionFactory.getCurrentSession().update(siteData);
+	
+} catch (Exception e) {
+	// TODO: handle exception
+	logger.error("Function : SurveyDAOImpl-getGeneratorDetails");	
+	logger.error(e);
+	
+}
+		
 
 	}
 
 	@Override
 	public void addSiteSurveyPPE(Survey_Team_PPE surveyTeamPPE) {
-		sessionFactory.getCurrentSession().saveOrUpdate(surveyTeamPPE);			
+		try {
+			sessionFactory.getCurrentSession().saveOrUpdate(surveyTeamPPE);			
+			logger.info("Survey_Team_PPE added/updated for"+surveyTeamPPE.getSiteid().getSiteid());	
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	@SuppressWarnings("unchecked")
