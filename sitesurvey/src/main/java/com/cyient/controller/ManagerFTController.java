@@ -386,6 +386,7 @@ public class ManagerFTController {
 			Set ticketSet1 = new HashSet<Object>();
 			listTechClosed.removeIf(p -> !ticketSet1.add(p.getTicketNum()));
 	        	
+			techClosedJson = gsonBuilder.toJson(listTechClosed);
 	        	   logger.info("Technician Closed Tickets Json:: "+techClosedJson);
 		}
 		catch(Exception e){
