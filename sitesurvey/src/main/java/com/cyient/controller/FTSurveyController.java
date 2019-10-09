@@ -36,7 +36,6 @@ public class FTSurveyController {
 
 	public FTSurveyController() {
 		System.out.println("FTSurveyController()");
-
 	}
 
 	@Autowired
