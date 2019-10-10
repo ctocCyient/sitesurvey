@@ -41,27 +41,27 @@ public class SurveyDAOImpl implements SurveyDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	private static final Logger logger = Logger.getLogger(SurveyDAOImpl.class);
+	private static final Logger impLogger = Logger.getLogger("impLogger");
 
 	public void addUser(User user) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(user);
-			logger.info(user.getName() + " Added");
+			impLogger.info(user.getName() + " Added");
 		} catch (Exception e) {
-			logger.info("Function : SurveyDAOImpl-addUser");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-addUser");
+			impLogger.error(e);
 		}
 	}
 
 	public void addTicket(Ticketing ticket) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(ticket);
-			logger.info("Ticket no" + ticket.getTicketNum() + " Added");
+			impLogger.info("Ticket no" + ticket.getTicketNum() + " Added");
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-addTicket");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-addTicket");
+			impLogger.error(e);
 		}
 		// System.out.println("ADDEDDDDSDGF");
 	}
@@ -73,11 +73,11 @@ public class SurveyDAOImpl implements SurveyDAO {
 			c.add(Restrictions.eq("username", username));
 			c.add(Restrictions.eq("password", password));
 			c.add(Restrictions.eq("role", type));
-			logger.info("List Genrated by getAllUsersOnCriteria");
+			impLogger.info("List Genrated by getAllUsersOnCriteria");
 			// System.out.println(c.list());
 		} catch (Exception e) {
-			logger.info("Function : SurveyDAOImpl-getAllUsersOnCriteria");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getAllUsersOnCriteria");
+			impLogger.error(e);
 			// TODO: handle exception
 		}
 		return c.list();
@@ -87,12 +87,12 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public void addSiteAccess(Site_Access siteacc) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(siteacc);
-			logger.info("Site_Access Added : " + siteacc.getSiteid().getSiteid());
+			impLogger.info("Site_Access Added : " + siteacc.getSiteid().getSiteid());
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-addSiteAccess");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-addSiteAccess");
+			impLogger.error(e);
 		}
 
 	}
@@ -100,70 +100,70 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public void addSiteArea(Site_Area sitearea) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(sitearea);
-			logger.info("Site_Area Added : " + sitearea.getSiteid().getSiteid());
+			impLogger.info("Site_Area Added : " + sitearea.getSiteid().getSiteid());
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-addSiteArea");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-addSiteArea");
+			impLogger.error(e);
 		}
 	}
 
 	public void addSitePowering(Site_Wiring sitewiring) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(sitewiring);
-			logger.info("Site_Wiring Added : " + sitewiring.getSiteid().getSiteid());
+			impLogger.info("Site_Wiring Added : " + sitewiring.getSiteid().getSiteid());
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-addSitePowering");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-addSitePowering");
+			impLogger.error(e);
 		}
 	}
 
 	public void addSite(Site site) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(site);
-			logger.info("Site Added : " + site.getSiteid());
+			impLogger.info("Site Added : " + site.getSiteid());
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-addSite");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-addSite");
+			impLogger.error(e);
 		}
 	}
 
 	public void updateSiteAccess(Site_Access upsiteacc) {
 		try {
 			sessionFactory.getCurrentSession().update(upsiteacc);
-			logger.info("updateSiteAccess : " + upsiteacc.getSiteid().getSiteid());
+			impLogger.info("updateSiteAccess : " + upsiteacc.getSiteid().getSiteid());
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-updateSiteAccess");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-updateSiteAccess");
+			impLogger.error(e);
 		}
 	}
 
 	public void addGenerator(Site_Generator generator) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(generator);
-			logger.info("Site_Generator : " + generator.getSiteid().getSiteid());
+			impLogger.info("Site_Generator : " + generator.getSiteid().getSiteid());
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-addGenerator");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-addGenerator");
+			impLogger.error(e);
 		}
 	}
 
 	public void addSMPS(Site_SMPS smps) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(smps);
-			logger.info("Site_SMPS : " + smps.getSiteid().getSiteid());
+			impLogger.info("Site_SMPS : " + smps.getSiteid().getSiteid());
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-addSMPS");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-addSMPS");
+			impLogger.error(e);
 		}
 	}
 
@@ -176,8 +176,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getRegions");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getRegions");
+			impLogger.error(e);
 		}
 		return null;
 	}
@@ -193,8 +193,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			return data_list;
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getBBManufacturer");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getBBManufacturer");
+			impLogger.error(e);
 		}
 		return data_list;
 
@@ -211,8 +211,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			return data_list;
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getCabinetManufacturer");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getCabinetManufacturer");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -228,8 +228,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			return data_list;
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getStates");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getStates");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -246,8 +246,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			return data_list;
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getDistricts");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getDistricts");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -262,8 +262,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getCities");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getCities");
+			impLogger.error(e);
 		}
 		return data_list;
 
@@ -278,8 +278,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.add(Restrictions.eq("city", city)).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getSiteIdsForRegion");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getSiteIdsForRegion");
+			impLogger.error(e);
 		}
 		return data_list;
 
@@ -296,8 +296,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getUserName");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getUserName");
+			impLogger.error(e);
 		}
 		Integer count = userlist.size();
 		if (count != 0) {
@@ -318,8 +318,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			return data_list;
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getSiteId");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getSiteId");
+			impLogger.error(e);
 		}
 		return data_list;
 
@@ -335,8 +335,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getManager");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getManager");
+			impLogger.error(e);
 
 		}
 		return data_list;
@@ -351,8 +351,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.createQuery("select distinct emailId from User where username='" + managerName + "'").list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getManagerId");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getManagerId");
+			impLogger.error(e);
 		}
 
 		return list.toString();
@@ -367,8 +367,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getManagerDetails");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getManagerDetails");
+			impLogger.error(e);
 		}
 		return list;
 
@@ -383,8 +383,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getTicketId");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getTicketId");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -392,11 +392,11 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public void addTechnician(Technician technician) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(technician);
-			logger.info(technician.getTechnicianName() + "Technician Added");
+			impLogger.info(technician.getTechnicianName() + "Technician Added");
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-addTechnician");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-addTechnician");
+			impLogger.error(e);
 		}
 
 	}
@@ -404,12 +404,12 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public void addTechnicianIntoUsers(User technician) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(technician);
-			logger.info(technician.getUsername() + "addTechnicianIntoUsers Added");
+			impLogger.info(technician.getUsername() + "addTechnicianIntoUsers Added");
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-addTechnicianIntoUsers");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-addTechnicianIntoUsers");
+			impLogger.error(e);
 		}
 	}
 
@@ -424,8 +424,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-openTicketsData");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-openTicketsData");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -441,8 +441,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			return data_list;
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-assignedTicketsData");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-assignedTicketsData");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -457,8 +457,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			return data_list;
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-historyTicketsData");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-historyTicketsData");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -472,8 +472,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			return data_list;
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getAllTicketsData");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getAllTicketsData");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -487,8 +487,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.createQuery("FROM Technician where region='" + region + "' and city ='" + city + "'").list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getUnassignedTechniciansData");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getUnassignedTechniciansData");
+			impLogger.error(e);
 		}
 		return data_list;
 
@@ -509,8 +509,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getUnassignedTechniciansData");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getUnassignedTechniciansData");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -525,8 +525,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 		} catch (Exception e) {
 
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-managerClosedTickets");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-managerClosedTickets");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -540,8 +540,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-managerNotAcceptedTickets");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-managerNotAcceptedTickets");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -554,8 +554,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.createQuery("from Technician where manager='" + username + "'").list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-managerNotAcceptedTickets");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-managerNotAcceptedTickets");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -570,8 +570,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-managerNotAcceptedTickets");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-managerNotAcceptedTickets");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -585,8 +585,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-techAcceptedTicketsData");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-techAcceptedTicketsData");
+			impLogger.error(e);
 		}
 
 		return data_list;
@@ -603,8 +603,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-techNotAcceptedTickets");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-techNotAcceptedTickets");
+			impLogger.error(e);
 		}
 		return data_list;
 		// System.out.println("not accepted :
@@ -624,8 +624,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-techNotAcceptedTickets");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-techNotAcceptedTickets");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -633,11 +633,11 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public String assignTechnician(TechnicianTicketInfo technicianTicket) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(technicianTicket);
-			logger.info("Ticket assignTechnician" + technicianTicket.getTechnicianName());
+			impLogger.info("Ticket assignTechnician" + technicianTicket.getTechnicianName());
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-assignTechnician");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-assignTechnician");
+			impLogger.error(e);
 		}
 		return "Assigned";
 	}
@@ -651,8 +651,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			sessionFactory.getCurrentSession().update(ticketing);
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-updateTicketingStatus");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-updateTicketingStatus");
+			impLogger.error(e);
 		}
 
 		// }
@@ -672,8 +672,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getTicketsData");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getTicketsData");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -681,12 +681,12 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public String saveTrackuser(Track_Users trackuser) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(trackuser);
-			logger.info("saveTrackuser : SurveyDAOImpl-saveTrackuser" + trackuser.getUsername());
+			impLogger.info("saveTrackuser : SurveyDAOImpl-saveTrackuser" + trackuser.getUsername());
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-saveTrackuser");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-saveTrackuser");
+			impLogger.error(e);
 		}
 		return "Success";
 
@@ -701,8 +701,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getRoles");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getRoles");
+			impLogger.error(e);
 		}
 		return data_list;
 	}
@@ -734,8 +734,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-saveTechStatus");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-saveTechStatus");
+			impLogger.error(e);
 		}
 
 		return techStatus;
@@ -750,8 +750,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getSiteDetails");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getSiteDetails");
+			impLogger.error(e);
 		}
 		return data_list;
 
@@ -771,12 +771,12 @@ public class SurveyDAOImpl implements SurveyDAO {
 			} else {
 				sessionFactory.getCurrentSession().saveOrUpdate(BB);
 			}
-			logger.info("Function : SurveyDAOImpl-addCabinet" + BB.getId() + BB.getSiteid().getSiteid());
+			impLogger.info("Function : SurveyDAOImpl-addCabinet" + BB.getId() + BB.getSiteid().getSiteid());
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-addCabinet");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-addCabinet");
+			impLogger.error(e);
 		}
 
 	}
@@ -790,13 +790,13 @@ public class SurveyDAOImpl implements SurveyDAO {
 			s.setSiteid(Siteid);
 			c.add(Restrictions.eq("siteid", s));
 			userlist = c.list();
-			logger.info(
+			impLogger.info(
 					"List From getBB" + userlist.get(0).getId() + "SiteID" + userlist.get(0).getSiteid().getSiteid());
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getBB");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getBB");
+			impLogger.error(e);
 		}
 
 		return userlist;
@@ -814,8 +814,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.info("Function : SurveyDAOImpl-getCabinet");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-getCabinet");
+			impLogger.error(e);
 		}
 
 		return userlist;
@@ -828,12 +828,12 @@ public class SurveyDAOImpl implements SurveyDAO {
 		try {
 			userlist = sessionFactory.getCurrentSession().createQuery("from Site_SMPS where siteid='" + siteId + "'")
 					.list();
-			logger.info("Function : SurveyDAOImpl-getSMPSDetails Executed for" + siteId);
+			impLogger.info("Function : SurveyDAOImpl-getSMPSDetails Executed for" + siteId);
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-getSMPSDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-getSMPSDetails");
+			impLogger.error(e);
 		}
 		return userlist;
 	}
@@ -847,8 +847,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-getGeneratorDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-getGeneratorDetails");
+			impLogger.error(e);
 		}
 		return userlist;
 	}
@@ -861,8 +861,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-getGeneratorDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-getGeneratorDetails");
+			impLogger.error(e);
 
 		}
 		return userlist;
@@ -880,12 +880,12 @@ public class SurveyDAOImpl implements SurveyDAO {
 			siteData.setLongitude(longi);
 
 			sessionFactory.getCurrentSession().update(siteData);
-			logger.info("updateSiteDetails executed for" + siteId);
+			impLogger.info("updateSiteDetails executed for" + siteId);
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-getGeneratorDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-getGeneratorDetails");
+			impLogger.error(e);
 
 		}
 
@@ -895,7 +895,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 	public void addSiteSurveyPPE(Survey_Team_PPE surveyTeamPPE) {
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(surveyTeamPPE);
-			logger.info("Survey_Team_PPE added/updated for" + surveyTeamPPE.getSiteid().getSiteid());
+			impLogger.info("Survey_Team_PPE added/updated for" + surveyTeamPPE.getSiteid().getSiteid());
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -912,8 +912,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-getSurveyTeamDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-getSurveyTeamDetails");
+			impLogger.error(e);
 
 		}
 		return Datalist;
@@ -932,8 +932,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-managerAssignedTickets");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-managerAssignedTickets");
+			impLogger.error(e);
 		}
 		return Datalist;
 	}
@@ -967,8 +967,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-updateSiteStatus");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-updateSiteStatus");
+			impLogger.error(e);
 		}
 
 		return "Updated";
@@ -979,8 +979,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			sessionFactory.getCurrentSession().saveOrUpdate(tower);
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-saveTowerInstallation");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-saveTowerInstallation");
+			impLogger.error(e);
 
 		}
 		return "Saved";
@@ -992,8 +992,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			sessionFactory.getCurrentSession().saveOrUpdate(ss);
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-storeSitesecurity");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-storeSitesecurity");
+			impLogger.error(e);
 		}
 		return "Saved";
 	}
@@ -1004,8 +1004,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-storeSiteSafety");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-storeSiteSafety");
+			impLogger.error(e);
 		}
 		return "Saved";
 	}
@@ -1015,8 +1015,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			sessionFactory.getCurrentSession().saveOrUpdate(sa);
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-storeSiteAdditional");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-storeSiteAdditional");
+			impLogger.error(e);
 		}
 		return "Saved";
 	}
@@ -1031,8 +1031,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.createQuery("from Tower_Installation  where siteid ='" + siteid + "'").list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-fetchTowerDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-fetchTowerDetails");
+			impLogger.error(e);
 		}
 		return Datalist;
 	}
@@ -1046,8 +1046,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.createQuery("from Site_Security where siteid='" + siteId + "'").list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-fetchTowerDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-fetchTowerDetails");
+			impLogger.error(e);
 		}
 		return Datalist;
 	}
@@ -1060,8 +1060,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-getSafetyDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-getSafetyDetails");
+			impLogger.error(e);
 		}
 		return Datalist;
 	}
@@ -1075,8 +1075,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.createQuery("from Site_Additional_Notes where siteid='" + siteId + "'").list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-getSiteAddDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-getSiteAddDetails");
+			impLogger.error(e);
 		}
 		return Datalist;
 	}
@@ -1089,8 +1089,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-getSiteAccDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-getSiteAccDetails");
+			impLogger.error(e);
 		}
 		return Datalist;
 	}
@@ -1103,8 +1103,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-getSiteAccDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-getSiteAccDetails");
+			impLogger.error(e);
 		}
 		return Datalist;
 
@@ -1118,8 +1118,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 					.list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-getPowerWiringDetails");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-getPowerWiringDetails");
+			impLogger.error(e);
 		}
 		return Datalist;
 	}
@@ -1206,8 +1206,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 			return c.list();
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("Function : SurveyDAOImpl-ValidateLatLong");
-			logger.error(e);
+			impLogger.error("Function : SurveyDAOImpl-ValidateLatLong");
+			impLogger.error(e);
 		}
 		return c.list();
 	}
@@ -1243,8 +1243,8 @@ public class SurveyDAOImpl implements SurveyDAO {
 				sessionFactory.getCurrentSession().update(ticketing);
 			}
 		} catch (Exception e) {
-			logger.info("Function : SurveyDAOImpl-updateClosedStatus");
-			logger.error(e);
+			impLogger.info("Function : SurveyDAOImpl-updateClosedStatus");
+			impLogger.error(e);
 		}
 
 		return "Updated";

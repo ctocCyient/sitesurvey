@@ -64,8 +64,10 @@ import com.google.gson.GsonBuilder;
 
 @Controller
 public class HomeController {
-	private static final Logger logger = Logger
-			.getLogger(HomeController.class);
+	private static final Logger homeLogger = Logger
+			.getLogger("homeLogger");
+	
+	//static final Logger homeLogger = Logger.getLogger("reportsLogger");
 
 	public HomeController() {
 		System.out.println("HomeController()");
@@ -83,72 +85,72 @@ public class HomeController {
 	
 	@RequestMapping(value = "/openTickets")
 	public ModelAndView openTickets(ModelAndView model) throws IOException {
-		logger.info("In open tickets");
+		homeLogger.info("In open tickets");
 		try{
 		model.setViewName("openTickets");
 		}
 		catch(Exception e){
-			logger.error("In Open Tickets"+e);
+			homeLogger.error("In Open Tickets"+e);
 		}
 		return model;
 	}
 
 	@RequestMapping(value = "/assignedTickets")
 	public ModelAndView assignedTickets(ModelAndView model) throws IOException {
-		logger.info("In Assigned tickets");
+		homeLogger.info("In Assigned tickets");
 		try{
 		model.setViewName("assignedTickets");
 		}catch(Exception e){
-			logger.error("In Assigned Tickets"+e);
+			homeLogger.error("In Assigned Tickets"+e);
 		}
 		return model;
 	}
 	
 	@RequestMapping(value = "/historyTickets")
 	public ModelAndView historyTickets(ModelAndView model) throws IOException {
-		logger.info("In History tickets");
+		homeLogger.info("In History tickets");
 		try{
 		model.setViewName("historyTickets");
 		}catch(Exception e){
-			logger.error("In History Tickets"+e);
+			homeLogger.error("In History Tickets"+e);
 		}return model;
 	}
 		
 	@RequestMapping(value = "/totalTickets")
 	public ModelAndView totalTickets(ModelAndView model) throws IOException {
-		logger.info("In open tickets");
+		homeLogger.info("In open tickets");
 		try{
 		model.setViewName("totalTickets");
 		}catch(Exception e){
-			logger.error("In Total ticket"+e);
+			homeLogger.error("In Total ticket"+e);
 		}
 		return model;
 	}
 	
 	@RequestMapping(value = "/newTicket")
 	public ModelAndView newTicket(ModelAndView model) throws IOException {
-		logger.info("In new ticket");
+		homeLogger.info("In new ticket");
 		Ticketing ticketing=new Ticketing();
 		model.addObject("Ticketing", ticketing);
 		try{
 		model.setViewName("createTicket");
 		}
 		catch(Exception e){
-			logger.info("In New Ticket"+e);
+			homeLogger.info("In New Ticket"+e);
 		}
 		return model;
 	}
 
 	@RequestMapping(value="/newGenerator")
 	public ModelAndView newGenerator(ModelAndView model) throws IOException{
-		logger.info("In New Generator ");
+		homeLogger.info("In New Generator ");
 		Site_Generator generator=new Site_Generator();
 		model.addObject("Site_Generator",generator);
 		try{
 		model.setViewName("addGenerator");
 		}
 		catch(Exception e){
-			logger.error("In New Generator"+e);
+			homeLogger.error("In New Generator"+e);
 		}
 		return model;
 	}
@@ -156,28 +158,28 @@ public class HomeController {
 	
 	@RequestMapping(value="/newSMPS")
 	public ModelAndView newSMPS(ModelAndView model) throws IOException{
-		logger.info("In New Smps ");
+		homeLogger.info("In New Smps ");
 		Site_SMPS smps=new Site_SMPS();
 		model.addObject("Site_SMPS",smps);
 		try{
 		model.setViewName("addSMPS");
 		}
 		catch(Exception e){
-			logger.error("In New Smps"+e);
+			homeLogger.error("In New Smps"+e);
 		}
 		return model;
 	}
 	
 	@RequestMapping(value="/newBB")
 	public ModelAndView newBB(ModelAndView model) throws IOException{
-		logger.info("In NewBB ");
+		homeLogger.info("In NewBB ");
 		Site_Battery_Bank BB=new Site_Battery_Bank();
 		model.addObject("Site_Battery_Bank",BB);
 		try{
 		model.setViewName("addBB");
 		}
 		catch(Exception e){
-			logger.error("In NewBB "+e);
+			homeLogger.error("In NewBB "+e);
 		}
 		return model;
 	}
@@ -185,13 +187,13 @@ public class HomeController {
 	@RequestMapping(value="/newCabinet")
 	public ModelAndView newCabinet(ModelAndView model) throws IOException{
 		
-		logger.info("In New Cabinet ");
+		homeLogger.info("In New Cabinet ");
 		Site_Cabinet BB=new Site_Cabinet();
 		model.addObject("Site_Cabinet",BB);
 		try{
 		model.setViewName("addCabinet");
 		}catch(Exception e){
-			logger.error("In New Cabinet"+e);
+			homeLogger.error("In New Cabinet"+e);
 		}
 		return model;
 	}
@@ -199,7 +201,7 @@ public class HomeController {
 	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
 	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
 		
-		logger.info("In Save Technician ");
+		homeLogger.info("In Save Technician ");
 		
 		String status="Technician Added Successfully";
 
@@ -218,20 +220,20 @@ public class HomeController {
     	   surveyDAO.addTechnician(technician);
 			}
 			catch(Exception e){
-				logger.error("While Adding Technician"+e);
+				homeLogger.error("While Adding Technician"+e);
 			}
 			try{
     	   surveyDAO.addTechnicianIntoUsers(user);
 			}
 			catch(Exception e){
-				logger.error("While Adding technician into user"+e );
+				homeLogger.error("While Adding technician into user"+e );
 			}
     	   System.out.println("Manager+++++++++++++++"+technician.getManager());
     	   try{
 		   managerId=surveyDAO.getManagerId(technician.getManager());
     	   }
     	   catch(Exception e){
-    		   logger.error("While fetching Manager "+e);
+    		   homeLogger.error("While fetching Manager "+e);
     	   }
 		   final String managerName=technician.getManager();
 		   final String managerEmailId=managerId.substring(1, managerId.length()-1);
@@ -271,7 +273,7 @@ public class HomeController {
 		    	});
 		   }
 		   catch(Exception e){
-			   logger.error("While fetching Manager Details"+e);
+			   homeLogger.error("While fetching Manager Details"+e);
 		   }
 		      redirectAttributes.addFlashAttribute("status", status);
 			return new ModelAndView("redirect:/newTechnician");
@@ -280,7 +282,7 @@ public class HomeController {
 	 @RequestMapping(value = "/saveCreatedTicket", method = RequestMethod.POST)
 		public ModelAndView saveTicket(@ModelAttribute Ticketing ticket,RedirectAttributes redirectAttributes) {
 		
-		 logger.info("In Save Created ticket ");
+		 homeLogger.info("In Save Created ticket ");
 
 		  List<String> siteList = Arrays.asList(ticket.getSiteid().split(","));
 		
@@ -301,7 +303,7 @@ public class HomeController {
 			 try{
 			 surveyDAO.addTicket(ticketing);
 		 }catch(Exception e){
-			 logger.error("While Adding Ticket"+e);
+			 homeLogger.error("While Adding Ticket"+e);
 		 }
 			 }
 		 
@@ -314,7 +316,7 @@ public class HomeController {
    @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
     @ResponseBody
     public String  getTechniciansData(ModelAndView model,HttpServletRequest request) {
-	   logger.info("In Get Unassigned Techinicians ");
+	   homeLogger.info("In Get Unassigned Techinicians ");
     	 String region=request.getParameter("region");
     	 String city=request.getParameter("city");
     	 String techniciansJson="";
@@ -324,7 +326,7 @@ public class HomeController {
 		System.out.println(listTechnicians);
 		    techniciansJson = gsonBuilder.toJson(listTechnicians);
     	 }catch(Exception e){
-    		 logger.error("While fetching get unassigned ticket"+e);
+    		 homeLogger.error("While fetching get unassigned ticket"+e);
     	 }
 		
           return techniciansJson.toString();
@@ -335,7 +337,7 @@ public class HomeController {
     @ResponseBody
 	public String assignTechnician(HttpServletRequest request) throws MessagingException {	
     	
-    	 logger.info("In Assign technician ");
+    	 homeLogger.info("In Assign technician ");
     	
     	 String selectedTechnicianId=request.getParameter("technicianId");
     	 
@@ -384,12 +386,12 @@ public class HomeController {
         	 	try{
         	  status= surveyDAO.assignTechnician(technicianTicket);
         	 	}catch(Exception e){
-        	 		logger.error("while fetching the status of the technician ticket "+e);
+        	 		homeLogger.error("while fetching the status of the technician ticket "+e);
         	 	}
         	 	try{
         	  statusUpdate =surveyDAO.updateTicketingStatus(ticketId,ticket.getSiteid());
       	 	}catch(Exception e){
-      	 		logger.error("While fetching the statusupdate of the ticket"+e);
+      	 		homeLogger.error("While fetching the statusupdate of the ticket"+e);
       	 	}
         	 	}
 		
@@ -409,7 +411,7 @@ public class HomeController {
 			}
     	 }
     	 catch(Exception e){
-    		 logger.error("While fetching tickets data "+e);
+    		 homeLogger.error("While fetching tickets data "+e);
     	 }
     	return "Assigned";		
 	}
@@ -418,39 +420,39 @@ public class HomeController {
 	
 	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
 	public ModelAndView newUser(ModelAndView model) {
-		 logger.info("In New User ");
+		 homeLogger.info("In New User ");
 		User user = new User();
 		model.addObject("User", user);
 		try{
 		model.setViewName("userReg");
 		}
 		catch(Exception e){
-			logger.error("In User Reg"+e);
+			homeLogger.error("In User Reg"+e);
 		}return model;
 	}
     
 	@RequestMapping(value = "/newTechnician", method = RequestMethod.GET)
 	public ModelAndView newTechnician(ModelAndView model) {
-		 logger.info("In New Technician ");
+		 homeLogger.info("In New Technician ");
 		Technician technician = new Technician();
 		model.addObject("Technician", technician);
 		try{
 		model.setViewName("technicianReg");
 		}catch(Exception e){
-			logger.error("In New Technician"+e);
+			homeLogger.error("In New Technician"+e);
 		}
 		return model;
 	}
 	
 	@RequestMapping(value = "/newSite", method = RequestMethod.GET)
 	public ModelAndView newSite(ModelAndView model) {
-		 logger.info("In New Site ");
+		 homeLogger.info("In New Site ");
 		Site site = new Site();
 		model.addObject("Site", site);
 		try{
 		model.setViewName("addSite");
 		}catch(Exception e){
-			logger.error("In new Site"+e);
+			homeLogger.error("In new Site"+e);
 		}
 		return model;
 	}
@@ -459,7 +461,7 @@ public class HomeController {
 	@ResponseBody
 	public String ValidateLatLong(ModelAndView model,HttpServletRequest request){
 		
-		 logger.info("In Validate LatLong ");
+		 homeLogger.info("In Validate LatLong ");
 		try{
 		if(surveyDAO.ValidateLatLong(request.getParameter("latitude"), request.getParameter("longitude")).size()>0)
 		{
@@ -471,7 +473,7 @@ public class HomeController {
 		}
 		}
 		catch(Exception e){
-			logger.error("In Validate Lat Long"+e);
+			homeLogger.error("In Validate Lat Long"+e);
 		}
 		
 		return null;
@@ -480,13 +482,13 @@ public class HomeController {
 	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
 	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
 	
-		 logger.info("In Save Site ");
+		 homeLogger.info("In Save Site ");
 		String status="Site Added Successfully";
 		if (site.getSiteid() !=null) { 
 			try{
 			surveyDAO.addSite(site);
 			}catch(Exception e){
-				logger.error("While adding site"+e);
+				homeLogger.error("While adding site"+e);
 			}
 		} 
 		redirectAttributes.addFlashAttribute("status", status);
@@ -498,7 +500,7 @@ public class HomeController {
 	public ModelAndView saveGenerator(@Valid @ModelAttribute("Site_Generator") Site_Generator generator , BindingResult br , ModelAndView model, @RequestParam("file") MultipartFile[] multipart,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,HttpServletRequest request) throws IOException{
 		
-		 logger.info("In Save Generator ");
+		 homeLogger.info("In Save Generator ");
 		
 		/*if(br.hasErrors())
 		{
@@ -560,7 +562,7 @@ public class HomeController {
 					generator.setTag_photo_name(generatorList.get(0).getTag_photo_name());
 				}
 			}catch(Exception e){
-				logger.error("While fetching Genarator list"+e);
+				homeLogger.error("While fetching Genarator list"+e);
 			}
 			}
 			else{
@@ -593,7 +595,7 @@ public class HomeController {
 		try{
 		surveyDAO.addGenerator(generator);
 		}catch(Exception e){
-			logger.error("While adding genarator"+e );
+			homeLogger.error("While adding genarator"+e );
 		}
 		redirectAttributes.addFlashAttribute("status",status);
 		
@@ -617,7 +619,7 @@ public class HomeController {
 	@RequestMapping(value="/saveSMPS" , method=RequestMethod.POST)
 	public ModelAndView saveSMPS(@ModelAttribute("Site_SMPS") Site_SMPS smps, @RequestParam("file") MultipartFile[] multipart ,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,ModelAndView model){
 
-		 logger.info("In Save SMPS ");
+		 homeLogger.info("In Save SMPS ");
 		int id=smps.getId();
 		try {
 			
@@ -639,7 +641,7 @@ public class HomeController {
 						smps.setObservation_2_Name(smpsList.get(0).getObservation_2_Name());
 					}
 				}catch(Exception e){
-					logger.error("While Fetching SMPS Details"+e);
+					homeLogger.error("While Fetching SMPS Details"+e);
 				}
 				}
 				else{
@@ -661,7 +663,7 @@ public class HomeController {
 		try{
 		surveyDAO.addSMPS(smps);
 		}catch(Exception e){
-			logger.error("While adding smps "+e);
+			homeLogger.error("While adding smps "+e);
 		}
 		String status="SMPS Added Successfully";
 		redirectAttributes.addFlashAttribute("status",status);
@@ -707,7 +709,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/saveBB", method = RequestMethod.POST)
 	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("photos") MultipartFile[] tag_photo,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes) throws IOException {
-		 logger.info("In Save BB ");
+		 homeLogger.info("In Save BB ");
 		
 		System.out.println("save bb calling" + tag_photo.length);
 		String status = "Battery Bank Added Successfully";
@@ -718,7 +720,7 @@ if(BB.getId()!=0){
 	try{
 	obj= surveyDAO.getBB(BB.getSiteid().getSiteid()).get(0);
 	}catch(Exception e){
-		logger.error("While fetching BB details"+e );
+		homeLogger.error("While fetching BB details"+e );
 	}
 }
 
@@ -761,7 +763,7 @@ if(BB.getId()!=0){
 		try{
 		surveyDAO.addBB(BB);
 		}catch(Exception e){
-			logger.error("While adding BB"+e);
+			homeLogger.error("While adding BB"+e);
 		}
 		redirectAttributes.addFlashAttribute("status", status);
 		if (submit.equals("Save for Later")) {
@@ -779,7 +781,7 @@ if(BB.getId()!=0){
 	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB, @RequestParam("updatetype") String updatetype,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,
 			@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException {
-		 logger.info("In Save Cabinet ");
+		 homeLogger.info("In Save Cabinet ");
 		
 		String status = "Cabinet Added Successfully";
 		Site_Cabinet obj = new Site_Cabinet();
@@ -798,7 +800,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 			try{
 			obj= surveyDAO.getCabinet(BB.getSiteid().getSiteid()).get(0);
 			}catch(Exception e){
-				logger.error("While fetching Cabinet Details"+e);
+				homeLogger.error("While fetching Cabinet Details"+e);
 			}
 		}
 
@@ -827,7 +829,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		try{
 		surveyDAO.addCabinet(updatetype,BB);
 		}catch(Exception e){
-			logger.error("While adding Cabinet"+e);
+			homeLogger.error("While adding Cabinet"+e);
 		}
 		redirectAttributes.addFlashAttribute("status", status);
 
@@ -844,14 +846,14 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	@ResponseBody
 	public String getBB(HttpServletRequest request) {
 		
-		 logger.info("In Get BB Data");
+		 homeLogger.info("In Get BB Data");
 		 String siteSMPSJson ="";
 		try{
 		List<Site_Battery_Bank> obj = surveyDAO.getBB(request.getParameter("siteid"));
 		 siteSMPSJson = gsonBuilder.toJson(obj);
 		}
 		catch(Exception e){
-			logger.error("While fetching the Batery Bank Details"+e);
+			homeLogger.error("While fetching the Batery Bank Details"+e);
 		}
 		return siteSMPSJson.toString();
 
@@ -861,13 +863,13 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	@ResponseBody
 	public String getCabinetData(HttpServletRequest request) {
 		
-		 logger.info("In Get Cabinet Data");
+		 homeLogger.info("In Get Cabinet Data");
 		 String siteSMPSJson="";
 		 try{
 		 List<Site_Cabinet> obj = surveyDAO.getCabinet(request.getParameter("siteid"));
 		 siteSMPSJson = gsonBuilder.toJson(obj);
 		 }catch(Exception e){
-			 logger.error("While fetching the cabinet details"+e);
+			 homeLogger.error("While fetching the cabinet details"+e);
 		 }
 		 return siteSMPSJson.toString();
 
@@ -879,14 +881,14 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	 @ResponseBody
 	 public String getLastTicketId(HttpServletRequest request){
 		
-		 logger.info("In Get Last Ticket Id");
+		 homeLogger.info("In Get Last Ticket Id");
 		 String executiveJson="";
 		 try{
 		 List<Ticketing> ticketList=surveyDAO.getTicketId();
 		  executiveJson=gsonBuilder.toJson(ticketList);
 		 }
 		 catch(Exception e){
-			 logger.error("While fetching the ticket list"+e);
+			 homeLogger.error("While fetching the ticket list"+e);
 		 }
 		  return executiveJson.toString();
 		 
@@ -896,7 +898,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	   @ModelAttribute("regionsList")	
 	   public Map<String, String> getRegions() {
 		   
-		   logger.info("In Get Region list");
+		   homeLogger.info("In Get Region list");
 		   
 	      Map<String, String> regionsMap = new HashMap<String, String>();
 	      try{
@@ -911,7 +913,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	      }
 	     // System.out.println("RegionsData "+regionsMap);
 	      }catch(Exception e){
-	    	  logger.error("While fetching the region list"+e);
+	    	  homeLogger.error("While fetching the region list"+e);
 	      }
 	      return regionsMap;
 	   }
@@ -919,7 +921,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	   @ModelAttribute("BBManufacturer")	
 	   public Map<String, String> getBBManufacturer() {
 		   
-		   logger.info("In BBManufacturer");
+		   homeLogger.info("In BBManufacturer");
 		   
 	      Map<String, String> BBMap = new HashMap<String, String>();
 	      try{
@@ -934,7 +936,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	      }
 	      System.out.println("RegionsData "+BBMap);
 	      }catch(Exception e){
-	    	  logger.error("While fetching the BBManufacturer Details"+e);
+	    	  homeLogger.error("While fetching the BBManufacturer Details"+e);
 	      }
 	      return BBMap;
 	   }
@@ -942,7 +944,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	   
 	   @ModelAttribute("BBType")	
 	   public Map<String, String> getBBType() {
-		   logger.info("In BB Type");
+		   homeLogger.info("In BB Type");
 	      Map<String, String> BBMap = new HashMap<String, String>();
 	      try{
 	      List<Battery_Bank_Master> regions = surveyDAO.getBBManufacturer();
@@ -956,7 +958,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	      }
 	      System.out.println("RegionsData "+BBMap);
 	      }catch(Exception e){
-	    	  logger.error("While fetching the Bank Master details"+e);
+	    	  homeLogger.error("While fetching the Bank Master details"+e);
 	      }
 	      return BBMap;
 	   }
@@ -965,7 +967,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	   @ModelAttribute("CabinetManufacturer")	
 	   public Map<String, String> getCabinetManufacturer() {
 		   
-		   logger.info("In Cabiner Manufacturer");
+		   homeLogger.info("In Cabiner Manufacturer");
 	      Map<String, String> BBMap = new HashMap<String, String>();
 	      try{
 	      List<Cabinet_Master> regions = surveyDAO.getCabinetManufacturer();
@@ -979,7 +981,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	      }
 	      System.out.println("RegionsData "+BBMap);
 	      }catch(Exception e){
-	    	  logger.error("While fetching the cabinet manufacturer details"+e);
+	    	  homeLogger.error("While fetching the cabinet manufacturer details"+e);
 	      }
 	      return BBMap;
 	   }
@@ -987,7 +989,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	   
 	   @ModelAttribute("CabinetType")	
 	   public Map<String, String> getCabinetType() {
-		   logger.info("In Cabinet Type");
+		   homeLogger.info("In Cabinet Type");
 	      Map<String, String> BBMap = new HashMap<String, String>();
 	      try{
 	      List<Cabinet_Master> regions = surveyDAO.getCabinetManufacturer();
@@ -1001,7 +1003,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	      }
 	      System.out.println("RegionsData "+BBMap);
 	      }catch(Exception e){
-	    	  logger.error("While fetching the cabinet manufacturer details "+e);
+	    	  homeLogger.error("While fetching the cabinet manufacturer details "+e);
 	      }
 	      return BBMap;
 	   }
@@ -1011,7 +1013,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    @ResponseBody
 
 	    public String getStates(ModelAndView model,HttpServletRequest request) {
-		   logger.info("In Get States");
+		   homeLogger.info("In Get States");
 		String selectedRegion=request.getParameter("selectedRegion");		
 		String statesJson="";
 			//List<Regions> listStates = surveyDAO.getStates(selectedRegion);
@@ -1030,7 +1032,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	           statesJson = gsonBuilder.toJson(listWithoutDuplicates);
 	          //System.out.println("StatesJSON"+statesJson);
 		}catch(Exception e){
-			logger.error("While fetching the states"+e);
+			homeLogger.error("While fetching the states"+e);
 		}
 	          return statesJson;
     	  // return statesMap;
@@ -1042,7 +1044,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 
 	    public  String getDistricts(ModelAndView model,HttpServletRequest request) {
 		 
-		 logger.info("In Get Districts");
+		 homeLogger.info("In Get Districts");
 		 String selectedRegion=request.getParameter("selectedRegion");
 
 			String selectedState=request.getParameter("selectedState");	
@@ -1058,7 +1060,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 			
 		    districtsJson = gsonBuilder.toJson(listWithoutDuplicates);
 			}catch(Exception e){
-				logger.error("While fetching the the districts list"+e);
+				homeLogger.error("While fetching the the districts list"+e);
 			}
 			return districtsJson;
 		    }
@@ -1068,7 +1070,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 
 	    public  String getCities(ModelAndView model,HttpServletRequest request) {
 	    	
-	    	 logger.info("In Get Cities");
+	    	 homeLogger.info("In Get Cities");
 		 String selectedRegion=request.getParameter("selectedRegion");
 			String selectedState=request.getParameter("selectedState");	
 			String selectedDistrict=request.getParameter("selectedDistrict");	
@@ -1085,7 +1087,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	         totalJson = gsonBuilder.toJson(listWithoutDuplicates);
 			}
 			catch(Exception e){
-				logger.error("While fetching the cities"+e);
+				homeLogger.error("While fetching the cities"+e);
 			}
 	        return totalJson.toString();
 	   
@@ -1109,7 +1111,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		@RequestMapping("ticketsCount")
 	    @ResponseBody
 	    public String  ticketsCountData(ModelAndView model) {
-	    	logger.info("In Tickets Count");
+	    	homeLogger.info("In Tickets Count");
 	    	 JSONObject countData=new JSONObject();
 	    	 List<Ticketing> listOpen=null;
 	    	 List<TechnicianTicketInfo> listAssigned =null;
@@ -1119,12 +1121,12 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		    Set ticketSet = new HashSet<Object>();
 			 listOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));
 	    	}catch(Exception e){
-	    		logger.error("While fetching the tickets data"+e);
+	    		homeLogger.error("While fetching the tickets data"+e);
 	    	}
 	    	try{
 		    listAssigned = surveyDAO.assignedTicketsData();
 	    	}catch(Exception e){
-	    		logger.error("While fetching list assigned data"+e);
+	    		homeLogger.error("While fetching list assigned data"+e);
 	    	}
 		    Set ticketSet1 = new HashSet<Object>();
 			listAssigned.removeIf(p -> !ticketSet1.add(p.getTicketNum()));
@@ -1134,7 +1136,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		      try{
 		      listTotal =surveyDAO.getAllTicketsData();
 		      }catch(Exception e){
-		    	  logger.error("While fetching the total tickets list"+e);
+		    	  homeLogger.error("While fetching the total tickets list"+e);
 		      }
 		      Set ticketSet3 = new HashSet<Object>();
 		      listTotal.removeIf(p -> !ticketSet3.add(p.getTicketNum()));
@@ -1152,12 +1154,12 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		@RequestMapping("getOpenTickets")
 	    @ResponseBody
 	    public String  getOpenTicketsData(ModelAndView model) {
-	    	logger.info("In getOpenTickets ");
+	    	homeLogger.info("In getOpenTickets ");
 	    	List<Ticketing> listOpen=null;
 	    	try{
 	    	listOpen = surveyDAO.openTicketsData();	
 	    	}catch(Exception e){
-	    		logger.error("While fetching the openTickets Data"+e);
+	    		homeLogger.error("While fetching the openTickets Data"+e);
 	    	}
 		    Set openSet = new HashSet<Object>();
 
@@ -1175,12 +1177,12 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		@RequestMapping("getAssignedTickets")
 	    @ResponseBody
 	    public String  getAssignedTicketsData(ModelAndView model) {
-			logger.info("In getAssignedTickets ");
+			homeLogger.info("In getAssignedTickets ");
 			List<TechnicianTicketInfo> listAssigned =null;
 			try{
 			listAssigned = surveyDAO.assignedTicketsData();
 			}catch(Exception e){
-				logger.error("While fetching the assignedTickets data"+e);
+				homeLogger.error("While fetching the assignedTickets data"+e);
 			}
 			Set ticketSet = new HashSet<Object>();
 			listAssigned.removeIf(p -> !ticketSet.add(p.getTicketNum()));
@@ -1193,12 +1195,12 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		@RequestMapping("getHistoryTickets")
 	    @ResponseBody
 	    public String  getHistoryTicketsData(ModelAndView model) {
-			logger.info("In getHistoryTickets ");
+			homeLogger.info("In getHistoryTickets ");
 			List<TechnicianTicketInfo> listHistory=null;
 			try{
 			 listHistory = surveyDAO.historyTicketsData();
 			}catch(Exception e){
-				logger.error("While fetching the historyTickets data"+e);
+				homeLogger.error("While fetching the historyTickets data"+e);
 			}
 			 Set ticketSet = new HashSet<Object>();
 			listHistory.removeIf(p -> !ticketSet.add(p.getTicketNum()));
@@ -1211,7 +1213,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    @ResponseBody
 
 	    public  String getSiteId(ModelAndView model,HttpServletRequest request) {
-	    	logger.info("In getSiteId ");
+	    	homeLogger.info("In getSiteId ");
 		 String selectedRegion=request.getParameter("selectedRegion");
 			String selectedState=request.getParameter("selectedState");	
 			String selectedDistrict=request.getParameter("selectedDistrict");	
@@ -1220,7 +1222,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 			try{
 			siteIds = surveyDAO.getSiteIdsForRegion(selectedRegion,selectedState,selectedDistrict,selectedCity);
 			}catch(Exception e){
-				logger.error("While fetching the siteIds for region"+e);
+				homeLogger.error("While fetching the siteIds for region"+e);
 			}
 			List<String> listSiteIds=new ArrayList<String>();
 			for(Site site:siteIds)
@@ -1249,12 +1251,12 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	 @RequestMapping(value="/getLastSiteId", method=RequestMethod.GET)
 	  @ResponseBody
 	  public String getLastSiteId(HttpServletRequest request){
-			logger.info("In GetLastSiteId ");
+			homeLogger.info("In GetLastSiteId ");
 			List<Site> siteidList=null;
 			try{
 	    siteidList=surveyDAO.getSiteId();
 			}catch(Exception e){
-				logger.error("While fetching the siteList"+e);
+				homeLogger.error("While fetching the siteList"+e);
 			}
 	    System.out.println("siteid>>>>>>...."+siteidList);
 	  
@@ -1267,13 +1269,13 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		@RequestMapping("getTotalTickets")
 		@ResponseBody
 		public String  getTotalTicketsData(ModelAndView model) {
-			logger.info("In getTotalTickets ");
+			homeLogger.info("In getTotalTickets ");
 			String totalJson =null;
 			List<Ticketing> listTotal=null;
 			try{
 			 listTotal = surveyDAO.getAllTicketsData();
 			}catch(Exception e){
-				logger.error("While fetching the total ticket list"+e);
+				homeLogger.error("While fetching the total ticket list"+e);
 			}
 			 Set ticketSet = new HashSet<Object>();
 		      listTotal.removeIf(p -> !ticketSet.add(p.getTicketNum()));
@@ -1285,11 +1287,11 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		
 		@RequestMapping(value = "/adminOpenTickets")
 		public ModelAndView adminOpenTickets(ModelAndView model) throws IOException {
-			logger.info("In adminOpenTickets ");
+			homeLogger.info("In adminOpenTickets ");
 			try{
 			model.setViewName("adminOpenTickets");
 			}catch(Exception e){
-				logger.error("In Viewing the adminOpenTickets"+e);
+				homeLogger.error("In Viewing the adminOpenTickets"+e);
 			}
 			return model;
 		}
@@ -1298,7 +1300,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		 @RequestMapping("getAdminTicketsCount")
 		@ResponseBody
 		public String  getAdminTicketsCount(ModelAndView model) {
-			 logger.info("In GetManager ");
+			 homeLogger.info("In GetManager ");
 			 JSONObject countData=new JSONObject();
 			 List<Ticketing> listOpen=null;
 			 List<TechnicianTicketInfo> listAssigned=null;
@@ -1307,22 +1309,22 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 			 try{
 			 listOpen = surveyDAO.openTicketsData();		              
 			 }catch(Exception e){
-				 logger.error("While fetching Opentickets"+e);
+				 homeLogger.error("While fetching Opentickets"+e);
 			 }
 			 try{
 			  listAssigned = surveyDAO.assignedTicketsData();
 			 }catch(Exception e){
-				 logger.error("While fetchimg assigned tickets data"+e);
+				 homeLogger.error("While fetchimg assigned tickets data"+e);
 			 }
 			 try{
 			  listHistory = surveyDAO.historyTicketsData();
 			 }catch(Exception e){
-				 logger.error("While fetching the history tickets"+e);
+				 homeLogger.error("While fetching the history tickets"+e);
 			 }
 			 try{
 			   listTotal =surveyDAO.getAllTicketsData();
 			 }catch(Exception e){
-				 logger.error("While fetching the total tickets data"+e);
+				 homeLogger.error("While fetching the total tickets data"+e);
 			 }
 			  
 			   countData.put("OpenTickets",listOpen.size());
@@ -1337,10 +1339,10 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		@ResponseBody
 		public String getManager(HttpServletRequest request) {
 	    	
-	    	logger.info("In GetManager ");
+	    	homeLogger.info("In GetManager ");
 	    	
 	    	String region=request.getParameter("selectedRegion");
-	    	logger.info("Region"+region);
+	    	homeLogger.info("Region"+region);
 	    	String managerJSON=null;
 	    	try{
 	    	List<User> managers = surveyDAO.getManager(region);
@@ -1352,7 +1354,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		
 			 managerJSON = gsonBuilder.toJson(listManagers);
 	    	}catch(Exception e){
-	    		logger.error("While fetching list of managers"+e);
+	    		homeLogger.error("While fetching list of managers"+e);
 	    	}
 			return managerJSON;
 		}
@@ -1362,15 +1364,15 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		@ResponseBody
 		public String getUserName(HttpServletRequest request) {	
 	    	
-	    	logger.info("In Get UserName ");
+	    	homeLogger.info("In Get UserName ");
 	    	String user=null;
 			String username=request.getParameter("username");
 	    	String role=request.getParameter("role");
 	    	try{
 	    	user=surveyDAO.getUserName(role,username);
-	    	logger.info("userName"+user);
+	    	homeLogger.info("userName"+user);
 	    	}catch(Exception e){
-	    		logger.error("While Getting UserName"+e);
+	    		homeLogger.error("While Getting UserName"+e);
 	    	}
 	    	return user;
 		}

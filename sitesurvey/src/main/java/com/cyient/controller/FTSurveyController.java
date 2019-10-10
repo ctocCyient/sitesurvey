@@ -32,7 +32,10 @@ import com.google.gson.GsonBuilder;
 
 @Controller
 public class FTSurveyController {
-	private static final Logger logger = Logger.getLogger(ManagerFTController.class);
+	//private static final Logger ftManLogger = Logger.getLogger(ManagerFTController.class);
+	
+	static final Logger ftManLogger = Logger.getLogger("FTManagerLogger");
+	
 
 	public FTSurveyController() {
 		System.out.println("FTSurveyController()");
@@ -48,16 +51,16 @@ public class FTSurveyController {
 	public String getSiteDetails(HttpServletRequest request) {
 		String siteId = request.getParameter("siteId");
 		String ticketId = request.getParameter("ticketId");
-		logger.info("In getSiteDetails Site::" + siteId+" ticketId::"+ticketId);
+		ftManLogger.info("In getSiteDetails Site::" + siteId+" ticketId::"+ticketId);
 		String siteDetailsJson=null;
 		try{
 			String siteStatus = surveyDAO.updateSiteStatus(siteId, ticketId);	
 			List<Site> siteDetails = surveyDAO.getSiteDetails(siteId);
 			siteDetailsJson = gsonBuilder.toJson(siteDetails);
-			logger.info("SiteDetails: Site Update Status::"+siteStatus+" site Details Json::"+siteDetailsJson);
+			ftManLogger.info("SiteDetails: Site Update Status::"+siteStatus+" site Details Json::"+siteDetailsJson);
 		}
 		catch(Exception e){
-			logger.error("In getSiteDetails: "+e);
+			ftManLogger.error("In getSiteDetails: "+e);
 		}
 		
 		return siteDetailsJson;
@@ -65,14 +68,14 @@ public class FTSurveyController {
 
 	@RequestMapping(value = "/siteDetails")
 	public ModelAndView siteDetails(ModelAndView model) throws IOException {
-		logger.info("In Technician Site Details");
+		ftManLogger.info("In Technician Site Details");
 		try{
 			Site site = new Site();
 			model.addObject("SiteDetails", site);
 			model.setViewName("siteDetails");
 		}
 		catch(Exception e){
-			logger.error("In siteDetails: "+e);
+			ftManLogger.error("In siteDetails: "+e);
 		}
 		return model;
 	}
@@ -82,12 +85,12 @@ public class FTSurveyController {
 			ModelAndView model, @RequestParam("clickBtn") String clickBtn) throws IOException {
 
 		String status = "Saved";
-		logger.info("Site Details: State::"+site.getState()+" SiteId"+site.getSiteid()+" Latitude"+site.getLatitude()+" Longitude"+site.getLongitude());
+		ftManLogger.info("Site Details: State::"+site.getState()+" SiteId"+site.getSiteid()+" Latitude"+site.getLatitude()+" Longitude"+site.getLongitude());
 		try{
 			surveyDAO.updateSiteDetails(site.getState(), site.getSiteid(), site.getLatitude(), site.getLongitude());
 		}
 		catch(Exception e){
-			logger.error("In saveSiteDetails: "+e);
+			ftManLogger.error("In saveSiteDetails: "+e);
 		}
 		redirectAttributes.addFlashAttribute("status", status);
 		redirectAttributes.addFlashAttribute("btnClick", clickBtn);
@@ -102,14 +105,14 @@ public class FTSurveyController {
 
 	@RequestMapping(value = "/surveyTeamPPE")
 	public ModelAndView surveyTeamPPE(ModelAndView model) throws IOException {
-		logger.info("In Technician Site Survey PPE");
+		ftManLogger.info("In Technician Site Survey PPE");
 		try{
 			Survey_Team_PPE surveyTeamPPE = new Survey_Team_PPE();
 			model.addObject("SurveyTeamPPE", surveyTeamPPE);
 			model.setViewName("surveyTeamPPE");
 		}
 		catch(Exception e){
-			logger.error("In surveyTeamPPE: "+e);
+			ftManLogger.error("In surveyTeamPPE: "+e);
 		}
 		return model;
 	}
@@ -149,7 +152,7 @@ public class FTSurveyController {
 			statesList.put("West Bengal", "West Bengal");
 		}
 		catch(Exception e){
-			logger.error("In getStatesList: "+e);
+			ftManLogger.error("In getStatesList: "+e);
 		}
 		return statesList;
 	}
@@ -158,14 +161,14 @@ public class FTSurveyController {
 	@ResponseBody
 	public String getSurveyTeamPPEDetails(HttpServletRequest request) {
 		String selectedSiteId = request.getParameter("selectedSiteId");
-		logger.info("In getSurveyTeamPPEDetails SiteId:" + selectedSiteId);
+		ftManLogger.info("In getSurveyTeamPPEDetails SiteId:" + selectedSiteId);
 		String siteDetailsJson=null;
 		try{
 			List<Survey_Team_PPE> siteDetails = surveyDAO.getSurveyTeamDetails(selectedSiteId);
 			siteDetailsJson = gsonBuilder.toJson(siteDetails);
 		}
 		catch(Exception e){
-			logger.error("In getSurveyTeamPPEDetails: "+e);
+			ftManLogger.error("In getSurveyTeamPPEDetails: "+e);
 		}
 		return siteDetailsJson;
 	}
@@ -179,7 +182,7 @@ public class FTSurveyController {
 			PPEList.add("Hard hat");
 		}
 		catch(Exception e){
-			logger.error("In getPPEList: "+e);
+			ftManLogger.error("In getPPEList: "+e);
 		}
 		return PPEList;
 	}
@@ -194,7 +197,7 @@ public class FTSurveyController {
 			riggerPPEList.add("Use of rigging equipment");
 		}
 		catch(Exception e){
-			logger.error("In getRiggerPPEList: "+e);
+			ftManLogger.error("In getRiggerPPEList: "+e);
 		}
 		return riggerPPEList;
 	}
@@ -213,7 +216,7 @@ public class FTSurveyController {
 			// surveyTeamPPPE.setPhotoRiggerTeam(multipart[2].getBytes());
 			// surveyTeamPPPE.setPhotoRiggerTeamName(multipart[2].getOriginalFilename());
 
-			logger.info("In saveSurveyPPE Files length:: " + multipart.length);
+			ftManLogger.info("In saveSurveyPPE Files length:: " + multipart.length);
 			for (int i = 0; i < multipart.length; i++) {
 
 				if (multipart[i].isEmpty()) {
@@ -246,7 +249,7 @@ public class FTSurveyController {
 			surveyDAO.addSiteSurveyPPE(surveyTeamPPE);
 		} 
 		catch (Exception e) {
-			logger.error("In saveSurveyPPE: "+e);
+			ftManLogger.error("In saveSurveyPPE: "+e);
 		}
 		
 		// redirectAttributes.addFlashAttribute("PPEStatus",status);
@@ -261,42 +264,42 @@ public class FTSurveyController {
 
 	@RequestMapping(value = "/siteAccess", method = RequestMethod.GET)
 	public ModelAndView newAccess(ModelAndView model) {
-		logger.info("Technician Site Access");
+		ftManLogger.info("Technician Site Access");
 		try{
 			Site_Access siteaccess = new Site_Access();
 			model.addObject("Site_Access", siteaccess);
 			model.setViewName("accessDetails");
 		}
 		catch(Exception e){
-			logger.error("In siteAccess:"+e);
+			ftManLogger.error("In siteAccess:"+e);
 		}
 		return model;
 	}
 
 	@RequestMapping(value = "/siteArea", method = RequestMethod.GET)
 	public ModelAndView Area(ModelAndView model) {
-		logger.info("Technician Site Area");
+		ftManLogger.info("Technician Site Area");
 		try{
 			Site_Area sitearea = new Site_Area();
 			model.addObject("Site_Area", sitearea);
 			model.setViewName("siteAreaDetails");
 		}
 		catch(Exception e){
-			logger.error("In siteArea: "+e);
+			ftManLogger.error("In siteArea: "+e);
 		}
 		return model;
 	}
 
 	@RequestMapping(value = "/siteWiring", method = RequestMethod.GET)
 	public ModelAndView Wiring(ModelAndView model) {
-		logger.info("Technician Power Wiring");
+		ftManLogger.info("Technician Power Wiring");
 		try{
 			Site_Wiring sitewiring = new Site_Wiring();
 			model.addObject("Site_Wiring", sitewiring);
 			model.setViewName("powerWiring");
 		}
 		catch(Exception e){
-			logger.error("In siteWiring:"+e);
+			ftManLogger.error("In siteWiring:"+e);
 		}
 		return model;
 	}
@@ -306,14 +309,14 @@ public class FTSurveyController {
 	@ResponseBody
 	public String getSiteAccessDetails(HttpServletRequest request) {
 		String siteId = request.getParameter("siteId");
-		logger.info("In SiteAccess Site::"+siteId);
+		ftManLogger.info("In SiteAccess Site::"+siteId);
 		String siteAccessJson=null;
 		try{
 			List<Site_Access> siteAccessList = surveyDAO.getSiteAccDetails(siteId);		
 			siteAccessJson = gsonBuilder.toJson(siteAccessList);
 		}
 		catch(Exception e){
-			logger.error("In getSiteAccessDetails: "+e);
+			ftManLogger.error("In getSiteAccessDetails: "+e);
 		}
 		return siteAccessJson;
 	}
@@ -322,14 +325,14 @@ public class FTSurveyController {
 	@ResponseBody
 	public String getSiteArrDetails(HttpServletRequest request) {
 		String siteId = request.getParameter("siteId");
-		logger.info("In SiteArea Site::"+siteId);
+		ftManLogger.info("In SiteArea Site::"+siteId);
 		String siteAreaJson=null;
 		try{
 			List<Site_Area> siteAccessList = surveyDAO.getSiteArDetails(siteId);		
 			siteAreaJson = gsonBuilder.toJson(siteAccessList);
 		}
 		catch(Exception e){
-			logger.error("In getSiteAreaDetails: "+e);
+			ftManLogger.error("In getSiteAreaDetails: "+e);
 		}
 		return siteAreaJson;
 	}
@@ -338,14 +341,14 @@ public class FTSurveyController {
 	@ResponseBody
 	public String getSiteWiringDetails(HttpServletRequest request) {
 		String siteId = request.getParameter("siteId");
-		logger.info("In SiteWiring Site::"+siteId);
+		ftManLogger.info("In SiteWiring Site::"+siteId);
 		String siteAreaJson=null;
 		try{
 			List<Site_Wiring> siteAccessList = surveyDAO.getPowerWiringDetails(siteId);		
 			siteAreaJson = gsonBuilder.toJson(siteAccessList);
 		}
 		catch(Exception e){
-			logger.error("In getSiteWiringDetails: "+e);
+			ftManLogger.error("In getSiteWiringDetails: "+e);
 		}
 		return siteAreaJson;
 	}
@@ -383,7 +386,7 @@ public class FTSurveyController {
 			}
 			surveyDAO.addSiteAccess(siteacc);
 		} catch (Exception e) {
-			logger.error("In saveAccess: "+e);
+			ftManLogger.error("In saveAccess: "+e);
 		}
 
 		String status = "Site Access Details Added Successfully";		
@@ -423,7 +426,7 @@ public class FTSurveyController {
 			surveyDAO.addSiteArea(sitearea);
 		}		
 		catch (Exception e) {
-			logger.error("In saveArea: "+e);
+			ftManLogger.error("In saveArea: "+e);
 		}
 
 		String status = "Site Area Details Added Successfully";		
@@ -470,7 +473,7 @@ public class FTSurveyController {
 			surveyDAO.addSitePowering(sitewiring);
 		}		
 		catch (Exception e) {
-			logger.error("In saveWiring: "+e);
+			ftManLogger.error("In saveWiring: "+e);
 		}
 
 		String status = "Site Power Wiring  Details Added Successfully";		
@@ -487,13 +490,13 @@ public class FTSurveyController {
 	@ResponseBody
 	public String updateTicketStatus(HttpServletRequest request) {
 		String ticketId = request.getParameter("ticketId");
-		logger.info("In updateTicketStatus ticketId::"+ticketId);
+		ftManLogger.info("In updateTicketStatus ticketId::"+ticketId);
 		String status=null;
 		try{
 		    status = surveyDAO.updateClosedStatus(ticketId);
 		}
 		catch(Exception e){
-			logger.error("In updateTicketStatus: "+e);
+			ftManLogger.error("In updateTicketStatus: "+e);
 		}
 		return status;
 	}
