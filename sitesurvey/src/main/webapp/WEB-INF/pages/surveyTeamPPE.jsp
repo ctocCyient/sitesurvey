@@ -135,6 +135,19 @@ $(document).ready(function(){
 // 				});
 // 			}
 	
+	
+// 		 $("#clickBtn,#clickBtn1").click(function(){
+// 			 CheckForm();
+// 		    $("#ppeForm").submit();
+// 		});
+	
+$('#clickBtn,#clickBtn1').submit(function(){
+    if(!$('#ppeForm input[type="checkbox"]').is(':checked')){
+      alert("Please check at least one.");
+      return false;
+    }
+});
+
 });
 
 
@@ -148,26 +161,18 @@ function getSurveyTeamPPEDetails()
         data:{"selectedSiteId":siteId},
         success:function(result) {
         	 surveyTeamDetails= JSON.parse(result);   
-        	console.log("xzv"+JSON.stringify(surveyTeamDetails));
        	  if(surveyTeamDetails.length==0){
-       	        $("#imagediv1").hide();
-       	        $("#imagediv2").hide();
-       	        $("#imagediv3").hide();
-       	        $("#fileupload1").show();
-       	        $("#fileupload2").show();
-       	        $("#fileupload3").show();
-       	        $("#cnfrmr1").hide();
-       	        $("#cnfrmr2").hide();
-       	        $("#cnfrmr3").hide();
+       	        $("#imagediv1,#imagediv2,#imagediv3").hide();
+       	        $("#fileupload1,#fileupload2,#fileupload3").show();
+       	        $("#cnfrmr1,#cnfrmr2,#cnfrmr3").hide();
+       	     document.getElementById("img0").required=true;
+       	  document.getElementById("img1").required=true;
+       	 document.getElementById("img2").required=true;
        	        }
        	  else{
        		 
-       		$("#imagediv1").show();
-            $("#imagediv2").show();
-            $("#imagediv3").show();
-            $("#fileupload1").hide();
-            $("#fileupload2").hide();
-            $("#fileupload3").hide();
+       		$("#imagediv1,#imagediv2,#imagediv3").show();
+            $("#fileupload1,#fileupload2,#fileupload3").hide();
             
         		$("#ppeId")[0].value=surveyTeamDetails[0].id;
  			  	$("#ppe").val(surveyTeamDetails[0].ppe);
@@ -193,74 +198,39 @@ function getSurveyTeamPPEDetails()
 	});
 }
 
-
-
-// function ValidateImage(id){
-	
-// 	var  i=id[id.length-1];
-// 		  var fuData = document.getElementById(id);
-//       var FileUploadPath = fuData.value;
-// //To check if user upload any file
-//       if (FileUploadPath == '') {
-//           alert("Please upload an image");
-//      } else {
-//           var Extension = FileUploadPath.substring(
-//                   FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-// //The file uploaded is an image
-// if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
-// //To Display
-// 			 $("#image"+i)[0].innerHTML="";
-//               if (fuData.files && fuData.files[0]) {
-//                  var reader = new FileReader();
-//                  reader.onload = function(e) {
-//                      // $('#blah').attr('src', e.target.result);
-//                   }
-//                  reader.readAsDataURL(fuData.files[0]);
-//               }
-//          }
-// //The file upload is NOT an image
-// else {
-//            // alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
-//               $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
-//              document.getElementById(id).value="";
-//           }
-//       }
-//   }
-  
-  
-  
-
 function ValidateImage(id){
 	 	var i=id[id.length-1];
 		  var fuData = document.getElementById(id);
 	     var FileUploadPath = fuData.value;
-	//To check if user upload any file
+	     
+	  
+		//To check if user upload any file
 	     if (FileUploadPath == '') {
-	   	//  $("#image"+i)[0].innerHTML="Please upload an image";  
+	   	  $("#image"+i)[0].innerHTML="Please upload an image";  
 	        // alert("Please upload an image");
 	    } else {
    	 
-         var Extension = FileUploadPath.substring(
+         	var Extension = FileUploadPath.substring(
                  FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
-		//The file uploaded is an image
-		if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
-		//To Display
-				 $("#image"+i)[0].innerHTML=""
-             if (fuData.files && fuData.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    // $('#blah').attr('src', e.target.result);
-                 }
-                reader.readAsDataURL(fuData.files[0]);
-             }
-        }
-	//The file upload is NOT an image
-	else {
-	          //  alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
-	            $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
-	            document.getElementById(id).value="";
-	         }
-	     }
+			//The file uploaded is an image
+			if (Extension == "gif" || Extension == "png" || Extension == "bmp"|| Extension == "jpeg" || Extension == "jpg") {
+			//To Display
+					 $("#image"+i)[0].innerHTML=""
+	             if (fuData.files && fuData.files[0]) {
+	                var reader = new FileReader();
+	                reader.onload = function(e) {
+	                    // $('#blah').attr('src', e.target.result);
+	                 }
+	                reader.readAsDataURL(fuData.files[0]);
+	             }
+	        }
+			//The file upload is NOT an image
+			else {
+			          //  alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+			            $("#image"+i)[0].innerHTML="Uploaded file must be Image Format";
+			            document.getElementById(id).value="";
+			 }
+	    }
  }
 
 
@@ -297,9 +267,6 @@ function ViewImage(id){
 	//console.log(surveyTeamDetails[0].pid);
 	//console.log(surveyTeamDetails[0].tower_photo1)
 	var imageData= base64js.fromByteArray(surveyTeamDetails[0][id])
-	
-	
-	
 	//alert(imageData);
 	var imageNum="Photo";
 	  var htmlstring = "<img id='ItemPreview' 'src=data:image/jpeg;base64,"+imageData+"' width='104' height='142'>";
@@ -311,6 +278,36 @@ function ViewImage(id){
               });  
 	
 }
+
+
+function CheckForm(){
+	var checked=false;
+	var element = document.getElementsByName("rigger_Wearing");
+
+	for(var i=0; i < element.length; i++){
+	if(element[i].checked)
+		checked = true;
+	}
+	if (!checked) {
+		 $("#riggerWear")[0].innerHTML="Please Check";
+	}
+	
+	
+	
+	var checked1=false;
+	var element1 = document.getElementsByName("technicianWearing");
+
+	for(var i=0; i < element1.length; i++){
+	if(element1[i].checked)
+		checked1 = true;
+	}
+	if (!checked1) {
+		 $("#technicianWear")[0].innerHTML="Please Check";
+	}
+	
+
+}
+
 
 
 </script>
@@ -375,8 +372,6 @@ function ViewImage(id){
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
 			
-			
-    
 			<h3 class="text-center">PPE(PERSONAL PROTECTIVE EQUIPMENT)</h3>
 
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
@@ -437,7 +432,7 @@ function ViewImage(id){
 				<label for="technicianWearing" class="placeholder"><b>Technician/s wearing PPE</b></label><br><br>
 				<form:checkboxes items="${PPEList}" path="technicianWearing" id="technicianWearing"  element="p" name="technicianWearing"/><br>
 <%--                <form:input id="technicianWearing" path="technicianWearing"  name="technicianWearing"  class="form-control input-full filled"  /> --%>
-				
+				<span class="isa_failure" id="technicianWear">${errMsg}</span>
                 <br>
                 <div id="fileupload2">
                 <label for="photoTechnicianTeam" class="placeholder"><b>Photo of technician/s</b></label>            
@@ -478,6 +473,7 @@ function ViewImage(id){
 				<label for="rigger_Wearing" class="placeholder"><b>Rigger/s wearing PPE</b></label><br><br>
 <%-- 				<form:input id="rigger_Wearing" path="rigger_Wearing" class="form-control input-full filled" /> --%>
 				<form:checkboxes items="${riggerPPEList}" path="rigger_Wearing" id="rigger_Wearing"  element="p" name="rigger_Wearing"/><br>
+				<span class="isa_failure" id="riggerWear">${errMsg}</span>
 				<br>
 				
 				<div id="fileupload3">
@@ -512,6 +508,7 @@ function ViewImage(id){
  	
  				</div>
 				<br>
+				
 				<div class="form-action">
 					<input type="button"  name="prev" value="Previous" class="btn btn-rounded btn-login btn-warning" onclick="javascript:history.back()" style="background-color: #012169;color: white;">
 					<input type="submit" id="clickBtn" value="Save for Later" class="btn btn-rounded btn-login btn-danger" name="clickBtn" style="background-color: #E4002B;color: white;">
@@ -521,14 +518,14 @@ function ViewImage(id){
 			</form:form>	
 		</div>
 </div>
-   <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
-	<script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
-	<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
-	<script src="<c:url value='resources/assets/css/bootstrap.min.css' />"></script>
-	<script src="<c:url value='resources/assets/js/ready.js' />"></script>
-	
 
-	<!--   Core JS Files   -->
+ <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
+<script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
+<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
+<script src="<c:url value='resources/assets/css/bootstrap.min.css' />"></script>
+<script src="<c:url value='resources/assets/js/ready.js' />"></script>
+	
+<!--   Core JS Files   -->
 <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
@@ -537,17 +534,14 @@ function ViewImage(id){
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' />"></script>
 
-
 <!-- jQuery Scrollbar -->
 <script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
 
-
 <!-- Sweet Alert -->
 <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
+
 <!-- jQuery Sparkline -->
-
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 </body>
 

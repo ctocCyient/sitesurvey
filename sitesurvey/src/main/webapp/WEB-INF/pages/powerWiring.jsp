@@ -498,6 +498,7 @@ label {
   <div class="container container-login animated fadeIn">
 <%--   <span class="isa_success" style="color:green;font-size:14px;">${status}</span> --%>
 			<h3 class="text-center">Power Wiring</h3>
+			<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 			<span id="image1span" style="color:red">*Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. *</span>
 			<span id="image1spanMSG" style="color:red">*Please Upload an Image*</span>
 			<form:form method="post" action="saveWiring"  id="siteWiring" modelAttribute="Site_Wiring" enctype="multipart/form-data" >

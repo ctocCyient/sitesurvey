@@ -402,6 +402,7 @@ label {
   <div class="container container-login animated fadeIn">
 
 			<h3 class="text-center">Site Access</h3>
+			<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 			<span id="image1span" style="color:red">*Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. *</span>
 			<span id="image1spanMSG" style="color:red">*Please Upload an Image*</span>
 			<form:form method="post" action="saveAccess"  id="siteAccess" modelAttribute="Site_Access" enctype="multipart/form-data" >

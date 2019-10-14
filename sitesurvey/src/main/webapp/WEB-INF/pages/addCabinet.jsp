@@ -343,6 +343,9 @@ arr = (element.value).split("X");
 	color: #fff !important;
 }
 
+.isa_failure{
+    color:red;
+}
 label {
 	color: #495057 !important;
 	font-size: 13px !important;
@@ -435,6 +438,8 @@ label {
 					<br> <label for="dimensions" class="placeholder"><b>Dimensions (L X B X H) </b></label>
 					<form:input id="dimensions" path="dimensions" name="dimensions"  onchange="dimension(this);"
 						class="form-control input-full filled" />
+<%-- 						<span class="isa_failure" id="dimensionsError">${errMsg}</span> --%>
+             
 						<!-- <div class="row mt-1">
 						 <div class="col-md-2">
 						 <label for="Length" class="placeholder"><b>Length</b></label>
