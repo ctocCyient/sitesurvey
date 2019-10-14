@@ -178,11 +178,12 @@ function getSiteAdditionalDetails(siteId){
             console.log("jsonDa"+jsonData);
             if(jsonData.length==0)
             {
-            	$("#siteimage1").hide();
             	$("#imagediv1").show();
             	$("#imagediv2").show();
             	$("#imaged1").hide();
             	$("#imaged2").hide();
+            	 $("#cnfrmr1").hide();
+            	 $("#cnfrmr2").hide();
             }
             else
             {
@@ -192,7 +193,6 @@ function getSiteAdditionalDetails(siteId){
             	$("#imagediv2").hide();
             	//$("#site_photo1").hide();
             	//$("#site_photo2").hide();
-            //	$("#siteimage1").show();
             	$("#siteaddid").val(jsonData[0].id);
             	$("#observations").val(jsonData[0].observations);
             	$("#imaget1").val(jsonData[0].site_photo1_name);
@@ -408,7 +408,7 @@ label {
   					
   				</div>
   				</div>
-  				<div class="row mt-1">   
+  				<div class="row mt-1" id="cnfrmr1">   
   				 <div class="col-md-7">
                   <label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   </div>
@@ -441,7 +441,7 @@ label {
   					
   				</div>
   				</div>
-  				<div class="row mt-1">   
+  				<div class="row mt-1" id="cnfrmr2">   
   				 <div class="col-md-7">
                   <label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   </div>
