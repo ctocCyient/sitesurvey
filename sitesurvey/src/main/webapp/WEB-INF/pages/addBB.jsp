@@ -124,6 +124,9 @@ function getBB()
 	 	         	$("#photo_1_text_div").hide();
 	 	         	$("#photo_2_text_div").hide();
 	 	         	$("#photo_3_text_div").hide();
+	 	         	$("#Radio_1_div").hide();
+	 	         	$("#Radio_2_div").hide();
+	 	         	$("#Radio_3_div").hide();
 	 	         	
 	 	         	
    
@@ -424,13 +427,16 @@ label {
 						</div>
 
 						</div>
-						<div class="row mt-1">	<div class="col-md-7">
+						
+						
+						<div class="row mt-1" id="Radio_1_div">	<div class="col-md-7">
 						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div>
 						<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="defaultChecked" name="photo_1_text_div_radio" onclick="upload_files(this)" /></div>
 						  <div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio" checked/>
 						<br>
 						</div>
 						</div>
+						
 <br>
 					<div id="photo_2_div">
 					
@@ -456,7 +462,7 @@ label {
 						</div>
 
 						</div>
-						<div class="row mt-1">	<div class="col-md-7">
+						<div class="row mt-1" id="Radio_2_div">	<div class="col-md-7">
 						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div>
 							<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="defaultChecked" name="photo_2_text_div_radio" onclick="upload_files(this)" /></div>
 						  <div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" value="No"  name="photo_2_text_div_radio" checked/></div>
@@ -494,7 +500,7 @@ label {
 						</div>
 
 						</div>
-						<div class="row mt-1">	<div class="col-md-7">
+						<div class="row mt-1" id="Radio_3_div">	<div class="col-md-7">
 						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div>
 						<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="defaultChecked" name="photo_3_text_div_radio" onclick="upload_files(this)" /></div>
 						<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" value="No"  name="photo_3_text_div_radio" checked/>
