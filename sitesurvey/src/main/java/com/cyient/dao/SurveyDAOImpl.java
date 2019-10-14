@@ -44,7 +44,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	//private static final Logger logger = Logger.getLogger(SurveyDAOImpl.class);
 	
-	static final Logger logger = Logger.getLogger("debugLogger");
+	static final Logger logger = Logger.getLogger("impLogger");
 
 
 	public void addUser(User user) {
