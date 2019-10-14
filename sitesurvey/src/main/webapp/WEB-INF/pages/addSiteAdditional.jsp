@@ -184,6 +184,7 @@ function getSiteAdditionalDetails(siteId){
             	$("#imaged1").hide();
             	$("#imaged2").hide();
             }
+            
             else
             {
             	$("#imaged1").show();
