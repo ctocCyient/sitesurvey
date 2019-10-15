@@ -246,4 +246,7 @@ public interface SurveyDAO {
 	
 	@Transactional
 	public String updateClosedStatus(String ticketId);
+
+	@Transactional
+	public List<Ticketing> getTicketingSiteIds();
 }

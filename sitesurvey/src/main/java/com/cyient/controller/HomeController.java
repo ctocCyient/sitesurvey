@@ -31,6 +31,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -669,8 +670,6 @@ public class HomeController {
 		String status="SMPS Added Successfully";
 		redirectAttributes.addFlashAttribute("status",status);
 
-		
-
 		if(submit.equals("Save for Later"))
 		{
 			return new ModelAndView("redirect:/home");
@@ -1220,9 +1219,12 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 			String selectedDistrict=request.getParameter("selectedDistrict");	
 			String selectedCity=request.getParameter("selectedCity");	
 			List<Site> siteIds=null;
+
+			List<Ticketing> TicketingSiteIds=null;
+			
 			try{
 			siteIds = surveyDAO.getSiteIdsForRegion(selectedRegion,selectedState,selectedDistrict,selectedCity);
-			}catch(Exception e){
+			TicketingSiteIds =  surveyDAO.getTicketingSiteIds();			}catch(Exception e){
 				homeLogger.error("While fetching the siteIds for region"+e);
 			}
 			List<String> listSiteIds=new ArrayList<String>();
@@ -1230,12 +1232,40 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 			{
 				listSiteIds.add(site.getSiteid());
 			}
+			List<String> TicketingListSiteIds =  new ArrayList<String>();
+			for(Ticketing ticket:TicketingSiteIds)
+			{
+				TicketingListSiteIds.add(ticket.getSiteids());
+			}
 			List<Object> listWithoutDuplicates = listSiteIds.stream().distinct().collect(Collectors.toList());
 		
-	        String totalJson = gsonBuilder.toJson(listWithoutDuplicates);
-		    return totalJson;
-	   
 
+			List<String> totalSiteIds =  new ArrayList<String>();
+						
+			List<String> List=new ArrayList<String>();
+			
+			for(int i=0;i<TicketingListSiteIds.size();i++){
+				
+				List.addAll(Arrays.asList(TicketingListSiteIds.get(i).split("\\s*,\\s*")));
+			}
+			
+			for(int i=0;i<listWithoutDuplicates.size();i++){
+				
+				if(List.contains(listWithoutDuplicates.get(i)))
+				{
+					System.out.println(listWithoutDuplicates.get(i));
+				}
+				else
+				{
+					totalSiteIds.add((String) listWithoutDuplicates.get(i));
+				}
+			}
+			
+			
+			
+	        String totalJson = gsonBuilder.toJson(totalSiteIds);
+		    return totalJson;
+		    
 			/*List<Regions> regions = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
 			 Map<String, String> citiesMap = new HashMap<String, String>();
 			 for(Regions region : regions)

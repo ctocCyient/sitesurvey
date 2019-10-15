@@ -2,7 +2,6 @@ package com.cyient.dao;
 
 import java.util.Calendar;
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -67,9 +66,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 		}
 		//System.out.println("ADDEDDDDSDGF");
 	}
-
-
-
+	
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsersOnCriteria(String username,String password,String type) {
 		Criteria c = sessionFactory.getCurrentSession().createCriteria(User.class);
@@ -295,6 +292,20 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Ticketing> getTicketingSiteIds(){
+		
+		List<Ticketing> data_list=null;
+		try{
+			return sessionFactory.getCurrentSession().createCriteria(Ticketing.class)
+					.list();
+		}
+		catch(Exception e){
+			impLogger.info("Function : SurveyDAOImpl -getTicketingSiteIds");
+			impLogger.error(e);
+		}
+		return data_list;
+	}
 
 	@SuppressWarnings("unchecked")
 	public String getUserName(String role, String username) {
@@ -496,6 +507,7 @@ public class SurveyDAOImpl implements SurveyDAO {
 
 		try {
 			data_list = sessionFactory.getCurrentSession().createQuery("from Technician where region='"+region+"' and city ='"+city+"' and manager ='"+username+"'").list();
+
 		} catch (Exception e) {
 			// TODO: handle exception
 			impLogger.info("Function : SurveyDAOImpl-getUnassignedTechniciansData");
@@ -1227,7 +1239,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 			impLogger.info("Function : SurveyDAOImpl-updateClosedStatus");
 			impLogger.error(e);
 		}
-
 		return "Updated";
 
 	}
