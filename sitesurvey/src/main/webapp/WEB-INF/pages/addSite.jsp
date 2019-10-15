@@ -22,7 +22,7 @@
 		   url = "/sitesurvey/";
 		      $( location ).attr("href", url);
    	}
-	   else if(role=="Admin" | role=="SuperAdmin")
+	   else if(role=="Admin" | role=="Manager")
 		   {
 		   
 		   }
@@ -61,7 +61,7 @@ WebFont.load({
 
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
+	  $("#superAdminSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
 
 	//  getRegions();
 		getSiteId();
@@ -348,6 +348,10 @@ label {
                 <form:select id="city" path="city" name="city" class="form-control input-full filled" >
 
                 </form:select>
+                
+                <br>
+                <label for="longitude" class="placeholder">Pin Code</label> 
+				<form:input id="pincode" path="pincode"  name="pincode" pattern="[0-9]{6}" maxlength="6" class="form-control input-full filled"  />
                
 				<div class="form-action">
 					<a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>

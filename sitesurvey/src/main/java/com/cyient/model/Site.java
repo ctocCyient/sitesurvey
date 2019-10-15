@@ -40,7 +40,18 @@ public class Site implements Serializable {
 	
 	@Column(name="Survey_Status")
 	private String surveyStatus;
-		
+
+	@Column(name="pincode")
+	private int pincode;	
+	
+	public int getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(int pincode) {
+		this.pincode = pincode;
+	}
+
 	public String getState() {
 		return state;
 	}
