@@ -59,18 +59,6 @@
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
-	<style>		
-.fa-bars,		
-.fa-ellipsis-v		
-{		
-color: #fff!important;		
-}		
-
-label {
-    color: #495057!important;
-    font-size: 13px!important;
-}
-</style>
 
 <script type="text/javascript">
 
@@ -326,6 +314,19 @@ else {
     border: 1px solid #ebecec;
 }
 
+
+.fa-bars,		
+.fa-ellipsis-v		
+{		
+color: #fff!important;		
+}		
+
+label {
+    color: #495057!important;
+    font-size: 13px!important;
+}
+
+
 </style>
 
 <body  class="login">
@@ -369,16 +370,14 @@ else {
 				<h3 class="text-center">Tower Audit</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				<form:form method="post" id="towerInstallationForm" modelAttribute="Tower_Installation" action="towerinstallation" enctype="multipart/form-data"   >
-				
+				<div class="login-form">		
 				<form:input type="hidden" path="id" id="tid" />
 				<form:input type="hidden"  path="" id="json" name="json" />
-				<div class="form-group ">
+			
 						<label for="siteid" class="placeholder"><b>Site Id</b>
 						</label>
 						<form:input id="siteid" path="siteid.siteid" class="form-control input-full" readonly="true" />
-					</div>
-				<div class="login-form">			
-					<div class="form-group ">
+					<br>
 						<label for="towertype" class="placeholder"><b>Tower Type</b></label>
 						<form:select id="towertype" path="towerType"  name="towerType"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -389,26 +388,23 @@ else {
 		                <form:option value="RTP">RTP</form:option>
 		                <form:option value="OTHER">Others-Camouflaged,ETC</form:option>
 		                </form:select>			
-					</div>
-					<div class="form-group ">
+					<br>
 						<label for="obnotes" class="placeholder"><b>Observation Notes- Structures corrision,Plinth,cracking/spalling,
 							<br>previous upgrade(metal jackets) or extension to top of structure</b>
 						</label>
 						<form:input id="obnotes" path="observationNotes" class="form-control input-full"  />				
 						<form:errors path="observationNotes" cssClass="error" />	
-					</div>
-					<div class="form-group ">
+					<br>
 						<label for="visualinspection1" class="placeholder"><b>Visual inspection:Any subsidence and/or undermining the foundation</b>
 						</label>
 						<form:input id="visualinspection1" path="virtualInspection" class="form-control input-full"  />	
 						<form:errors path="virtualInspection" cssClass="error" />				
-					</div>
-					<div class="form-group ">
+					<br>
 						<label for="visualinspection2" class="placeholder"><b>Visual inspection:Bent,twisted,cracked or missing members</b> </label>
 						<form:input id="visualinspection2" path="virtualInspection2" class="form-control input-full"  />
 						<form:errors path="virtualInspection2" cssClass="error" />					
-					</div>
-					<div class="form-group ">
+				<br>
+				
 						<label for="towercondition" class="placeholder"><b>Overall tower condition</b> </label>
 						<form:select id="towercondition" path="overallconditon"  name="overallconditon"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -422,180 +418,181 @@ else {
 		                </form:select>
 								<form:errors path="overallconditon" cssClass="error" />
 										
-					</div>
-					<div class="form-group ">
+					<br>
 						<label for="ticomments" class="placeholder"><b>Comments on available space for additional antennae </b></label>
 						<form:input id="ticomments" path="comments" class="form-control input-full"  />	
 						<form:errors path="comments" cssClass="error" />				
-					</div>
+				
+					<br>
 					
-					<div class="form-group ">
 						<label for="tirfantennae" class="placeholder"><b>Number of RF antennae</b> </label>
 						<form:input id="tirfantennae" path="noofRFAntennas" class="form-control input-full"  />			
 						<form:errors path="noofRFAntennas" cssClass="error" />		
-					</div>
-					<div class="form-group ">
+					<br>
 						<label for="timwantennae" class="placeholder"><b>Number of MW antennae </b></label>
 						<form:input id="timwantennae" path="noofMWAntenna" class="form-control input-full"  />	
 						<form:errors path="noofMWAntenna" cssClass="error" />				
-					</div>
-					
-					<div class="form-group ">
+				
+					<br>
 						<label for="tirrh" class="placeholder"><b>Number of RRH(Remote Radio Head)</b></label>
 						<form:input id="tirrh" path="noofRRH" class="form-control input-full"  />			
 						<form:errors path="noofRRH" cssClass="error" />		
-					</div>
+					<br>
 					
-							<div class="form-group " id="fileupload1">
+							<div  id="fileupload1">
 				
 							<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
 							<input type="file"  class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);" required /> 
-					<span class="isa_failure" id="image1">${errMsg}</span>
- 				 </div>
+							<span class="isa_failure" id="image1">${errMsg}</span>
+		 				 </div>
  	
- 				<div id="imagediv1">
- 					<div class="form-group" >
-  						<label for="Site photo1" class="placeholder" > Photo1</label>
+ 					<div id="imagediv1">
+ 					
+  						<label for="Site photo1" class="placeholder" ><b>Photo 1</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
-  				</div>
-  				<div id="cnfrmr1">
-  				   <div class="row mt-1">   
-  				 	<div class="col-md-7">
-                  		<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
-                  	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
-                  	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
-                 	</div>
-                  </div>
+  					
+  						</div>
+		  				<div id="cnfrmr1">
+		  				   <div class="row mt-1">   
+		  				 	<div class="col-md-7">
+		                  		<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+		                  	</div>
+		                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
+		                  	</div>
+		                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
+		                 	</div>
+		                  </div>
  	
- 				</div>
-				<div class="form-group " id="fileupload2">
-				
-				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b></label>
+ 						</div>
+ 						<br>
+						<div id="fileupload2">
+						
+						<label for="Upload Image" class="placeholder" ><b>Photo 2 </b></label>
 							<input type="file"  class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
-					<span class="isa_failure" id="image2">${errMsg}</span>
-  				</div>
-  				
-  				<div id="imagediv2">
- 					<div class="form-group" >
-  						<label for="photo2" class="placeholder" > Photo2</label>
+						<span class="isa_failure" id="image2">${errMsg}</span>
+	  					</div>
+	  				
+  						<div id="imagediv2">
+ 					
+  						<label for="photo2" class="placeholder" ><b>Photo 2</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
-  					</div>
-  				<div id="cnfrmr2">
-  				   <div class="row mt-1">   
-  				 	<div class="col-md-7">
-                  		<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br>
-                  	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
-                  	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno2"  value="No"  name="rdbtn2" checked/>
-                 	</div>
-                  </div>
- 	
- 				</div>
- 	
-				<div class="form-group " id="fileupload3" >
+  					
+  						</div>
+		  				<div id="cnfrmr2">
+		  				   <div class="row mt-1">   
+		  				 	<div class="col-md-7">
+		                  		<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+		                  	</div>
+		                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
+		                  	</div>
+		                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno2"  value="No"  name="rdbtn2" checked/>
+		                 	</div>
+		                  </div>
+		 	
+		 				</div>
+ 	<br>
+						<div  id="fileupload3" >
+						
+						<label for="Upload Image" class="placeholder" ><b>Photo 3</b> </label>
+									<input type="file" class="form-control input-border-bottom" id="img3"   name="file" onchange="ValidateImage(this.id);"  /> 
+							<span class="isa_failure" id="image3">${errMsg}</span>
+							</div>
+							
+						<div id="imagediv3">
+	 					
+	  						<label for=" photo3" class="placeholder" ><b>Photo 3</b></label>
+	  						<div class="row mt-1" >
+	  						<div class="col-md-9">
+	  						<form:input type="text" id="imaget3" path="" class="form-control input-full"   readonly="true"  />
+	  						</div>	
+	  						<div class="col-md-3 " >
+	  						<form:input type="button" id="imageb3" path="" value="View Image " onclick="ViewImage(this.id)"  class="btn btn-info form-control input-full"   />	
+	  						</div>
+	  						</div>
+	  				
+	  					</div>
+		  				<div id="cnfrmr3">
+		  				   <div class="row mt-1">   
+		  				 	<div class="col-md-7">
+		                  		<label for="Radio_3" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+		                  	</div>
+		                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes3" name="rdbtn3" onclick="upload_files(this)" />
+		                  	</div>
+		                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno3"  value="No"  name="rdbtn3" checked/>
+		                 	</div>
+		                  </div>
+		 	
+		 				</div>
+					
+					
+					
+					<br>
+					<div id="fileupload4">
 				
-				<label for="Upload Image" class="placeholder" ><b>Photo 3</b> </label>
-							<input type="file" class="form-control input-border-bottom" id="img3"   name="file" onchange="ValidateImage(this.id);"  /> 
-					<span class="isa_failure" id="image3">${errMsg}</span>
-					</div>
-					
-					<div id="imagediv3">
- 					<div class="form-group" >
-  						<label for=" photo3" class="placeholder" > Photo3</label>
-  						<div class="row mt-1" >
-  						<div class="col-md-9">
-  						<form:input type="text" id="imaget3" path="" class="form-control input-full"   readonly="true"  />
-  						</div>	
-  						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb3" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
-  						</div>
-  						</div>
-  					</div>
-  					</div>
-  				<div id="cnfrmr3">
-  				   <div class="row mt-1">   
-  				 	<div class="col-md-7">
-                  		<label for="Radio_3" class="placeholder" ><b>Do you want to upload Image</b></label><br>
-                  	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes3" name="rdbtn3" onclick="upload_files(this)" />
-                  	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno3"  value="No"  name="rdbtn3" checked/>
-                 	</div>
-                  </div>
- 	
- 				</div>
-					
-					
-					
-					
-					<div class="form-group " id="fileupload4">
-				
-				<label for="Upload Image" class="placeholder" ><b>Photo 4</b></label>
-							<input type="file"  class="form-control input-border-bottom" id="img4"   name="file"  onchange="ValidateImage(this.id);"  /> 
-					<span class="isa_failure" id="image4">${errMsg}</span>
-					</div>
+					<label for="Upload Image" class="placeholder" ><b>Photo 4</b></label>
+								<input type="file"  class="form-control input-border-bottom" id="img4"   name="file"  onchange="ValidateImage(this.id);"  /> 
+						<span class="isa_failure" id="image4">${errMsg}</span>
+						</div>
  				<div id="imagediv4">
- 					<div class="form-group" >
-  						<label for="photo4" class="placeholder" > Photo4</label>
+ 				
+  						<label for="photo4" class="placeholder" ><b>Photo 4</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget4" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb4" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb4" path="" value="View Image " onclick="ViewImage(this.id)"  class="btn btn-info form-control input-full"   />	
   						</div>
   						</div>
+  				
   					</div>
-  					</div>
-  				<div id="cnfrmr4">
-  				   <div class="row mt-1">   
-  				 	<div class="col-md-7">
-                  		<label for="Radio_4" class="placeholder" ><b>Do you want to upload Image</b></label><br>
-                  	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes4" name="rdbtn4" onclick="upload_files(this)" />
-                  	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno4"  value="No"  name="rdbtn4" checked/>
-                 	</div>
-                  </div>
- 	
- 				</div>
- 
+	  				<div id="cnfrmr4">
+	  				   <div class="row mt-1">   
+	  				 	<div class="col-md-7">
+	                  		<label for="Radio_4" class="placeholder" ><b>Do you want to upload Image</b></label><br>
+	                  	</div>
+	                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes4" name="rdbtn4" onclick="upload_files(this)" />
+	                  	</div>
+	                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno4"  value="No"  name="rdbtn4" checked/>
+	                 	</div>
+	                  </div>
+	 	
+	 				</div>
+	 
 		
- 					
+ 					<br>
 				<div class="form-action" id="new_submit" >
-				 <input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #E4002B;color: white;">  
+				<a href="newCabinet" class="btn btn-rounded btn-login btn-warning">Previous</a>
+				 <input type="submit"  class="btn btn-rounded btn-login btn-danger" value="Save for Later" name="btn" style="background-color: #E4002B;color: white;">  
 					
  					<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				
  				
-				 <input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">  
+				 <input type="submit" class="btn btn-rounded btn-login btn-primary" value="Next" name="btn" style="background-color: #012169;color: white;">  
 					
  					<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				</div>
- 
+				 </div>
+				 </form:form>
+				</div>			
+			
+					
 				</div>
-				</form:form>				
-			</div>
-	</div>
+			
    <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 	<script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>

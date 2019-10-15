@@ -55,18 +55,7 @@
 <script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
 <link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
-	<style>		
-.fa-bars,		
-.fa-ellipsis-v		
-{		
-color: #fff!important;		
-}		
-
-label {
-    color: #495057!important;
-    font-size: 13px!important;
-}
-</style>
+	
 
 <script type="text/javascript">
 
@@ -287,6 +276,17 @@ else {
     border: 1px solid #ebecec;
 }
 
+.fa-bars,		
+.fa-ellipsis-v		
+{		
+color: #fff!important;		
+}		
+
+label {
+    color: #495057!important;
+    font-size: 13px!important;
+}
+
 </style>
 
 <body  class="login">
@@ -332,20 +332,20 @@ else {
 				<form:form method="post" id="securityform" modelAttribute="Site_Security" action="sitesecurity" enctype="multipart/form-data"   >
 				<form:input type="hidden" path="id" id="securityid" />
 				<form:input type="hidden"  path="" id="json" name="json" />
-				<div class="form-group ">
+			
 						<label for="siteid" class="placeholder"><b>Site Id</b>
 						</label>
 						<form:input id="siteid" path="siteid.siteid" class="form-control input-full" readonly="true" />
-					</div>
-				<div class="form-group ">
+				
+				<br>
 						<label for="obnotes" class="placeholder"><b>Observation / Comment - Presence of fence,locks,alarm system, other security</b>
 				
 						</label>
 						
 						<form:input id="obnotes" path="observations" class="form-control input-full"  />				
 						<form:errors path="observations" cssClass="error" />	
-					</div>
-				<div class="form-group ">
+					
+				<br>
 						<label for="securitycondition" class="placeholder"><b>What is the overall security Condition?</b> </label>
 						<form:select id="securitycondition" path="securityCondition"  name="overallconditon"  class="form-control input-full filled" >
 		                <form:option value="Select">Select</form:option>
@@ -359,75 +359,77 @@ else {
 		                </form:select>
 								<form:errors path="securityCondition" cssClass="error" />
 										
-					</div>
-						
-				<div class="form-group " id="fileupload1">
+					
+				<br>		
+				<div id="fileupload1">
 				<label for="Upload Image" class="placeholder" ><b>Photo 1 </b></label>
 				<input type="file"  class="form-control input-border-bottom"  id="img1" name="file" onchange="ValidateImage(this.id);"  /> 
 				<span class="isa_failure" id="image0">${errMsg}</span>
   				</div>
   					<div id="imagediv1">
- 					<div class="form-group" >
-  						<label for="Security photo1" class="placeholder" > Photo1</label>
+ 					
+  						<label for="Security photo1" class="placeholder" ><b>Photo 1</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget1" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb1" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  				
   				</div>
   				<div id="cnfrmr1">
   				   <div class="row mt-1">   
   				 	<div class="col-md-7">
                   		<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
+                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
                   	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
+                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
                  	</div>
                   </div>
  	
  				</div>
- 				<div class="form-group " id="fileupload2">
-				<label for="Upload Image" class="placeholder" ><b>Photo 2 </b> </label>
+ 				<br>
+ 				<div  id="fileupload2">
+				<label for="Upload Image" class="placeholder" ><b>Photo 2</b></label>
 				<input type="file" class="form-control input-border-bottom"  id="img2"  name="file"  onchange="ValidateImage(this.id);"/> 
 					<span class="isa_failure" id="image1">${errMsg}</span>
   				</div>
   				<div id="imagediv2">
- 					<div class="form-group" >
-  						<label for="photo2" class="placeholder" > Photo2</label>
+ 					
+  						<label for="photo2" class="placeholder" ><b>Photo 2</b></label>
   						<div class="row mt-1" >
   						<div class="col-md-9">
   						<form:input type="text" id="imaget2" path="" class="form-control input-full"   readonly="true"  />
   						</div>	
   						<div class="col-md-3 " >
-  						<form:input type="button" id="imageb2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full"   />	
+  						<form:input type="button" id="imageb2" path="" value="View Image " onclick="ViewImage(this.id)"  class="form-control input-full btn btn-info"   />	
   						</div>
   						</div>
-  					</div>
+  					
   					</div>
   				<div id="cnfrmr2">
   				   <div class="row mt-1">   
   				 	<div class="col-md-7">
                   		<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br>
                   	</div>
-                  		<div class="col-md-3">Yes<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
+                  		<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes2" name="rdbtn2" onclick="upload_files(this)" />
                   	</div>
-                  	<div class="col-md-2">No<input type="radio" onclick="upload_files(this)" id="rdno2"  value="No"  name="rdbtn2" checked/>
+                  	<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno2"  value="No"  name="rdbtn2" checked/>
                  	</div>
                   </div>
  	
  				</div>
  						<div class="form-action" id="new_submit" >
-				 		<input type="submit"  class="btn btn-rounded btn-login" value="Save" name="btn" style="background-color: #E4002B;color: white;">  
+ 						<a href="fetchtowerinstallation" class="btn btn-rounded btn-login btn-warning">Previous</a>
+				 		<input type="submit"  class="btn btn-rounded btn-login btn-danger" value="Save for Later" name="btn" style="background-color: #E4002B;color: white;">  
 					
  						<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  				
  				
-				 		<input type="submit" class="btn btn-rounded btn-login" value="Save & Continue" name="btn" style="background-color: #012169;color: white;">  
+				 		<input type="submit" class="btn btn-rounded btn-login btn-primary" value="Next" name="btn" style="background-color: #012169;color: white;">  
 					
  							<!-- <input type="submit"  value="Save" class="btn btn-primary btn-rounded btn-login">  -->
  							</div>

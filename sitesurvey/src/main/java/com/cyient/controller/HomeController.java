@@ -31,6 +31,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,8 +65,10 @@ import com.google.gson.GsonBuilder;
 
 @Controller
 public class HomeController {
-	private static final Logger logger = Logger
-			.getLogger(HomeController.class);
+	private static final Logger homeLogger = Logger
+			.getLogger("homeLogger");
+	
+	//static final Logger homeLogger = Logger.getLogger("reportsLogger");
 
 	public HomeController() {
 		System.out.println("HomeController()");
@@ -76,78 +79,131 @@ public class HomeController {
 	private SurveyDAO surveyDAO;
 	
 	
-	Gson gson = new Gson();
+	Gson gsonBuilder = new GsonBuilder().create();
 	
 	@Autowired
 	private JavaMailSender mailSender;
 	
 	@RequestMapping(value = "/openTickets")
 	public ModelAndView openTickets(ModelAndView model) throws IOException {
+		homeLogger.info("In open tickets");
+		try{
 		model.setViewName("openTickets");
+		}
+		catch(Exception e){
+			homeLogger.error("In Open Tickets"+e);
+		}
 		return model;
 	}
 
 	@RequestMapping(value = "/assignedTickets")
 	public ModelAndView assignedTickets(ModelAndView model) throws IOException {
+		homeLogger.info("In Assigned tickets");
+		try{
 		model.setViewName("assignedTickets");
+		}catch(Exception e){
+			homeLogger.error("In Assigned Tickets"+e);
+		}
 		return model;
 	}
 	
 	@RequestMapping(value = "/historyTickets")
 	public ModelAndView historyTickets(ModelAndView model) throws IOException {
+		homeLogger.info("In History tickets");
+		try{
 		model.setViewName("historyTickets");
-		return model;
+		}catch(Exception e){
+			homeLogger.error("In History Tickets"+e);
+		}return model;
 	}
 		
 	@RequestMapping(value = "/totalTickets")
 	public ModelAndView totalTickets(ModelAndView model) throws IOException {
+		homeLogger.info("In open tickets");
+		try{
 		model.setViewName("totalTickets");
+		}catch(Exception e){
+			homeLogger.error("In Total ticket"+e);
+		}
 		return model;
 	}
 	
 	@RequestMapping(value = "/newTicket")
 	public ModelAndView newTicket(ModelAndView model) throws IOException {
+		homeLogger.info("In new ticket");
 		Ticketing ticketing=new Ticketing();
 		model.addObject("Ticketing", ticketing);
+		try{
 		model.setViewName("createTicket");
+		}
+		catch(Exception e){
+			homeLogger.info("In New Ticket"+e);
+		}
 		return model;
 	}
 
 	@RequestMapping(value="/newGenerator")
 	public ModelAndView newGenerator(ModelAndView model) throws IOException{
+		homeLogger.info("In New Generator ");
 		Site_Generator generator=new Site_Generator();
 		model.addObject("Site_Generator",generator);
+		try{
 		model.setViewName("addGenerator");
+		}
+		catch(Exception e){
+			homeLogger.error("In New Generator"+e);
+		}
 		return model;
 	}
 	
 	
 	@RequestMapping(value="/newSMPS")
 	public ModelAndView newSMPS(ModelAndView model) throws IOException{
+		homeLogger.info("In New Smps ");
 		Site_SMPS smps=new Site_SMPS();
 		model.addObject("Site_SMPS",smps);
+		try{
 		model.setViewName("addSMPS");
+		}
+		catch(Exception e){
+			homeLogger.error("In New Smps"+e);
+		}
 		return model;
 	}
 	
 	@RequestMapping(value="/newBB")
 	public ModelAndView newBB(ModelAndView model) throws IOException{
+		homeLogger.info("In NewBB ");
 		Site_Battery_Bank BB=new Site_Battery_Bank();
 		model.addObject("Site_Battery_Bank",BB);
+		try{
 		model.setViewName("addBB");
+		}
+		catch(Exception e){
+			homeLogger.error("In NewBB "+e);
+		}
 		return model;
 	}
 	
 	@RequestMapping(value="/newCabinet")
 	public ModelAndView newCabinet(ModelAndView model) throws IOException{
+		
+		homeLogger.info("In New Cabinet ");
 		Site_Cabinet BB=new Site_Cabinet();
 		model.addObject("Site_Cabinet",BB);
+		try{
 		model.setViewName("addCabinet");
+		}catch(Exception e){
+			homeLogger.error("In New Cabinet"+e);
+		}
 		return model;
 	}
 	
 	@RequestMapping(value = "/saveTechnician", method = RequestMethod.POST)
 	public ModelAndView saveTechnician(@ModelAttribute final Technician technician,RedirectAttributes redirectAttributes) throws MessagingException {
+		
+		homeLogger.info("In Save Technician ");
+		
 		String status="Technician Added Successfully";
 
 		final JSONArray json=new JSONArray();
@@ -161,14 +217,31 @@ public class HomeController {
 			user.setRegion(technician.getRegion());
 			user.setCreatedDate(technician.getCreatedDate());
 			user.setRole("FieldTechnician");
+			try{
     	   surveyDAO.addTechnician(technician);
+			}
+			catch(Exception e){
+				homeLogger.error("While Adding Technician"+e);
+			}
+			try{
     	   surveyDAO.addTechnicianIntoUsers(user);
+			}
+			catch(Exception e){
+				homeLogger.error("While Adding technician into user"+e );
+			}
     	   System.out.println("Manager+++++++++++++++"+technician.getManager());
+    	   try{
 		   managerId=surveyDAO.getManagerId(technician.getManager());
+    	   }
+    	   catch(Exception e){
+    		   homeLogger.error("While fetching Manager "+e);
+    	   }
 		   final String managerName=technician.getManager();
 		   final String managerEmailId=managerId.substring(1, managerId.length()-1);
 		   System.out.println("mail::::"+mailSender);
+		   try{
         	List<User> ManagerDetails=surveyDAO.getManagerDetails(technician.getManager());
+		  
 		   final List<String> managerDet=new ArrayList<String>();
 			for(User det:ManagerDetails)
 			{
@@ -199,7 +272,10 @@ public class HomeController {
 		    	    message.setText("Dear <b>" + technician.getTechnicianName() +"</b> ,<br>You were registered as a Technicinan. <br>Please <a href='http://ctoceu.cyient.com:3290/RFIDAssetTracking/'>login</a> for other details with credetials:<br> <b>Username</b>: "+technician.getTechnicianName()+"<br><b>Password</b>:"+technician.getPassword()+"", true);
 		    	  }
 		    	});
-		      
+		   }
+		   catch(Exception e){
+			   homeLogger.error("While fetching Manager Details"+e);
+		   }
 		      redirectAttributes.addFlashAttribute("status", status);
 			return new ModelAndView("redirect:/newTechnician");
 	}
@@ -207,6 +283,7 @@ public class HomeController {
 	 @RequestMapping(value = "/saveCreatedTicket", method = RequestMethod.POST)
 		public ModelAndView saveTicket(@ModelAttribute Ticketing ticket,RedirectAttributes redirectAttributes) {
 		
+		 homeLogger.info("In Save Created ticket ");
 
 		  List<String> siteList = Arrays.asList(ticket.getSiteid().split(","));
 		
@@ -224,8 +301,12 @@ public class HomeController {
 			 ticketing.setTicketStatus("Open");	
 			 ticketing.setSurveyStatus("Open");
 			 ticketing.setTicketDescription(ticket.getTicketDescription());
+			 try{
 			 surveyDAO.addTicket(ticketing);
+		 }catch(Exception e){
+			 homeLogger.error("While Adding Ticket"+e);
 		 }
+			 }
 		 
 		 	
 			String status="Ticket Created Successfully";
@@ -236,13 +317,19 @@ public class HomeController {
    @RequestMapping(value="getUnassignedTechnicians", method = RequestMethod.GET)
     @ResponseBody
     public String  getTechniciansData(ModelAndView model,HttpServletRequest request) {
+	   homeLogger.info("In Get Unassigned Techinicians ");
     	 String region=request.getParameter("region");
     	 String city=request.getParameter("city");
+    	 String techniciansJson="";
     	 System.out.println("city :::"+city);
+    	 try{
 		List<Technician> listTechnicians = surveyDAO.getUnassignedTechniciansData(region,city);
 		System.out.println(listTechnicians);
-	   Gson gsonBuilder = new GsonBuilder().create();
-	   String techniciansJson = gsonBuilder.toJson(listTechnicians);
+		    techniciansJson = gsonBuilder.toJson(listTechnicians);
+    	 }catch(Exception e){
+    		 homeLogger.error("While fetching get unassigned ticket"+e);
+    	 }
+		
           return techniciansJson.toString();
     }
     
@@ -250,6 +337,8 @@ public class HomeController {
     @RequestMapping(value="/assignTechnician", method = RequestMethod.GET)
     @ResponseBody
 	public String assignTechnician(HttpServletRequest request) throws MessagingException {	
+    	
+    	 homeLogger.info("In Assign technician ");
     	
     	 String selectedTechnicianId=request.getParameter("technicianId");
     	 
@@ -259,6 +348,7 @@ public class HomeController {
     	
     	 String selectedTicketNum=request.getParameter("ticketId");
     	 
+    	 try{
     	 List<Ticketing> ticketData = surveyDAO.getTicketsData(selectedTicketNum);
     	 
 //    	 System.out.println("Ticket1"+ticketData.get(0).getId());
@@ -294,10 +384,18 @@ public class HomeController {
         	 technicianTicket.setOpenDate(ticket.getOpenDate());
         	 technicianTicket.setOpenTime(ticket.getOpenTime());  
         	 technicianTicket.setTicketDescription(ticket.getTicketDescription());    
-        	 
+        	 	try{
         	  status= surveyDAO.assignTechnician(technicianTicket);
+        	 	}catch(Exception e){
+        	 		homeLogger.error("while fetching the status of the technician ticket "+e);
+        	 	}
+        	 	try{
         	  statusUpdate =surveyDAO.updateTicketingStatus(ticketId,ticket.getSiteid());
-	      }
+      	 	}catch(Exception e){
+      	 		homeLogger.error("While fetching the statusupdate of the ticket"+e);
+      	 	}
+        	 	}
+		
     	// if (technicianTicket.getSiteid() != null) { 			
 			if(status.equalsIgnoreCase("Assigned")&&statusUpdate.equalsIgnoreCase("Assigned"))
 			{
@@ -312,7 +410,10 @@ public class HomeController {
 			      	});
 //			}
 			}
-    	
+    	 }
+    	 catch(Exception e){
+    		 homeLogger.error("While fetching tickets data "+e);
+    	 }
     	return "Assigned";		
 	}
       
@@ -320,32 +421,50 @@ public class HomeController {
 	
 	@RequestMapping(value = "/newUser", method = RequestMethod.GET)
 	public ModelAndView newUser(ModelAndView model) {
+		 homeLogger.info("In New User ");
 		User user = new User();
 		model.addObject("User", user);
+		try{
 		model.setViewName("userReg");
-		return model;
+		}
+		catch(Exception e){
+			homeLogger.error("In User Reg"+e);
+		}return model;
 	}
     
 	@RequestMapping(value = "/newTechnician", method = RequestMethod.GET)
 	public ModelAndView newTechnician(ModelAndView model) {
+		 homeLogger.info("In New Technician ");
 		Technician technician = new Technician();
 		model.addObject("Technician", technician);
+		try{
 		model.setViewName("technicianReg");
+		}catch(Exception e){
+			homeLogger.error("In New Technician"+e);
+		}
 		return model;
 	}
 	
 	@RequestMapping(value = "/newSite", method = RequestMethod.GET)
 	public ModelAndView newSite(ModelAndView model) {
+		 homeLogger.info("In New Site ");
 		Site site = new Site();
 		model.addObject("Site", site);
+		try{
 		model.setViewName("addSite");
+		}catch(Exception e){
+			homeLogger.error("In new Site"+e);
+		}
 		return model;
 	}
 	
 	@RequestMapping(value = "/ValidateLatLong", method = RequestMethod.GET)
 	@ResponseBody
 	public String ValidateLatLong(ModelAndView model,HttpServletRequest request){
-			if(surveyDAO.ValidateLatLong(request.getParameter("latitude"), request.getParameter("longitude")).size()>0)
+		
+		 homeLogger.info("In Validate LatLong ");
+		try{
+		if(surveyDAO.ValidateLatLong(request.getParameter("latitude"), request.getParameter("longitude")).size()>0)
 		{
 			return "Existing";
 		}
@@ -353,16 +472,25 @@ public class HomeController {
 		{
 			return "New";
 		}
+		}
+		catch(Exception e){
+			homeLogger.error("In Validate Lat Long"+e);
+		}
 		
-		
-		
+		return null;
 	}
 	
 	@RequestMapping(value = "/saveSite", method = RequestMethod.POST)
 	public ModelAndView saveSiter(@ModelAttribute Site site,RedirectAttributes redirectAttributes) {
+	
+		 homeLogger.info("In Save Site ");
 		String status="Site Added Successfully";
 		if (site.getSiteid() !=null) { 
+			try{
 			surveyDAO.addSite(site);
+			}catch(Exception e){
+				homeLogger.error("While adding site"+e);
+			}
 		} 
 		redirectAttributes.addFlashAttribute("status", status);
 		return new ModelAndView("redirect:/newSite");
@@ -373,6 +501,7 @@ public class HomeController {
 	public ModelAndView saveGenerator(@Valid @ModelAttribute("Site_Generator") Site_Generator generator , BindingResult br , ModelAndView model, @RequestParam("file") MultipartFile[] multipart,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,HttpServletRequest request) throws IOException{
 		
+		 homeLogger.info("In Save Generator ");
 		
 		/*if(br.hasErrors())
 		{
@@ -406,6 +535,7 @@ public class HomeController {
 			
 			if(multipart[i].isEmpty()){
 				
+				try{
 				//Object s="setSite_photo"+i;
 				List<Site_Generator> generatorList=surveyDAO.getGeneratorDetails(generator.getSiteid().getSiteid());
 				if(i==0){
@@ -432,6 +562,9 @@ public class HomeController {
 					generator.setTag_photo(generatorList.get(0).getTag_photo());
 					generator.setTag_photo_name(generatorList.get(0).getTag_photo_name());
 				}
+			}catch(Exception e){
+				homeLogger.error("While fetching Genarator list"+e);
+			}
 			}
 			else{
 				if(i==0){
@@ -460,11 +593,14 @@ public class HomeController {
 		}
 		
 		String status="Generator Added Successfully";
+		try{
 		surveyDAO.addGenerator(generator);
-
+		}catch(Exception e){
+			homeLogger.error("While adding genarator"+e );
+		}
 		redirectAttributes.addFlashAttribute("status",status);
 		
-		if(submit.equals("Save & Continue"))
+		if(submit.equals("Next"))
 		{
 
 			/*model.addObject("siteId", siteId);
@@ -472,9 +608,9 @@ public class HomeController {
 			return new ModelAndView("redirect:/newSMPS");
 			
 		}
-		else if(submit.equals("Save") || submit.equals("Add"))
+		else if(submit.equals("Save for Later") || submit.equals("Add"))
 		{
-			return new ModelAndView("redirect:/newGenerator");
+			return new ModelAndView("redirect:/home");
 			
 		}
 		return model;
@@ -484,6 +620,7 @@ public class HomeController {
 	@RequestMapping(value="/saveSMPS" , method=RequestMethod.POST)
 	public ModelAndView saveSMPS(@ModelAttribute("Site_SMPS") Site_SMPS smps, @RequestParam("file") MultipartFile[] multipart ,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes,ModelAndView model){
 
+		 homeLogger.info("In Save SMPS ");
 		int id=smps.getId();
 		try {
 			
@@ -492,6 +629,7 @@ public class HomeController {
 				if(multipart[i].isEmpty()){
 					
 					//Object s="setSite_photo"+i;
+					try{
 					List<Site_SMPS> smpsList=surveyDAO.getSMPSDetails(smps.getSiteid().getSiteid());
 					if(i==0){
 						System.out.println("in i=1");
@@ -503,6 +641,9 @@ public class HomeController {
 						smps.setObservation_2(smpsList.get(0).getObservation_2());
 						smps.setObservation_2_Name(smpsList.get(0).getObservation_2_Name());
 					}
+				}catch(Exception e){
+					homeLogger.error("While Fetching SMPS Details"+e);
+				}
 				}
 				else{
 					if(i==0){
@@ -520,16 +661,19 @@ public class HomeController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		try{
 		surveyDAO.addSMPS(smps);
+		}catch(Exception e){
+			homeLogger.error("While adding smps "+e);
+		}
 		String status="SMPS Added Successfully";
 		redirectAttributes.addFlashAttribute("status",status);
 
-		if(submit.equals("Save"))
+		if(submit.equals("Save for Later"))
 		{
 			return new ModelAndView("redirect:/home");
 		}
-		else if(submit.equals("Save & Continue"))
+		else if(submit.equals("Next"))
 		{
 			return new ModelAndView("redirect:/newBB");
 		}
@@ -545,8 +689,8 @@ public class HomeController {
 		String siteId=request.getParameter("siteId");
 		String ticketId=request.getParameter("ticketId");
 		List<Site_SMPS> siteSMPSList=surveyDAO.getSMPSDetails(siteId);
-		Gson gson=new GsonBuilder().create();
-		String siteSMPSJson=gson.toJson(siteSMPSList);
+	
+		String siteSMPSJson=gsonBuilder.toJson(siteSMPSList);
 		return siteSMPSJson.toString();
 	}
 	
@@ -556,21 +700,27 @@ public class HomeController {
 	{
 		String siteId=request.getParameter("siteId");
 		List<Site_Generator> siteGeneratorList=surveyDAO.getGeneratorDetails(siteId);
-		Gson gson=new GsonBuilder().create();
-		String siteGeneratorJson=gson.toJson(siteGeneratorList);
+		
+		String siteGeneratorJson=gsonBuilder.toJson(siteGeneratorList);
 		return siteGeneratorJson.toString();
 
 	}
 
 	@RequestMapping(value = "/saveBB", method = RequestMethod.POST)
 	public ModelAndView saveBB(@ModelAttribute Site_Battery_Bank BB,@RequestParam("photos") MultipartFile[] tag_photo,@RequestParam("submit") String submit,RedirectAttributes redirectAttributes) throws IOException {
+		 homeLogger.info("In Save BB ");
+		
 		System.out.println("save bb calling" + tag_photo.length);
 		String status = "Battery Bank Added Successfully";
 		Site_Battery_Bank obj = new Site_Battery_Bank();
 
 	
 if(BB.getId()!=0){
+	try{
 	obj= surveyDAO.getBB(BB.getSiteid().getSiteid()).get(0);
+	}catch(Exception e){
+		homeLogger.error("While fetching BB details"+e );
+	}
 }
 
 		// saggrigation of files
@@ -609,11 +759,15 @@ if(BB.getId()!=0){
 			BB.setTag_photo2_Name(tag_photo[2].getOriginalFilename());			
 		}
 		System.out.println("BB id"+BB.getId());
+		try{
 		surveyDAO.addBB(BB);
+		}catch(Exception e){
+			homeLogger.error("While adding BB"+e);
+		}
 		redirectAttributes.addFlashAttribute("status", status);
-		if (submit.equals("Save")) {
+		if (submit.equals("Save for Later")) {
 			return new ModelAndView("redirect:/home");
-		} else if (submit.equals("Save & Continue")) {
+		} else if (submit.equals("Next")) {
 			return new ModelAndView("redirect:/newCabinet");
 		} else {
 			return new ModelAndView("redirect:/");
@@ -626,6 +780,8 @@ if(BB.getId()!=0){
 	public ModelAndView saveCabinet(@ModelAttribute Site_Cabinet BB, @RequestParam("updatetype") String updatetype,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,
 			@RequestParam(name = "tag_photo") MultipartFile[] tag_photo) throws IOException {
+		 homeLogger.info("In Save Cabinet ");
+		
 		String status = "Cabinet Added Successfully";
 		Site_Cabinet obj = new Site_Cabinet();
 		/*System.out.println(updatetype);
@@ -640,7 +796,11 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		}
 		else
 		{
+			try{
 			obj= surveyDAO.getCabinet(BB.getSiteid().getSiteid()).get(0);
+			}catch(Exception e){
+				homeLogger.error("While fetching Cabinet Details"+e);
+			}
 		}
 
 		if(updatetype.split(";")[2].contains("Yes"))
@@ -665,12 +825,16 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 			BB.setPhoto_2_Name(obj.getPhoto_2_Name());
 		}
 		
+		try{
 		surveyDAO.addCabinet(updatetype,BB);
+		}catch(Exception e){
+			homeLogger.error("While adding Cabinet"+e);
+		}
 		redirectAttributes.addFlashAttribute("status", status);
 
-		if (submit.equals("Save")) {
+		if (submit.equals("Save for Later")) {
 			return new ModelAndView("redirect:/home");
-		} else if (submit.equals("Save & Continue")) {
+		} else if (submit.equals("Next")) {
 			return new ModelAndView("redirect:/fetchtowerinstallation");
 		} else {
 			return new ModelAndView("redirect:/");
@@ -680,8 +844,16 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	@RequestMapping(value = "/getBBData", method = RequestMethod.GET)
 	@ResponseBody
 	public String getBB(HttpServletRequest request) {
+		
+		 homeLogger.info("In Get BB Data");
+		 String siteSMPSJson ="";
+		try{
 		List<Site_Battery_Bank> obj = surveyDAO.getBB(request.getParameter("siteid"));
-		String siteSMPSJson = gson.toJson(obj);
+		 siteSMPSJson = gsonBuilder.toJson(obj);
+		}
+		catch(Exception e){
+			homeLogger.error("While fetching the Batery Bank Details"+e);
+		}
 		return siteSMPSJson.toString();
 
 	}
@@ -689,9 +861,16 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	@RequestMapping(value = "/getCabinetData", method = RequestMethod.GET)
 	@ResponseBody
 	public String getCabinetData(HttpServletRequest request) {
-		List<Site_Cabinet> obj = surveyDAO.getCabinet(request.getParameter("siteid"));
-		String siteSMPSJson = gson.toJson(obj);
-		return siteSMPSJson.toString();
+		
+		 homeLogger.info("In Get Cabinet Data");
+		 String siteSMPSJson="";
+		 try{
+		 List<Site_Cabinet> obj = surveyDAO.getCabinet(request.getParameter("siteid"));
+		 siteSMPSJson = gsonBuilder.toJson(obj);
+		 }catch(Exception e){
+			 homeLogger.error("While fetching the cabinet details"+e);
+		 }
+		 return siteSMPSJson.toString();
 
 	}
 	
@@ -701,17 +880,27 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	 @ResponseBody
 	 public String getLastTicketId(HttpServletRequest request){
 		
+		 homeLogger.info("In Get Last Ticket Id");
+		 String executiveJson="";
+		 try{
 		 List<Ticketing> ticketList=surveyDAO.getTicketId();
-		 Gson gsonBuilder=new GsonBuilder().create();
-		 String executiveJson=gsonBuilder.toJson(ticketList);
-		 return executiveJson.toString();
+		  executiveJson=gsonBuilder.toJson(ticketList);
+		 }
+		 catch(Exception e){
+			 homeLogger.error("While fetching the ticket list"+e);
+		 }
+		  return executiveJson.toString();
 		 
 	 }
 
 	 
 	   @ModelAttribute("regionsList")	
 	   public Map<String, String> getRegions() {
+		   
+		   homeLogger.info("In Get Region list");
+		   
 	      Map<String, String> regionsMap = new HashMap<String, String>();
+	      try{
 	      List<Regions> regions = surveyDAO.getRegions();
 	  
 //	      for(int i=0;i<regions.size();i++){
@@ -722,12 +911,19 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    	  regionsMap.put(region.getRegion(), region.getRegion());
 	      }
 	     // System.out.println("RegionsData "+regionsMap);
+	      }catch(Exception e){
+	    	  homeLogger.error("While fetching the region list"+e);
+	      }
 	      return regionsMap;
 	   }
 	   
 	   @ModelAttribute("BBManufacturer")	
 	   public Map<String, String> getBBManufacturer() {
+		   
+		   homeLogger.info("In BBManufacturer");
+		   
 	      Map<String, String> BBMap = new HashMap<String, String>();
+	      try{
 	      List<Battery_Bank_Master> regions = surveyDAO.getBBManufacturer();
 	      int i=0;
 	      for(i=0;i<regions.size();i++){
@@ -738,13 +934,18 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    	  BBMap.put(region.getManufacturer(), region.getManufacturer());
 	      }
 	      System.out.println("RegionsData "+BBMap);
+	      }catch(Exception e){
+	    	  homeLogger.error("While fetching the BBManufacturer Details"+e);
+	      }
 	      return BBMap;
 	   }
 	  
 	   
 	   @ModelAttribute("BBType")	
 	   public Map<String, String> getBBType() {
+		   homeLogger.info("In BB Type");
 	      Map<String, String> BBMap = new HashMap<String, String>();
+	      try{
 	      List<Battery_Bank_Master> regions = surveyDAO.getBBManufacturer();
 	      int i=0;
 	      for(i=0;i<regions.size();i++){
@@ -755,13 +956,19 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    	  BBMap.put(region.getType(), region.getType());
 	      }
 	      System.out.println("RegionsData "+BBMap);
+	      }catch(Exception e){
+	    	  homeLogger.error("While fetching the Bank Master details"+e);
+	      }
 	      return BBMap;
 	   }
 	   
 	   
 	   @ModelAttribute("CabinetManufacturer")	
 	   public Map<String, String> getCabinetManufacturer() {
+		   
+		   homeLogger.info("In Cabiner Manufacturer");
 	      Map<String, String> BBMap = new HashMap<String, String>();
+	      try{
 	      List<Cabinet_Master> regions = surveyDAO.getCabinetManufacturer();
 	      int i=0;
 	      for(i=0;i<regions.size();i++){
@@ -772,13 +979,18 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    	  BBMap.put(region.getCabinetManufacturer(), region.getCabinetManufacturer());
 	      }
 	      System.out.println("RegionsData "+BBMap);
+	      }catch(Exception e){
+	    	  homeLogger.error("While fetching the cabinet manufacturer details"+e);
+	      }
 	      return BBMap;
 	   }
 	  
 	   
 	   @ModelAttribute("CabinetType")	
 	   public Map<String, String> getCabinetType() {
+		   homeLogger.info("In Cabinet Type");
 	      Map<String, String> BBMap = new HashMap<String, String>();
+	      try{
 	      List<Cabinet_Master> regions = surveyDAO.getCabinetManufacturer();
 	      int i=0;
 	      for(i=0;i<regions.size();i++){
@@ -789,6 +1001,9 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    	  BBMap.put(region.getType(), region.getType());
 	      }
 	      System.out.println("RegionsData "+BBMap);
+	      }catch(Exception e){
+	    	  homeLogger.error("While fetching the cabinet manufacturer details "+e);
+	      }
 	      return BBMap;
 	   }
 	   
@@ -797,8 +1012,11 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    @ResponseBody
 
 	    public String getStates(ModelAndView model,HttpServletRequest request) {
+		   homeLogger.info("In Get States");
 		String selectedRegion=request.getParameter("selectedRegion");		
+		String statesJson="";
 			//List<Regions> listStates = surveyDAO.getStates(selectedRegion);
+		try{
 			 List<Regions> regions = surveyDAO.getStates(selectedRegion);
 			 List<String> listStates = new ArrayList<String>();
 		      for(Regions region : regions)
@@ -809,9 +1027,12 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		      }
 		      
 		      List<Object> listWithoutDuplicates = listStates.stream().distinct().collect(Collectors.toList());
-		      Gson gsonBuilder = new GsonBuilder().create();
-	          String statesJson = gsonBuilder.toJson(listWithoutDuplicates);
+		    
+	           statesJson = gsonBuilder.toJson(listWithoutDuplicates);
 	          //System.out.println("StatesJSON"+statesJson);
+		}catch(Exception e){
+			homeLogger.error("While fetching the states"+e);
+		}
 	          return statesJson;
     	  // return statesMap;
 
@@ -821,9 +1042,13 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    @ResponseBody
 
 	    public  String getDistricts(ModelAndView model,HttpServletRequest request) {
+		 
+		 homeLogger.info("In Get Districts");
 		 String selectedRegion=request.getParameter("selectedRegion");
 
 			String selectedState=request.getParameter("selectedState");	
+			String districtsJson="";
+			try {
 			List<Regions> districts = surveyDAO.getDistricts(selectedRegion,selectedState);
 			List<String> listDistricts = new ArrayList<String>();
 			for(Regions region: districts)
@@ -831,8 +1056,11 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 				listDistricts.add(region.getDistrict());
 			}
 			List<Object> listWithoutDuplicates = listDistricts.stream().distinct().collect(Collectors.toList());
-			Gson gsonBuilder = new GsonBuilder().create();
-		    String districtsJson = gsonBuilder.toJson(listWithoutDuplicates);
+			
+		    districtsJson = gsonBuilder.toJson(listWithoutDuplicates);
+			}catch(Exception e){
+				homeLogger.error("While fetching the the districts list"+e);
+			}
 			return districtsJson;
 		    }
 	 
@@ -840,10 +1068,13 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    @ResponseBody
 
 	    public  String getCities(ModelAndView model,HttpServletRequest request) {
-
+	    	
+	    	 homeLogger.info("In Get Cities");
 		 String selectedRegion=request.getParameter("selectedRegion");
 			String selectedState=request.getParameter("selectedState");	
 			String selectedDistrict=request.getParameter("selectedDistrict");	
+			String totalJson="";
+			try{
 			List<Regions> cities = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
 			List<String> listCities=new ArrayList<String>();
 			for(Regions region:cities)
@@ -851,9 +1082,13 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 				listCities.add(region.getCity());
 			}
 			List<Object> listWithoutDuplicates = listCities.stream().distinct().collect(Collectors.toList());
-			Gson gsonBuilder = new GsonBuilder().create();
-	        String totalJson = gsonBuilder.toJson(listWithoutDuplicates);
-		    return totalJson.toString();
+			
+	         totalJson = gsonBuilder.toJson(listWithoutDuplicates);
+			}
+			catch(Exception e){
+				homeLogger.error("While fetching the cities"+e);
+			}
+	        return totalJson.toString();
 	   
 
 			/*List<Regions> regions = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
@@ -863,33 +1098,49 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 				 citiesMap.put(region.getCity(),region.getCity());
 		      }
 			
-//			  	   Gson gsonBuilder = new GsonBuilder().create();
+//			  	  
 //	        	   String totalJson = gsonBuilder.toJson(listCities);
 		              return citiesMap;*/
 
 
 	    }
-	    
-		
+	    	
 	    
 	    @SuppressWarnings({ "unchecked", "rawtypes" })
 		@RequestMapping("ticketsCount")
 	    @ResponseBody
 	    public String  ticketsCountData(ModelAndView model) {
-			List<Ticketing> listOpen = surveyDAO.openTicketsData();		
+	    	homeLogger.info("In Tickets Count");
+	    	 JSONObject countData=new JSONObject();
+	    	 List<Ticketing> listOpen=null;
+	    	 List<TechnicianTicketInfo> listAssigned =null;
+	    	 List<Ticketing> listTotal=null;
+	    	try{
+			listOpen = surveyDAO.openTicketsData();		
 		    Set ticketSet = new HashSet<Object>();
 			 listOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-		    List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+	    	}catch(Exception e){
+	    		homeLogger.error("While fetching the tickets data"+e);
+	    	}
+	    	try{
+		    listAssigned = surveyDAO.assignedTicketsData();
+	    	}catch(Exception e){
+	    		homeLogger.error("While fetching list assigned data"+e);
+	    	}
 		    Set ticketSet1 = new HashSet<Object>();
 			listAssigned.removeIf(p -> !ticketSet1.add(p.getTicketNum()));
 		      List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
 		      Set ticketSet2 = new HashSet<Object>();
 		      listHistory.removeIf(p -> !ticketSet2.add(p.getTicketNum()));
-		      List<Ticketing> listTotal =surveyDAO.getAllTicketsData();
+		      try{
+		      listTotal =surveyDAO.getAllTicketsData();
+		      }catch(Exception e){
+		    	  homeLogger.error("While fetching the total tickets list"+e);
+		      }
 		      Set ticketSet3 = new HashSet<Object>();
 		      listTotal.removeIf(p -> !ticketSet3.add(p.getTicketNum()));
 		     
-			   JSONObject countData=new JSONObject();
+			   
 			   countData.put("OpenTickets",listOpen.size());
 			   countData.put("AssignedTickets",listAssigned.size());
 			   countData.put("HistoryTickets",listHistory.size());
@@ -902,8 +1153,13 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		@RequestMapping("getOpenTickets")
 	    @ResponseBody
 	    public String  getOpenTicketsData(ModelAndView model) {
-			List<Ticketing> listOpen = surveyDAO.openTicketsData();	
-			
+	    	homeLogger.info("In getOpenTickets ");
+	    	List<Ticketing> listOpen=null;
+	    	try{
+	    	listOpen = surveyDAO.openTicketsData();	
+	    	}catch(Exception e){
+	    		homeLogger.error("While fetching the openTickets Data"+e);
+	    	}
 		    Set openSet = new HashSet<Object>();
 
 	        // directly removing the elements from list if already existed in set
@@ -911,7 +1167,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 
 	     //   listOpen.forEach(dept->System.out.println(dept.getId() +" : "+dept.getSiteid()+"::"+dept.getSiteids()));
 				
-			Gson gsonBuilder = new GsonBuilder().create();
+		
 			String openJson = gsonBuilder.toJson(listOpen);
     	   	return openJson.toString();
 	    }
@@ -920,10 +1176,16 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		@RequestMapping("getAssignedTickets")
 	    @ResponseBody
 	    public String  getAssignedTicketsData(ModelAndView model) {
-			List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
+			homeLogger.info("In getAssignedTickets ");
+			List<TechnicianTicketInfo> listAssigned =null;
+			try{
+			listAssigned = surveyDAO.assignedTicketsData();
+			}catch(Exception e){
+				homeLogger.error("While fetching the assignedTickets data"+e);
+			}
 			Set ticketSet = new HashSet<Object>();
 			listAssigned.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-			Gson gsonBuilder = new GsonBuilder().create();
+			
 			String closedJson = gsonBuilder.toJson(listAssigned);
     	   	return closedJson.toString();
 	    }
@@ -932,10 +1194,16 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		@RequestMapping("getHistoryTickets")
 	    @ResponseBody
 	    public String  getHistoryTicketsData(ModelAndView model) {
-			List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
-			Set ticketSet = new HashSet<Object>();
+			homeLogger.info("In getHistoryTickets ");
+			List<TechnicianTicketInfo> listHistory=null;
+			try{
+			 listHistory = surveyDAO.historyTicketsData();
+			}catch(Exception e){
+				homeLogger.error("While fetching the historyTickets data"+e);
+			}
+			 Set ticketSet = new HashSet<Object>();
 			listHistory.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-	  	    Gson gsonBuilder = new GsonBuilder().create();
+	  	   
     	    String historyJson = gsonBuilder.toJson(listHistory);
               return historyJson.toString();
 		}
@@ -944,23 +1212,58 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    @ResponseBody
 
 	    public  String getSiteId(ModelAndView model,HttpServletRequest request) {
-
+	    	homeLogger.info("In getSiteId ");
 		 String selectedRegion=request.getParameter("selectedRegion");
 			String selectedState=request.getParameter("selectedState");	
 			String selectedDistrict=request.getParameter("selectedDistrict");	
 			String selectedCity=request.getParameter("selectedCity");	
-			List<Site> siteIds = surveyDAO.getSiteIdsForRegion(selectedRegion,selectedState,selectedDistrict,selectedCity);
+			List<Site> siteIds=null;
+			List<Ticketing> TicketingSiteIds=null;
+			
+			try{
+			siteIds = surveyDAO.getSiteIdsForRegion(selectedRegion,selectedState,selectedDistrict,selectedCity);
+			TicketingSiteIds =  surveyDAO.getTicketingSiteIds();
+			}catch(Exception e){
+				homeLogger.error("While fetching the siteIds for region"+e);
+			}
 			List<String> listSiteIds=new ArrayList<String>();
 			for(Site site:siteIds)
 			{
 				listSiteIds.add(site.getSiteid());
 			}
+			List<String> TicketingListSiteIds =  new ArrayList<String>();
+			for(Ticketing ticket:TicketingSiteIds)
+			{
+				TicketingListSiteIds.add(ticket.getSiteids());
+			}
 			List<Object> listWithoutDuplicates = listSiteIds.stream().distinct().collect(Collectors.toList());
-			Gson gsonBuilder = new GsonBuilder().create();
-	        String totalJson = gsonBuilder.toJson(listWithoutDuplicates);
+		
+			List<String> totalSiteIds =  new ArrayList<String>();
+						
+			List<String> List=new ArrayList<String>();
+			
+			for(int i=0;i<TicketingListSiteIds.size();i++){
+				
+				List.addAll(Arrays.asList(TicketingListSiteIds.get(i).split("\\s*,\\s*")));
+			}
+			
+			for(int i=0;i<listWithoutDuplicates.size();i++){
+				
+				if(List.contains(listWithoutDuplicates.get(i)))
+				{
+					System.out.println(listWithoutDuplicates.get(i));
+				}
+				else
+				{
+					totalSiteIds.add((String) listWithoutDuplicates.get(i));
+				}
+			}
+			
+			
+			
+	        String totalJson = gsonBuilder.toJson(totalSiteIds);
 		    return totalJson;
-	   
-
+		    
 			/*List<Regions> regions = surveyDAO.getCities(selectedRegion,selectedState,selectedDistrict);
 			 Map<String, String> citiesMap = new HashMap<String, String>();
 			 for(Regions region : regions)
@@ -968,7 +1271,7 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 				 citiesMap.put(region.getCity(),region.getCity());
 		      }
 			
-//			  	   Gson gsonBuilder = new GsonBuilder().create();
+//			  	  
 //	        	   String totalJson = gsonBuilder.toJson(listCities);
 		              return citiesMap;*/
 
@@ -977,10 +1280,15 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	 @RequestMapping(value="/getLastSiteId", method=RequestMethod.GET)
 	  @ResponseBody
 	  public String getLastSiteId(HttpServletRequest request){
+			homeLogger.info("In GetLastSiteId ");
+			List<Site> siteidList=null;
+			try{
+	    siteidList=surveyDAO.getSiteId();
+			}catch(Exception e){
+				homeLogger.error("While fetching the siteList"+e);
+			}
+	    System.out.println("siteid>>>>>>...."+siteidList);
 	  
-	   List<Site> siteidList=surveyDAO.getSiteId();
-	   System.out.println("siteid>>>>>>...."+siteidList);
-	   Gson gsonBuilder=new GsonBuilder().create();
 	   String executiveJson=gsonBuilder.toJson(siteidList);
 	   return executiveJson.toString();
 	  
@@ -990,17 +1298,30 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		@RequestMapping("getTotalTickets")
 		@ResponseBody
 		public String  getTotalTicketsData(ModelAndView model) {
-			List<Ticketing> listTotal = surveyDAO.getAllTicketsData();
-			  Set ticketSet = new HashSet<Object>();
+			homeLogger.info("In getTotalTickets ");
+			String totalJson =null;
+			List<Ticketing> listTotal=null;
+			try{
+			 listTotal = surveyDAO.getAllTicketsData();
+			}catch(Exception e){
+				homeLogger.error("While fetching the total ticket list"+e);
+			}
+			 Set ticketSet = new HashSet<Object>();
 		      listTotal.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-		     Gson gsonBuilder = new GsonBuilder().create();
-			 String totalJson = gsonBuilder.toJson(listTotal);
-		     return totalJson.toString();
+		    
+			  totalJson = gsonBuilder.toJson(listTotal);
+			
+			 return totalJson.toString();
 		}
 		
 		@RequestMapping(value = "/adminOpenTickets")
 		public ModelAndView adminOpenTickets(ModelAndView model) throws IOException {
+			homeLogger.info("In adminOpenTickets ");
+			try{
 			model.setViewName("adminOpenTickets");
+			}catch(Exception e){
+				homeLogger.error("In Viewing the adminOpenTickets"+e);
+			}
 			return model;
 		}
 		
@@ -1008,12 +1329,33 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 		 @RequestMapping("getAdminTicketsCount")
 		@ResponseBody
 		public String  getAdminTicketsCount(ModelAndView model) {
-			List<Ticketing> listOpen = surveyDAO.openTicketsData();		              
-		    List<TechnicianTicketInfo> listAssigned = surveyDAO.assignedTicketsData();
-		      List<TechnicianTicketInfo> listHistory = surveyDAO.historyTicketsData();
-		      List<Ticketing> listTotal =surveyDAO.getAllTicketsData();
-		     
-			   JSONObject countData=new JSONObject();
+			 homeLogger.info("In GetManager ");
+			 JSONObject countData=new JSONObject();
+			 List<Ticketing> listOpen=null;
+			 List<TechnicianTicketInfo> listAssigned=null;
+			  List<TechnicianTicketInfo> listHistory=null;
+			 List<Ticketing> listTotal=null;
+			 try{
+			 listOpen = surveyDAO.openTicketsData();		              
+			 }catch(Exception e){
+				 homeLogger.error("While fetching Opentickets"+e);
+			 }
+			 try{
+			  listAssigned = surveyDAO.assignedTicketsData();
+			 }catch(Exception e){
+				 homeLogger.error("While fetchimg assigned tickets data"+e);
+			 }
+			 try{
+			  listHistory = surveyDAO.historyTicketsData();
+			 }catch(Exception e){
+				 homeLogger.error("While fetching the history tickets"+e);
+			 }
+			 try{
+			   listTotal =surveyDAO.getAllTicketsData();
+			 }catch(Exception e){
+				 homeLogger.error("While fetching the total tickets data"+e);
+			 }
+			  
 			   countData.put("OpenTickets",listOpen.size());
 			   countData.put("AssignedTickets",listAssigned.size());
 			   countData.put("HistoryTickets",listHistory.size());
@@ -1025,26 +1367,43 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 	    @RequestMapping(value= "getManager", method = RequestMethod.GET)
 		@ResponseBody
 		public String getManager(HttpServletRequest request) {
-		 String region=request.getParameter("selectedRegion");
-			List<User> managers = surveyDAO.getManager(region);
+	    	
+	    	homeLogger.info("In GetManager ");
+	    	
+	    	String region=request.getParameter("selectedRegion");
+	    	homeLogger.info("Region"+region);
+	    	String managerJSON=null;
+	    	try{
+	    	List<User> managers = surveyDAO.getManager(region);
 			List<String> listManagers=new ArrayList<String>();
 			for(User user: managers)
 			{
 				listManagers.add(user.getUsername());
 			}
-			Gson gsonBuilder = new GsonBuilder().create();
-			String managerJSON = gsonBuilder.toJson(listManagers);
-	 	   	return managerJSON;
+		
+			 managerJSON = gsonBuilder.toJson(listManagers);
+	    	}catch(Exception e){
+	    		homeLogger.error("While fetching list of managers"+e);
+	    	}
+			return managerJSON;
 		}
 
 
 	    @RequestMapping(value = "/getUserName", method = RequestMethod.GET)
 		@ResponseBody
-		public String getUserName(HttpServletRequest request) {		
+		public String getUserName(HttpServletRequest request) {	
+	    	
+	    	homeLogger.info("In Get UserName ");
+	    	String user=null;
 			String username=request.getParameter("username");
 	    	String role=request.getParameter("role");
-	    	String user=surveyDAO.getUserName(role,username);
-			return user;
+	    	try{
+	    	user=surveyDAO.getUserName(role,username);
+	    	homeLogger.info("userName"+user);
+	    	}catch(Exception e){
+	    		homeLogger.error("While Getting UserName"+e);
+	    	}
+	    	return user;
 		}
 	   
 }

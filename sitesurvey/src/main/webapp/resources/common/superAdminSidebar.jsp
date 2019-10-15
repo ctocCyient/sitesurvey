@@ -46,9 +46,9 @@ $('#currentUser')[0].innerHTML=sessionStorage.getItem("username");
 							<span class="sidebar-mini-icon">
 								<i class="fa fa-ellipsis-h"></i>
 							</span>
-							<h4 class="text-section">Modules</h4>
+							<h4 style="font-size:16px;color:grey">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Modules</b></h4>
 						</li>
-						
+					
 						
 						<li class="nav-item">
 								<a  href="newUser">&nbsp;&nbsp;

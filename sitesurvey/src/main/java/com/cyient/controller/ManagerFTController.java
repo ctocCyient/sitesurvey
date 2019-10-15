@@ -3,51 +3,33 @@ package com.cyient.controller;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.jboss.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.cyient.dao.SurveyDAO;
-import com.cyient.model.Regions;
-import com.cyient.model.Site;
 import com.cyient.model.Technician;
 import com.cyient.model.TechnicianTicketInfo;
 import com.cyient.model.Ticketing;
-import com.cyient.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 @Controller
 public class ManagerFTController {
-	private static final Logger logger = Logger
-			.getLogger(ManagerFTController.class);
+	private static final Logger ftManLogger = Logger
+			.getLogger("FTManagerLogger");
 
 	public ManagerFTController() {
 		System.out.println("ManagerFTController()");
@@ -60,34 +42,63 @@ public class ManagerFTController {
 	private SurveyDAO surveyDAO;
 	
 	
-		
 	 @RequestMapping(value = "/managerOpenTickets")
 		public ModelAndView managerOpenTickets(ModelAndView model) throws IOException {
-			model.setViewName("managerOpenTickets");
+		 ftManLogger.info("Manager Dashboard Open Tickets");
+			 try{
+				model.setViewName("managerOpenTickets");
+			 }
+			 catch(Exception e){
+				 ftManLogger.error("In managerOpenTickets: "+e);
+			 }
 			return model;
 		}
 	 
 	 @RequestMapping(value = "/managerAssignedTickets")
 		public ModelAndView managerAssignedTickets(ModelAndView model) throws IOException {
+		 ftManLogger.info("Manager Dashboard Assigned Tickets");
+		 try{
 			model.setViewName("managerAssignedTickets");
+		 }
+		 catch(Exception e){
+			 ftManLogger.error("In managerAssignedTickets: "+e);
+		 }
 			return model;
 		}
 	 
 	 @RequestMapping(value = "/managerClosedTickets")
 		public ModelAndView managerClosedTickets(ModelAndView model) throws IOException {
+		 ftManLogger.info("Manager Dashboard Closed Tickets");
+		 try{
 			model.setViewName("managerClosedTickets");
+		 }
+		 catch(Exception e){
+			 ftManLogger.error("In managerClosedTickets: "+e);
+		 }
 			return model;
 		}
 		
 		@RequestMapping(value = "/managerNotAcceptedTickets")
-		public ModelAndView managerNotAcceptedTickets(ModelAndView model) throws IOException {
+		public ModelAndView managerNotAcceptedTickets(ModelAndView model) {
+			 ftManLogger.info("Manager Dashboard Not Accepted Tickets");
+			 try{
 			model.setViewName("managerNotAcceptedTickets");
+			 }
+			 catch(Exception e){
+				 ftManLogger.error("In managerNotAcceptedTickets: "+e);
+			 }
 			return model;
 		}
 		
 		@RequestMapping(value = "/techniciansList")
 		public ModelAndView techniciansList(ModelAndView model) throws IOException {
-			model.setViewName("techniciansList");
+			 ftManLogger.info("Manager Technicians List");
+			 try{
+				 model.setViewName("techniciansList");
+			 }
+			 catch(Exception e){
+				 ftManLogger.error("In techniciansList : "+e);
+			 }
 			return model;
 		}
 		
@@ -98,29 +109,37 @@ public class ManagerFTController {
 			 String username=request.getParameter("username");
 			 String region=request.getParameter("region");
 				String city=request.getParameter("city");
+				
+				JSONObject countData=new JSONObject();
+				 ftManLogger.info("Manager Tickets Count: username::"+username+" region::"+region+" city::"+city);
 				//List<TechnicianTicketInfo> listOpen = surveyDAO.managerOpenTickets(username);		    
-
-				List<Ticketing> listOpen =  surveyDAO.managerOpenTickets(username,region,city);   
-				Set ticketSet = new HashSet<Object>();
-				 listOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-				 List<TechnicianTicketInfo> listAssigned = surveyDAO.managerAssignedTickets(username);
-			      Set ticketSet1 = new HashSet<Object>();
-			      listAssigned.removeIf(p -> !ticketSet1.add(p.getTicketNum()));
-			      List<TechnicianTicketInfo> listClosed = surveyDAO.managerClosedTickets(username);
-			      Set ticketSet2 = new HashSet<Object>();
-			      listClosed.removeIf(p -> !ticketSet2.add(p.getTicketNum()));
-			      List<TechnicianTicketInfo> listNotAccepted = surveyDAO.managerNotAcceptedTickets(username);
-			      Set ticketSet3 = new HashSet<Object>();
-					listNotAccepted.removeIf(p -> !ticketSet3.add(p.getTicketNum()));
-
-			     
-				   JSONObject countData=new JSONObject();
-				   countData.put("OpenTickets",listOpen.size());
-				   countData.put("AssignedTickets",listAssigned.size());
-				   countData.put("ClosedTickets",listClosed.size());
-				   countData.put("NotAcceptedTickets",listNotAccepted.size());
-				   System.out.println(countData);			   
-			          return countData.toString();
+				 try{
+					List<Ticketing> listOpen =  surveyDAO.managerOpenTickets(username,region,city);   
+					Set ticketSet = new HashSet<Object>();
+					 listOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+					 List<TechnicianTicketInfo> listAssigned = surveyDAO.managerAssignedTickets(username);
+				      Set ticketSet1 = new HashSet<Object>();
+				      listAssigned.removeIf(p -> !ticketSet1.add(p.getTicketNum()));
+				      List<TechnicianTicketInfo> listClosed = surveyDAO.managerClosedTickets(username);
+				      Set ticketSet2 = new HashSet<Object>();
+				      listClosed.removeIf(p -> !ticketSet2.add(p.getTicketNum()));
+				      List<TechnicianTicketInfo> listNotAccepted = surveyDAO.managerNotAcceptedTickets(username);
+				      Set ticketSet3 = new HashSet<Object>();
+						listNotAccepted.removeIf(p -> !ticketSet3.add(p.getTicketNum()));
+				 
+					   countData.put("OpenTickets",listOpen.size());
+					   countData.put("AssignedTickets",listAssigned.size());
+					   countData.put("ClosedTickets",listClosed.size());
+					   countData.put("NotAcceptedTickets",listNotAccepted.size());
+					   
+					   ftManLogger.info("Manager Count Data::"+countData);
+				
+				 }
+				 catch(Exception e){
+					 ftManLogger.error("Manager TicketsData: "+e);
+				 }   
+			    return countData.toString();
+				
 			}
 		 
 		 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -130,17 +149,20 @@ public class ManagerFTController {
 				String username=request.getParameter("username");
 				String region=request.getParameter("region");
 				String city=request.getParameter("city");
-				
-				System.out.println("USER"+username);
+				String openJson = null;
+				ftManLogger.info("Manager open Tickets: username::"+username+" region::"+region+" city::"+city);
 
-				List<Ticketing> listOpen = surveyDAO.managerOpenTickets(username,region,city);
+				try{
+			 	List<Ticketing> listOpen = surveyDAO.managerOpenTickets(username,region,city);
 				Set ticketSet = new HashSet<Object>();
-				 listOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-				 //listOpen.forEach(dept->System.out.println(dept.getId() +" : "+dept.getSiteids()));
-
-				  	   Gson gsonBuilder = new GsonBuilder().create();
-		        	   String openJson = gsonBuilder.toJson(listOpen);
-			              return openJson.toString();
+			 	listOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));				 
+	        	 openJson = gsonBuilder.toJson(listOpen);
+	        	 ftManLogger.info("Manager open Tickets Json::"+openJson);
+				}
+				catch(Exception e){
+					ftManLogger.error("In getManagerOpenTickets: "+e);
+				}
+			    return openJson.toString();
 		    }
 		    
 		    
@@ -149,15 +171,21 @@ public class ManagerFTController {
 			    @ResponseBody
 			    public String getManagerAssignedTickets(ModelAndView model,HttpServletRequest request) {
 					String username=request.getParameter("username");
+					 String assignedJson=null;
+					ftManLogger.info("Manager Assigned Tickets: username::"+username);
 					
-					System.out.println("USER"+username);
-
-					List<TechnicianTicketInfo> listAssigned = surveyDAO.managerAssignedTickets(username);
-					Set ticketSet = new HashSet<Object>();
-					listAssigned.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-
+					try{
+						List<TechnicianTicketInfo> listAssigned = surveyDAO.managerAssignedTickets(username);
+						Set ticketSet = new HashSet<Object>();
+						listAssigned.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+		
+		        	    assignedJson = gsonBuilder.toJson(listAssigned);
+		        	    ftManLogger.info("Manager Assigned Tickets Json::"+assignedJson);			        	    
+					}
+					catch(Exception e){
+						ftManLogger.error("In getManagerAssignedTickets: "+e);
+					}
 				
-			        	   String assignedJson = gsonBuilder.toJson(listAssigned);
 				              return assignedJson.toString();
 			    }
 			
@@ -166,23 +194,40 @@ public class ManagerFTController {
 		    @ResponseBody
 		    public String getManagerNotAcceptedTickets(ModelAndView model,HttpServletRequest request) {
 				String username=request.getParameter("username");
-				System.out.println("USER"+username);
+				ftManLogger.info("Manager Not Accepted Tickets: username::"+username);
+				String notAcceptedJson=null;
 
-				List<TechnicianTicketInfo> listNotAccepted = surveyDAO.managerNotAcceptedTickets(username);
-				Set ticketSet = new HashSet<Object>();
-				listNotAccepted.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-				String notAcceptedJson = gsonBuilder.toJson(listNotAccepted);
+				try{
+					List<TechnicianTicketInfo> listNotAccepted = surveyDAO.managerNotAcceptedTickets(username);
+					Set ticketSet = new HashSet<Object>();
+					listNotAccepted.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+					notAcceptedJson = gsonBuilder.toJson(listNotAccepted);
+					ftManLogger.info("Manager Not Accepted Tickets Json::"+notAcceptedJson);
+				}
+				catch(Exception e){
+					ftManLogger.error("In getManagerAssignedTickets : "+e);
+				}
 			              return notAcceptedJson.toString();
 		    }
 			
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@RequestMapping(value="getManagerClosedTickets", method = RequestMethod.GET)
 		    @ResponseBody
 		    public String getManagerClosedTickets(ModelAndView model,HttpServletRequest request) {
 				String username=request.getParameter("username");
-				System.out.println("USER"+username);
-				List<TechnicianTicketInfo> listClosed = surveyDAO.managerClosedTickets(username);
-				  	   Gson gsonBuilder = new GsonBuilder().create();
-		        	   String closedJson = gsonBuilder.toJson(listClosed);
+				ftManLogger.info("Manager Closed Tickets: username::"+username);
+				 String closedJson = null;
+				 try{
+						List<TechnicianTicketInfo> listClosed = surveyDAO.managerClosedTickets(username);
+						Set ticketSet = new HashSet<Object>();
+						listClosed.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+				  	 
+		        	    closedJson = gsonBuilder.toJson(listClosed);
+		        	    ftManLogger.info("Manager Closed Tickets Json::"+closedJson);
+					}
+					 catch(Exception e){
+						 ftManLogger.error("In getManagerClosedTickets : "+e);
+					 }
 			              return closedJson.toString();
 		    }
 	
@@ -191,27 +236,65 @@ public class ManagerFTController {
 	    @ResponseBody
 	    public String getManagerTechnicians(ModelAndView model,HttpServletRequest request) {
 	    	String username=request.getParameter("username");
+	    	 String techJson =null;	    	 
+	    	ftManLogger.info("Manager Technicians: username::"+username);
+	    	try{
 			List<Technician> listTechnicians = surveyDAO.getManagerTechnicians(username);
-		        	   Gson gsonBuilder = new GsonBuilder().create();
-	        	   String techJson = gsonBuilder.toJson(listTechnicians);
+		        	  
+	        	   techJson = gsonBuilder.toJson(listTechnicians);
+	        	   ftManLogger.info("Manager Technicians Json::"+techJson);
+	    	}
+	    	catch(Exception e){
+	    		ftManLogger.error("In getManagerTechnicians : "+e);
+	    	}
 		              return techJson.toString();
 	    }
 	    
 	@RequestMapping(value = "/technicianAssignedTickets")
 	public ModelAndView technicianAssignedTickets(ModelAndView model) throws IOException {
-		model.setViewName("technicianAssignedTickets");
+		 ftManLogger.info("Technician Dashboard Assigned Tickets");
+		try{
+			model.setViewName("technicianAssignedTickets");
+		}
+		catch(Exception e){
+			ftManLogger.error("In technicianAssignedTickets : "+e);
+		}
 		return model;
 	}
 	
 	@RequestMapping(value = "/technicianAcceptedTickets")
 	public ModelAndView technicianAcceptedTickets(ModelAndView model) throws IOException {
-		model.setViewName("technicianAcceptedTickets");
+		 ftManLogger.info("Technician Dashboard Accepted Tickets");
+			try{
+				model.setViewName("technicianAcceptedTickets");
+			}
+			catch(Exception e){
+				ftManLogger.error("In technicianAcceptedTickets : "+e);
+			}
 		return model;
 	}
 
+	@RequestMapping(value = "/technicianNotAcceptedTickets")
+	public ModelAndView technicianNotAcceptedTickets(ModelAndView model) throws IOException {
+		 ftManLogger.info("Technician Dashboard Not Accepted Tickets");
+			try{
+				model.setViewName("techinicanNotAcceptedTickets");
+			}
+			catch(Exception e){
+				ftManLogger.error("In technicianNotAcceptedTickets : "+e);
+			}
+		return model;
+	}
+	
 	@RequestMapping(value = "/technicianClosedTickets")
 	public ModelAndView technicianClosedTickets(ModelAndView model) throws IOException {
-		model.setViewName("technicianClosedTickets");
+		 ftManLogger.info("Technician Dashboard Closed Tickets");
+			try{
+				model.setViewName("technicianClosedTickets");
+			}
+			catch(Exception e){
+				ftManLogger.error("In technicianClosedTickets : "+e);
+			}
 		return model;
 	}
 	
@@ -220,13 +303,20 @@ public class ManagerFTController {
     @ResponseBody
     public String  getTechnicianAssignedTicketsData(HttpServletRequest request) {
 		String username=request.getParameter("username");
-		//System.out.println("username:"+username);
-		List<TechnicianTicketInfo> listTechOpen = surveyDAO.techAssignedTicketsData(username);		
-		Set ticketSet = new HashSet<Object>();
-		listTechOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));
-        	   Gson gsonBuilder = new GsonBuilder().create();
-        	   String techOpenJson = gsonBuilder.toJson(listTechOpen);
-        	   System.out.println(techOpenJson);
+		 String techOpenJson=null;
+		ftManLogger.info("Technician Assigned Tickets: username::"+username);
+			try{
+				List<TechnicianTicketInfo> listTechOpen = surveyDAO.techAssignedTicketsData(username);		
+				Set ticketSet = new HashSet<Object>();
+				listTechOpen.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+        	
+        	    techOpenJson = gsonBuilder.toJson(listTechOpen);
+        	    ftManLogger.info("Technician Assigned Tickets Json:: "+techOpenJson);
+			}
+			catch(Exception e){
+				ftManLogger.error("In getTechnicianAssignedTickets : "+e);
+			}
+        	  
 	              return techOpenJson;
     }
 	
@@ -236,7 +326,9 @@ public class ManagerFTController {
     @ResponseBody
     public String  getTechnicianAcceptedTickets(HttpServletRequest request) {
 		String username=request.getParameter("username");
-		//System.out.println("username:"+username);
+		ftManLogger.info("Technician Accepted Tickets: username::"+username);
+		
+		
 		List<TechnicianTicketInfo> listTechAccept = surveyDAO.techAcceptedTicketsData(username);	
 		List<TechnicianTicketInfo> listTechAccept2=surveyDAO.techAcceptedTicketsData(username);
 		
@@ -248,9 +340,9 @@ public class ManagerFTController {
 		Map<Object, List<TechnicianTicketInfo>> studlistGrouped =
 				listTechAccept.stream().collect(Collectors.groupingBy(w -> w.getTicketNum()));
 		
-			System.out.println("HASHMAP"+studlistGrouped);
-		 JSONArray JSONArrFinal=new JSONArray();
-		 
+			ftManLogger.info("Technician Accepted Tickets Hashmap "+studlistGrouped);
+		
+			JSONArray JSONArrFinal=new JSONArray();
 		 JSONArray jsonArr=new JSONArray();
 		
 			
@@ -274,11 +366,11 @@ public class ManagerFTController {
 				jsonArr.put(jsonObjFinal);
 			}
 		 }
-		 System.out.println("jsonArr"+jsonArr);
+		 ftManLogger.info("Technician Accepted Tickets jsonArr: "+jsonArr);
 		 JSONArrFinal.put(jsonArr);
 		 JSONArrFinal.put(techAcceptJson);
-		 
-	              return JSONArrFinal.toString();
+		 ftManLogger.info("Technician Accepted Tickets JSONArrFinal: "+JSONArrFinal);
+		return JSONArrFinal.toString();
     }
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -286,21 +378,55 @@ public class ManagerFTController {
     @ResponseBody
     public String  getTechncianClosedTicketsData(HttpServletRequest request) {
 		String username=request.getParameter("username");
-		System.out.println("username:"+username);
-		List<TechnicianTicketInfo> listTechClosed = surveyDAO.techClosedTicketsData(username);	
-		Set ticketSet1 = new HashSet<Object>();
-		listTechClosed.removeIf(p -> !ticketSet1.add(p.getTicketNum()));
-        	   Gson gsonBuilder = new GsonBuilder().create();
-        	   String techClosedJson = gsonBuilder.toJson(listTechClosed);
-	              return techClosedJson.toString();
+		ftManLogger.info("Technician Closed Tickets: username::"+username);
+		String techClosedJson=null;
+
+		try{
+			List<TechnicianTicketInfo> listTechClosed = surveyDAO.techClosedTicketsData(username);	
+			Set ticketSet1 = new HashSet<Object>();
+			listTechClosed.removeIf(p -> !ticketSet1.add(p.getTicketNum()));
+	        	
+			techClosedJson = gsonBuilder.toJson(listTechClosed);
+	        	   ftManLogger.info("Technician Closed Tickets Json:: "+techClosedJson);
+		}
+		catch(Exception e){
+			ftManLogger.error("In getTechnicianAssignedTickets : "+e);
+		}
+	              return techClosedJson;
     }
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@RequestMapping(value="getTechncianNotAcceptedTickets", method = RequestMethod.GET)
+    @ResponseBody
+    public String getTechncianNotAcceptedTickets(ModelAndView model,HttpServletRequest request) {
+		String username=request.getParameter("username");
+		ftManLogger.info("Technician Not Accepted Tickets: username::"+username);
+		String notAcceptedJson=null;
+		try{
+			List<TechnicianTicketInfo> listNotAccepted = surveyDAO.techNotAcceptedTickets(username);
+			Set ticketSet = new HashSet<Object>();
+			listNotAccepted.removeIf(p -> !ticketSet.add(p.getTicketNum()));
+			notAcceptedJson = gsonBuilder.toJson(listNotAccepted);
+			ftManLogger.info("Technician Not Accepted Tickets Json:: "+notAcceptedJson);
+		}
+		catch(Exception e){
+			ftManLogger.error("In getTechncianNotAcceptedTickets : "+e);
+		}
+	              return notAcceptedJson;
+    }
+	
+	
+	
+	
 	
 	 @SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping(value="getTechTicketsCount", method = RequestMethod.GET)
 		@ResponseBody
 		public String  techTicketsCount(ModelAndView model,HttpServletRequest request) {
 		 String username=request.getParameter("username");
-
+		 ftManLogger.info("Technician Tickets Count: username::"+username);
+		 JSONObject countData=new JSONObject();
+		 try{
 			List<TechnicianTicketInfo> listAssigned = surveyDAO.techAssignedTicketsData(username);		   
 			Set ticketSet = new HashSet<Object>();
 			listAssigned.removeIf(p -> !ticketSet.add(p.getTicketNum()));
@@ -310,13 +436,22 @@ public class ManagerFTController {
 		      List<TechnicianTicketInfo> listClosed = surveyDAO.techClosedTicketsData(username);
 		      Set ticketSet2 = new HashSet<Object>();
 		      listClosed.removeIf(p -> !ticketSet2.add(p.getTicketNum()));
+		      List<TechnicianTicketInfo> listNotAccepted = surveyDAO.techNotAcceptedTickets(username);
+		      Set ticketSet3 = new HashSet<Object>();
+		      listNotAccepted.removeIf(p -> !ticketSet3.add(p.getTicketNum()));
 
 		     
-			   JSONObject countData=new JSONObject();
+			  
 			   countData.put("AssignedTickets",listAssigned.size());
 			   countData.put("AcceptedTickets",listAccepted.size());
 			   countData.put("ClosedTickets",listClosed.size());
-			   System.out.println(countData);			   
+			   countData.put("NotAcceptedTickets",listNotAccepted.size());
+			   ftManLogger.info("Technician Tickets Count:: "+countData);
+			 }
+			 catch(Exception e){
+				 ftManLogger.error("In getTechTicketsCount : "+e);
+			 }
+			  			   
 		          return countData.toString();
 		}
 	 
@@ -328,8 +463,14 @@ public class ManagerFTController {
 			 String exeId=request.getParameter("username");
 			 String commentsData=request.getParameter("commentsData");
 			 String remarksData=request.getParameter("remarksData");
-			 System.out.println("COMMENTS"+commentsData);
-			String status = surveyDAO.saveTechStatus(ticketId,techStatus,exeId,commentsData,remarksData);
+			 String status=null;
+			 ftManLogger.info("Save technician status: ticketId::"+ticketId+" techStatus"+techStatus+" exeId"+exeId+" commentsData"+commentsData+" remarksData"+remarksData);
+			try{
+				 status = surveyDAO.saveTechStatus(ticketId,techStatus,exeId,commentsData,remarksData);
+			}
+			catch(Exception e){
+				ftManLogger.error("In saveTechStatus: "+e);
+			}
 			  	  return status;
 	    }
 }

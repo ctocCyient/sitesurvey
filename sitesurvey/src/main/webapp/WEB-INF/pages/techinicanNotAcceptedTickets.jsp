@@ -3,28 +3,16 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
 	<title>Site Survey</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	
 		<script src="<c:url value='resources/js/jquery.min.js' />"></script>
-	
-				<script type="text/javascript">
-	   if(sessionStorage.getItem("username")==null)
-   	{
-		   url = "/sitesurvey/";
-		  $( location ).attr("href", url);
-   	}	else {
-		s = sessionStorage.getItem("username");
-		role = sessionStorage.getItem("role");
-		userRegion = sessionStorage.getItem("region");
-		userCity = sessionStorage.getItem("city");
-	}
-	</script>	
-	
 	
 	<script src="<c:url value='resources/js/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/js/validations.js' />"></script>
@@ -35,7 +23,19 @@
 
 	<!-- Fonts and icons -->
 	<script src="<c:url value='resources/assets/js/plugin/webfont/webfont.min.js' />"></script>
-		
+					<script type="text/javascript">
+	   if(sessionStorage.getItem("username")==null)
+   	{
+		   url = "/sitesurvey/";
+		  $( location ).attr("href", url);
+   	}	
+	   else {
+			name = sessionStorage.getItem("username");
+			role = sessionStorage.getItem("role");
+			userRegion = sessionStorage.getItem("region");
+			userCity = sessionStorage.getItem("city");
+		}
+	</script>
 		<style type="text/css">
 #openModal {
 	text-align:center;
@@ -88,57 +88,59 @@ max-width:100%;
 	</script>
 	
 	<script >
+	var s;
 	
 		$(document).ready(function() {
 
 			  $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
-			  $("#managerSidebar").load('<c:url value="/resources/common/managerSidebar.jsp" />'); 
+			  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 			  getCount();
 			  tableData();			
 		
 		});	
 	
-		var dataSet=[];
-		 var ticketId;
+		 var ticketId,ticketType,siteIds,selectedSite;
+		 var  dataSet=[],times=[],openTicketsList=[],uniqueTicketsList=[],datatableList=[],ticketsNums=[];
 		 
 		 function getCount(){
-				
+			 var s=sessionStorage.getItem("username");
 				$.ajax({
 	                type:"get",
-	                url:"getManagerTicketsCount",
+	                url:"getTechTicketsCount",
 	                contentType: 'application/json',
 	                datatype : "json",
-	                data:{"username":s,"region":userRegion,"city":userCity},
+	                data:{"username":s},
 	                success:function(result) {
 	                	var jsonArr = $.parseJSON(result);
-	                	$('#managerOpenTickets')[0].innerHTML=jsonArr.OpenTickets; 
-	                	$('#managerAssignedTickets')[0].innerHTML=jsonArr.AssignedTickets;     
-	                	$('#managerClosedTickets')[0].innerHTML=jsonArr.ClosedTickets;     
-	                	$('#managerNotAcceptedTickets')[0].innerHTML=jsonArr.NotAcceptedTickets;     
-	                    
+	                  $('#assignedTechTickets')[0].innerHTML=jsonArr.AssignedTickets;
+	                  $('#acceptedTechTickets')[0].innerHTML=jsonArr.AcceptedTickets;
+	                  $('#closedTechTickets')[0].innerHTML=jsonArr.ClosedTickets;
+	                  $('#technicianNotAcceptedTickets')[0].innerHTML=jsonArr.NotAcceptedTickets;
+	                  
 	                }
 				});
 			}
+		 
 		
 		function tableData()
-		{					
+		{			
+			 var s=sessionStorage.getItem("username");
 			$.ajax({
                 type:"get",
-                url:"getManagerClosedTickets",
+                url:"getTechncianNotAcceptedTickets",
                 contentType: 'application/json',
                 datatype : "json",
                 data:{"username":s},
                 success:function(data) {
-                    closedTicketsList = JSON.parse(data);
+                   var notAcceptedTicketsList = JSON.parse(data);
 					
-                    for(var i=0;i<closedTicketsList.length;i++)
+                    for(var i=0;i<notAcceptedTicketsList.length;i++)
          		   {
-                    	dataSet.push([closedTicketsList[i].ticketNum,closedTicketsList[i].siteid,closedTicketsList[i].technicianName]);
+                    	dataSet.push([notAcceptedTicketsList[i].ticketNum,notAcceptedTicketsList[i].siteid,notAcceptedTicketsList[i].technicianName,notAcceptedTicketsList[i].comments]);
          			   
          		   }
-                   
                     
-			 var table1=$('#closedTickets').DataTable({
+			 var table1=$('#managerNotAcceptedTable').DataTable({
 					destroy:true,
 					language: {
 					  emptyTable: "No Data Available"
@@ -147,11 +149,10 @@ max-width:100%;
 			        columns: [
 						{title: "Ticket Id" },
 						{title: "Site Id" },
-						{title: "Technician Name" }
+						{title: "Not Accepted By" },
+						{title: "Comments"}
 			        ]
-			    } );
-				
-
+			    });
 		}
 			});
 		}
@@ -209,7 +210,7 @@ max-width:100%;
 		</div>
 
 		<!-- Sidebar -->
-<div id="managerSidebar">
+<div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
 
@@ -220,39 +221,21 @@ max-width:100%;
 						<h4 class="page-title">Dashboard</h4>						
 					</div>
 					
+						
 					<div class="row">
 						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round" >
-								<div class="card-body" id="open_div" onclick="location.href='${pageContext.request.contextPath}/managerOpenTickets'" style="cursor:pointer;">
-									<div class="row align-items-center" >
-										<div class="col-icon" >
-											<div class="icon-big text-center bubble-shadow-small" style="background:#f3545d;border-radius: 5px">
-											<img src="<c:url value='resources/assets/img/open.svg' />" >
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category" >Open</p>
-												<h4 class="card-title" id="managerOpenTickets" ></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerAssignedTickets'" style="cursor:pointer;">
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/technicianAssignedTickets'" style="cursor:pointer;" >
 									<div class="row align-items-center">
 										<div class="col-icon">
-											<div class="icon-big text-center bubble-shadow-small" style="background:#af91e1;border-radius: 5px">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#F98B88;border-radius: 5px" >
 											<img src="<c:url value='resources/assets/img/open.svg' />" >
 											</div>
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category">Assigned</p>
-												<h4 class="card-title" id="managerAssignedTickets"></h4>
+												<p class="card-category" >Assigned</p>
+												<h4 class="card-title"  id="assignedTechTickets"></h4>
 											</div>
 										</div>
 									</div>
@@ -261,7 +244,28 @@ max-width:100%;
 						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerNotAcceptedTickets'" style="cursor:pointer;">
+								<div class="card-body " onclick="location.href='${pageContext.request.contextPath}/technicianAcceptedTickets'" style="cursor:pointer;">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center bubble-shadow-small"  style="background:#af91e1;border-radius: 5px">
+											<img src="<c:url value='resources/assets/img/open.svg' />" >
+											</div>
+										</div>
+										<div class="col col-stats ml-3 ml-sm-0">
+											<div class="numbers">
+												<p class="card-category">Accepted</p>
+												<h4 class="card-title" id="acceptedTechTickets"></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						
+						<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianNotAcceptedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#FCD12A;border-radius: 5px">
@@ -270,17 +274,18 @@ max-width:100%;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category">Not Accepted</p>
-												<h4 class="card-title" id="managerNotAcceptedTickets"></h4>
+												<p class="card-category"  style="color:#ffffff;">Not Accepted</p>
+												<h4 class="card-title" id="technicianNotAcceptedTickets"  style="color:#ffffff;"></h4>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+						
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
-								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/managerClosedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianClosedTickets'" style="cursor:pointer;">
 									<div class="row align-items-center">
 										<div class="col-icon">
 											<div class="icon-big text-center bubble-shadow-small" style="background:#808080;border-radius: 5px">
@@ -289,8 +294,8 @@ max-width:100%;
 										</div>
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
-												<p class="card-category"  style="color:#ffffff;">Closed</p>
-												<h4 class="card-title" id="managerClosedTickets"  style="color:#ffffff;"></h4>
+												<p class="card-category">Closed</p>
+												<h4 class="card-title" id="closedTechTickets"></h4>
 											</div>
 										</div>
 									</div>
@@ -298,9 +303,10 @@ max-width:100%;
 							</div>
 						</div>
 						
-						
-					</div>
 					
+						
+					
+					</div>
 					<div class="row">
 
 							<div class="col-md-12">
@@ -310,7 +316,7 @@ max-width:100%;
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">
-										<table id="closedTickets" style="width:100%" role="row" class="display table table-striped table-hover"   >
+										<table id="managerNotAcceptedTable" style="width:100%" role="row" class="display table table-striped table-hover"   >
 											
 										</table>
 									</div>
@@ -318,27 +324,21 @@ max-width:100%;
 							</div>
 						</div>
 	
-			</div>
 			
 		</div>
 			
 	</div>
 	</div>
 </div>
+</div>
 <!--   Core JS Files   -->
-
-
-
 <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
 
 <!-- jQuery UI -->
-
-
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' />"></script>
-
 
 <!-- jQuery Scrollbar -->
 <script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
@@ -347,17 +347,13 @@ max-width:100%;
 <script src="<c:url value='resources/assets/js/plugin/moment/moment.min.js' />"></script>
 
 <!-- Chart JS -->
-
 <script src="<c:url value='resources/assets/js/plugin/chart.js/chart.min.js' />"></script>
 
 <!-- jQuery Sparkline -->
-
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
-
 
 <!-- Chart Circle -->
 <script src="<c:url value='resources/assets/js/plugin/chart-circle/circles.min.js' />"></script>
-
 
 <!-- Datatables -->
 <script src="<c:url value='resources/assets/js/plugin/datatables/datatables.min.js' />"></script>
@@ -365,28 +361,21 @@ max-width:100%;
 <!-- Bootstrap Notify -->
 <script src="<c:url value='resources/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' />"></script>
 
-
 <!-- Bootstrap Toggle -->
 <script src="<c:url value='resources/assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' />"></script>
-
-
 
 <!-- jQuery Vector Maps -->
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/jquery.vmap.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js' />"></script>
 
-
 <!-- Google Maps Plugin -->
 <script src="<c:url value='resources/assets/js/plugin/gmaps/gmaps.js' />"></script>
 
 <!-- Sweet Alert -->
-
 <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 <!-- Azzara JS -->
-
 <script src="<c:url value='resources/assets/js/ready.min.js' />"></script>
-
 
 </body>
 </html>

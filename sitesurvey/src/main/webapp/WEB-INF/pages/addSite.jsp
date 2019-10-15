@@ -254,6 +254,18 @@ label {
     color: #495057!important;
     font-size: 13px!important;
 }
+
+.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
+    width: 700px;
+    background: #fff;
+    padding: 74px 40px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    border: 1px solid #ebecec;
+}
+
 </style>
 <body  class="login">
 
@@ -290,13 +302,18 @@ label {
 </div>
 		<!-- End Sidebar -->
 		
+		
+		
 <div class="wrapper wrapper-login">
   <div class="container container-login animated fadeIn">
+  
     <div align="center"><span class="isa_success" style="color:#35B234;font-size:20px">${status}</span></div>	<br><br>
     
 			<h3 class="text-center">Add Site</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
+				
 			<form:form action="saveSite" method="post" modelAttribute="Site" >
+			
 			<div class="login-form">
 			
 				
@@ -340,6 +357,8 @@ label {
 			</form:form>			
 		</div>
 </div>
+
+
    <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 	<script src="<c:url value='resources//assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 	<script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>

@@ -47,9 +47,6 @@
 			  $("#technicianSidebar").load('<c:url value="/resources/common/technicianSidebar.jsp" />'); 
 			  getCount();
 			 tableData();
-
-		
-
 		});
 		
 		var dataSet=[];
@@ -68,7 +65,7 @@
 	                	 $('#assignedTechTickets')[0].innerHTML=jsonArr.AssignedTickets;
 		                  $('#acceptedTechTickets')[0].innerHTML=jsonArr.AcceptedTickets;
 		                  $('#closedTechTickets')[0].innerHTML=jsonArr.ClosedTickets;            
-	                    
+		                  $('#technicianNotAcceptedTickets')[0].innerHTML=jsonArr.NotAcceptedTickets;
 	                }
 				});
 			}
@@ -87,7 +84,7 @@
 					
                     for(var i=0;i<closedTicketsList.length;i++)
          		   {
-                    	dataSet.push([closedTicketsList[i].ticketNum,closedTicketsList[i].siteid,closedTicketsList[i].ticketDescription,closedTicketsList[i].severity]);
+                    	dataSet.push([closedTicketsList[i].ticketNum,closedTicketsList[i].siteids,closedTicketsList[i].ticketDescription]);
          			   
          		   }
                    
@@ -102,41 +99,11 @@
 			        columns: [
 			        	{title: "Ticket Id" },
 						{title: "Site Id" },
-						{title: "Ticket Description" },									
+						{title: "Ticket Description" },	
 // 						{title: "Action" },						
 			        ]
 			    } );
 			 
-			 $('#execClosedTickets tbody').on('click', '[id*=viewBtn]', function () {
-		            data1 =  table1.row($(this).parents('tr')).data();
-		           
-		           ticketId=data1[0];
-		           custId=data1[1];
-		           
-		           
-		           console.log("Cust"+custId);
-		           
-		          // window.location.href = '/RFIDAssetTracking/viewTicketDetails';
-					
-
-					$.ajax({
-		                type: "get",
-		                url: "getDetails",
-		                contentType: 'application/json',
-		                data :{
-		                	custId,ticketId
-		                  },
-		                datatype: "json",
-		                success: function(result) {
-		                    listData = JSON.parse(result);
-		                   window.location.href = '/RFIDAssetTracking/viewTicketDetails?listDetails='+ window.encodeURIComponent(JSON.stringify(listData)); 
-		                  
-
-		                }
-					
-		       		 }); 
-			 
-          });
 			 }
 			});
 		}
@@ -159,7 +126,7 @@
 .fa-bars,
 .fa-ellipsis-v
 {
-color: #fff!important;
+	color: #fff !important;
 }
 </style>
 </head>
@@ -197,8 +164,8 @@ color: #fff!important;
 		</div>
 
 		<!-- Sidebar -->
-<div id="technicianSidebar">
-</div>
+	<div id="technicianSidebar">
+	</div>
 		<!-- End Sidebar -->
 
 		<div class="main-panel">
@@ -246,6 +213,27 @@ color: #fff!important;
 								</div>
 							</div>
 						</div>
+						
+						
+												<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianNotAcceptedTickets'" style="cursor:pointer;">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#FCD12A;border-radius: 5px">
+											<img src="<c:url value='resources/assets/img/closed.svg' />" >
+											</div>
+										</div>
+										<div class="col col-stats ml-3 ml-sm-0">
+											<div class="numbers">
+												<p class="card-category" >Not Accepted</p>
+												<h4 class="card-title" id="technicianNotAcceptedTickets"  ></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
 								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianClosedTickets'" style="background-color:#00B1BF;border-radius: 10px;cursor:pointer;">
@@ -283,32 +271,20 @@ color: #fff!important;
 								</div>
 							</div>
 						</div>
-	
-	
-
-			</div>
-			
+				</div>
 		</div>
-		
-	
-		
 	</div>
 	</div>
 </div>
+
 <!--   Core JS Files   -->
-
-
-
 <script src="<c:url value='resources/assets/js/core/jquery.3.2.1.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/popper.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/core/bootstrap.min.js' />"></script>
 
 <!-- jQuery UI -->
-
-
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' />"></script>
-
 
 <!-- jQuery Scrollbar -->
 <script src="<c:url value='resources/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' />"></script>
@@ -317,45 +293,34 @@ color: #fff!important;
 <script src="<c:url value='resources/assets/js/plugin/moment/moment.min.js' />"></script>
 
 <!-- Chart JS -->
-
 <script src="<c:url value='resources/assets/js/plugin/chart.js/chart.min.js' />"></script>
 
 <!-- jQuery Sparkline -->
-
 <script src="<c:url value='resources/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' />"></script>
-
 
 <!-- Chart Circle -->
 <script src="<c:url value='resources/assets/js/plugin/chart-circle/circles.min.js' />"></script>
 
-
 <!-- Datatables -->
 <script src="<c:url value='resources/assets/js/plugin/datatables/datatables.min.js' />"></script>
-
 
 <!-- Bootstrap Notify -->
 <script src="<c:url value='resources/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' />"></script>
 
-
 <!-- Bootstrap Toggle -->
 <script src="<c:url value='resources/assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' />"></script>
-
-
 
 <!-- jQuery Vector Maps -->
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/jquery.vmap.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js' />"></script>
 
-
 <!-- Google Maps Plugin -->
 <script src="<c:url value='resources/assets/js/plugin/gmaps/gmaps.js' />"></script>
 
 <!-- Sweet Alert -->
-
 <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 <!-- Azzara JS -->
-
 <script src="<c:url value='resources/assets/js/ready.min.js' />"></script>
 
 

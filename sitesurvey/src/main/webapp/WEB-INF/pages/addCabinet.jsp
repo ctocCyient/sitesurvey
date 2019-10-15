@@ -74,7 +74,7 @@ $(document).ready(function(){
 
 		// $(".isa_success").fadeOut(10000);
 		 getCabinet();
-		 $("input").attr("required", "true");
+		 //$("input").attr("required", "true");
 		 $("select").attr("required", "true");
          $("select option:contains('Select')").attr("disabled","disabled");
          $('#photo_1_checkbox').prop('checked', true);
@@ -154,8 +154,14 @@ function populateDropdown(data,id)
 				 	          $('#photo_2_checkbox').prop('checked', false);
 				 	         	$("#photo_1").removeAttr("disabled");     
 				 	         	$("#photo_2").removeAttr("disabled"); 
+					         	$('input[name="photo_1_text_div_radio"][value="Yes"]').attr('checked', true); 
+					         	$('input[name="photo_2_text_div_radio"][value="Yes"]').attr('checked', true);
 			 	 	         	$("#photo_1_div").show();
 			 	 	         	$("#photo_2_div").show();
+			 	 	         	$("#photo_1_text_div").hide();
+			 	 	         	$("#photo_2_text_div").hide();
+				 	         	$("#Radio_1_div").hide();
+				 	         	$("#Radio_2_div").hide();
 	 	         		}
 	 		 		//alert(jsonData.id)	
 	 		 		else
@@ -171,7 +177,8 @@ function populateDropdown(data,id)
 	 	         	document.getElementById("updatetype").value="Existing;"+jsonData.id;
 	 	         	document.getElementById("photo_1_text").value=jsonData.Photo_1_Name;
 	 	         	document.getElementById("photo_2_text").value=jsonData.Photo_2_Name;
-
+	 	         	$('input[name="photo_1_text_div_radio"][value="No"]').attr('checked', true); 
+		         	$('input[name="photo_2_text_div_radio"][value="No"]').attr('checked', true);
 	 	         	
  	 	         	//document.getElementById("photo_1").value='data:image/jpeg;base64,' + base64;
  	 	         	$("#photo_1_div").hide();
@@ -217,7 +224,6 @@ function submit_logic()
 		{
 		$('#updatetype').val("Existing;"+Unqid+filestate);		
 		}
-	alert($('#updatetype').val());
 }
 
 
@@ -295,15 +301,68 @@ function upload_files(id)
     	}
 	}
 
+
+function dimension(element)
+{
+	for(i = 0 ;i<(element.value).length;i++)
+		{
+		
+		if(isNumber(element)!==true)
+			{
+			if(element.value[i]!="X")
+				{
+			$("#"+element.id).val(" ");
+			swal("Invalid Dimensions", {
+				icon : "error",
+				buttons: {        			
+					confirm: {
+						className : 'btn btn-danger'
+					}
+				},
+			});
+			break;
+			}
+			}
+		}
+arr = (element.value).split("X");
+	if(arr.length<=1 || arr.length==2 || arr.length>3)
+		{
+		
+		$("#"+element.id).val(" ");
+		swal("Invalid Dimensions", {
+			icon : "error",
+			buttons: {        			
+				confirm: {
+					className : 'btn btn-danger'
+				}
+			},
+		});
+		}
+	}
 </script>
 <style>
 .fa-bars, .fa-ellipsis-v {
 	color: #fff !important;
 }
 
+.isa_failure{
+    color:red;
+}
 label {
 	color: #495057 !important;
 	font-size: 13px !important;
+}
+
+.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
+    width: 700px;
+    background: #fff;
+    padding: 74px 40px ;
+   
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    border: 1px solid #ebecec;
 }
 </style>
 <body class="login">
@@ -378,10 +437,32 @@ label {
 						<form:options items="${CabinetType}"></form:options>
 					</form:select>
 
-					<br> <label for="dimensions" class="placeholder"><b>Dimensions</b></label>
-					<form:input id="dimensions" path="dimensions" name="dimensions" onkeypress="return isNumber(event)"
+					<br> <label for="dimensions" class="placeholder"><b>Dimensions (L X B X H) </b></label>
+					<form:input id="dimensions" path="dimensions" name="dimensions"  onchange="dimension(this);"
 						class="form-control input-full filled" />
-
+<%-- 						<span class="isa_failure" id="dimensionsError">${errMsg}</span> --%>
+             
+						<!-- <div class="row mt-1">
+						 <div class="col-md-2">
+						 <label for="Length" class="placeholder"><b>Length</b></label>
+						 </div>
+						 						 						 <div class="col-md-2">
+						 <input type="text" class="form-control input-full filled"/>
+						 </div>
+						 						 <div class="col-md-2">
+<label for="Length" class="placeholder"><b>breadth</b></label>						  
+						 </div>
+						 						 <div class="col-md-2">
+						 <input type="text" class="form-control input-full filled"/>
+						 </div>
+						 						 						 <div class="col-md-2">
+<label for="Length" class="placeholder"><b>height</b></label>						  
+						 </div>
+						 						 <div class="col-md-2">
+						 <input type="text" class="form-control input-full filled"/>
+						 </div>
+	
+							</div> -->
 					<br> <label for="cabinetCondition" class="placeholder"><b>Cabinet
 						Condition</b></label>
 					<form:select id="cabinetCondition" path="cabinetCondition"
@@ -431,15 +512,16 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_1" onclick="photohover(this);" value="View"/>
+										<input class="btn btn-info form-control input-full" type="button" id="picture_1" onclick="photohover(this);" value="View Image"/>
 
 						</div>
 						</div>
 
 						</div>
-												<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" id="defaultChecked" name="photo_1_text_div_radio" onclick="upload_files(this)" /></div><div class="col-md-2">No<input type="radio" onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio" checked/>
+												<div class="row mt-1" id="Radio_1_div">	<div class="col-md-7">
+						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div>
+						<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="defaultChecked" name="photo_1_text_div_radio" onclick="upload_files(this)" /></div>
+						<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio" checked/>
 						</div>
 						</div>
 						
@@ -454,8 +536,8 @@ label {
 						  <input type="radio"  value="Yes" onclick="upload_files(this)" name="photo_2_text_div_radio_update"  checked/></div><div class="col-md-2">No<input type="radio" value="No" onclick="upload_files(this)" name="photo_2_text_div_radio_update" />
 						</div>-->
 						</div>
-						</div>
-<div id="photo_2_text_div">
+					
+					<div id="photo_2_text_div">
 					 <label for="Photo_2" class="placeholder" style="float:left" ><b>photo 2</b></label><br>
 					 					<div class="row mt-1">									 
 					 <div class="col-md-9">
@@ -463,27 +545,28 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">												
-										<input class="btn btn-info" type="button" id="picture_2" onclick="photohover(this);" value="View"/>
+										<input class="btn btn-info form-control input-full" type="button" id="picture_2" onclick="photohover(this);" value="View Image"/>
 						</div>
 						</div>
 
 						
 						
 						</div>
-											<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" onclick="upload_files(this)" name="photo_2_text_div_radio"  /></div><div class="col-md-2">No<input type="radio" value="No" onclick="upload_files(this)" name="photo_2_text_div_radio" checked/>
-						</div>
+											<div class="row mt-1" id="Radio_2_div">	<div class="col-md-7">
+						<label for="Radio_2" class="placeholder" ><b>Do you want to upload Image</b></label><br></div>
+						<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" onclick="upload_files(this)" name="photo_2_text_div_radio"  /></div>
+						<div class="col-md-2">No&nbsp;<input type="radio" value="No" onclick="upload_files(this)" name="photo_2_text_div_radio" checked/></div>
 						</div>	
 
 <!--  <img id="ItemPreview">-->
 						
+<br>
 
-
-<div class="form-action">
+				<div class="form-action">
+				<a href="newBB" class="btn btn-rounded btn-login btn-warning">Previous</a>
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #E4002B;color: white;">
-					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login" onclick="submit_logic()" style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save for Later" class="btn btn-rounded btn-login btn-danger" onclick="submit_logic()" style="background-color: #E4002B;color: white;">
+					<input type="submit"  name="submit" value="Next" class="btn btn-rounded btn-login btn-primary" onclick="submit_logic()" style="background-color: #012169;color: white;">
 				</div>
 				</div>
 			</form:form>

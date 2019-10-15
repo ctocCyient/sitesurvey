@@ -94,7 +94,7 @@ color: #fff!important;
 			  tableData();	
 		});	
 	
-		 var ticketId,ticketType,siteIds,selectedSite;
+		 var ticketId,ticketType,siteIds,selectedSite,rowToDelete;
 		 var  dataSet=[],times=[],openTicketsList=[],uniqueTicketsList=[],datatableList=[],ticketsNums=[];
 		 
 		 function getCount(){
@@ -110,6 +110,8 @@ color: #fff!important;
 	                  $('#assignedTechTickets')[0].innerHTML=jsonArr.AssignedTickets;
 	                  $('#acceptedTechTickets')[0].innerHTML=jsonArr.AcceptedTickets;
 	                  $('#closedTechTickets')[0].innerHTML=jsonArr.ClosedTickets;
+	                  $('#technicianNotAcceptedTickets')[0].innerHTML=jsonArr.NotAcceptedTickets;
+
 	                  
 	                }
 				});
@@ -186,12 +188,12 @@ color: #fff!important;
       							if (data[3] =='Open') {
       				                return "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Start Survey' />";
       				            }
-      				            else if (data[3] =='InProgress' || data[3] =='Closed') {
+      				            else if (data[3] =='InProgress' || data[3] =='Completed') {
       					                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Resume Survey' />";
       					            }
-//       				            else if (data[3] =='Closed') {
-//       				                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='Finished Survey' />";
-//       				            }
+	      				          else if (data[3] =='Closed') {
+	      			                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='closeBtn' name='closeBtn' value='Close Ticket' />";
+	      			            	}
       				            }			            
       				        }],
       			        data: dataSet,
@@ -232,7 +234,7 @@ color: #fff!important;
       				      rowData[3] = selectedSiteStatus;
       				      table1.cell(row.index(), 4).data(resultHtml).draw();      				     
       			    });
-      			 
+      			
       			 $('#technicianAcceptedTickets tbody').on('click', '[name*=surveyBtn]', function () {
 
       		            data2 =  table1.row($(this).parents('tr')).data();
@@ -243,6 +245,7 @@ color: #fff!important;
 
       					sessionStorage.setItem("ticketId", ticketId);
       					sessionStorage.setItem("siteId", selectedSite);
+      					
       					$.ajax({
       		                type: "get",
       		                url: "getSiteDetails",
@@ -255,6 +258,49 @@ color: #fff!important;
       		                }					
       		       		 }); 
             	 	});
+      			
+      			
+      			
+      			 $('#technicianAcceptedTickets tbody').on('click', '[name*=closeBtn]', function () {
+
+   		            data2 =  table1.row($(this).parents('tr')).data();
+   		            ticketId=data2[0];
+   		            
+   		            selectedSite = $("#jsonStatusList"+ticketId+" option:selected").val();
+   		          //  rowIndex = $(this).parent().index();			          
+   		         	rowToDelete= table1.row($(this).parents('tr'));
+   					
+   					$.ajax({
+   		                type: "get",
+   		                url: "updateTicketStatus",
+   		                contentType: 'application/json',
+   		                data:{"siteId":selectedSite,"ticketId":ticketId},
+   		                datatype: "json",
+   		                success: function(result) { 
+   		                	rowToDelete.remove().draw();
+   		                	if(result=="Updated"){
+   		                		content="Ticket Closed Successfully";
+   		                	}
+   		                	swal({
+   				  				text: content,
+   				  				type: 'info',
+   				  				buttons:{
+   				  					confirm: {
+   				  						text : 'Ok',
+   				  						className : 'btn btn-success'
+   				  					}
+   				  				}
+   				  			});
+   		                 var acceptedTicketCount=parseInt($('#acceptedTechTickets')[0].innerHTML); 
+   	                     $('#acceptedTechTickets')[0].innerHTML=acceptedTicketCount-1;   	                   
+                         var closedTicketCount=parseInt($('#closedTechTickets')[0].innerHTML); 
+                         $('#closedTechTickets')[0].innerHTML=closedTicketCount+1;
+   		                  
+   		                }					
+   		       		 }); 
+   					
+   					
+         	 	});
             
 				}
 			});
@@ -264,19 +310,17 @@ color: #fff!important;
 			if (siteStatus =='Open') {				
                 return "<input type='button' style=' background-color: #4CAF50;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Start Survey' />";
             }
-            else if (siteStatus =='InProgress' || siteStatus =='Closed') {            	
+            else if (siteStatus =='InProgress' || siteStatus =='Completed') {            	
 	                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='surveyBtn' name='surveyBtn' value='Resume Survey' />";
 	        }
-//             else if (siteStatus =='Closed') {
-//                 return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='viewBtn' value='Finished Survey' />";
-//             }
+            else if (siteStatus =='Closed') {
+                return "<input type='button' style=' background-color: #FF6347;border: none;  color: white;  padding: 5px 25px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;  margin: 4px 2px;  cursor: pointer;' id='closeBtn' name='closeBtn' value='Close Ticket' />";
+            }
 		}
 	</script>
 
 
 	<!-- CSS Files -->
-
-	
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/bootstrap.min.css' />">
 	<link rel="stylesheet" href="<c:url value='resources/assets/css/azzara.min.css' />">
 
@@ -326,9 +370,7 @@ color: #fff!important;
 <div id="technicianSidebar">
 </div>
 		<!-- End Sidebar -->
-<form style="display: hidden" action="sitesurvey/siteDetails" method="POST" id="form">
-  <input type="hidden" id="ticketDetails" name="ticketDetails" value=""/>
-</form>
+
 		<div class="main-panel">
 			<div class="content">
 				<div class="page-inner">
@@ -374,6 +416,28 @@ color: #fff!important;
 								</div>
 							</div>
 						</div>
+						
+						
+												<div class="col-sm-6 col-md-3">
+							<div class="card card-stats card-round">
+								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianNotAcceptedTickets'" style="cursor:pointer;">
+									<div class="row align-items-center">
+										<div class="col-icon">
+											<div class="icon-big text-center bubble-shadow-small" style="background:#FCD12A;border-radius: 5px">
+											<img src="<c:url value='resources/assets/img/closed.svg' />" >
+											</div>
+										</div>
+										<div class="col col-stats ml-3 ml-sm-0">
+											<div class="numbers">
+												<p class="card-category" >Not Accepted</p>
+												<h4 class="card-title" id="technicianNotAcceptedTickets"></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
 						<div class="col-sm-6 col-md-3">
 							<div class="card card-stats card-round">
 								<div class="card-body" onclick="location.href='${pageContext.request.contextPath}/technicianClosedTickets'" style="cursor:pointer;">
@@ -394,6 +458,7 @@ color: #fff!important;
 							</div>
 						</div>
 						
+						
 					</div>
 
 					<div class="row">
@@ -413,6 +478,8 @@ color: #fff!important;
 							</div>
 						</div>
 			</div>
+			
+			
 			
 		</div>
 		
@@ -460,7 +527,6 @@ color: #fff!important;
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/jquery.vmap.min.js' />"></script>
 <script src="<c:url value='resources/assets/js/plugin/jqvmap/maps/jquery.vmap.world.js' />"></script>
 
-
 <!-- Google Maps Plugin -->
 <script src="<c:url value='resources/assets/js/plugin/gmaps/gmaps.js' />"></script>
 
@@ -468,7 +534,6 @@ color: #fff!important;
 <script src="<c:url value='resources/assets/js/plugin/sweetalert/sweetalert.min.js' />"></script>
 
 <!-- Azzara JS -->
-
 <script src="<c:url value='resources/assets/js/ready.min.js' />"></script>
 
 

@@ -63,7 +63,7 @@ $(document).ready(function(){
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
 		 getBB();
-		 $("input").attr("required", "true");
+		 //$("input").attr("required", "true");
 		 $("select").attr("required", "true");
          $("select option:contains('Select')").attr("disabled","disabled");
          $('#photo_1_checkbox').prop('checked', true);
@@ -74,10 +74,7 @@ $(document).ready(function(){
     	 $("#tag_photo3").removeAttr("required");                    	 
     	 /*$("#tag_photo1").attr("disabled","disabled");
     	 $("#tag_photo2").attr("disabled","disabled");
-    	 $("#tag_photo3").attr("disabled","disabled");*/
-
-
-    	 
+    	 $("#tag_photo3").attr("disabled","disabled");*/	 
 });
 
 function populateDropdown(data,id)
@@ -127,6 +124,9 @@ function getBB()
 	 	         	$("#photo_1_text_div").hide();
 	 	         	$("#photo_2_text_div").hide();
 	 	         	$("#photo_3_text_div").hide();
+	 	         	$("#Radio_1_div").hide();
+	 	         	$("#Radio_2_div").hide();
+	 	         	$("#Radio_3_div").hide();
 	 	         	
 	 	         	
    
@@ -273,6 +273,18 @@ label {
 	color: #495057 !important;
 	font-size: 13px !important;
 }
+
+.login .wrapper.wrapper-login .container-login, .login .wrapper.wrapper-login .container-signup {
+    width: 700px;
+    background: #fff;
+    padding: 74px 40px ;
+   
+    border-radius: 5px;
+    -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    -moz-box-shadow: 0 .75rem 1.5rem rgba(18,38,63,.03);
+    box-shadow: 0 0.75rem 1.5rem rgba(18,38,63,.03);
+    border: 1px solid #ebecec;
+}
 </style>
 <body class="login">
 
@@ -349,7 +361,7 @@ label {
 						Manufacturer/Installation</b></label> 
 					<form:input type="date" id="manufacturedDate"
 						path="manufacturedDate" class="form-control input-full filled" />
-					<br> <label for="number_of_batteries" class="placeholder"><b>Number_of_batteries</b></label>
+					<br> <label for="number_of_batteries" class="placeholder"><b>Number of batteries</b></label>
 					<form:input id="number_of_batteries" path="number_of_batteries" onkeypress="return isNumber(event)"
 						name="number_of_batteries" class="form-control input-full filled" />
 					<br> <label for="number_of_working_Module_rating"
@@ -378,7 +390,7 @@ label {
 						<form:option value="Very good - Looks almost new">Very good - Looks almost new</form:option>
 						<form:option value="Not applicable">Not applicable</form:option>
 					</form:select>
-					<br> <label for="tag_observed" class="placeholder"><b>Tag_observed</b></label>
+					<br> <label for="tag_observed" class="placeholder"><b>Tag Observed</b></label>
 					<form:select id="tag_observed" path="tag_observed"
 						name="tag_observed" class="form-control input-full filled">
 						<form:option value="">Select</form:option>
@@ -398,12 +410,7 @@ label {
 
 					<input type="file" id="tag_photo1"  name="photos" onchange="ValidateFileUpload(this.id)" accept="image/*"
 						class="form-control input-full filled" /></div>
-																		
-<<<<<< HEAD
-
-											<br> <label for="tag_photo_2" class="placeholder"><b>Battery Bank Photo 2</b></label><input id="photo_3_checkbox" type="checkbox"  style="float:right;bottom: 1px;"/><label style="float:right">Enable/Disable</label>
-=======
-						
+			
 											<div id="photo_1_text_div">
 					 <label for="Photo_1" class="placeholder" style="float:left" ><b>Tag
 						photo</b></label><br>
@@ -414,18 +421,22 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_1" onclick="photohover(this);" value="View"/>
+										<input class="btn btn-info  form-control input-full" type="button" id="picture_1" onclick="photohover(this);" value="View Image"/>
 
 						</div>
 						</div>
 
 						</div>
-						<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" id="defaultChecked" name="photo_1_text_div_radio" onclick="upload_files(this)" /></div><div class="col-md-2">No<input type="radio" onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio" checked/>
+						
+						
+						<div class="row mt-1" id="Radio_1_div">	<div class="col-md-7">
+						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div>
+						<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="defaultChecked" name="photo_1_text_div_radio" onclick="upload_files(this)" /></div>
+						  <div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" value="No"  name="photo_1_text_div_radio" checked/>
 						<br>
 						</div>
 						</div>
+						
 <br>
 					<div id="photo_2_div">
 					
@@ -445,16 +456,16 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_2" onclick="photohover(this);" value="View"/>
+										<input class="btn btn-info form-control input-full" type="button" id="picture_2" onclick="photohover(this);" value="View Image"/>
 
 						</div>
 						</div>
 
 						</div>
-						<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" id="defaultChecked" name="photo_2_text_div_radio" onclick="upload_files(this)" /></div><div class="col-md-2">No<input type="radio" onclick="upload_files(this)" value="No"  name="photo_2_text_div_radio" checked/>
-						</div>
+						<div class="row mt-1" id="Radio_2_div">	<div class="col-md-7">
+						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div>
+							<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="defaultChecked" name="photo_2_text_div_radio" onclick="upload_files(this)" /></div>
+						  <div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" value="No"  name="photo_2_text_div_radio" checked/></div>
 						</div>
 						
 						
@@ -483,26 +494,25 @@ label {
 						class="form-control input-full filled" 
 						 /></div>
 						 <div class="col-md-3">
-										<input class="btn btn-info" type="button" id="picture_3" onclick="photohover(this);" value="View"/>
+										<input class="btn btn-info form-control input-full" type="button" id="picture_3" onclick="photohover(this);" value="View Image"/>
 
 						</div>
 						</div>
 
 						</div>
-						<div class="row mt-1">	<div class="col-md-7">
-						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div><div class="col-md-3">Yes				
-						  <input type="radio"  value="Yes" id="defaultChecked" name="photo_3_text_div_radio" onclick="upload_files(this)" /></div><div class="col-md-2">No<input type="radio" onclick="upload_files(this)" value="No"  name="photo_3_text_div_radio" checked/>
+						<div class="row mt-1" id="Radio_3_div">	<div class="col-md-7">
+						<label for="Radio_1" class="placeholder" ><b>Do you want to upload Image</b></label><br></div>
+						<div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="defaultChecked" name="photo_3_text_div_radio" onclick="upload_files(this)" /></div>
+						<div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" value="No"  name="photo_3_text_div_radio" checked/>
 						</div>
 						</div>
+				<br>
 
-
-
->>>>>>> branch 'master' of https://github.com/ctocCyient/sitesurvey
-
-<div class="form-action">
+				<div class="form-action">
+					<a href="newSMPS" class="btn btn-rounded btn-login btn-warning">Previous</a>
 					<!-- <a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>-->
-					<input type="submit"  name="submit" value="Save" class="btn btn-rounded btn-login"  style="background-color: #E4002B;color: white;">
-					<input type="submit"  name="submit" value="Save & Continue" class="btn btn-rounded btn-login"  style="background-color: #012169;color: white;">
+					<input type="submit"  name="submit" value="Save for Later" class="btn btn-rounded btn-login btn-danger"  style="background-color: #E4002B;color: white;">
+					<input type="submit"  name="submit" value="Next" class="btn btn-rounded btn-login btn-primary"  style="background-color: #012169;color: white;">
 				</div>
 				</div>
 			</form:form>
