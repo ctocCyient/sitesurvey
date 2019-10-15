@@ -46,6 +46,12 @@ $('#currentUser')[0].innerHTML=sessionStorage.getItem("username");
 								<a  href="techniciansList">&nbsp;&nbsp;
 								<span class="fas fa-users" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Technician List</span></a>
 						</li>
+						<li class="nav-item">
+								<a  href="newSite">&nbsp;&nbsp;
+								<span style="font-size:14px" class="fas fa-map-marked">
+								 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Site</span></a>
+						</li>
+						
 					</ul>
 				</div>
 			</div>

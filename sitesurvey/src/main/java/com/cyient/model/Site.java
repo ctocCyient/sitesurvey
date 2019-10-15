@@ -37,7 +37,18 @@ public class Site implements Serializable {
 	
 	@Column(name="Site_Type")
 	private String site_type;
-		
+	
+	@Column(name="pincode")
+	private int pincode;	
+	
+	public int getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(int pincode) {
+		this.pincode = pincode;
+	}
+
 	public String getState() {
 		return state;
 	}
