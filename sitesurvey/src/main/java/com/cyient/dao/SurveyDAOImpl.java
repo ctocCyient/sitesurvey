@@ -491,11 +491,11 @@ public class SurveyDAOImpl implements SurveyDAO {
 	} 
 
 	@SuppressWarnings("unchecked")
-	public List<Technician> getUnassignedTechniciansData(String region,String city){
+	public List<Technician> getUnassignedTechniciansData(String username,String region,String city){
 		List<Technician> data_list = null;
 
 		try {
-			data_list = sessionFactory.getCurrentSession().createQuery("FROM Technician where region='"+region+"' and city ='"+city+"'").list();
+			data_list = sessionFactory.getCurrentSession().createQuery("from Technician where region='"+region+"' and city ='"+city+"' and manager ='"+username+"'").list();
 		} catch (Exception e) {
 			// TODO: handle exception
 			impLogger.info("Function : SurveyDAOImpl-getUnassignedTechniciansData");

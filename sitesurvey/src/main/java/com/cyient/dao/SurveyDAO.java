@@ -114,7 +114,7 @@ public interface SurveyDAO {
 	public List<Ticketing> getAllTicketsData();
 
 	@Transactional
-	public List<Technician> getUnassignedTechniciansData(String region, String city);
+	public List<Technician> getUnassignedTechniciansData(String username,String region, String city);
 
 	@Transactional
 	public List<Ticketing> managerOpenTickets(String username,String region,String city);

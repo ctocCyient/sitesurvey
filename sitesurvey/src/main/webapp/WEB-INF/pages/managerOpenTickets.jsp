@@ -235,7 +235,7 @@ color: #fff!important;
 		                url: "getUnassignedTechnicians",
 		                contentType: 'application/json',
 		                datatype: "json", 
-						    data:{"region":region,"city":city},
+						    data:{"username":s,"region":region,"city":city},
 		                success: function(result) {
 		                    techniciansList = JSON.parse(result);
 							 if(techniciansList==""){

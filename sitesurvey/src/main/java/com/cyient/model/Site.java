@@ -37,6 +37,9 @@ public class Site implements Serializable {
 	
 	@Column(name="Site_Type")
 	private String site_type;
+	
+	@Column(name="Survey_Status")
+	private String surveyStatus;
 		
 	public String getState() {
 		return state;
@@ -100,5 +103,13 @@ public class Site implements Serializable {
 
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
+	}
+
+	public String getSurveyStatus() {
+		return surveyStatus;
+	}
+
+	public void setSurveyStatus(String surveyStatus) {
+		this.surveyStatus = surveyStatus;
 	}
 }

@@ -319,10 +319,11 @@ public class HomeController {
 	   homeLogger.info("In Get Unassigned Techinicians ");
     	 String region=request.getParameter("region");
     	 String city=request.getParameter("city");
+    	 String username=request.getParameter("username");
     	 String techniciansJson="";
     	 System.out.println("city :::"+city);
     	 try{
-		List<Technician> listTechnicians = surveyDAO.getUnassignedTechniciansData(region,city);
+		List<Technician> listTechnicians = surveyDAO.getUnassignedTechniciansData(username,region,city);
 		System.out.println(listTechnicians);
 		    techniciansJson = gsonBuilder.toJson(listTechnicians);
     	 }catch(Exception e){
