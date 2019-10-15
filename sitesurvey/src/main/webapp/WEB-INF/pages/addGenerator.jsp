@@ -86,6 +86,7 @@ function getGeneratorDetails(siteID)
             jsonData = JSON.parse(result);
             if(jsonData.length==0)
             {
+            
             	
             }
             else

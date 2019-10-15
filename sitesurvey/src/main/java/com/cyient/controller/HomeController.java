@@ -525,8 +525,6 @@ public class HomeController {
 		String status="SMPS Added Successfully";
 		redirectAttributes.addFlashAttribute("status",status);
 
-		
-
 		if(submit.equals("Save"))
 		{
 			return new ModelAndView("redirect:/home");

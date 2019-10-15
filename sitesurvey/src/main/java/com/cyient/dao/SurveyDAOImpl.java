@@ -2,7 +2,6 @@ package com.cyient.dao;
 
 import java.util.Calendar;
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -49,8 +48,6 @@ public class SurveyDAOImpl implements SurveyDAO {
 		sessionFactory.getCurrentSession().saveOrUpdate(ticket);
 		//System.out.println("ADDEDDDDSDGF");
 	}
-	
-
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsersOnCriteria(String username,String password,String type) {
