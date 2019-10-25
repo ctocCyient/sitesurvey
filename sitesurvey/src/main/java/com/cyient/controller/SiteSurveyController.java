@@ -864,7 +864,6 @@ public class SiteSurveyController {
 		}catch(Exception e){
 			System.out.println("Exception"+e);
 		}
-		
 		System.out.println("Ticket Add "+selectedTicketId);
 		System.out.println("Site Add "+siteaddtional.getSiteid().getSiteid());
 		String updatedStatus=surveyDAO.updateClosedSurveyStatus(selectedTicketId,siteaddtional.getSiteid().getSiteid());

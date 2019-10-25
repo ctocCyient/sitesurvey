@@ -4,10 +4,12 @@ package com.cyient.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
+
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jboss.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -494,7 +503,76 @@ public class HomeController {
 		return new ModelAndView("redirect:/newSite");
 	}
 	
-
+	@RequestMapping(value = "/saveMultipleSite", method = RequestMethod.POST)
+	public ModelAndView saveMultipleSite(@ModelAttribute Site site,RedirectAttributes redirectAttributes,MultipartFile file) throws IOException {
+	
+		 logger.info("In Save Site ");
+		
+		System.out.println("In Multiple site"); 
+	     
+	    InputStream in = file.getInputStream();
+	    Workbook workbook = new XSSFWorkbook(in);
+	    Sheet sheet = (Sheet) workbook.getSheetAt(0);
+	    System.out.println(" sheet______"+sheet.getSheetName());
+	    System.out.println(" sheet Data>>>"+sheet.getHeader().getLeft());
+	    List<Site> lastsiteid=surveyDAO.getSiteId();
+	    String ls=lastsiteid.toString();
+	    String fls=ls.substring(1, ls.length()-1);
+	    
+	    System.out.println(fls.split("IND")[1]);
+	    int tempsiteid = Integer.parseInt(fls.split("IND")[1]); 
+	     int tempsiteidforloop = tempsiteid;
+	     System.out.println("Number>>>>"+tempsiteidforloop);
+	    Iterator<Row> iterator = sheet.iterator();
+	    ArrayList<Object> arraylis= new ArrayList<Object>();
+	    while (iterator.hasNext()) {
+	    	tempsiteidforloop = tempsiteidforloop + 1;
+	    	System.out.println("In loop Number>>>>"+tempsiteidforloop);
+	     Row nextRow = (Row) iterator.next();
+	     ArrayList<Object> arraylist= new ArrayList<Object>();
+	     arraylist.add("IND"+tempsiteidforloop);
+	     Iterator<Cell> cellIterator = nextRow.cellIterator();
+	   //  ArrayList<Object> arraylist= new ArrayList<Object>();
+	     while (cellIterator.hasNext()) {
+	      Cell cell = (Cell) cellIterator.next();
+	      //arraylist.add(lastsiteid);
+	      switch (cell.getCellType()) {
+	      case STRING:
+	       System.out.print(cell.getStringCellValue());
+	       arraylist.add(cell.getStringCellValue());
+	       break;
+	      case NUMERIC:
+	       System.out.print(cell.getNumericCellValue());
+	       arraylist.add(cell.getNumericCellValue());
+	       break;
+	      case BOOLEAN:
+	       System.out.print(cell.getBooleanCellValue());
+	       arraylist.add(cell.getBooleanCellValue());
+	       break;
+	      }
+	      
+	      System.out.print(" | ");
+	      
+	     }
+	     arraylis.add(arraylist);
+	     System.out.println();
+	    }
+	   
+	    workbook.close();
+	   
+	    for(int i=0;i<arraylis.size();i++)
+	    System.out.println("finallist>>"+arraylis.get(i));
+	
+		return new ModelAndView("redirect:/saveMultipleSite");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value="/saveGenerator" , method=RequestMethod.POST)
 	public ModelAndView saveGenerator(@Valid @ModelAttribute("Site_Generator") Site_Generator generator , BindingResult br , ModelAndView model, @RequestParam("file") MultipartFile[] multipart,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,HttpServletRequest request) throws IOException{

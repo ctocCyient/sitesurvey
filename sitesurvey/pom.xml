@@ -219,7 +219,20 @@
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>	         
-
+		<!-- Excel -->
+		<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>4.1.0</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>4.1.0</version>
+</dependency>
+		
+		
+		
   </dependencies>
   <build>
     <finalName>sitesurvey</finalName>

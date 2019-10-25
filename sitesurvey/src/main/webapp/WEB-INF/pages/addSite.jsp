@@ -62,11 +62,13 @@ WebFont.load({
 $(document).ready(function(){	
 	 $("#navbar").load('<c:url value="/resources/common/header.jsp" />'); 
 	  $("#superAdminSidebar").load('<c:url value="/resources/common/superAdminSidebar.jsp" />'); 
-
+	 // upload_files();
 	//  getRegions();
 		getSiteId();
 		//$("#type,#username,#emailId,#pwd,#cpwd,#mobileNum,#region").attr('required', '');  
 		 $(".isa_success").fadeOut(10000);
+		 $("#siteform").show();
+			$("#uploadsheetdiv").hide();
 });
 
 function populateDropdown(data,id)
@@ -242,6 +244,39 @@ function ValidateLatLong()
 
 
 	}
+	
+	
+	
+	
+	
+	function upload_files(id){
+		
+		
+		var rdBtnid=id.id
+		//alert(rdBtnid);
+		//var Value = $("input[name='"+id.name+"']:checked").val();
+	    //var name = $("input[name='"+id.name+"']:checked").val();
+		//var i=rdBtnid[rdBtnid.length-1];
+		
+		if(id.value=="Yes"){
+			$("#siteform").hide();
+			$("#uploadsheetdiv").show();
+			//$("#site_photo1").attr('disabled',false);
+	    	//$("#site_photo2").attr('disabled',false);
+		}else if(id.value=="No"){
+			$("#siteform").show();
+			$("#uploadsheetdiv").hide();
+			//$("#site_photo1").attr('disabled',true);
+	    	//$("#site_photo2").attr('disabled',true);
+		}
+		
+		
+		
+	}
+	
+	
+	
+	
 
 </script>
 <style>
@@ -312,7 +347,34 @@ label {
 			<h3 class="text-center">Add Site</h3>
 				<span id="msg" style="color:red;font-size:12px;">*All Fields are Mandatory*</span><br><br>
 				
-			<form:form action="saveSite" method="post" modelAttribute="Site" >
+				
+				<div class="row mt-1">   
+  				 <div class="col-md-7">
+                  <label for="Radio_1" class="placeholder" ><b>Multiple Sites</b></label><br>
+                  </div>
+                  <div class="col-md-3">Yes&nbsp;<input type="radio"  value="Yes" id="rdyes1" name="rdbtn1" onclick="upload_files(this)" />
+                  </div>
+                  <div class="col-md-2">No&nbsp;<input type="radio" onclick="upload_files(this)" id="rdno1"  value="No"  name="rdbtn1" checked/>
+                 </div>
+                  </div>
+				<div id="uploadsheetdiv" >
+				<form method="post" enctype="multipart/form-data"  action="saveMultipleSite">
+				<div>
+				<label for="site_photo1" class="placeholder" >Upload</label>
+				<input type="file" class="form-control input-border-bottom"  id="site_photo1"  name="file" accept=".xls,.xlsx" /> 
+				
+					<span class="isa_failure" id="image1">${errMsg}</span>
+						
+  				</div>
+  				
+  				<div class="form-action">
+					<a href="home" id="show-signin" class="btn btn-rounded btn-login mr-3" style="background-color: #E4002B;color: white;">Cancel</a>
+					<input type="submit" id="submit" value="Add" class="btn btn-rounded btn-login" style="background-color: #012169;color: white;">
+				</div>
+				</form>
+				</div>
+				
+			<form:form action="saveSite" method="post" modelAttribute="Site" id="siteform" >
 			
 			<div class="login-form">
 			
