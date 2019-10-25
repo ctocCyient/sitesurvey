@@ -4,10 +4,12 @@ package com.cyient.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
+
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jboss.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -502,7 +511,119 @@ public class HomeController {
 		return new ModelAndView("redirect:/newSite");
 	}
 	
+	@RequestMapping(value = "/saveMultipleSite", method = RequestMethod.POST)
+	public ModelAndView saveMultipleSite(@ModelAttribute Site site,RedirectAttributes redirectAttributes,MultipartFile file) throws IOException {
+	
+		 logger.info("In Save Site ");
+		
+		System.out.println("In Multiple site"); 
+	     
+	    InputStream in = file.getInputStream();
+	    Workbook workbook = new XSSFWorkbook(in);
+	    Sheet sheet = (Sheet) workbook.getSheetAt(0);
+	    System.out.println(" sheet______"+sheet.getSheetName());
+	   // System.out.println(" sheet Data>>>"+sheet.removeRowBreak(0));
+	  //  Sheet s1=sheet.removeRowBreak(0);
+	    List<Site> lastsiteid=surveyDAO.getSiteId();
+	    String ls=lastsiteid.toString();
+	    String fls=ls.substring(1, ls.length()-1);
+	    sheet.removeRow( sheet.getRow(0) );
 
+	    System.out.println(fls.split("IND")[1]);
+	    int tempsiteid = Integer.parseInt(fls.split("IND")[1]); 
+	     int tempsiteidforloop = tempsiteid;
+	     System.out.println("Number>>>>"+tempsiteidforloop);
+	    Iterator<Row> iterator = sheet.iterator();
+	    ArrayList<ArrayList<Object>> bulkSiteList= new ArrayList<ArrayList<Object>>();
+	    JSONArray finaljsonobj= new JSONArray();
+	    while (iterator.hasNext()) {
+	    	
+	    	tempsiteidforloop = tempsiteidforloop + 1;
+	    	//System.out.println("In loop Number>>>>"+tempsiteidforloop);
+	    	Row nextRow = (Row) iterator.next();
+	    	ArrayList<Object> arraylist= new ArrayList<Object>();
+	    	JSONArray json= new JSONArray();
+	    	arraylist.add("IND"+tempsiteidforloop);
+	    	json.put(tempsiteidforloop);
+	    	Iterator<Cell> cellIterator = nextRow.cellIterator();
+	    	//  ArrayList<Object> arraylist= new ArrayList<Object>();
+	    	while (cellIterator.hasNext()) {
+	    		Cell cell = (Cell) cellIterator.next();
+	      //arraylist.add(lastsiteid);
+	    		switch (cell.getCellType()) {
+	    			case STRING:
+	    				System.out.print(cell.getStringCellValue());
+	    				arraylist.add(cell.getStringCellValue());
+	    				json.put(cell.getStringCellValue());
+	    				break;
+	    			case NUMERIC:
+	    				System.out.print(cell.getNumericCellValue());
+	    				arraylist.add(cell.getNumericCellValue());
+	    				json.put(cell.getNumericCellValue());
+	    				break;
+	    			case BOOLEAN:
+	    				System.out.print(cell.getBooleanCellValue());
+	    				arraylist.add(cell.getBooleanCellValue());
+	    				json.put(cell.getBooleanCellValue());
+	    				break;
+	    		}
+	      	      System.out.print(" | ");
+	      	     }
+	     bulkSiteList.add(arraylist);
+	     finaljsonobj.put(json);
+	     System.out.println();
+	    }
+	   
+	    workbook.close();
+	   System.out.println("bulk json"+finaljsonobj.get(0));
+	   System.out.println("Bulk Site List"+bulkSiteList.get(0));
+	    System.out.println("Bulk Site List"+bulkSiteList.get(0).get(1));
+	    
+	    List<Object> siteList=new ArrayList<Object>();
+	    
+	   // siteList.add(bulkSiteList.get(0));
+	  //  System.out.println("sitelist-----"+siteList.get(0));
+	    for(int i=0;i<bulkSiteList.size();i++)
+	    {
+	    	 siteList.add(bulkSiteList.get(i));
+	    	 
+	    	// siteList.addAll(Arrays.asList(bulkSiteList.get(i).toString().split(",")));
+	    }
+	    System.out.println("sitelist-----"+siteList);
+	    
+	    		
+	    	//	System.out.println("siteList---------------------------------"+siteList.get(0)+"----------------"+siteList.get(1)+"/n "+siteList);
+	    
+	   Site bulksiteobj= new Site();
+	  for(int i=0;i<bulkSiteList.size();i++){
+	    	
+		  bulksiteobj.setSiteid(bulkSiteList.get(i).get(0).toString());
+		  bulksiteobj.setLatitude(bulkSiteList.get(i).get(1).toString());
+		  bulksiteobj.setLongitude(bulkSiteList.get(i).get(2).toString());
+		  bulksiteobj.setRegion(bulkSiteList.get(i).get(3).toString());
+		  bulksiteobj.setState(bulkSiteList.get(i).get(4).toString());
+		  bulksiteobj.setCity(bulkSiteList.get(i).get(5).toString());
+		  bulksiteobj.setSite_type(bulkSiteList.get(i).get(6).toString());
+		  
+		  surveyDAO.addSite(bulksiteobj);
+		  
+	    	//System.out.println(bulkSiteList.get(0));
+	    
+	    	}
+	  System.out.println("Bulk site...................................."+bulksiteobj);
+	    
+	    
+	
+		return new ModelAndView("redirect:/saveMultipleSite");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping(value="/saveGenerator" , method=RequestMethod.POST)
 	public ModelAndView saveGenerator(@Valid @ModelAttribute("Site_Generator") Site_Generator generator , BindingResult br , ModelAndView model, @RequestParam("file") MultipartFile[] multipart,
 			@RequestParam("submit") String submit, RedirectAttributes redirectAttributes,HttpServletRequest request) throws IOException{
