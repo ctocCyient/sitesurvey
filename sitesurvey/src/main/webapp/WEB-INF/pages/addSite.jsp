@@ -316,7 +316,7 @@ label {
 			
 			<div class="login-form">
 			
-				
+				<form:hidden id="surveyStatus" path="surveyStatus" value="New"/>
 				 <br>
 				<label for="Site ID" class="placeholder">Site ID</label>
 				<form:input id="siteid" path="siteid" class="form-control input-full filled" />

@@ -58,6 +58,10 @@ $('#currentUser')[0].innerHTML=sessionStorage.getItem("username");
 								<a  href="newTechnician">&nbsp;&nbsp;
 								<span class="fas fa-user" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Technician</span></a>
 						</li>
+<!-- 						<li class="nav-item"> -->
+<!-- 								<a href="surveyReports">&nbsp;&nbsp; -->
+<!-- 								<span  class="fas fa-ticket-alt" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Reports</span></a> -->
+<!-- 						</li> -->
 														
 					</ul>
 				</div>

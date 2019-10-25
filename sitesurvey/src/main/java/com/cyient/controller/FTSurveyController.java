@@ -1,15 +1,21 @@
 
 package com.cyient.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.jboss.logging.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,11 +30,33 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cyient.dao.SurveyDAO;
 import com.cyient.model.Site;
 import com.cyient.model.Site_Access;
+import com.cyient.model.Site_Additional_Notes;
 import com.cyient.model.Site_Area;
+import com.cyient.model.Site_Battery_Bank;
+import com.cyient.model.Site_Cabinet;
+import com.cyient.model.Site_Generator;
+import com.cyient.model.Site_SMPS;
+import com.cyient.model.Site_Safety;
+import com.cyient.model.Site_Security;
 import com.cyient.model.Site_Wiring;
 import com.cyient.model.Survey_Team_PPE;
+import com.cyient.model.Technician;
+import com.cyient.model.TechnicianTicketInfo;
+import com.cyient.model.Ticketing;
+import com.cyient.model.Tower_Installation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 @Controller
 public class FTSurveyController {
@@ -202,6 +230,7 @@ public class FTSurveyController {
 		return riggerPPEList;
 	}
 
+	@SuppressWarnings("unused")
 	@RequestMapping(value = "/saveSurveyPPE", method = RequestMethod.POST)
 	public String saveSurveyPPE(@ModelAttribute("Survey_Team_PPE") Survey_Team_PPE surveyTeamPPE,
 			RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile[] multipart, ModelAndView model,
@@ -486,18 +515,425 @@ public class FTSurveyController {
 		}
 	}
 
+	
+	@SuppressWarnings("unused")
 	@RequestMapping(value = "/updateTicketStatus", method = RequestMethod.GET)
 	@ResponseBody
 	public String updateTicketStatus(HttpServletRequest request) {
 		String ticketId = request.getParameter("ticketId");
 		ftManLogger.info("In updateTicketStatus ticketId::"+ticketId);
-		String status=null;
+		String status=null,statusUpdate=null,pdfFileName=null;
 		try{
 		    status = surveyDAO.updateClosedStatus(ticketId);
+		   
+		    
+		    List<Ticketing> ticketData=surveyDAO.getTicketsData(ticketId);
+		    List<String> sitesArr = new ArrayList<String>();
+		    for(Ticketing ticket:ticketData){
+				sitesArr.add(ticket.getSiteid());
+		    }
+		   
+		    for(int i=0;i<sitesArr.size();i++){
+		    	 System.out.println("ksndkn "+sitesArr.get(i).toString());
+		    	 pdfFileName=createPDF(sitesArr.get(i).toString());
+		    	 
+
+		    		
+		    	    
+				 statusUpdate=surveyDAO.updateSurveyStatus(sitesArr.get(i).toString(), "Closed");
+		    }
+		    
 		}
 		catch(Exception e){
 			ftManLogger.error("In updateTicketStatus: "+e);
 		}
 		return status;
 	}
+	
+	
+	@RequestMapping("/surveyReports")
+	public ModelAndView surveyReports(ModelAndView model) throws IOException {
+		model.setViewName("surveyReports");
+		return model;
+	}
+	
+	
+	@RequestMapping("/createPDF")	
+	public String createPDF(String siteId) {
+	
+		
+		// Creating the directory to store file
+		String rootPath = System.getProperty("catalina.home");
+		File dir = new File(rootPath + File.separator + "tmpFiles");
+		if (!dir.exists())
+			dir.mkdirs();
+
+//		// Create the file on server
+//		File serverFile = new File(dir.getAbsolutePath()
+//				+ File.separator + siteId+".pdf");
+//	
+//		System.out.println("serverFile: "+serverFile);
+//		logger.info("Server File Location="
+//				+ serverFile.getAbsolutePath())
+	//	String FILE_NAME="D:/"+siteId+".pdf";
+    Document document = new Document();
+    String FILE_NAME=dir.getAbsolutePath()+ File.separator + siteId+".pdf";
+	try {
+    	//String FILE_NAME = request.getServletContext().getRealPath("/resources/documents"+siteId+".pdf");
+    	//String FILE_NAME = "\\resources\\documents\\"+siteId+".pdf";
+    	
+        PdfWriter.getInstance(document, new FileOutputStream(new File(FILE_NAME)));
+        document.open();
+        Paragraph p = new Paragraph();
+        p.add("Survey Report for Site "+siteId);
+        p.setAlignment(Element.ALIGN_CENTER);
+        document.add(p);
+        Paragraph p2 = new Paragraph(),p3=new Paragraph(),p4=new Paragraph(),p5=new Paragraph(),p6=new Paragraph(),p7=new Paragraph(),p8=new Paragraph(),p9=new Paragraph(),
+        		p10=new Paragraph(),p11=new Paragraph(),p12=new Paragraph(),p13=new Paragraph(),p14=new Paragraph();
+        Font f = new Font();
+        f.setStyle(Font.BOLD);
+        f.setSize(8);
+        p2.add("Site Details"); 
+        document.add(p2);
+        document.add(Chunk.NEWLINE );
+        List<Site> detailsList= surveyDAO.getSiteDetails(siteId);
+        float[] colsWidth = {1f, 1f}; // Code 1
+        PdfPTable table1 = new PdfPTable(colsWidth);
+        table1.setWidthPercentage(100); // Code 2
+        Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+        table1.setHorizontalAlignment(Element.ALIGN_LEFT);//Code 3
+        Phrase region = new Phrase("Region", boldFont );
+        Phrase lati = new Phrase("Latitude", boldFont );
+        Phrase longi = new Phrase("Longitude", boldFont );
+       
+        table1.addCell(region);
+        table1.addCell(detailsList.get(0).getRegion());
+        table1.addCell(lati);
+        table1.addCell(detailsList.get(0).getLatitude());
+        table1.addCell(longi);
+        table1.addCell(detailsList.get(0).getLongitude());
+        document.add(table1);
+        
+        
+        //Site Survey Team PPE
+        p3.add("Survey Team PPE"); 
+        document.add(p3);
+
+        List<Survey_Team_PPE> surveyPPElist= surveyDAO.getSurveyTeamDetails(siteId);
+        byte[] surveyPPEPhoto1=surveyPPElist.get(0).getPhotoSurveyTeam();
+        byte[] surveyPPEPhoto2=surveyPPElist.get(0).getPhotoTechnicianTeam();
+        byte[] surveyPPEPhoto3=surveyPPElist.get(0).getPhotoRiggerTeam();
+        document.add(Image.getInstance(surveyPPEPhoto1));
+        document.add(Image.getInstance(surveyPPEPhoto2));
+        document.add(Image.getInstance(surveyPPEPhoto3));
+        
+        //Site Access
+        p4.add("Site Access"); 
+        document.add(p4);
+
+        List<Site_Access> accesslist= surveyDAO.getSiteAccDetails(siteId);
+        byte[] accessPhoto1=accesslist.get(0).getPhoto_way();
+        byte[] accessPhoto2=accesslist.get(0).getPhoto_way2();
+        document.add(Image.getInstance(accessPhoto1));
+        document.add(Image.getInstance(accessPhoto2));
+      
+        //Site Area
+        p5.add("Site Area"); 
+        document.add(p5);
+  
+        List<Site_Area> areaList= surveyDAO.getSiteArDetails(siteId);
+        byte[] areaPhoto1=areaList.get(0).getPhoto_inproper();
+        document.add(Image.getInstance(areaPhoto1));
+        
+        //Power Wiring
+        p6.add("Power Wiring"); 
+        document.add(p6);
+ 
+        List<Site_Wiring> wiringlist= surveyDAO.getPowerWiringDetails(siteId);
+        byte[] wiringPhoto1=wiringlist.get(0).getSite_photo1();
+        byte[] wiringPhoto2=wiringlist.get(0).getSite_photo2();
+        document.add(Image.getInstance(wiringPhoto1));
+        document.add(Image.getInstance(wiringPhoto2));
+        
+        //Generator
+        p7.add("Site Generator"); 
+        document.add(p7);
+      
+        List<Site_Generator> generatorlist= surveyDAO.getGeneratorDetails(siteId);
+        byte[] generatorPhoto1=generatorlist.get(0).getGdphoto();
+        byte[] generatorPhoto2=generatorlist.get(0).getFuellevel_photo();
+        byte[] generatorPhoto3=generatorlist.get(0).getDg_inproper_1();
+        byte[] generatorPhoto4=generatorlist.get(0).getDg_inproper_2();
+        byte[] generatorPhoto5=generatorlist.get(0).getTag_photo();
+        document.add(Image.getInstance(generatorPhoto1));
+        document.add(Image.getInstance(generatorPhoto2));
+        document.add(Image.getInstance(generatorPhoto3));
+        document.add(Image.getInstance(generatorPhoto4));
+        document.add(Image.getInstance(generatorPhoto5));
+        
+        //SMPS
+        p8.add("Site SMPS"); 
+        document.add(p8);
+    
+        List<Site_SMPS> smpslist= surveyDAO.getSMPSDetails(siteId);
+        byte[] smpsPhoto1=smpslist.get(0).getObservation_1();
+        byte[] smpsPhoto2=smpslist.get(0).getObservation_2();
+        document.add(Image.getInstance(smpsPhoto1));
+        document.add(Image.getInstance(smpsPhoto2));
+        
+        //Battery bank
+        p9.add("Battery Bank"); 
+        document.add(p9);
+
+        List<Site_Battery_Bank> bblist= surveyDAO.getBB(siteId);
+        byte[] bbPhoto1=bblist.get(0).getTag_photo();
+        byte[] bbPhoto2=bblist.get(0).getTag_photo1();
+        byte[] bbPhoto3=bblist.get(0).getTag_photo_2();
+        document.add(Image.getInstance(bbPhoto1));
+        document.add(Image.getInstance(bbPhoto2));
+        document.add(Image.getInstance(bbPhoto3));
+        
+        //Cabinet
+        p10.add("Site Cabinet"); 
+        document.add(p10);
+    
+        List<Site_Cabinet> cabinetlist= surveyDAO.getCabinet(siteId);
+        byte[] cabinetPhoto1=cabinetlist.get(0).getPhoto_1();
+        byte[] cabinetPhoto2=cabinetlist.get(0).getPhoto_2();
+        document.add(Image.getInstance(cabinetPhoto1));
+        document.add(Image.getInstance(cabinetPhoto2));
+        
+        //Tower Installation
+        p11.add("Tower Installation"); 
+        document.add(p11);
+    
+        List<Tower_Installation> towerInstlist= surveyDAO.fetchTowerDetails(siteId);
+        byte[] towerInstPhoto1=towerInstlist.get(0).getTower_photo1();
+        byte[] towerInstPhoto2=towerInstlist.get(0).getTower_photo2();
+        byte[] towerInstPhoto3=towerInstlist.get(0).getTower_photo3();
+        byte[] towerInstPhoto4=towerInstlist.get(0).getTower_photo4();
+        document.add(Image.getInstance(towerInstPhoto1));
+        document.add(Image.getInstance(towerInstPhoto2));
+        document.add(Image.getInstance(towerInstPhoto3));
+        document.add(Image.getInstance(towerInstPhoto4));
+        
+        //Security
+        p12.add("Site Security"); 
+        document.add(p12);
+        
+        List<Site_Security> securitylist= surveyDAO.getSecurityDetails(siteId);
+        byte[] securityPhoto1=securitylist.get(0).getSecurity_photo1();
+        byte[] securityPhoto2=securitylist.get(0).getSecurity_photo2();
+        document.add(Image.getInstance(securityPhoto1));
+        document.add(Image.getInstance(securityPhoto2));
+      
+        //Safety
+        p13.add("Site Safety"); 
+        document.add(p13);
+      
+        List<Site_Safety> safetylist= surveyDAO.getSafetyDetails(siteId);
+        byte[] safetyPhoto1=safetylist.get(0).getSafety_photo1();
+        byte[] safetyPhoto2=safetylist.get(0).getSafety_photo2();
+        byte[] safetyPhoto3=safetylist.get(0).getSafety_photo3();
+        byte[] safetyPhoto4=safetylist.get(0).getSafety_photo4();
+        byte[] safetyPhoto5=safetylist.get(0).getSafety_photo5();
+        byte[] safetyPhoto6=safetylist.get(0).getSafety_photo6();
+        byte[] safetyPhoto7=safetylist.get(0).getSafety_photo7();
+        document.add(Image.getInstance(safetyPhoto1));
+        document.add(Image.getInstance(safetyPhoto2));
+        document.add(Image.getInstance(safetyPhoto3));
+        document.add(Image.getInstance(safetyPhoto4));
+        document.add(Image.getInstance(safetyPhoto5));
+        document.add(Image.getInstance(safetyPhoto6));
+        document.add(Image.getInstance(safetyPhoto7));
+        
+        //Additional Notes
+        p14.add("Site Additional Notes"); 
+        document.add(p14);
+     
+        List<Site_Additional_Notes> additionallist= surveyDAO.getSiteAddDetails(siteId);
+        byte[] additionalPhoto1=additionallist.get(0).getSite_photo1();
+        byte[] additionalPhoto2=additionallist.get(0).getSite_photo2();
+        document.add(Image.getInstance(additionalPhoto1));
+        document.add(Image.getInstance(additionalPhoto2));
+        
+        
+        document.close();
+        
+        
+       // byte[] bFile = readBytesFromFile(FILE_NAME);
+
+	    
+	    String status1=surveyDAO.updateSurveyDocument(siteId,FILE_NAME);
+        
+        System.out.println("Done");
+	    } catch (Exception e) {
+	        System.out.println("EXception "+e);
+	    }
+    return FILE_NAME;
+	}
+	
+	
+	 @RequestMapping(value = "/downloadFile", method = RequestMethod.GET)
+		public ModelAndView downloadFileRedirect(ModelAndView model) {
+			model.setViewName("downloadFile");
+			return model;
+		}
+	
+	
+	
+    
+    
+	@SuppressWarnings("unused")
+	private static byte[] readBytesFromFile(String filePath) {
+
+        FileInputStream fileInputStream = null;
+        byte[] bytesArray = null;
+
+        try {
+
+            File file = new File(filePath);
+            bytesArray = new byte[(int) file.length()];
+
+            //read file into bytes[]
+            fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bytesArray);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        return bytesArray;
+
+    }
+	
+	 @RequestMapping(value="getAssignedSurveySites", method = RequestMethod.GET)
+	    @ResponseBody
+	    public String getAssignedSurveySites(ModelAndView model,HttpServletRequest request) {
+	    	
+	    	 String assignedJson =null;	    	 
+	    
+	    	try{
+			List<Site> listAssigned = surveyDAO.getAssignedSurveySites();
+		        	  
+			assignedJson = gsonBuilder.toJson(listAssigned);
+	        	   ftManLogger.info("Survey Assigned Json:: "+assignedJson);
+	    	}
+	    	catch(Exception e){
+	    		ftManLogger.error("In getAssignedSurveySites : "+e);
+	    	}
+		              return assignedJson.toString();
+	    }
+	    
+	 @RequestMapping(value="getUnAssignedSurveySites", method = RequestMethod.GET)
+	    @ResponseBody
+	    public String getUnAssignedSurveySites(ModelAndView model,HttpServletRequest request) {
+	    	
+	    	 String unassignedJson =null;	    	 
+	    	try{
+			List<Site> listUnassigned = surveyDAO.getUnAssignedSurveySites();
+		        	  
+			unassignedJson = gsonBuilder.toJson(listUnassigned);
+	        	   ftManLogger.info("Survey Assigned Json:: "+unassignedJson);
+	    	}
+	    	catch(Exception e){
+	    		ftManLogger.error("In getUnAssignedSurveySites : "+e);
+	    	}
+		              return unassignedJson.toString();
+	    }
+	    
+	 @RequestMapping(value="getClosedSurveySites", method = RequestMethod.GET)
+	    @ResponseBody
+	    public String getClosedSurveySites(ModelAndView model,HttpServletRequest request) {
+	    	
+	    	String closedJson =null;	    	 
+	    	try{
+				List<Site> listClosed = surveyDAO.getClosedSurveySites();
+			        	  
+				closedJson = gsonBuilder.toJson(listClosed);
+	        	   ftManLogger.info("Survey Closed Json:: "+closedJson);
+	    	}
+	    	catch(Exception e){
+	    		ftManLogger.error("In getClosedSurveySites : "+e);
+	    	}
+		    return closedJson.toString();
+	    }
+	 
+		@RequestMapping("surveySitesCount")
+	    @ResponseBody
+	    public String surveySitesCount(ModelAndView model) {
+		 ftManLogger.info("In Survey Sites Count");
+	    	 JSONObject countData=new JSONObject();
+	    	 List<Site> listAssigned =null;
+	    	 List<Site> listUnAssgined=null;	    	
+	    	 List<Site> listClosed=null;
+	    	try{
+	    		listAssigned = surveyDAO.getAssignedSurveySites();		
+		   
+	    	}catch(Exception e){
+	    		ftManLogger.error("While fetching the assigned survey sites "+e);
+	    	}
+	    	try{
+	    		listUnAssgined = surveyDAO.getUnAssignedSurveySites();
+	    	}catch(Exception e){
+	    		ftManLogger.error("While fetching list unassigned Survey sites "+e);
+	    	}
+	    	try{
+	    		listClosed = surveyDAO.getClosedSurveySites();
+	    	}catch(Exception e){
+	    		ftManLogger.error("While fetching list closed surveuy sites "+e);
+	    	}
+		    
+			   countData.put("AssignedSurvey",listAssigned.size());
+			   countData.put("UnAssignedSurvey",listUnAssgined.size());
+			   countData.put("ClosedSurvey",listClosed.size());
+			   System.out.println(countData);			   
+		          return countData.toString();
+	    }
+		
+		 @RequestMapping(value="getFilename", method = RequestMethod.GET)
+		    @ResponseBody
+		    public String getFilename(HttpServletRequest request) {
+//		// Creating the directory to store file
+//				String rootPath = System.getProperty("catalina.home");
+//				File dir = new File(rootPath + File.separator + "tmpFiles");
+//				if (!dir.exists())
+//					dir.mkdirs();
+//
+//				System.out.println("dir "+dir.getAbsolutePath()+ File.separator + "IND005");
+//				// Create the file on server
+////				File serverFile = new File(dir.getAbsolutePath()
+////						+ File.separator + "IND005");
+//			
+////				System.out.println("serverFile: "+serverFile);
+//				return rootPath;
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+//			 ClassLoader classLoader = getClass().getClassLoader();
+//			    //System.out.println("FILE llh;s "+classLoader.getResource("file/test.xml").getFile());
+//			 System.out.println("\\resources\\documents\\IND005.pdf");
+//			 System.out.println("zxzb"+classLoader.getResource(".").getFile() + "/IND005.pdf");
+			 
+			 
+			  String dataDirectory = request.getServletContext().getRealPath("/resources/documents");
+		       System.out.println("dataDirectory "+dataDirectory);
+			   
+			   
+				return "sdhsdg";
+		 }
 }

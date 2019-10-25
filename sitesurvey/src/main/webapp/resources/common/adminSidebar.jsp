@@ -51,9 +51,13 @@ $('#currentUser')[0].innerHTML=sessionStorage.getItem("username");
 						
 						
 <!-- 						<li class="nav-item"> -->
-<!-- 								<a href="superAdminTotalTickets">&nbsp;&nbsp; -->
-<!-- 								<span  class="fas fa-ticket-alt" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Total Tickets</span></a> -->
+<!-- 								<a href="getFilename">&nbsp;&nbsp; -->
+<!-- 								<span  class="fas fa-ticket-alt" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;PDF</span></a> -->
 <!-- 						</li> -->
+						<li class="nav-item">
+								<a href="surveyReports">&nbsp;&nbsp;
+								<span  class="fas fa-ticket-alt" style="font-size:14px" > &nbsp;&nbsp;&nbsp;&nbsp;Reports</span></a>
+						</li>
 					</ul>
 				</div>
 			</div>

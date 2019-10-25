@@ -181,6 +181,24 @@ public class SiteSurveyController {
 		model.setViewName("homePage");
 		return model;
 	}
+	
+	@RequestMapping(value = "/assignedSurvey", method = RequestMethod.GET)
+	public ModelAndView assignedSurvey(ModelAndView model) {
+		model.setViewName("assignedSurvey");
+		return model;
+	}
+	
+	@RequestMapping(value = "/unassignedSurvey", method = RequestMethod.GET)
+	public ModelAndView unassignedSurvey(ModelAndView model) {
+		model.setViewName("unassignedSurvey");
+		return model;
+	}
+	
+	@RequestMapping(value = "/closedSurvey", method = RequestMethod.GET)
+	public ModelAndView closedSurvey(ModelAndView model) {
+		model.setViewName("closedSurvey");
+		return model;
+	}
 
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public ModelAndView saveUser(@ModelAttribute User user,RedirectAttributes redirectAttributes) {

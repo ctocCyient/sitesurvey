@@ -109,15 +109,9 @@ function getBB()
 	         	if(JSON.parse(res).length==0)
 	         		{
 		         	document.getElementById("siteid").value=siteId;
-		         	//document.getElementById("id").value=0;
-
-		         	//$("#photo_1_text_div_radio").prop("checked", true);
 		         	$('input[name="photo_1_text_div_radio"][value="Yes"]').attr('checked', true); 
 		         	$('input[name="photo_2_text_div_radio"][value="Yes"]').attr('checked', true);
 		         	$('input[name="photo_3_text_div_radio"][value="Yes"]').attr('checked', true);
-		         	//$("#photo_2_text_div_radio").prop("checked", true);
-		         	//$("#photo_3_text_div_radio").prop("checked", true);
- 				//	$("input").attr("required", "false");
 	         	    $("#photo_1_div").show();
 	 	         	$("#photo_2_div").show();
 	 	         	$("#photo_3_div").show();
@@ -126,10 +120,7 @@ function getBB()
 	 	         	$("#photo_3_text_div").hide();
 	 	         	$("#Radio_1_div").hide();
 	 	         	$("#Radio_2_div").hide();
-	 	         	$("#Radio_3_div").hide();
-	 	         	
-	 	         	
-   
+	 	         	$("#Radio_3_div").hide();	 	    
 	         		}
 		 		//alert(jsonData.id)	
 		 		else

@@ -360,7 +360,7 @@ public class HomeController {
     	 
     	 String ticketId = null;
     	 String status=null;
-    	 String statusUpdate=null;
+    	 String statusUpdate=null,statusUpdate1=null;
     
 		for(Ticketing ticket : ticketData)
 	      {
@@ -387,11 +387,14 @@ public class HomeController {
         	 technicianTicket.setTicketDescription(ticket.getTicketDescription());    
         	 	try{
         	  status= surveyDAO.assignTechnician(technicianTicket);
+        	  
         	 	}catch(Exception e){
         	 		homeLogger.error("while fetching the status of the technician ticket "+e);
         	 	}
         	 	try{
         	  statusUpdate =surveyDAO.updateTicketingStatus(ticketId,ticket.getSiteid());
+        	  statusUpdate1 =surveyDAO.updateSurveyStatus(ticket.getSiteid(),"Assigned");
+        	 
       	 	}catch(Exception e){
       	 		homeLogger.error("While fetching the statusupdate of the ticket"+e);
       	 	}
@@ -457,6 +460,8 @@ public class HomeController {
 			homeLogger.error("In new Site"+e);
 		}
 		return model;
+		
+		// return new ModelAndView("addSite", "command", new Site());
 	}
 	
 	@RequestMapping(value = "/ValidateLatLong", method = RequestMethod.GET)
@@ -790,7 +795,7 @@ if(BB.getId()!=0){
 		System.out.println(updatetype.split(";")[1]);
 		System.out.println(updatetype.split(";")[2]);
 		System.out.println(updatetype.split(";")[3]);
-System.out.println(updatetype.split(";")[0]=="New");*/
+		System.out.println(updatetype.split(";")[0]=="New");*/
 		if(updatetype.split(";")[0].contains("New"))
 		{
 			
@@ -1223,8 +1228,9 @@ System.out.println(updatetype.split(";")[0]=="New");*/
 			List<Ticketing> TicketingSiteIds=null;
 			
 			try{
-			siteIds = surveyDAO.getSiteIdsForRegion(selectedRegion,selectedState,selectedDistrict,selectedCity);
-			TicketingSiteIds =  surveyDAO.getTicketingSiteIds();			}catch(Exception e){
+				siteIds = surveyDAO.getSiteIdsForRegion(selectedRegion,selectedState,selectedDistrict,selectedCity);
+				TicketingSiteIds =  surveyDAO.getTicketingSiteIds();			
+			}catch(Exception e){
 				homeLogger.error("While fetching the siteIds for region"+e);
 			}
 			List<String> listSiteIds=new ArrayList<String>();

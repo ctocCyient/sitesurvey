@@ -40,7 +40,13 @@ public class Site implements Serializable {
 	
 	@Column(name="Survey_Status")
 	private String surveyStatus;
-
+	
+	@Column(name="Survey_pdf", length = 16777215)
+	private byte[] surveyPdf;
+	
+	@Column(name="Survey_Filename")
+	private String surveyFilename;
+	
 	@Column(name="pincode")
 	private int pincode;	
 	
@@ -122,5 +128,21 @@ public class Site implements Serializable {
 
 	public void setSurveyStatus(String surveyStatus) {
 		this.surveyStatus = surveyStatus;
+	}
+
+	public byte[] getSurveyPdf() {
+		return surveyPdf;
+	}
+
+	public void setSurveyPdf(byte[] surveyPdf) {
+		this.surveyPdf = surveyPdf;
+	}
+
+	public String getSurveyFilename() {
+		return surveyFilename;
+	}
+
+	public void setSurveyFilename(String surveyFilename) {
+		this.surveyFilename = surveyFilename;
 	}
 }

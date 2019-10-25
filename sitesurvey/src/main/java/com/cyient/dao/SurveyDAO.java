@@ -26,6 +26,7 @@ import com.cyient.model.Ticketing;
 import com.cyient.model.Tower_Installation;
 import com.cyient.model.Track_Users;
 import com.cyient.model.User;
+import com.itextpdf.text.Document;
 
 public interface SurveyDAO {
 	
@@ -249,4 +250,19 @@ public interface SurveyDAO {
 
 	@Transactional
 	public List<Ticketing> getTicketingSiteIds();
+
+	@Transactional
+	public String updateSurveyDocument(String siteId, String fILE_NAME);
+
+	@Transactional
+	public String updateSurveyStatus(String siteId, String status);
+
+	@Transactional
+	public List<Site> getAssignedSurveySites();
+
+	@Transactional
+	public List<Site> getUnAssignedSurveySites();
+
+	@Transactional
+	public List<Site> getClosedSurveySites();
 }

@@ -1,5 +1,11 @@
 package com.cyient.dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -33,6 +39,7 @@ import com.cyient.model.Tower_Installation;
 import com.cyient.model.Track_Users;
 
 import com.cyient.model.User;
+import com.itextpdf.text.Document;
 
 
 @Repository
@@ -1241,6 +1248,71 @@ public class SurveyDAOImpl implements SurveyDAO {
 		}
 		return "Updated";
 
+	}
+
+	@Override
+	public String updateSurveyDocument(String siteId,String fileName) {
+		Query q = sessionFactory.getCurrentSession().createQuery("from Site where siteid='"+siteId+"'");
+
+		for(int i=0;i<q.list().size();i++){
+			Site site = (Site)q.list().get(i);
+
+			//site.setSurveyPdf(file);
+			site.setSurveyFilename(fileName);
+
+			sessionFactory.getCurrentSession().update(site);
+		}
+		return "Updated";
+	}
+
+	@Override
+	public String updateSurveyStatus(String siteId, String status) {
+		Query q = sessionFactory.getCurrentSession().createQuery("from Site where siteid='"+siteId+"'");
+
+		for(int i=0;i<q.list().size();i++){
+			Site site = (Site)q.list().get(i);
+
+			site.setSurveyStatus(status);
+
+			sessionFactory.getCurrentSession().update(site);
+		}
+		return "Updated";
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Site> getAssignedSurveySites() {		
+		List<Site> Datalist = null;
+		try {
+			Datalist = sessionFactory.getCurrentSession().createQuery("from Site where surveyStatus='Assigned' or surveyStatus='InProgress'").list();
+		} catch (Exception e) {
+			impLogger.error("In getAssignedSurveySites() "+e);
+		}
+		return Datalist;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Site> getUnAssignedSurveySites() {		
+		List<Site> Datalist = null;
+		try {
+			Datalist = sessionFactory.getCurrentSession().createQuery("from Site where surveyStatus='New'").list();
+		} catch (Exception e) {
+			impLogger.error("In getUnAssignedSurveySites() "+e);
+		}
+		return Datalist;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Site> getClosedSurveySites() {	
+		List<Site> Datalist = null;
+		try {
+			Datalist = sessionFactory.getCurrentSession().createQuery("from Site where surveyStatus='Closed'").list();
+		} catch (Exception e) {		
+			impLogger.error("In getClosedSurveySites() "+e);
+		}
+		return Datalist;
 	}
 
 }
