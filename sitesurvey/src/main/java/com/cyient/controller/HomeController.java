@@ -514,7 +514,7 @@ public class HomeController {
 	@RequestMapping(value = "/saveMultipleSite", method = RequestMethod.POST)
 	public ModelAndView saveMultipleSite(@ModelAttribute Site site,RedirectAttributes redirectAttributes,MultipartFile file) throws IOException {
 	
-		 logger.info("In Save Site ");
+		homeLogger.info("In Save Site ");
 		
 		System.out.println("In Multiple site"); 
 	     
